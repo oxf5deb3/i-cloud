@@ -100,13 +100,6 @@ namespace VMS.Services
             return DataTableHelper.DataTableToIList<t_bd_region>(dt) as List<t_bd_region>;
         }
 
-        public void Dispose()
-        {
-            DbContext.Dispose();
-            //throw new NotImplementedException();
-        }
-
-
         public bool BatchDeleteRegion(List<string> pkValues)
         {
             var tableName = "t_bd_region";
