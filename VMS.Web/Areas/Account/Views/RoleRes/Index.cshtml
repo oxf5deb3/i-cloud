@@ -1,0 +1,49 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    .layout-split-west{
+     border-right:0px;
+    }
+</style>
+    }
+<div id="cc" class="easyui-layout" style="width:100%;height:600px;background-color:#fff;">
+    <div data-options="region:'west',title:'系统角色',split:true" style="width:180px;">
+        <ul id="tt" class="easyui-tree"></ul>
+    </div>
+    <div data-options="region:'center'">
+        <p>系统应用</p>
+        <ul class="list-group">
+            <li class="list-group-item" style="border-bottom-color:red;"><input type="checkbox" style="vertical-align:middle;" /><span style="vertical-align:middle;">全选 </span><span style="margin-left:10px;vertical-align:middle;color:blue;font-size:13px;">基础资料</span> <input type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></li>
+            <li class="list-group-item" style="padding-left:90px"><span style="vertical-align:middle;">准驾车型</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">可见</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">新增</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">修改</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">删除</span></li>
+            <li class="list-group-item" style="padding-left:90px"><span style="vertical-align:middle;">区域信息</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">可见</span></li>
+       
+            <li class="list-group-item" style="border-bottom-color:red;"><input type="checkbox" />全选 &nbsp; &nbsp; &nbsp;登记中心 <input type="checkbox" />可见</li>
+            <li class="list-group-item" style="padding-left:60px">临时驾驶证登记<input type="checkbox" />可见</li>
+            <li class="list-group-item" style="padding-left:60px">驾驶证登记<input type="checkbox" />可见</li>
+        </ul>
+
+    </div>
+</div>
+@section scripts{
+<script type="text/javascript">
+    function initRoleTree(){
+      var url='../../api/RoleApi/QueryTreeAll';
+      $.post(url,{},'json')
+      .success(function(ret){
+         $('#tt').tree('loadData',ret.data);
+      })
+    }
+    function initRes(){
+    
+    
+    }
+    $(function(){
+
+
+      initRoleTree();
+    });
+</script>
+}

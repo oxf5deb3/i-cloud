@@ -1,0 +1,164 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    body{
+      font-size:12px;
+    }
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+    .form-horizontal .form-group{
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .form-group{
+     margin-bottom:5px;
+    }
+    .red-star{
+       color:red;
+       font-size:15px;
+    }
+</style>
+}
+
+<table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>驾驶证编号:</td>
+        <td style="width:200px;"><input id="zs_no"></input></td>
+        <td style="width:120px;text-align:right;">身份证号码:</td>
+        <td style="width:100%;"><input id="id_no"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">姓名:</td>
+        <td style="width:100%;"><input id="name"></input></td>
+        <td style="width:120px;text-align:right;">性别:</td>
+        <td style="width:200px;"><input id="sex"></input></td>
+        
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">出生日期:</td>
+        <td style="width:100%;"><input id="birth_date"></input></td>
+        <td style="width:120px;text-align:right;">地区:</td>
+        <td style="width:200px;"><input id="region"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">住址:</td>
+        <td style="width:200px;"><input id="now_addr"></input></td>
+        <td style="width:120px;text-align:right;">单位:</td>
+        <td style="width:100%;"><input id="work_unit"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">准驾车型:</td>
+        <td style="width:200px;"><input id="car_type"></input></td>
+        <td style="width:120px;text-align:right;">初次领证日期:</td>
+        <td style="width:100%;"><input id="first_get_license_date"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">有效期:</td>
+        <td colspan="3" style="width:200px;"><input id="start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="end_date"></input></td>
+    </tr>
+    <tr style="height:10px;"></tr>
+    <tr>
+        <td colspan="3"></td>
+        <td style="padding-left:20px;">
+            <button type="button" class="btn btn-primary btn-sm" style="width:78px">清空</button>
+            <button type="button" class="btn btn-info btn-sm" style="width:78px">提交</button>
+        </td>
+    </tr>
+</table>
+
+@section scripts{
+<script type="text/javascript">
+    function initUI(){
+      $('#zs_no').textbox({
+          width:180,
+          required:true
+      });
+    $('#id_no').textbox({
+          width:180,
+          required:true
+      });
+    $('#name').textbox({
+          width:180,
+          required:true
+      });
+    $('#sex').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'男'},{id:1,text:'女'}]
+    });
+     $('#birth_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true
+      });
+     $('#region').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'佤邦'}]
+    });
+
+       $('#now_addr').textbox({
+          width:180,
+          required:true
+      });
+       $('#work_unit').textbox({
+          width:180,
+      });
+       $('#car_type').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'三轮'}]
+    });
+      $('#first_get_license_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true
+      });
+        $('#start_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true
+      });
+        $('#end_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true
+      });
+    }
+
+
+
+
+
+
+
+    $(function(){
+       initUI();
+    })
+</script>
+}
+

@@ -1,0 +1,10 @@
+﻿.datagrid-row-over,
+.datagrid-header td.datagrid-header-over {
+  background: #e6e6e6;
+  color: #3d28ce !important;
+  cursor: default;
+}
+.datagrid-row-selected {
+  background: #dde3f9!important;
+  color: #000!important;
+}

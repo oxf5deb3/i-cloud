@@ -1,0 +1,160 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    body{
+      font-size:12px;
+    }
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+    .form-horizontal .form-group{
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .form-group{
+     margin-bottom:5px;
+    }
+    .red-star{
+       color:red;
+       font-size:15px;
+    }
+</style>
+}
+
+<table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>临时驾驶证编号:</td>
+        <td style="width:200px;"><input id="ls_no"></input></td>
+        <td style="width:120px;text-align:right;">姓名:</td>
+        <td style="width:100%;"><input id="name"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">性别:</td>
+        <td style="width:200px;"><input id="sex"></input></td>
+        <td style="width:120px;text-align:right;">出生日期:</td>
+        <td style="width:100%;"><input id="birth_date" ></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">地区:</td>
+        <td style="width:200px;"><input id="region"></input></td>
+        <td style="width:120px;text-align:right;">民族:</td>
+        <td style="width:100%;"><input id="nation" ></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">现住址:</td>
+        <td style="width:200px;"><input id="now_addr" ></input></td>
+        <td style="width:120px;text-align:right;">原住址:</td>
+        <td style="width:100%;"><input id="old_addr" ></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">准驾车型:</td>
+        <td style="width:200px;"><input id="car_type"></input></td>
+        <td style="width:120px;text-align:right;">考核员:</td>
+        <td style="width:100%;"><input id="ck_man" ></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;">考核结果:</td>
+        <td style="width:200px;"><input id="ck_ret"></input></td>
+        <td style="width:120px;text-align:right;">考核日期:</td>
+        <td style="width:100%;"><input id="ck_date"></input></td>
+    </tr>
+    <tr style="height:10px;"></tr>
+    <tr>
+        <td colspan="3"></td>
+        <td style="padding-left:20px;">
+            <button type="button" class="btn btn-primary btn-sm" style="width:78px">清空</button>
+            <button type="button" class="btn btn-info btn-sm" style="width:78px">提交</button>
+        </td>
+    </tr>
+</table>
+
+@section scripts{
+<script type="text/javascript">
+    function initUI(){
+      $('#ls_no').textbox({
+          width:180,
+          required:true
+      });
+    $('#name').textbox({
+          width:180,
+          required:true
+      });
+    $('#sex').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'男'},{id:1,text:'女'}]
+    });
+     $('#birth_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true
+      });
+     $('#region').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'佤邦'}]
+    });
+      $('#nation').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'白俄罗斯'}]
+    });
+
+       $('#now_addr').textbox({
+          width:180,
+          required:true
+      });
+       $('#old_addr').textbox({
+          width:180,
+      });
+       $('#car_type').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'text',
+         data:[{id:0,text:'三轮'}]
+    });
+        $('#ck_man').textbox({
+          width:180,
+          required:true
+      });
+        $('#ck_ret').textbox({
+          width:180,
+          required:true
+      });
+        $('#ck_date').textbox({
+          width:180,
+          required:true
+      });
+    }
+
+
+
+
+
+
+
+    $(function(){
+       initUI();
+    })
+</script>
+}
+

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{430C6F8E-95B0-495A-9B16-5F4D78E48DA0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VMS.Services</RootNamespace>
+    <AssemblyName>VMS.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\VMS.Utils\lib\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\RoleService.cs" />
+    <Compile Include="Account\UserGroupService.cs" />
+    <Compile Include="Account\UserService.cs" />
+    <Compile Include="BaseData\PermittedCarTypeService.cs" />
+    <Compile Include="BaseData\RegionService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VMS.DataBase\VMS.DataBase.csproj">
+      <Project>{f4247c06-e58f-485a-88ca-ba9f3ce43d5d}</Project>
+      <Name>VMS.DataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.IServices\VMS.IServices.csproj">
+      <Project>{ff161174-f0dd-4ad4-a09e-b20110710ffe}</Project>
+      <Name>VMS.IServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.Model\VMS.Model.csproj">
+      <Project>{9fb35c62-9270-4151-8c6d-c1f56bc09ab9}</Project>
+      <Name>VMS.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.Utils\VMS.Utils.csproj">
+      <Project>{908a1b5b-cf21-47f8-8637-a52707511261}</Project>
+      <Name>VMS.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VSM.DTO\VMS.DTO.csproj">
+      <Project>{e63e5e2c-3725-445c-9c4d-fd66d5797b48}</Project>
+      <Name>VMS.DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
