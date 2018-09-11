@@ -7,25 +7,37 @@
     .layout-split-west{
      border-right:0px;
     }
+    .list-group-item:first-child,.list-group-item:last-child {
+    border-radius: 0px;
+    }
+    .check-inline span{
+     cursor:pointer; 
+    }
+    .list-group-item{
+      padding-top:5px;
+      padding-bottom:5px;
+    }
 </style>
     }
 <div id="cc" class="easyui-layout" style="width:100%;height:600px;background-color:#fff;">
-    <div data-options="region:'west',title:'系统角色',split:true" style="width:180px;">
-        <ul id="tt" class="easyui-tree"></ul>
+    <div data-options="region:'west',title:'系统角色',split:false" style="width:180px;">
+        <ul id="tt" class="easyui-tree" data-options="lines:true"></ul>
     </div>
     <div data-options="region:'center'">
-        <p>系统应用</p>
-        <ul class="list-group">
-            <li class="list-group-item" style="border-bottom-color:red;"><input type="checkbox" style="vertical-align:middle;" /><span style="vertical-align:middle;">全选 </span><span style="margin-left:10px;vertical-align:middle;color:blue;font-size:13px;">基础资料</span> <input type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></li>
+        <div id="p" class="easyui-panel" title="系统应用" style="width:100%;height:100%;padding:5px;background:#fafafa;"
+             data-options="closable:false,border:false">
+            <!-- <div style="position:fixed;top:0px;width:100%;height:32px;z-index:1;line-height:32px;font-weight: bold;background-color: #eaeaea;padding-left: 6px;">系统应用</div>
+           <ul class="list-group">
+            <li class="list-group-item list-group-item-info" style="border-bottom-color:red;"><label class="check-inline"><input type="checkbox" style="vertical-align:middle;" /><span style="vertical-align:middle;">全选 </span></label><span style="margin-left:10px;vertical-align:middle;color:blue;font-size:13px;">基础资料</span> <input type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></li>
             <li class="list-group-item" style="padding-left:90px"><span style="vertical-align:middle;">准驾车型</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">可见</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">新增</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">修改</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">删除</span></li>
             <li class="list-group-item" style="padding-left:90px"><span style="vertical-align:middle;">区域信息</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">可见</span></li>
-       
-            <li class="list-group-item" style="border-bottom-color:red;"><input type="checkbox" />全选 &nbsp; &nbsp; &nbsp;登记中心 <input type="checkbox" />可见</li>
+
+            <li class="list-group-item" style="border-bottom-color:red;"><input type="checkbox" />全选 &nbsp; &nbsp; &nbsp;登记中心<label class="check-inline"> <input type="checkbox" />可见</label></li>
             <li class="list-group-item" style="padding-left:60px">临时驾驶证登记<input type="checkbox" />可见</li>
             <li class="list-group-item" style="padding-left:60px">驾驶证登记<input type="checkbox" />可见</li>
-        </ul>
+        </ul>-->
 
-    </div>
+        </div>
 </div>
 @section scripts{
 <script type="text/javascript">
@@ -36,14 +48,77 @@
          $('#tt').tree('loadData',ret.data);
       })
     }
+    function renderRes(data,pid,domArray){
+       var ds=[];
+       ds= $.map(data,function(el,inx){
+              if(el.pid==pid) return el;
+          });
+       if(ds.length==0) return;
+       if(pid==''){
+          $.each(ds,function(inx,el){
+              domArray[inx]=[];
+              //domArray[inx].push("<ul class=\"list-group\">");
+              domArray[inx].push('<li class="list-group-item"><label class="check-inline"><input type="checkbox" class="check-all" style="vertical-align:middle;" /><span style="vertical-align:middle;">全选 </span></label>');
+              domArray[inx].push(' <span style="margin-left:10px;vertical-align:middle;color:#000;font-size:13px;">'+el.res_desc+'</span> <label class="check-inline"><input type="checkbox"  data-id="'+el.id+'" data-grantid="'+el.res_type_oper_id+'" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></label></li>');
+              renderRes(data,el.id,domArray[inx]);
+              //domArray[inx].push("</ul>");
+
+          })
+       }else{
+          var len = ds.length;
+          var isbtn = false;
+          $.each(ds,function(inx,el){
+               if(el.res_type_id=="0000"){
+                 domArray.push('<li class="list-group-item" style="padding-left:'+parseFloat(el.level)*90+'px">');
+                 domArray.push('<span style="margin-left:10px;vertical-align:middle;color:#000;font-size:13px;">'+el.res_desc+'</span>');
+                 domArray.push('<label class="check-inline"><input  data-id="'+el.id+'"  data-grantid="'+el.res_type_oper_id+'" type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></label>');
+                 domArray.push('</li>');
+                 renderRes(data,el.id,domArray);
+               }else if(el.res_type_id=='0001')
+               {
+                   if(inx==0){
+                      isbtn=true;
+                      domArray.pop();
+                      //domArray.push('<li class="list-group-item" style="padding-left:'+parseFloat(el.level)*90+'px">');
+                   }
+                   domArray.push('<label class="check-inline"><input  data-id="'+el.id+'"  data-grantid="'+el.res_type_oper_id+'" type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">'+el.res_desc+'</span></label>');
+                   if(inx==len-1){
+                     domArray.push('</li>');
+                   }
+                }
+          });
+         if(isbtn){
+             $.each(ds,function(inx,el){
+               renderRes(data,el.id,domArray);
+             });
+         }
+       }
+    }
     function initRes(){
-    
-    
+      var url='../../api/RoleApi/QueryAllRes';
+       $.post(url,{},'json')
+      .success(function(ret){
+        if(ret.success){
+            var dom=[];
+            renderRes(ret.data,'',dom);
+            //var center = $('#cc').layout('panel','center');
+            var strdom ='';
+            $.each(dom,function(inx,el){
+                strdom+=el.join('');
+            })
+            var panel = $('#p').panel('panel');
+            console.dir(panel);
+            panel.find('.panel-body').append($("<ul class=\"list-group\">"+strdom+"</ul>"));
+           // console.dir(center);
+
+         }
+      })
     }
     $(function(){
 
 
       initRoleTree();
+      initRes();
     });
 </script>
 }

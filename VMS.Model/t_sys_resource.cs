@@ -21,11 +21,14 @@ namespace VMS.Model
         public string res_desc { get; set; }
 
         public string res_type_id { get; set; }
+        public string res_type_oper_id { get; set; }
 
         public string create_id { get; set; }
 
         public DateTime create_date { get; set; }
 
         public string sort_code { get; set; }
+
+        public string type_desc { get; set; }
     }
 }

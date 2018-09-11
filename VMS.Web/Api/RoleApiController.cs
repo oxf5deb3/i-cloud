@@ -265,5 +265,33 @@ namespace VMS.Api
                 return ret;
             }
         }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpGet]
+        public BaseTResponseDTO<List<ResDTO>> QueryAllRes()
+        {
+            var ret = new BaseTResponseDTO<List<ResDTO>>();
+            try
+            {
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                //sb.Append(" where res_type_id='0000'");
+                var paramlst = new List<SqlParam>();
+                int total = 0;
+                var obj = Instance<IRoleService>.Create;
+                var lst = obj.GetAllResource(sb, paramlst, ref total);
+                ret.data.AddRange(lst.Select(e => new ResDTO() { id = e.id.ToString(), pid = e.pid ?? "", level = e.level, res_desc = e.res_desc, res_type_id = e.res_type_id, sort_code = e.sort_code, type_desc = e.type_desc, res_type_oper_id = e.res_type_oper_id }));
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
     }
 }

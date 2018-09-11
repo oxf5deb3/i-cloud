@@ -19,6 +19,7 @@ namespace VMS.IServices
 
         //Region FindByRegionNo(string region_no);
         List<t_sys_role> GetAllRole(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count);
+        List<t_sys_resource> GetAllResource(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count);
         t_sys_role FindByRoleName(string role_name);
 
         bool AddRole(RoleUserGroupDTO role);

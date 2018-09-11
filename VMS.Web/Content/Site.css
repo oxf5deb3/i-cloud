@@ -8,3 +8,17 @@
   background: #dde3f9!important;
   color: #000!important;
 }
+.panel-header,
+.panel-body {
+  border-color: #e0e0e0!important;
+}
+.datagrid-header
+ {
+  background-color: #fff1f1;
+  background: -webkit-linear-gradient(top,#ffffff 0,#763939 100%)!important;
+  background: -moz-linear-gradient(top,#ffffff 0,#aa4747 100%)!important;
+  background: -o-linear-gradient(top,#ffffff 0,#8c3939 100%)!important;
+  background: linear-gradient(to bottom,#fffefe 0,#d3f4be 100%)!important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#F2F2F2,GradientType=0)!important;
+}

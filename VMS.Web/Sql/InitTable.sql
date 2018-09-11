@@ -353,6 +353,7 @@ create table t_sys_resource
   res_img varchar(100) null,
   res_desc varchar(100) null,
   res_type_id varchar(50) not null,
+  res_type_oper_id varchar(50) not null,
   create_id varchar(10) null,
   create_date datetime not null default(getdate()),
   sort_code int not null

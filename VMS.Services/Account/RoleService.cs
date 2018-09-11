@@ -396,6 +396,18 @@ namespace VMS.Services
             return DbContext.GetDataListBySQL<t_sys_role>(sql, IList_param.ToArray()) as List<t_sys_role>;
         }
 
-      
+        public List<t_sys_resource> GetAllResource(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count)
+        {
+            var sql = new StringBuilder();
+            sql.Append(";with t as");
+            sql.Append(" (select id,pid,level,res_desc,sort_code,res_type_id,res_type_oper_id from t_sys_resource where (pid is null or pid='')");
+            sql.Append(" union all");
+            sql.Append(" select r1.id,r1.pid,r1.level,r1.res_desc,r1.sort_code,r1.res_type_id,r1.res_type_oper_id from t_sys_resource");
+            sql.Append(" r1 join t as r2 on r1.pid = r2.Id)");
+            sql.Append(" select t.*,type.type_desc from t left join t_sys_resource_type type on t.res_type_id = type.id");
+            sql.Append(SqlWhere);
+            sql.Append(" order by t.Id,level");
+            return DbContext.GetDataListBySQL<t_sys_resource>(sql, IList_param.ToArray()) as List<t_sys_resource>;
+        }
     }
 }
