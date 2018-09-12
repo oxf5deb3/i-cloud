@@ -183,7 +183,9 @@ a {
     position: relative;
     vertical-align: middle;
 }
-
+.vmsui-space{
+    margin-left:18px;
+}
     .vmsui-nav-item a {
         display: block;
         position: relative;
@@ -220,7 +222,7 @@ dl {
 }
 
 .vmsui-nav .vmsui-nav-child {
-    margin-left: 18px;
+    //margin-left: 18px;
     display:none;
 }
 
