@@ -157,22 +157,28 @@
                 var title = $.trim($(this).text());
                 var titles = $('.tab-title-item>span');
                 var has = false;
-                var index=0;
-                $.each(titles, function (idx,el) {
+                var index = 0;
+                $.each(titles, function (idx, el) {
                     if ($(el).text() == title) {
                         has = true;
-                        index=idx;
+                        index = idx;
                         return false;
                     }
                 });
-                if(has){
+                if (has) {
                     selectTab(index);
-                }else{
+                } else {
                     addTab(title, url);
                     bindLastTabEvent();
-                    index = $('.tabs-title>ul>li').length-1;
+                    index = $('.tabs-title>ul>li').length - 1;
                 }
                 rollPage('auto', index);
+            } else {
+                if ($(this).next('span').hasClass('vmsui-nav-more')) {
+                    $(this).next('span').trigger('click');
+                }
+
+
             }
         });
 
