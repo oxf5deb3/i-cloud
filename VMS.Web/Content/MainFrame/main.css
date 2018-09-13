@@ -183,6 +183,9 @@ a {
     position: relative;
     vertical-align: middle;
 }
+.vmsui-nav-item-selected{
+    background-color:#009688;
+}
 .vmsui-space{
     margin-left:18px;
 }

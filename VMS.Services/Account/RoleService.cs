@@ -409,5 +409,32 @@ namespace VMS.Services
             sql.Append(" order by t.Id,level");
             return DbContext.GetDataListBySQL<t_sys_resource>(sql, IList_param.ToArray()) as List<t_sys_resource>;
         }
+
+        public bool SaveRoleRight(List<RoleRightDTO> data)
+        {
+            var sql = new StringBuilder();
+            var lstParams = new List<SqlParam>();
+            sql.Append("delete from t_sys_role_right where role_id=@role_id;");
+            lstParams.Add(new SqlParam("@role_id", data[0].role_id));
+            for(var i=0;i<data.Count;i++) {
+                var roleid = "@role_id_" + i;
+                var resid = "@res_id_" + i;
+                var grantid = "@grant_id_" + i;
+                sql.Append(" insert into t_sys_role_right(role_id,res_id,grant_id) values("+roleid+","+resid+","+grantid+")");
+                lstParams.Add(new SqlParam(roleid,data[i].role_id));
+                lstParams.Add(new SqlParam(resid, data[i].res_id));
+                lstParams.Add(new SqlParam(grantid, data[i].grant_id));
+            }
+            return DbContext.ExecuteBySql(sql, lstParams.ToArray()) > 0;
+        }
+
+        public List<RoleRightDTO> GetRoleRightByRoleId(string role_id)
+        {
+            var sql = new StringBuilder();
+            sql.Append("select role_id,res_id,grant_id from t_sys_role_right where role_id=@role_id");
+            var lstParams = new List<SqlParam>();
+            lstParams.Add(new SqlParam("@role_id",role_id));
+            return DbContext.GetDataListBySQL<RoleRightDTO>(sql, lstParams.ToArray()) as List<RoleRightDTO>;
+        }
     }
 }

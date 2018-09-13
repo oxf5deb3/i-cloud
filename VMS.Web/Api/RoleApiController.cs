@@ -293,5 +293,59 @@ namespace VMS.Api
                 return ret;
             }
         }
+        //SaveRoleRight
+       [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO SaveRoleRight([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                #region 参数检验
+                if (data == null)
+                {
+                    ret.success = false;
+                    ret.message = "无法获取到请求参数!";
+                }
+                #endregion
+               
+                var rows = data["rows"].ToObject<List<RoleRightDTO>>();
+                var obj = Instance<IRoleService>.Create;
+                ret.success = obj.SaveRoleRight(rows);
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+       [System.Web.Mvc.HttpPost]
+        public BaseTResponseDTO<List<RoleRightDTO>> QueryRoleRightByRoleId([FromBody]JObject data)
+        {
+          var ret = new BaseTResponseDTO<List<RoleRightDTO>>();
+            try
+            {
+                #region 参数检验
+                if (data == null)
+                {
+                    ret.success = false;
+                    ret.message = "无法获取到请求参数!";
+                }
+                #endregion
+                var role_id = data["role_id"].ToObject<string>();
+                var obj = Instance<IRoleService>.Create;
+                var lst = obj.GetRoleRightByRoleId(role_id);
+                ret.data.AddRange(lst);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
     }
 }

@@ -154,6 +154,8 @@
             var url = $(this).parent('a').attr('data-url');
             if (url != undefined) {
                 console.log(url)
+                $('.vmsui-nav-item').removeClass('vmsui-nav-item-selected');
+                $(this).parents('li:first').addClass('vmsui-nav-item-selected');
                 var title = $.trim($(this).text());
                 var titles = $('.tab-title-item>span');
                 var has = false;
@@ -173,13 +175,13 @@
                     index = $('.tabs-title>ul>li').length - 1;
                 }
                 rollPage('auto', index);
-            } else {
+            } 
                 if ($(this).next('span').hasClass('vmsui-nav-more')) {
                     $(this).next('span').trigger('click');
                 }
 
 
-            }
+            
         });
 
     }

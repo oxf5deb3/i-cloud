@@ -22,3 +22,7 @@
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#F2F2F2,GradientType=0)!important;
 }
+.tree-node-selected {
+  background: #464646!important;
+  color: #fff!important;
+}

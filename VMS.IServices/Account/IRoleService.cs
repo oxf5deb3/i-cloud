@@ -13,6 +13,8 @@ namespace VMS.IServices
         //bool AddRegion(Region info);
 
        // bool EditRegion(Region info);
+        List<RoleRightDTO> GetRoleRightByRoleId(string role_id);
+        bool SaveRoleRight(List<RoleRightDTO> data);
         List<t_sys_user> FindRoleUserById(string role_id);
         List<t_sys_group> FindRoleGroupById(string role_id);
         bool BatchDeleteRole(List<string> pkValues);
