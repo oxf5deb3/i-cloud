@@ -1,5 +1,5 @@
-﻿using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using VMS.Models;
 
 namespace VMS
 {
@@ -7,7 +7,7 @@ namespace VMS
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new MyExceptionAttribute());
         }
     }
 }

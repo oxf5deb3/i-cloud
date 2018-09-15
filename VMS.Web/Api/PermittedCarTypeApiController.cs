@@ -14,6 +14,7 @@ using System.Text;
 using VMS.Model;
 namespace VMS.Api
 {
+    //准驾车型
     public class PermittedCarTypeApiController : BaseApiController
     {
         [System.Web.Mvc.HttpPost]

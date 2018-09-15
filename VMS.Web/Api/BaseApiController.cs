@@ -4,11 +4,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using VMS.Controllers;
+using VMS.DTO;
 
 namespace VMS.Api
 {
     public class BaseApiController : ApiController
     {
-        
+        protected LoginDTO operInfo = GlobalVar.get();
     }
 }

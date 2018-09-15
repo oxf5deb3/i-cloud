@@ -13,6 +13,7 @@ using VMS.ServiceProvider;
 
 namespace VMS.Api
 {
+    //角色
     public class RoleApiController : BaseApiController
     {
 
