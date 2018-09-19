@@ -12,7 +12,7 @@ namespace VMS.Controllers
         public IController CreateController(System.Web.Routing.RequestContext requestContext, string controllerName)
         {
             //在这里，为了简单，我不管当前http请求信息是什么，都生成HomeController实例。
-            Type targetType = typeof(AccountController);
+            Type targetType = typeof(LoginController);
             return (IController)DependencyResolver.Current.GetService(targetType);
         }
 

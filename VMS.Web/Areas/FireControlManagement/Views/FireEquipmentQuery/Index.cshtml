@@ -2,4 +2,87 @@
 @{
     Layout="~/Views/Shared/_Layout.cshtml";
 }
-消防设备查询
+@section HeaderStyle{
+<style type="text/css">
+    body{
+      font-size:12px;
+    }
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+    .form-horizontal .form-group{
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .form-group{
+     margin-bottom:5px;
+    }
+    .red-star{
+       color:red;
+       font-size:15px;
+    }
+
+</style>
+}
+
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+    </div>
+    <hr />
+    <table>
+        <tr>
+            <td style="width:250px;"> 驾驶证编号：<input class="easyui-textbox" style="width:150px"></td>
+            <td style="width:250px;">姓名：<input class="easyui-textbox" style="width:150px"></td>
+            <td style="width:250px;">身份证号码：<input class="easyui-textbox" style="width:150px"></td>
+            <td style="width:100%"></td>
+        </tr>
+        <tr>
+            <td>准驾车型：<input class="easyui-textbox" style="width:150px"></td>
+        </tr>
+    </table>
+</div>
+<hr />
+<div class="q-detail">
+    <table id="dgDetail"></table>
+</div>
+@section scripts{
+<script type="text/javascript">
+     function initGrid(){
+     //var height = $(window).height()-5;
+     var url = "/api/PermittedCarTypeApi/Query";
+     $('#dgDetail').datagrid({
+           url:url,
+           pagination:true,
+           pageSize:10,
+           pageList:[10,20,30,40,50],
+           checkOnSelect:true,
+           striped:true,
+           showHeader:true,
+           checkbox:true,
+           //singleSelect:true,
+           rownumbers:true,
+           onLoadError:function(){},
+           toolbar: '#toolbar',
+           width:'100%',
+           height:'100%',
+           columns:[[
+               {field:'type_no',title:'编码',width:80,halign:'center',align:'left'},
+               {field:'type_name',title:'名称',width:150,halign:'center',align:'left'},
+               {field:'memo',title:'备注',width:100,halign:'center',align:'left'}
+           ]]
+     });
+    }
+    function initUI(){
+       initGrid();
+    }
+
+    $(function(){
+       initUI();
+    })
+</script>
+}

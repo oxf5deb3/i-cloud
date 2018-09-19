@@ -69,11 +69,12 @@ namespace VMS.Api
                 var ip = HttpContext.Current.Request.UserHostAddress;
                 dto.login_ip = ip;
                 dto.user_pwd = "";
+                dto.user_name = user.user_name;
                 userData = JsonConvert.SerializeObject(dto);
                 FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, "login", DateTime.Now, DateTime.Now.AddMinutes(30), false, userData, FormsAuthentication.FormsCookiePath);
                 string enyTicket = FormsAuthentication.Encrypt(ticket);
                 HttpCookie cookie = new HttpCookie(ticket.Name, enyTicket);
-                if (ticket.IsPersistent)
+                if (!ticket.IsPersistent)
                 {
                     cookie.Expires = ticket.Expiration;
                 }
@@ -89,9 +90,25 @@ namespace VMS.Api
         }
 
         //退出
-        public void Logout()
+        public BaseResponseDTO Logout()
         {
-
+            var ret = new BaseResponseDTO();
+            try
+            {
+                FormsAuthentication.SignOut();
+              
+                var cookie = HttpContext.Current.Response.Cookies["login"];
+                if (cookie != null) {
+                    cookie.Expires = DateTime.Now.AddDays(-1);
+                }
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
         }
     }
 }

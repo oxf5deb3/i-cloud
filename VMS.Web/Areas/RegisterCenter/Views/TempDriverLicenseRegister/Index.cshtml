@@ -26,12 +26,13 @@
     }
 </style>
 }
-
+<div style="padding-left:10px;"><span style="color:blue">提示:</span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;"/>
 <table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>临时驾驶证编号:</td>
         <td style="width:200px;"><input id="ls_no"></input></td>
-        <td style="width:120px;text-align:right;">姓名:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
         <td style="width:100%;"><input id="name"></input></td>
     </tr>
     <tr>
@@ -43,11 +44,11 @@
     <tr>
         <td style="width:120px;text-align:right;">地区:</td>
         <td style="width:200px;"><input id="region"></input></td>
-        <td style="width:120px;text-align:right;">民族:</td>
+        <td style="width:120px;text-align:right;">国籍:</td>
         <td style="width:100%;"><input id="nation" ></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">现住址:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>现住址:</td>
         <td style="width:200px;"><input id="now_addr" ></input></td>
         <td style="width:120px;text-align:right;">原住址:</td>
         <td style="width:100%;"><input id="old_addr" ></input></td>
@@ -55,14 +56,18 @@
     <tr>
         <td style="width:120px;text-align:right;">准驾车型:</td>
         <td style="width:200px;"><input id="car_type"></input></td>
-        <td style="width:120px;text-align:right;">考核员:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>考核员:</td>
         <td style="width:100%;"><input id="ck_man" ></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">考核结果:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>考核结果:</td>
         <td style="width:200px;"><input id="ck_ret"></input></td>
         <td style="width:120px;text-align:right;">考核日期:</td>
         <td style="width:100%;"><input id="ck_date"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
+        <td colspan="3" style="width:200px;"><input id="start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="end_date"></input></td>
     </tr>
     <tr style="height:10px;"></tr>
     <tr>
@@ -101,20 +106,27 @@
           required:true
       });
      $('#region').combobox({
-         valueField:'id',
+         valueField:'region_no',
          width:180,
-         panelHeight:70,
+         panelHeight:50,
          editable:false,
-         textField:'text',
-         data:[{id:0,text:'佤邦'}]
+         textField:'region_name',
     });
+       var url='../../api/RegionApi/QueryAll';
+       $.post(url,{},'json')
+       .success(function(ret){
+          if(ret.success){
+            $('#region').combobox('loadData',ret.data);
+          }
+       });
       $('#nation').combobox({
          valueField:'id',
          width:180,
          panelHeight:70,
          editable:false,
          textField:'text',
-         data:[{id:0,text:'白俄罗斯'}]
+         value:1,
+         data:[{id:1,text:'中国'}]
     });
 
        $('#now_addr').textbox({
@@ -125,13 +137,20 @@
           width:180,
       });
        $('#car_type').combobox({
-         valueField:'id',
+         valueField:'type_no',
          width:180,
-         panelHeight:70,
          editable:false,
-         textField:'text',
-         data:[{id:0,text:'三轮'}]
+         textField:'type_name',
     });
+       url='../../api/PermittedCarTypeApi/QueryAll';
+        $.post(url,{},'json')
+       .success(function(ret){
+          if(ret.success){
+            $('#car_type').combobox('loadData',ret.data);
+          }
+       });
+
+
         $('#ck_man').textbox({
           width:180,
           required:true
@@ -140,12 +159,45 @@
           width:180,
           required:true
       });
-        $('#ck_date').textbox({
+        $('#ck_date').datebox({
           width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
           required:true
+      });
+       var now = new Date();
+        $('#start_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true,
+          value:now.pattern('yyyy-MM-dd'),
+          onSelect:function(date){
+            var endDate = new Date(date.getFullYear(),date.getMonth()+6,date.getDate());
+            $('#end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
+         }
+      });
+      var end = new Date(now.getFullYear(),now.getMonth()+6,now.getDate());
+        $('#end_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          required:true,
+          value:end.pattern('yyyy-MM-dd'),
       });
     }
 
+
+    function getData(){
+
+
+
+
+
+    }
 
 
 

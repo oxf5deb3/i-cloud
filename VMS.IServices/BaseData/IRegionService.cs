@@ -18,6 +18,6 @@ namespace VMS.IServices
         t_bd_region FindByRegionNo(string region_no);
 
         List<t_bd_region> GetPageList(StringBuilder SqlWhere, IList<SqlParam> IList_param, int pageIndex, int pageSize, ref int count);
-
+        List<t_bd_region> GetAllRegion(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count);
     }
 }

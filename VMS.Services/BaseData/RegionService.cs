@@ -106,5 +106,15 @@ namespace VMS.Services
             var pkName = "region_no";
             return DbContext.BatchDeleteData(tableName, pkName, pkValues.ToArray()) > 0;
         }
+
+
+        public List<t_bd_region> GetAllRegion(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count)
+        {
+            var sql = new StringBuilder();
+            sql.Append("select region_no,region_name from t_bd_region where 1=1 ");
+            sql.Append(SqlWhere);
+            return DbContext.GetDataListBySQL<t_bd_region>(sql, IList_param.ToArray()) as List<t_bd_region>;
+        
+        }
     }
 }

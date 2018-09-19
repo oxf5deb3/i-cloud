@@ -37,9 +37,10 @@
                     <a><i class="glyphicon glyphicon-resize-full"></i></a>
                 </li>
                 <li class="vmsui-header-item">
-                    <a>
-                        <cite>贤心</cite>
-                        <span class="caret"></span>
+                    <a style="cursor:default;">
+                        <cite>欢迎您,@Model.user_name</cite>
+                        <cite id="btnOut" style="text-decoration:underline;color:blue;cursor:pointer">退出</cite>
+                        @*<span class="caret"></span>*@
                     </a>
                 </li>
             </ul>
@@ -345,7 +346,7 @@
                                 </a>
                             </li>
                             <li data-name="home" class="vmsui-nav-item">
-                                <a href="javascript:;">
+                                <a data-url="../Print/Index" href="javascript:;">
                                     <i class="vmsui-space"></i>
                                     <cite>打印日志</cite>
                                     <span class=""></span>
@@ -383,6 +384,24 @@
                 <iframe src="../BaseData/PermittedCarType/Index" frameborder="0"></iframe>
             </div>
             <!-- @RenderBody()-->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery")

@@ -26,41 +26,42 @@
     }
 </style>
 }
-
+<div style="padding-left:10px;"><span style="color:blue">提示:</span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
 <table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>驾驶证编号:</td>
         <td style="width:200px;"><input id="zs_no"></input></td>
-        <td style="width:120px;text-align:right;">身份证号码:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>身份证号码:</td>
         <td style="width:100%;"><input id="id_no"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">姓名:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
         <td style="width:100%;"><input id="name"></input></td>
-        <td style="width:120px;text-align:right;">性别:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
         <td style="width:200px;"><input id="sex"></input></td>
         
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">出生日期:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
         <td style="width:100%;"><input id="birth_date"></input></td>
-        <td style="width:120px;text-align:right;">地区:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
         <td style="width:200px;"><input id="region"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">住址:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
         <td style="width:200px;"><input id="now_addr"></input></td>
         <td style="width:120px;text-align:right;">单位:</td>
         <td style="width:100%;"><input id="work_unit"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">准驾车型:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
         <td style="width:200px;"><input id="car_type"></input></td>
-        <td style="width:120px;text-align:right;">初次领证日期:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>初次领证日期:</td>
         <td style="width:100%;"><input id="first_get_license_date"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;">有效期:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
         <td colspan="3" style="width:200px;"><input id="start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="end_date"></input></td>
     </tr>
     <tr style="height:10px;"></tr>
@@ -104,14 +105,19 @@
           required:true
       });
      $('#region').combobox({
-         valueField:'id',
+         valueField:'region_no',
          width:180,
          panelHeight:70,
          editable:false,
-         textField:'text',
-         data:[{id:0,text:'佤邦'}]
+         textField:'region_name',
     });
-
+      var url='../../api/RegionApi/QueryAll';
+       $.post(url,{},'json')
+       .success(function(ret){
+          if(ret.success){
+            $('#region').combobox('loadData',ret.data);
+          }
+       });
        $('#now_addr').textbox({
           width:180,
           required:true
@@ -120,13 +126,18 @@
           width:180,
       });
        $('#car_type').combobox({
-         valueField:'id',
+         valueField:'type_no',
          width:180,
-         panelHeight:70,
          editable:false,
-         textField:'text',
-         data:[{id:0,text:'三轮'}]
+         textField:'type_name',
     });
+      url='../../api/PermittedCarTypeApi/QueryAll';
+        $.post(url,{},'json')
+       .success(function(ret){
+          if(ret.success){
+            $('#car_type').combobox('loadData',ret.data);
+          }
+       });
       $('#first_get_license_date').datebox({
           width:180,
           panelWidth:180,
@@ -134,19 +145,27 @@
           editable:false,
           required:true
       });
+     var now = new Date();
         $('#start_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          required:true
+          required:true,
+          value:now.pattern('yyyy-MM-dd'),
+          onSelect:function(date){
+            var endDate = new Date(date.getFullYear(),date.getMonth()+6,date.getDate());
+            $('#end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
+         }
       });
+      var end = new Date(now.getFullYear(),now.getMonth()+6,now.getDate());
         $('#end_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          required:true
+          required:true,
+          value:end.pattern('yyyy-MM-dd'),
       });
     }
 

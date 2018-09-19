@@ -11,8 +11,10 @@ namespace VMS.Controllers
     {
         public ActionResult Index()
         {
+            ViewData.Model = operInfo;
             return View();
         }
+       
 
         public ActionResult About()
         {

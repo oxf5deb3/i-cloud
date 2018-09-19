@@ -91,6 +91,20 @@
             })
     }
     function bindEvents() {
+       //退出
+        $('#btnOut').bind('click', function () {
+            //$('#msg').modal('show');
+            //return;
+            var url = "../../api/SystemApi/Logout";
+            $.post(url, {}, 'json')
+            .success(function(ret){
+                if (ret.success) {
+                    window.location.reload();
+                } else {
+
+                }
+            });
+        });
         //菜单隐藏按钮
         $('.vmsui-header-item i.glyphicon-list').bind('click', function (event) {
             $('#vmsui_container').toggleClass('vms-side-spread-sm');

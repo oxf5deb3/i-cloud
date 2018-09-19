@@ -18,6 +18,7 @@ namespace VMS.IServices
         t_bd_permitted_car_type FindByTypeNo(string type_no);
 
         List<t_bd_permitted_car_type> GetPageList(StringBuilder SqlWhere, IList<SqlParam> IList_param, int pageIndex, int pageSize, ref int count);
+        List<t_bd_permitted_car_type> GetAllPermittedCarType(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count);
 
     }
 }

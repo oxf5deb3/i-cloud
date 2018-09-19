@@ -32,19 +32,19 @@ namespace VMS.Models
             base.HandleUnauthorizedRequest(filterContext);
             filterContext.HttpContext.Response.Write(filterContext.HttpContext.Response.StatusCode);
             string path = filterContext.HttpContext.Request.Path;
-            string strUrl = "Account/Login";
+            string strUrl = "/Login/Index";
             //filterContext.Result = new EmptyResult();
             //filterContext.HttpContext.Response.RedirectLocation = strUrl;
            
             //filterContext.HttpContext.Response.RedirectToRoute(new RouteValueDictionary(new { controller = "Account", action = "Index" }));
-            //filterContext.HttpContext.Response.Redirect(strUrl);
-            if (filterContext.HttpContext.Response.StatusCode == 401)
-            {
+            filterContext.HttpContext.Response.Redirect(strUrl);
+            //if (filterContext.HttpContext.Response.StatusCode == 401)
+            //{
                
-                filterContext.Result = new RedirectResult("/Login");
+               // filterContext.Result = new RedirectResult("/Login");
                
-                //filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Account", action = "Index" }));
-            }
+                //filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Home", action = "hello" }));
+            //}
         }
     }
 }

@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApiController.cs" />
+    <Compile Include="Api\DriverLicenseApiController.cs" />
     <Compile Include="Api\UserApiController.cs" />
     <Compile Include="Api\FireControlApiController.cs" />
     <Compile Include="Api\LogApiController.cs" />
@@ -156,11 +157,12 @@
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentRegisterController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\TrafficAccidentManagementAreaRegistration.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CustomControllerFactry.cs" />
     <Compile Include="Controllers\GlobalVar.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Models\MyExceptionAttribute.cs" />
     <Compile Include="Models\VMSAuthorizeCore.cs" />
     <Compile Include="Global.asax.cs">
@@ -312,6 +314,7 @@
     <Content Include="Areas\Account\Views\RoleRes\Index.cshtml" />
     <Content Include="Areas\PlateNumberManagement\Views\PlateNumberQuery\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\EasyUI\jquery.easyui.min.js" />
     <Content Include="Scripts\EasyUI\locale\easyui-lang-en.js" />
     <Content Include="Scripts\EasyUI\locale\easyui-lang-zh_CN.js" />
@@ -322,6 +325,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\fun.base.js" />
     <Content Include="Scripts\MainFrame\main.js" />
+    <Content Include="Scripts\Print\print.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -341,6 +345,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutMainFrame.cshtml" />
+    <Content Include="Views\Print\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -351,7 +356,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Project_Readme.html" />
-    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>

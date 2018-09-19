@@ -107,5 +107,15 @@ namespace VMS.Services
             var pkName = "type_no";
             return DbContext.BatchDeleteData(tableName, pkName, pkValues.ToArray())>0;
         }
+
+
+        public List<t_bd_permitted_car_type> GetAllPermittedCarType(StringBuilder SqlWhere, IList<SqlParam> IList_param, ref int count)
+        {
+            var sql = new StringBuilder();
+            sql.Append("select type_no,type_name from t_bd_permitted_car_type where 1=1 ");
+            sql.Append(SqlWhere);
+            return DbContext.GetDataListBySQL<t_bd_permitted_car_type>(sql, IList_param.ToArray()) as List<t_bd_permitted_car_type>;
+        
+        }
     }
 }

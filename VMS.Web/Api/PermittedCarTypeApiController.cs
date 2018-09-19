@@ -145,5 +145,31 @@ namespace VMS.Api
                 return ret;
             }
         }
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpGet]
+        public BaseTResponseDTO<List<PermittedCarTypeDTO>> QueryAll()
+        {
+            var ret = new BaseTResponseDTO<List<PermittedCarTypeDTO>>();
+            try
+            {
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                var paramlst = new List<SqlParam>();
+                int total = 0;
+                var obj = Instance<IPermittedCarTypeService>.Create;
+                var lst = obj.GetAllPermittedCarType(sb, paramlst, ref total);
+                ret.data.AddRange(lst.Select(e => new PermittedCarTypeDTO() { type_no = e.type_no, type_name = e.type_name }));
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
     }
 }

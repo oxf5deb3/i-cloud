@@ -147,5 +147,31 @@ namespace VMS.Areas.BaseData.Controllers
                 return ret;
             }
         }
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpGet]
+        public BaseTResponseDTO<List<RegionDTO>> QueryAll()
+        {
+            var ret = new BaseTResponseDTO<List<RegionDTO>>();
+            try
+            {
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                var paramlst = new List<SqlParam>();
+                int total = 0;
+                var obj = Instance<IRegionService>.Create;
+                var lst = obj.GetAllRegion(sb, paramlst, ref total);
+                ret.data.AddRange(lst.Select(e => new RegionDTO() { region_no=e.region_no,region_name=e.region_name }));
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
 	}
 }

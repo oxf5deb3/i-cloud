@@ -12,17 +12,65 @@
 .panel-body {
   border-color: #e0e0e0!important;
 }
-.datagrid-header
- {
-  background-color: #fff1f1;
-  background: -webkit-linear-gradient(top,#ffffff 0,#763939 100%)!important;
-  background: -moz-linear-gradient(top,#ffffff 0,#aa4747 100%)!important;
-  background: -o-linear-gradient(top,#ffffff 0,#8c3939 100%)!important;
-  background: linear-gradient(to bottom,#fffefe 0,#d3f4be 100%)!important;
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff,endColorstr=#F2F2F2,GradientType=0)!important;
-}
+
 .tree-node-selected {
   background: #464646!important;
   color: #fff!important;
+}
+.datagrid-header
+ {
+  background: #F2F2F2 !important;
+}
+.datagrid-td-rownumber
+ {
+  background: #fff !important;
+}
+hr{
+    margin:5px 0px;
+}
+p{
+    margin-bottom:2px;
+}
+.q-condition {
+    min-height:120px;
+    //background-color:#bbb;
+}
+.q-condition hr{
+    margin-top:2px;
+}
+.q-detail{
+    min-height:470px;
+}
+.line-default{
+    background-color:#393D49;
+    height:1px;
+    margin:0px;
+}
+.l-btn{
+    background:#f3f3f3 !important;
+    border:none!important;
+    border:2px !important;
+}
+.q-condition .textbox .textbox-text
+{
+  font-size: 12px;
+  border: 0;
+  margin: 0;
+  padding: 0 2px;
+  white-space: normal;
+  vertical-align: top;
+  outline-style: none;
+  resize: none;
+  -moz-border-radius: 2px 2px 2px 2px;
+  -webkit-border-radius: 2px 2px 2px 2px;
+  border-radius: 2px 2px 2px 2px;
+  height: 24px;
+  line-height: 24px;
+}
+
+.q-condition>table{
+    height:100%;
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
 }
