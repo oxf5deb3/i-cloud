@@ -51,9 +51,11 @@
     <Compile Include="Account\UserRoleDTO.cs" />
     <Compile Include="BaseData\PermittedCarTypeDTO.cs" />
     <Compile Include="BaseData\RegionDTO.cs" />
+    <Compile Include="BaseDTO.cs" />
     <Compile Include="BaseGridRequestDTO.cs" />
     <Compile Include="BaseResponseDTO.cs" />
     <Compile Include="BaseTResponseDTO.cs" />
+    <Compile Include="DriverLicense\DriverLicenseDTO.cs" />
     <Compile Include="GridResponseDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNodeDTO.cs" />
