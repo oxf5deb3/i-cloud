@@ -54,7 +54,7 @@
 <script type="text/javascript">
      function initGrid(){
      //var height = $(window).height()-5;
-     var url = "/api/PermittedCarTypeApi/Query";
+     var url = "/api/DriverLicenseApi/Query";
      $('#dgDetail').datagrid({
            url:url,
            pagination:true,
@@ -71,9 +71,9 @@
            width:'100%',
            height:'100%',
            columns:[[
-               {field:'type_no',title:'编码',width:80,halign:'center',align:'left'},
-               {field:'type_name',title:'名称',width:150,halign:'center',align:'left'},
-               {field:'memo',title:'备注',width:100,halign:'center',align:'left'}
+               {field:'id_no',title:'驾驶证编号',width:180,halign:'center',align:'left'},
+               {field:'name',title:'姓名',width:150,halign:'center',align:'left'},
+               {field:'sex',title:'性别',width:100,halign:'center',align:'left'}
            ]]
      });
     }

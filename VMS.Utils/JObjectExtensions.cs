@@ -17,15 +17,15 @@ namespace VMS.Utils
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static IDictionary<string, object> ToDictionary(this JToken json)
+        public static IDictionary<string, dynamic> ToDictionary(this JToken json)
         {
-            var propertyValuePairs = json.ToObject<Dictionary<string, object>>();
+            var propertyValuePairs = json.ToObject<Dictionary<string, dynamic>>();
             ProcessJObjectProperties(propertyValuePairs);
             ProcessJArrayProperties(propertyValuePairs);
             return propertyValuePairs;
         }
 
-        private static void ProcessJObjectProperties(IDictionary<string, object> propertyValuePairs)
+        private static void ProcessJObjectProperties(IDictionary<string, dynamic> propertyValuePairs)
         {
             var objectPropertyNames = (from property in propertyValuePairs
                                        let propertyName = property.Key
@@ -36,7 +36,7 @@ namespace VMS.Utils
             objectPropertyNames.ForEach(propertyName => propertyValuePairs[propertyName] = ToDictionary((JObject)propertyValuePairs[propertyName]));
         }
 
-        private static void ProcessJArrayProperties(IDictionary<string, object> propertyValuePairs)
+        private static void ProcessJArrayProperties(IDictionary<string, dynamic> propertyValuePairs)
         {
             var arrayPropertyNames = (from property in propertyValuePairs
                                       let propertyName = property.Key

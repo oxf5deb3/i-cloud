@@ -8,6 +8,12 @@ namespace VMS.DTO
 {
     public class DriverLicenseDTO : BaseReportDTO
     {
-        public DriverLicenseDTO() { }
+
+        public string id_no{get;set;}
+        public string name{get;set;}
+        
+        public string sex{get;set;}
+
+        public DateTime birthday { get; set; }
     }
 }

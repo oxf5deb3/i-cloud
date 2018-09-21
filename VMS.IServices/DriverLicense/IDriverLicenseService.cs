@@ -9,6 +9,6 @@ namespace VMS.IServices
 {
     public interface IDriverLicenseService : IService
     {
-        List<DriverLicenseDTO> Query<DriverLicenseDTO>(Dictionary<string, string> qcondition, bool loadAll, int pagesize, int pageindex, bool isasc, string orderby, ref int total, ref string err);
+        List<DriverLicenseDTO> Query<DriverLicenseDTO>(IDictionary<string, dynamic> qcondition, bool loadAll, int pagesize, int pageindex, bool isasc, string orderby, ref int total, ref string err);
     }
 }
