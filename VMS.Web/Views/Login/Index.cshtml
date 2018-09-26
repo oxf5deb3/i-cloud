@@ -5,7 +5,16 @@
     <title>缅甸车辆管理系统-千蓝软件</title>
 
     <link href="/Content/MainFrame/login.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        function ckLogin() {
+           var href = top.window.location.href;
+           if (href.indexOf('Login/Index') == -1) {
+               top.window.location.href = window.location.href;
+           }
+        }
 
+        ckLogin();
+    </script>
 </head>
 <body>
 

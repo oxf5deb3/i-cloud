@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VMS.Controllers;
+
 
 namespace VMS.Areas.DrivingLicenseManagement.Controllers
 {
-    public class TempDrivingLicenseController : Controller
+    public class TempDrivingLicenseController : BaseController
     {
         //
         // GET: /DrivingLicenseManagement/TempDrivingLicense/

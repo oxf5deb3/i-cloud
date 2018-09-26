@@ -8,10 +8,12 @@ using System.Web.Http;
 
 using VMS.DTO;
 using VMS.Models;
+using VMS.Controllers;
+
 
 namespace VMS.Areas.BaseData.Controllers
 {
-    public class PermittedCarTypeController : Controller
+    public class PermittedCarTypeController : BaseController
     {
         //
         // GET: /BaseData/PermittedCarType/

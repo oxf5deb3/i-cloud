@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VMS.Controllers;
+
 
 namespace VMS.Areas.TrafficAccidentManagement.Controllers
 {
-    public class TrafficAccidentQueryController : Controller
+    public class TrafficAccidentQueryController : BaseController
     {
         //
         // GET: /TrafficAccidentManagement/TrafficAccidentQuery/

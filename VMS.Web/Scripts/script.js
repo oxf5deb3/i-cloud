@@ -1,7 +1,9 @@
-$(function(){
+
+$(function () {
     airBalloon('div.air-balloon');
     bindEvent();
 });
+
 function bindEvent() {
     $('.submit').bind('click', function () {
         var user_id = $('#value_1').val();

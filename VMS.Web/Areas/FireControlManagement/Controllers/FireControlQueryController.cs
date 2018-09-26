@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VMS.Controllers;
+
 
 namespace VMS.Areas.FireControlManagement.Controllers
 {
-    public class FireControlQueryController : Controller
+    public class FireControlQueryController : BaseController
     {
         //
         // GET: /FireControlManagement/FireControlQuery/

@@ -35,6 +35,7 @@ namespace VMS.Api
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
                 var lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
+                ret.total = total;
                 ret.rows.AddRange(lst);
                 return ret;
 

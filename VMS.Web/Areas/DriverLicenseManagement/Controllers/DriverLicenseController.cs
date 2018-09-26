@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using VMS.Controllers;
+
 
 namespace VMS.Areas.DriverLicenseManagement.Controllers
 {
-    public class DriverLicenseController : Controller
+    public class DriverLicenseController : BaseController
     {
         //
         // GET: /DriverLicenseManagement/DriverLicense/
