@@ -45,11 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEnum.cs" />
     <Compile Include="CommonHelper.cs" />
     <Compile Include="ConfigHelper.cs" />
     <Compile Include="DataTableHelper.cs" />
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="DESEncrypt.cs" />
+    <Compile Include="DrivingLicenseEnum.cs" />
+    <Compile Include="FileUtils.cs" />
+    <Compile Include="IDUtils.cs" />
     <Compile Include="JObjectExtensions.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

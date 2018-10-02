@@ -56,6 +56,9 @@
     <Compile Include="BaseResponseDTO.cs" />
     <Compile Include="BaseTResponseDTO.cs" />
     <Compile Include="DriverLicense\DriverLicenseDTO.cs" />
+    <Compile Include="DriverLicense\TemporaryDriverLicenseDTO.cs" />
+    <Compile Include="DrivingPermit\DrivingPermitDTO.cs" />
+    <Compile Include="DrivingPermit\TemporaryDrivingPermitDTO.cs" />
     <Compile Include="GridResponseDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNodeDTO.cs" />

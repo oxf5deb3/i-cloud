@@ -117,5 +117,7 @@ namespace VMS.Services
             return DbContext.GetDataListBySQL<t_bd_permitted_car_type>(sql, IList_param.ToArray()) as List<t_bd_permitted_car_type>;
         
         }
+
+        
     }
 }

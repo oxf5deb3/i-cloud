@@ -192,7 +192,6 @@ namespace VMS.Api
                 ret.rows.AddRange(lst.Select(e => new UserGroupDTO() { id = e.id, group_name = e.group_name, create_id = e.create_id, create_date = e.create_date, status = e.status, memo = e.memo }));
                 ret.total = total;
                 return ret;
-
             }
             catch (Exception ex)
             {
@@ -229,5 +228,6 @@ namespace VMS.Api
                 return ret;
             }
         }
+
     }
 }

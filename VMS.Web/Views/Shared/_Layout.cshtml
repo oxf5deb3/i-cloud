@@ -9,6 +9,9 @@
     @Styles.Render("~/Content/easyuicss")
     @RenderSection("HeaderStyle",false)
     @Scripts.Render("~/bundles/modernizr")
+
+
+    
 </head>
 <body>
     @RenderBody()
@@ -16,6 +19,119 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/easyuijs")
     <script type="text/javascript" src="~/Scripts/common.js"></script>
+    
     @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+
+    $.extend($.fn.filebox.methods, {
+        getFile: function (myself) {
+            var temp = $(myself).next().children("[type='file']");
+            var file = document.getElementById(temp.attr("id"));
+            if (file.files.length > 0) {
+                // 若选中一个文件，则返回该文件的File对象
+                return file.files[0];
+            }
+            // 若未选中任何文件，则返回null
+            return null;
+        }
+    });
+
+    function selectFileAndDisplay(fileId, imgId,valueId) {
+        $("#"+fileId).filebox({
+            onChange: function (event) {
+                // 获取所选文件的File对象       
+                var file = $(this).filebox("getFile");
+                if (file != null) {
+                    // 创建FileReader对象           
+                    var reader = new window.FileReader();
+                    // 定义reader的onload事件            
+                    // 当读完文件信息后触发onload事件           
+                    reader.onload = function (e) {
+                        // reader.result保存着产生的虚拟URL               
+                        $("#" + imgId).attr("src", this.result);
+                        $("#" + valueId).attr("value", this.result);
+                        $("#" + imgId).css("display", "");
+
+
+                    }
+                    // 读取指定文件并形成URL            
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
+    }
+
+        //初始化摄像头组件
+    function initPhoto(videoId) {
+        let constraints = {
+            video: { width: 300, height: 300 },
+            audio: true
+        };
+        //获得video摄像头区域            
+        let video = document.getElementById(videoId);
+        //这里介绍新的方法，返回一个 Promise对象            
+        // 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数           
+        // then()是Promise对象里的方法            
+        // then()方法是异步执行，当then()前的方法执行完后再执行then()内部的程序            
+        // 避免数据没有获取到            
+        let promise = navigator.mediaDevices.getUserMedia(constraints);
+        promise.then(function (MediaStream) {
+            video.srcObject = MediaStream;
+            video.play();
+        });
+    }
+
+        //拍照
+    function takePhoto(videoId,canvasId) {
+        //获得Canvas对象      
+        debugger;
+        let video = document.getElementById(videoId);
+        let canvas = document.getElementById(canvasId);
+        let ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, 500, 500);
+
+    }
+
+        //清除画布内容
+    function cleanCanvas(canvasId) {
+        let c = document.getElementById(canvasId);
+        let ctx = c.getContext('2d');
+        ctx.clearRect(0, 0, c.width, c.height);
+    }
+        //获取画布内容(base64编码)
+    function getCanvasForBase64(canvasId) {
+        let c = document.getElementById(canvasId);
+        let ctx = c.getContext('2d');
+        var data = c.toDataURL();
+
+        return data;
+
+    }
+
+    function closePhoto(videoId) {
+        let constraints = {
+            video: { width: 300, height: 300 },
+            audio: true
+        };
+        //获得video摄像头区域            
+        let video = document.getElementById(videoId);
+                  
+        let promise = navigator.mediaDevices.getUserMedia(constraints);
+        promise.then(function (MediaStream) {
+            video.srcObject = MediaStream;
+            MediaStream.getTracks()[1].stop();
+        });
+    }
+
+    function isNull(data) {
+        if (data == undefined || data == "" || data == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    </script>
+
 </body>
 </html>

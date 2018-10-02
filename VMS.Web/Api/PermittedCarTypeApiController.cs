@@ -12,6 +12,8 @@ using VMS.ServiceProvider;
 using VMS.IServices;
 using System.Text;
 using VMS.Model;
+using VMS.DTO.DriverLicense;
+
 namespace VMS.Api
 {
     //准驾车型
@@ -171,5 +173,46 @@ namespace VMS.Api
                 return ret;
             }
         }
+
+        /// <summary>
+        /// 添加临时驾驶证
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO AddTemporaryDriverLicense([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                #region 参数检验
+                if (data == null)
+                {
+                    ret.success = false;
+                    ret.message = "无法获取到请求参数!";
+                }
+                #endregion
+
+                var dto = data.ToObject<TemporaryDriverLicenseDTO>();
+                var service = Instance<IDriverLicenseService>.Create;
+                //查询是否添加过过临时驾驶证
+                var dbInfo = service.QueryTemporaryDrivingLicense(dto.name);
+                if (!dbInfo)
+                {
+                    ret.success = false;
+                    ret.message = string.Format("已添加过临时驾驶证!");
+                    return ret;
+                }
+                ret.success = service.AddTemporaryDrivingLicense(dto);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+
     }
 }
