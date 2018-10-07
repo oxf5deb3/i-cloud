@@ -129,9 +129,10 @@
                     }
                     return '女';
                }},
-               {field:'birthday',title:'生日',width:180,halign:'center',align:'left'},
                {field:'addr',title:'住址',width:180,halign:'center',align:'left'},
-               {field:'permitted_car_type_name',title:'准驾车型',width:80,halign:'center',align:'left'},
+               {
+                   field: 'permitted_car_type_name', title: '准驾车型', width: 80, halign: 'center', align: 'left'
+               },
                {field:'region_name',title:'区域',width:80,halign:'center',align:'left'},
                {field:'work_unit',title:'工作单位',width:100,halign:'center',align:'left'},
                {field:'first_get_license_date',title:'首次领证日期',width:180,halign:'center',align:'left'},
@@ -147,8 +148,10 @@
 
     }
 
-    $(function(){
-       initUI();
+    $(function () {
+
+        initUI();
+        
     })
 </script>
 }

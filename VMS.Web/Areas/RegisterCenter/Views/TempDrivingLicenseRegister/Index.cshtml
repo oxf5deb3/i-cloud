@@ -401,7 +401,6 @@
 
     function getDataLSXS() {
         var data = {};
-        debugger;
         data.birthday = $("#lsxs_birth_date").textbox("getValue");//出生日期
         data.permitted_card_type_no = $("#lsxs_permitted_card_type_no").textbox("getValue");//准驾车型
         data.id_card = $("#lsxs_id_card").textbox("getValue");//身份证
@@ -414,7 +413,7 @@
         data.addr = $("#lsxs_now_addr").textbox("getValue");//住址
         data.region_no = $("#lsxs_region").combobox("getValue");//地区
         data.sex = $("#lsxs_sex").combobox("getValue");//性别
-        data.valid_date_start = $("#lsxs_start_date").textbox("getValue");//开始日期
+        data.start_date = $("#lsxs_start_date").textbox("getValue");//开始日期
         data.user_photo_base64 = $("#lsxs_user_info_input").attr("value");//人员信息照片
 
         data.car_type = $("#lsxs_car_type").textbox("getValue");//车型

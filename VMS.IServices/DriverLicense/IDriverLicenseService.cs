@@ -27,12 +27,19 @@ namespace VMS.IServices
         /// <returns></returns>
         bool AddTemporaryDrivingLicense(TemporaryDriverLicenseDTO temporaryDriverLicenseDTO);
 
+        List<TemporaryDriverLicenseDTO> queryTemporaryDrivingLicense(int index, int pageSize, TemporaryDriverLicenseDTO data);
+
         /// <summary>
         /// 添加驾驶证
         /// </summary>
         /// <param name="driverLicenseDTO"></param>
         /// <returns></returns>
         bool AddDrivingLicense(DriverLicenseDTO driverLicenseDTO);
+
+        /**
+         * 临时行驶证分页查询
+         * */
+        List<DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DrivingPermitDTO data);
 
         /// <summary>
         /// 添加临时行驶证
@@ -41,6 +48,8 @@ namespace VMS.IServices
         /// <returns></returns>
         bool AddTemporaryDrivingPermit(TemporaryDrivingPermitDTO temporaryDrivingPermitDTO);
 
+        List<TemporaryDrivingPermitDTO> queryTemporaryDrivingByPage(int index, int pageSize, TemporaryDrivingPermitDTO data);
+
         /// <summary>
         /// 添加行驶证
         /// </summary>
@@ -48,6 +57,8 @@ namespace VMS.IServices
         /// <returns></returns>
         bool AddDrivingPermit(DrivingPermitDTO drivingPermitDTO);
 
+
+       
 
     }
 }

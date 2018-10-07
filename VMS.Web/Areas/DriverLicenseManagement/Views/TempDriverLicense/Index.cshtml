@@ -1,48 +1,49 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section HeaderStyle{
-<style type="text/css">
-    body{
-      font-size:12px;
-    }
-    .textbox,.textbox-text
-    {
-      -moz-border-radius: 2px 2px 2px 2px;
-     -webkit-border-radius: 2px 2px 2px 2px;
-      border-radius: 2px 2px 2px 2px;
-    }
-    .form-horizontal .form-group{
-      margin-left:0px;
-      margin-right:0px;
-    }
-    .form-group{
-     margin-bottom:5px;
-    }
-    .red-star{
-       color:red;
-       font-size:15px;
-    }
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
 
-</style>
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+    </style>
 }
 
 <div class="q-condition">
     <div class="btn-container">
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+        <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
+        <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
     </div>
     <hr />
     <table>
         <tr>
-            <td style="width:250px;"> 驾驶证编号：<input class="easyui-textbox" style="width:150px"></td>
-            <td style="width:250px;">姓名：<input class="easyui-textbox" style="width:150px"></td>
-            <td style="width:250px;">身份证号码：<input class="easyui-textbox" style="width:150px"></td>
+            <td style="width:250px;"> 驾驶证编号：<input class="easyui-textbox" id="id_no" style="width:150px"></td>
+            <td style="width:250px;">姓名：<input class="easyui-textbox" id="name" style="width:150px"></td>
             <td style="width:100%"></td>
         </tr>
         <tr>
-            <td>准驾车型：<input class="easyui-textbox" style="width:150px"></td>
+            <td>准驾车型：<input id="car_type" style="width:150px"></td>
         </tr>
     </table>
 </div>
@@ -51,38 +52,103 @@
     <table id="dgDetail"></table>
 </div>
 @section scripts{
-<script type="text/javascript">
-     function initGrid(){
-     //var height = $(window).height()-5;
-     var url = "/api/PermittedCarTypeApi/Query";
-     $('#dgDetail').datagrid({
-           url:url,
-           pagination:true,
-           pageSize:10,
-           pageList:[10,20,30,40,50],
-           checkOnSelect:true,
-           striped:true,
-           showHeader:true,
-           checkbox:true,
-           //singleSelect:true,
-           rownumbers:true,
-           onLoadError:function(){},
-           toolbar: '#toolbar',
-           width:'100%',
-           height:'100%',
-           columns:[[
-               {field:'type_no',title:'编码',width:80,halign:'center',align:'left'},
-               {field:'type_name',title:'名称',width:150,halign:'center',align:'left'},
-               {field:'memo',title:'备注',width:100,halign:'center',align:'left'}
-           ]]
-     });
-    }
-    function initUI(){
-       initGrid();
-    }
+    <script type="text/javascript">
 
-    $(function(){
-       initUI();
-    })
-</script>
+        function getQueryParams() {
+            var params = {};
+            var id_no = $('#id_no').textbox('getValue');
+            var name = $('#name').textbox('getValue');
+            var permitted_card_type = $('#car_type').combobox('getValue');
+            params.id_no = id_no;
+            params.name = name;
+            params.permitted_car_type_no = permitted_card_type;
+
+
+            return params;
+        }
+        function initBtn() {
+            $('#btnQuery').linkbutton({
+                onClick: function () {
+                    $('#dgDetail').datagrid('reload');
+                }
+
+            });
+            $('#btnPrint').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getChecked');
+                    if (ckRows.length <= 0) {
+                        $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                        return;
+                    }
+                }
+
+            });
+        }
+        function initQueryUI() {
+            $('#car_type').combobox({
+                valueField: 'type_no',
+                textField: 'type_name',
+            });
+            var url = '../../api/PermittedCarTypeApi/QueryAll';
+            $.post(url, {}, 'json')
+           .success(function (ret) {
+               if (ret.success) {
+                   $('#car_type').combobox('loadData', ret.data);
+               }
+           });
+
+        }
+        function initGrid() {
+            //var height = $(window).height()-5;
+            var url = "/api/DriverLicenseApi/queryTemporaryDrivingLicense";
+            $('#dgDetail').datagrid({
+                url: url,
+                pagination: true,
+                pageSize: 10,
+                pageList: [10, 20, 30, 40, 50],
+                checkOnSelect: true,
+                striped: true,
+                showHeader: true,
+                checkbox: true,
+                singleSelect: true,
+                rownumbers: true,
+                onBeforeLoad: function (param) {
+                    var otherParams = getQueryParams();
+                    return $.extend(param, otherParams);
+                },
+                onLoadError: function () { },
+                toolbar: '#toolbar',
+                width: '100%',
+                height: '100%',
+                columns: [[
+                    { field: 'ck', checkbox: true },
+                    { field: 'id_no', title: '驾驶证编号', width: 160, halign: 'center', align: 'left' },
+                    { field: 'name', title: '姓名', width: 80, halign: 'center', align: 'left' },
+                    {
+                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                            if (value == '0') {
+                                return '男';
+                            }
+                            return '女';
+                        }
+                    },
+                    { field: 'permitted_car_type_name', title: '准驾车型', width: 80, halign: 'center', align: 'left' },
+                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' },
+                    { field: 'folk', title: '民族', width: 100, halign: 'center', align: 'left' },
+                    { field: 'start_date', title: '有效期起', width: 180, halign: 'center', align: 'left' },
+                    { field: 'end_date', title: '有效期止', width: 180, halign: 'center', align: 'left' },
+                ]]
+            });
+        }
+        function initUI() {
+            initBtn();
+            initQueryUI();
+            initGrid();
+
+        }
+
+        $(function () {
+            initUI();
+        })
+    </script>
 }

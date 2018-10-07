@@ -55,5 +55,11 @@ namespace VMS.DTO.DrivingPermit
 
         public string vin_no_value { get; set; }
 
+        public string TotalCount { get; set; }
+
+        public string region_name { get; set; }
+
+        public string permitted_card_type_name { get; set; }
+
     }
 }

@@ -131,6 +131,15 @@
             return true;
         }
     }
+    var carTypeData = {};
+    function getCarType() {
+        
+        url = '../../api/PermittedCarTypeApi/QueryAll';
+        $.post(url, {}, 'json')
+       .success(function (ret) {
+           carTypeData = ret.data;
+       });
+    }
     </script>
 
 </body>

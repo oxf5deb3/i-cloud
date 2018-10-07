@@ -1,6 +1,7 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
     Layout="~/Views/Shared/_Layout.cshtml";
+
 }
 @section HeaderStyle{
 <style type="text/css">
@@ -31,65 +32,139 @@
 <table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>驾驶证编号:</td>
-        <td style="width:200px;"><input id="zs_no"></input></td>
+        <td style="width:200px;"><input id="zsxs_id_no"></input></td>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>车型:</td>
         <td style="width:100%;"><input id="zsxs_car_type"></input></td>
     </tr>
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
-        <td style="width:100%;"><input id="name"></input></td>
+        <td style="width:100%;"><input id="zsxs_name"></input></td>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
-        <td style="width:200px;"><input id="sex"></input></td>
+        <td style="width:200px;"><input id="zsxs_sex"></input></td>
 
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
-        <td style="width:100%;"><input id="birth_date"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>国籍:</td>
+        <td style="width:100%;"><input id="zsxs_nation"></input></td>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
-        <td style="width:200px;"><input id="region"></input></td>
+        <td style="width:200px;"><input id="zsxs_region"></input></td>
     </tr>
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
-        <td style="width:200px;"><input id="now_addr"></input></td>
-        <td style="width:120px;text-align:right;">单位:</td>
-        <td style="width:100%;"><input id="work_unit"></input></td>
+        <td style="width:200px;"><input id="zsxs_addr"></input></td>
+        <td style="width:120px;text-align:right;">车牌号码:</td>
+        <td style="width:100%;"><input id="zsxs_car_number"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
-        <td style="width:200px;"><input id="car_type"></input></td>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>初次领证日期:</td>
-        <td style="width:100%;"><input id="first_get_license_date"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号码:</td>
+        <td style="width:200px;"><input id="zsxs_motor_no"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号码:</td>
+        <td style="width:100%;"><input id="zsxs_cardframe_no"></input></td>
     </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色:</td>
+        <td style="width:200px;"><input id="zsxs_car_color"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>出厂日期:</td>
+        <td style="width:100%;"><input id="zsxs_produce_date"></input></td>
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>核定载客:</td>
+        <td style="width:200px;"><input id="zsxs_passenger"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发证日期:</td>
+        <td style="width:100%;"><input id="zsxs_issue_license_date"></input></td>
+    </tr>
+
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
-        <td colspan="3" style="width:200px;"><input id="start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="end_date"></input></td>
+        <td colspan="3" style="width:200px;"><input id="zsxs_start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="zsxs_end_date"></input></td>
     </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>人员信息像:</td>
+        <td><button type="button" class="btn btn-info btn-sm" style="width:78px" id="zsxs_select_user_info">拍照</button></td>
+        <td><img src="#" id="zsxs_user_info_photo" style=" height: 80px;width: 100px;display:none" /></td>
+        <td><input type="hidden" id="zsxs_user_info_input" value="" /></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆照1:</td>
+        <td>
+            <input id="zsxs_car_1_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="zsxs_car_1_img" style=" height :80px;width :100px;display:none"></td>
+        <td><input type="hidden" id="zsxs_car_1_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆照2:</td>
+        <td>
+            <input id="zsxs_car_2_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="zsxs_car_2_img" style=" height :80px;width :100px;display:none"></td>
+        <td><input type="hidden" id="zsxs_car_2_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号码:</td>
+        <td>
+            <input id="zsxs_engine_no_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="zsxs_engine_no_img" style=" height :80px;width :100px;display:none"></td>
+        <td><input type="hidden" id="zsxs_engine_no_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号码:</td>
+        <td>
+            <input id="zsxs_vin_no_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="zsxs_vin_no_img" style=" height:80px;width:100px;display:none"></td>
+        <td><input type="hidden" id="zsxs_vin_no_value" value=""></td>
+
+    </tr>
+
     <tr style="height:10px;"></tr>
     <tr>
         <td colspan="3"></td>
         <td style="padding-left:20px;">
-            <button type="button" class="btn btn-primary btn-sm" style="width:78px">清空</button>
-            <button type="button" class="btn btn-info btn-sm" style="width:78px">提交</button>
+            <button type="button" class="btn btn-info btn-sm" style="width:78px" id="zsxs_submit">提交</button>
         </td>
     </tr>
 </table>
 
+<div id="zsxs_photoDialog">
+    <button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zsxs_userinfo_video', 'zsxs_userinfo_canvas')">拍照</button>
+
+    <button id="zsxs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button>
+
+    <video id="zsxs_userinfo_video" width="500" height="500" autoplay="autoplay"></video>
+    <canvas id="zsxs_userinfo_canvas" width="500" height="500" />
+
+</div>
+
 @section scripts{
 <script type="text/javascript">
     function initUI(){
-      $('#zs_no').textbox({
+        $('#zsxs_id_no').textbox({
           width:180,
-          required:true
       });
-    $('#id_no').textbox({
+        $('#zsxs_car_type').textbox({
           width:180,
-          required:true
       });
-    $('#name').textbox({
+    $('#zsxs_name').textbox({
           width:180,
-          required:true
       });
-    $('#sex').combobox({
+    $('#zsxs_sex').combobox({
          valueField:'id',
          width:180,
          panelHeight:70,
@@ -97,14 +172,8 @@
          textField:'text',
          data:[{id:0,text:'男'},{id:1,text:'女'}]
     });
-     $('#birth_date').datebox({
-          width:180,
-          panelWidth:180,
-          panelHeight:180,
-          editable:false,
-          required:true
-      });
-     $('#region').combobox({
+    
+     $('#zsxs_region').combobox({
          valueField:'region_no',
          width:180,
          panelHeight:70,
@@ -115,13 +184,51 @@
        $.post(url,{},'json')
        .success(function(ret){
           if(ret.success){
-            $('#region').combobox('loadData',ret.data);
+              $('#zsxs_region').combobox('loadData', ret.data);
           }
        });
-       $('#now_addr').textbox({
+       $('#zsxs_addr').textbox({
           width:180,
-          required:true
-      });
+       });
+
+       $('#zsxs_nation').textbox({
+           width: 180,
+           
+       });
+
+       $('#zsxs_car_number').textbox({
+           width: 180,
+           
+       });
+
+       $('#zsxs_motor_no').textbox({
+           width: 180,
+           
+       });
+
+       $('#zsxs_cardframe_no').textbox({
+           width: 180,
+           
+       });
+
+       $('#zsxs_car_color').textbox({
+           width: 180,
+           
+       });
+
+       $('#zsxs_passenger').textbox({
+           width: 180,
+           
+       });
+
+
+       $('#zsxs_produce_date').textbox({
+           width: 180,
+           
+       });
+
+     
+
        $('#work_unit').textbox({
           width:180,
       });
@@ -143,41 +250,200 @@
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          required:true
       });
-     var now = new Date();
-        $('#start_date').datebox({
+      var now = new Date();
+      
+
+      $('#zsxs_produce_date').datebox({
+          width: 180,
+          panelWidth: 180,
+          panelHeight: 180,
+          editable: false,
+      });
+      $('#zsxs_issue_license_date').datebox({
+          width: 180,
+          panelWidth: 180,
+          panelHeight: 180,
+          editable: false,
+          
+          value: now.pattern('yyyy-MM-dd'),
+      });
+        $('#zsxs_start_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          required:true,
           value:now.pattern('yyyy-MM-dd'),
           onSelect:function(date){
             var endDate = new Date(date.getFullYear(),date.getMonth()+6,date.getDate());
-            $('#end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
+            $('#zsxs_end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
          }
       });
       var end = new Date(now.getFullYear(),now.getMonth()+6,now.getDate());
-        $('#end_date').datebox({
+        $('#zsxs_end_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          required:true,
           value:end.pattern('yyyy-MM-dd'),
       });
     }
 
+    function getDataZSXS() {
+        var data = {};
+        debugger;
+        data.name = $("#zsxs_name").textbox("getValue");//姓名     
+
+        data.car_color = $("#zsxs_car_color").textbox("getValue");//车辆颜色
+        data.end_date = $("#zsxs_end_date").textbox("getValue");
+        data.id_no = $("#zsxs_id_no").textbox("getValue");//驾驶证编号
+        data.name = $("#zsxs_name").textbox("getValue");//姓名     
+        data.nation = $("#zsxs_nation").textbox("getValue");//国籍  
+        data.produce_date = $("#zsxs_produce_date").textbox("getValue");//出厂日期
+        data.passenger = $("#zsxs_passenger").textbox("getValue");//载客
+        data.issue_license_date = $("#zsxs_issue_license_date").textbox("getValue");//发证日期
+        data.addr = $("#zsxs_addr").textbox("getValue");//住址
+        data.region_no = $("#zsxs_region").combobox("getValue");//地区
+        data.sex = $("#zsxs_sex").combobox("getValue");//性别
+        data.start_date = $("#zsxs_start_date").textbox("getValue");//开始日期
+        data.user_photo_base64 = $("#zsxs_user_info_input").attr("value");//人员信息照片
+
+        data.car_type = $("#zsxs_car_type").textbox("getValue");//车型
+
+        data.cardframe_no = $("#zsxs_cardframe_no").textbox("getValue");//车架
+        data.motor_no = $("#zsxs_motor_no").textbox("getValue");//发动机号
+        data.car_number = $("#zsxs_car_number").textbox("getValue");//车牌
+        data.car_1_value = $("#zsxs_car_1_value").attr("value");
+        data.car_2_value = $("#zsxs_car_2_value").attr("value");
+
+        data.engine_no_value = $("#zsxs_engine_no_value").attr("value");
+
+        data.vin_no_value = $("#zsxs_vin_no_value").attr("value");
+
+
+        return data;
+    }
+
+
+    function initCarNo_zsxs() {
+        var url = "../../api/DriverLicenseApi/initCarNo";
+        //0=临时驾照
+        $.post(url, { id_no: 3 }, 'json')
+                    .success(function (ret) {
+                        if (ret.success) {
+                            $("#zsxs_id_no").textbox("setValue", ret.message);
+                        } else {
+                            alert("初始化证件编码失败!请刷新页面!");
+                        }
+                    });
+    }
+
+    function validate_zsxs() {
+        //校验 非空
+        var message = {
+            type: true,
+            message: ""
+        };
+
+        
+
+
+        return message;
+    }
+
+    //初始化人员照片信息采集对话框
+    function initPhotoDialog_zsxs() {
+        $('#zsxs_photoDialog').dialog({
+            title: '人员照片信息采集',
+            width: 1000,
+            height: 500,
+            closed: true,
+            cache: false,
+            onOpen: function () {
+                initPhoto("zsxs_userinfo_video");//初始化摄像头组件
+            },
+            onClose: function () {
+                cleanCanvas("zsxs_userinfo_canvas");//清除缓存
+                closePhoto("zsxs_userinfo_video");//关闭摄像头
+            },
+            buttons: [{
+                text: '确定',
+                handler: function () {
+                    var data = getCanvasForBase64("zsxs_userinfo_canvas");//获取照片转为base64
 
 
 
+                    $("#zsxs_user_info_photo").attr("src", data);//存储为缩略图
+                    $("#zsxs_user_info_input").attr("value", data)//将base64存储到隐藏域中,做非空校验
+                    $("#zsxs_user_info_photo").css("display", "");
+                    $("#zsxs_photoDialog").dialog("close");//关闭dialog
+                    cleanCanvas("zsxs_userinfo_canvas");//清除缓存
+                    closePhoto("zsxs_userinfo_video");//关闭摄像头
 
+
+                }
+            }, {
+                text: '取消',
+                handler: function () {
+                    cleanCanvas("zsxs_userinfo_canvas");//清除缓存
+                    closePhoto("zsxs_userinfo_video");//关闭摄像头
+                    $("#zsxs_photoDialog").dialog("close");//关闭dialog
+
+                }
+            }]
+        });
+    }
+
+    function submit_ZSXS() {
+        var message = validate_zsxs();
+
+        if (!message.type) {
+            alert(message.message);
+            return;
+        }
+
+        var data = getDataZSXS();
+
+
+        var url = "../../api/DriverLicenseApi/AddDrivingPermit";
+
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (ret.success) {
+                        alert("添加成功!");
+                    } else {
+                        alert("添加失败!");
+                    }
+                });
+        }
+    }
 
 
     $(function(){
-       initUI();
+        initUI();
+        initCarNo_zsxs();
+        initPhotoDialog_zsxs();
+
+        //选择文件
+        selectFileAndDisplay("zsxs_car_1_input", "zsxs_car_1_img", "zsxs_car_1_value");
+        selectFileAndDisplay("zsxs_car_2_input", "zsxs_car_2_img", "zsxs_car_2_value");
+
+        selectFileAndDisplay("zsxs_engine_no_input", "zsxs_engine_no_img", "zsxs_engine_no_value");
+        selectFileAndDisplay("zsxs_vin_no_input", "zsxs_vin_no_img", "zsxs_vin_no_value");
+
+
+        $("#zsxs_select_user_info").click(function () {
+
+            $("#zsxs_photoDialog").dialog("open");
+
+        });
+
+        $("#zsxs_submit").click(function () {
+            submit_ZSXS();
+        })
     })
+
 </script>
 }
 

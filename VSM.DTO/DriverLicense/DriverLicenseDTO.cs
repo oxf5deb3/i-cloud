@@ -38,6 +38,8 @@ namespace VMS.DTO.DriverLicense
 
         public string user_photo_base64 { get; set; }
 
+        public string permitted_car_type_name { get; set; }
 
+        public string region_name { get; set; }
     }
 }
