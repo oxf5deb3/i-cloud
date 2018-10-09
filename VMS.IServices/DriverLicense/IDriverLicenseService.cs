@@ -37,7 +37,7 @@ namespace VMS.IServices
         bool AddDrivingLicense(DriverLicenseDTO driverLicenseDTO);
 
         /**
-         * 临时行驶证分页查询
+         * 正式行驶证分页查询
          * */
         List<DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DrivingPermitDTO data);
 

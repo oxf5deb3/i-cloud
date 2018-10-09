@@ -24,7 +24,7 @@ namespace VMS.DTO.DrivingPermit
         public string car_color { get; set; } //车辆颜色
         public string car_number { get; set; } //车牌
         public string car_type { get; set; }//车型
-        public string cardframe_no { get; set; }//车驾照
+        public string carframe_no { get; set; }//车驾照
         public string end_date { get; set; } //结束时间
         public string engine_no_value { get; set; } //发动机照
         public string id_no { get; set; }//证件

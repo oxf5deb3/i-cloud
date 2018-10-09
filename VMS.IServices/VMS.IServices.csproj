@@ -44,8 +44,10 @@
     <Compile Include="Account\IUserService.cs" />
     <Compile Include="BaseData\IPermittedCarTypeService.cs" />
     <Compile Include="BaseData\IRegionService.cs" />
+    <Compile Include="CarNumber\ICarNumberService.cs" />
     <Compile Include="DriverLicense\IDriverLicenseService.cs" />
     <Compile Include="IService.cs" />
+    <Compile Include="Statistical\IStatisticalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

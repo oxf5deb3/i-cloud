@@ -216,8 +216,8 @@ namespace VMS.Services
 
 
             var insertSql = new StringBuilder();
-            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no) "
-            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no)");
+            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path) "
+            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path)");
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@check_man", temporaryDrivingPermitDTO.check_man));
             paramlst.Add(new SqlParam("@sex", temporaryDrivingPermitDTO.sex));
@@ -312,9 +312,9 @@ namespace VMS.Services
 
             var insertSql = new StringBuilder();
             insertSql.Append("insert into t_normal_car_license(car_owner,duty,work_unit,region_no,plate_no,brand_no,motor_no,carframe_no,car_color,product_date,issue_license_date," +
-            "addr,car_number,car_type,end_date,id_no,name,nation,passenger,sex,start_date,oper_id,oper_date)"
+            "addr,car_number,car_type,end_date,id_no,name,nation,passenger,sex,start_date,oper_id,oper_date,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path)"
             + "values(@car_owner,@duty,@work_unit,@region_no,@plate_no,@brand_no,@motor_no,@carframe_no,@car_color,@product_date,@issue_license_date"
-            + ",@addr,@car_number,@car_type,@end_date,@id_no,@name,@nation,@passenger,@sex,@start_date,@oper_id,@oper_date)");
+            + ",@addr,@car_number,@car_type,@end_date,@id_no,@name,@nation,@passenger,@sex,@start_date,@oper_id,@oper_date,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path)");
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@car_owner", drivingPermitDTO.card_owner));
             paramlst.Add(new SqlParam("@duty ", drivingPermitDTO.duty));
@@ -323,7 +323,7 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@plate_no", drivingPermitDTO.plate_no));
             paramlst.Add(new SqlParam("@brand_no", drivingPermitDTO.brand_no));
             paramlst.Add(new SqlParam("@motor_no", drivingPermitDTO.motor_no));
-            paramlst.Add(new SqlParam("@carframe_no", drivingPermitDTO.cardframe_no));
+            paramlst.Add(new SqlParam("@carframe_no", drivingPermitDTO.carframe_no));
             paramlst.Add(new SqlParam("@car_color", drivingPermitDTO.car_color));
             paramlst.Add(new SqlParam("@product_date", drivingPermitDTO.produce_date));
             paramlst.Add(new SqlParam("@issue_license_date", drivingPermitDTO.issue_license_date));

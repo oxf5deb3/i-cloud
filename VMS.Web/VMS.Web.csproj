@@ -115,7 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BaseApiController.cs" />
+    <Compile Include="Api\CarNumberApiController.cs" />
     <Compile Include="Api\DriverLicenseApiController.cs" />
+    <Compile Include="Api\StatisticalApiController.cs" />
     <Compile Include="Api\UserApiController.cs" />
     <Compile Include="Api\FireControlApiController.cs" />
     <Compile Include="Api\LogApiController.cs" />
@@ -136,6 +138,9 @@
     <Compile Include="Areas\BaseData\BaseDataAreaRegistration.cs" />
     <Compile Include="Areas\BaseData\Controllers\PermittedCarTypeController.cs" />
     <Compile Include="Areas\BaseData\Controllers\RegionController.cs" />
+    <Compile Include="Areas\CarNumberManagement\Controllers\CarNumberController.cs" />
+    <Compile Include="Areas\CarNumberManagement\Controllers\TempCarNumberController.cs" />
+    <Compile Include="Areas\CarNumberManagement\CarNumberAreaRegistration.cs" />
     <Compile Include="Areas\DriverLicenseManagement\Controllers\DriverLicenseController.cs" />
     <Compile Include="Areas\DriverLicenseManagement\Controllers\TempDriverLicenseController.cs" />
     <Compile Include="Areas\DriverLicenseManagement\DriverLicenseManagementAreaRegistration.cs" />
@@ -153,7 +158,8 @@
     <Compile Include="Areas\RegisterCenter\Controllers\DrivingLicenseRegisterController.cs" />
     <Compile Include="Areas\RegisterCenter\Controllers\TempDriverLicenseRegisterController.cs" />
     <Compile Include="Areas\RegisterCenter\Controllers\TempDrivingLicenseRegisterController.cs" />
-    <Compile Include="Areas\RegisterCenter\RegisterCenterAreaRegistration.cs" />
+    <Compile Include="Areas\Statistical\Controllers\DrivingLicenseController.cs" />
+    <Compile Include="Areas\Statistical\StatisticalAreaRegistration.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentRegisterController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\TrafficAccidentManagementAreaRegistration.cs" />
@@ -313,11 +319,15 @@
     <Content Include="Areas\Account\Views\Role\Index.cshtml" />
     <Content Include="Areas\Account\Views\RoleRes\Index.cshtml" />
     <Content Include="Areas\PlateNumberManagement\Views\PlateNumberQuery\Index.cshtml" />
+    <Content Include="Areas\CarNumberManagement\Views\CarNumber\Index.cshtml" />
+    <Content Include="Areas\CarNumberManagement\Views\TempCarNumber\Index.cshtml" />
+    <Content Include="Areas\Statistical\Views\DrivingLicense\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\EasyUI\jquery.easyui.min.js" />
     <Content Include="Scripts\EasyUI\locale\easyui-lang-en.js" />
     <Content Include="Scripts\EasyUI\locale\easyui-lang-zh_CN.js" />
+    <Content Include="Scripts\echarts.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -347,7 +357,9 @@
     <Content Include="Views\Shared\_LayoutMainFrame.cshtml" />
     <Content Include="Views\Print\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\StatisticalApi\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
