@@ -314,6 +314,48 @@ namespace VMS.Api
         }
 
 
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.HttpGet]
+       public BaseResponseDTO validataTemp([FromBody]JObject data)
+       {
+
+           var dataDTO=data.ToObject<TemporaryDrivingPermitDTO>();
+
+           var obj = Instance<IDriverLicenseService>.Create;
+
+           BaseResponseDTO message = obj.validataTemp(dataDTO.temp_number, dataDTO.engine_no, 
+               dataDTO.vin,dataDTO.id_card);
+
+            return message;
+
+       }
+
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO validata([FromBody]JObject data)
+        {
+            var dataDTO=data.ToObject<DrivingPermitDTO>();
+
+           var obj = Instance<IDriverLicenseService>.Create;
+
+           BaseResponseDTO message = obj.validata(dataDTO.car_number, dataDTO.motor_no, dataDTO.carframe_no);
+
+            return message;
+        }
+
+
+        
+
+          [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO validataByDriverLicense([FromBody]JObject data)
+        {
+            var dataDTO = data.ToObject<DriverLicenseDTO>();
+
+           var obj = Instance<IDriverLicenseService>.Create;
+
+           BaseResponseDTO message = obj.validataByDriverLicense(dataDTO.id_card);
+
+            return message;
+        }
 
     }
 

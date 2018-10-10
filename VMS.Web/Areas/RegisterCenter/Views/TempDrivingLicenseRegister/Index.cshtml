@@ -150,12 +150,22 @@
 </table>
 
 <div id="lsxs_photoDialog">
-    <button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('lsxs_userinfo_video', 'lsxs_userinfo_canvas')">拍照</button>
 
-    <button id="lsxs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button>
+    <table>
 
-    <video id="lsxs_userinfo_video" width="500" height="500" autoplay="autoplay"></video>
-    <canvas id="lsxs_userinfo_canvas" width="500" height="500" />
+        <tr>
+
+            <td><video id="lsxs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('lsxs_userinfo_video', 'lsxs_userinfo_canvas')">拍照</button></td>
+            <td><button id="lsxs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="lsxs_userinfo_canvas" width="300" height="200" /></td>
+
+        </tr>
+
+    </table>
+
+
+
 
 </div>
 
@@ -302,7 +312,7 @@
     function initPhotoDialog_lsxs() {
         $('#lsxs_photoDialog').dialog({
             title: '人员照片信息采集',
-            width: 1000,
+            width: 800,
             height: 500,
             closed: true,
             cache: false,
@@ -393,7 +403,88 @@
             message.message = "必须上传人员照片信息!";
             return message;
         }
+        //住址
+        if (!isNull($("#lsxs_now_addr").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写住址!";
+            return message;
+        }
 
+        //厂牌型号
+        if (!isNull($("#lsxs_label_type").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写厂牌型号!";
+            return message;
+        }
+
+        //车型
+        if (!isNull($("#lsxs_car_type").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车型!";
+            return message;
+        }
+
+        //临时车牌号
+        if (!isNull($("#lsxs_temp_number").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写临时车牌号!";
+            return message;
+        }
+
+        //发动机
+        if (!isNull($("#lsxs_engine_no").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写发动机号!";
+            return message;
+        }
+
+        //车架
+        if (!isNull($("#lsxs_vin").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车架号!";
+            return message;
+        }
+
+        //核定载客
+        if (!isNull($("#lsxs_passenger").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写核定载客人数!";
+            return message;
+        }
+
+        //核定载货
+        if (!isNull($("#lsxs_cargo").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写核定载货量!";
+            return message;
+        }
+
+        
+        //
+        if (!isNull($("#car_1_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传车辆照1!";
+            return message;
+        }
+
+        if (!isNull($("#car_2_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传车辆照2!";
+            return message;
+        }
+
+        if (!isNull($("#engine_no_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传发动机照!";
+            return message;
+        }
+        
+
+        if (!isNull($("#vin_no_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传车架照!";
+            return message;
+        }
 
 
         return message;
@@ -438,13 +529,39 @@
 
     }
 
+   
     function submit() {
+
         var message = validate_lsxs();
 
         if (!message.type) {
             alert(message.message);
             return;
         }
+        var data = {};
+
+        data.vin = $("#lsxs_vin").textbox("getValue");//车架
+        data.engine_no = $("#lsxs_engine_no").textbox("getValue");//发动机号
+        data.temp_number = $("#lsxs_temp_number").textbox("getValue");//临时车牌
+
+        var url = "../../api/DriverLicenseApi/validataTemp";
+        //校验是否存在
+        var valiMessage = {};
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (!ret.success) {
+                        alert(ret.message);
+                        return;
+                    } else {
+                        validataCallBack();//正式提交
+                    }
+                });
+        }
+
+    }
+
+    function validataCallBack() {
 
         var data = getDataLSXS();
 

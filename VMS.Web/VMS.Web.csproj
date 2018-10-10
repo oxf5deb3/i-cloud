@@ -158,7 +158,10 @@
     <Compile Include="Areas\RegisterCenter\Controllers\DrivingLicenseRegisterController.cs" />
     <Compile Include="Areas\RegisterCenter\Controllers\TempDriverLicenseRegisterController.cs" />
     <Compile Include="Areas\RegisterCenter\Controllers\TempDrivingLicenseRegisterController.cs" />
+    <Compile Include="Areas\RegisterCenter\RegisterCenterAreaRegistration.cs" />
     <Compile Include="Areas\Statistical\Controllers\DrivingLicenseController.cs" />
+    <Compile Include="Areas\Statistical\Controllers\trendController.cs" />
+    <Compile Include="Areas\Statistical\Controllers\VehicleLicenseSController.cs" />
     <Compile Include="Areas\Statistical\StatisticalAreaRegistration.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentRegisterController.cs" />
@@ -322,6 +325,8 @@
     <Content Include="Areas\CarNumberManagement\Views\CarNumber\Index.cshtml" />
     <Content Include="Areas\CarNumberManagement\Views\TempCarNumber\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\DrivingLicense\Index.cshtml" />
+    <Content Include="Areas\Statistical\Views\trend\Index.cshtml" />
+    <Content Include="Areas\Statistical\Views\VehicleLicenseS\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\EasyUI\jquery.easyui.min.js" />

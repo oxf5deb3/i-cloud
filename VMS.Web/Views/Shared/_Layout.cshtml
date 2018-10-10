@@ -67,7 +67,7 @@
         //初始化摄像头组件
     function initPhoto(videoId) {
         let constraints = {
-            video: { width: 300, height: 300 },
+            video: { width: 300, height: 200 },
             audio: true
         };
         //获得video摄像头区域            
@@ -91,7 +91,7 @@
         let video = document.getElementById(videoId);
         let canvas = document.getElementById(canvasId);
         let ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, 500, 500);
+        ctx.drawImage(video, 0, 0, 300, 200);
 
     }
 
@@ -113,7 +113,7 @@
 
     function closePhoto(videoId) {
         let constraints = {
-            video: { width: 300, height: 300 },
+            video: { width: 300, height: 200 },
             audio: true
         };
         //获得video摄像头区域            

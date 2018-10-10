@@ -12,5 +12,7 @@ namespace VMS.IServices
         DriverLicenseStatisticalDTO queryByJZ(String year);
 
         DriverLicenseStatisticalDTO queryByXS(String year);
+
+         Dictionary<string, string> queryByCarTypeForOrderBy();
     }
 }

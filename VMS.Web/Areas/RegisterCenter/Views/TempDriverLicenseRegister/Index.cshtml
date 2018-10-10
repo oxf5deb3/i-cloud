@@ -60,7 +60,7 @@
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
         <td style="width:200px;"><input id="car_type"></input></td>
-        <td style="width:120px;text-align:right;">民族:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>民族:</td>
         <td style="width:200px;"><input id="folk"></input></td>
         <!--
             <td style="width:120px;text-align:right;"><span class="red-star">*</span>考核员:</td>
@@ -106,20 +106,26 @@
     <tr>
         <td colspan="3"></td>
         <td style="padding-left:20px;">
-            <button type="button" class="btn btn-primary btn-sm" style="width:78px">清空</button>
             <button type="button" class="btn btn-info btn-sm" style="width:78px" id="ls_submit">提交</button>
         </td>
     </tr>
 </table>
 
 <div id="photoDialog">
-    <button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('userinfo_video', 'userinfo_canvas')">拍照</button>
 
-    <button id="userinfo_clean" class="btn btn-primary btn-sm"  onclick="cleanCanvas(this.id)" type="button">重置</button>
-    <button id="userinfo_save" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">确定</button>
+    <table>
 
-    <video id="userinfo_video" width="500" height="500" autoplay="autoplay"></video>
-    <canvas id="userinfo_canvas" width="500" height="500" />
+        <tr>
+
+            <td><video id="userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('userinfo_video', 'userinfo_canvas')">拍照</button></td>
+            <td><button id="userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="userinfo_canvas" width="300" height="200" /></td>
+        </tr>
+
+    </table>
+
+
 
 </div>
 
@@ -313,7 +319,21 @@
                 message.message = "必须上传人员照片信息!";
                 return message;
             }
-            
+
+            //现住址
+            if (!isNull($("#now_addr").textbox("getValue"))) {
+                message.type = false;
+                message.message = "必须填写现住址!";
+                return message;
+            }
+
+            //
+            if (!isNull($("#folk").textbox("getValue"))) {
+                message.type = false;
+                message.message = "必须填写民族!";
+                return message;
+            }
+
             
 
             return message;
@@ -326,7 +346,7 @@
         function initPhotoDialog() {
             $('#photoDialog').dialog({
                 title: '人员照片信息采集',
-                width: 1000,
+                width: 800,
                 height: 500,
                 closed: true,
                 cache: false,

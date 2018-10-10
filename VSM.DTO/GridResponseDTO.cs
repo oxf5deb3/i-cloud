@@ -14,5 +14,7 @@ namespace VMS.DTO
         }
         public List<T> rows { get; set; }
         public int total { get; set; }
+
+        public Dictionary<string, string> maps { get; set; }
     }
 }

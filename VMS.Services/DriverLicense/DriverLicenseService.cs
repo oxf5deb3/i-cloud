@@ -502,6 +502,163 @@ namespace VMS.Services
             return (List<TemporaryDrivingPermitDTO>)DbContext.GetDataListBySQL<TemporaryDrivingPermitDTO>(querySql);
         }
 
+        /**
+         * 临时行驶证校验
+         * */
+        public BaseResponseDTO validataTemp(String temp_car_number, String engine_no, String car_frame_no,String id_card)
+        {
+            BaseResponseDTO ret = new BaseResponseDTO();
+
+            if(isExistTmpCarNumber(temp_car_number)){
+                ret.message = "数据库中以存在临时车牌为:" + temp_car_number + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+            if (isExistEngineNo(engine_no))
+            {
+                ret.message = "数据库中以存在发动机号为:" + engine_no + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+            if (isExistTempVin(car_frame_no))
+            {
+                ret.message = "数据库中以存在车架号为:" + car_frame_no + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+
+            if (isExistTempIdCard(id_card))
+            {
+                ret.message = "数据库中以存在身份证号为:" + id_card + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+
+            
+            return ret;
+
+        }
+
+        /**
+         * 是否存在临时车牌号
+         * */
+        private Boolean isExistTmpCarNumber(String temp_car_number)
+        {
+            var tableName = "t_temp_car_license";
+            var pkName = "temp_number";
+            var pkVal = temp_car_number;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+        /**
+       * 是否存在临时行驶证中的车架号码
+       * */
+        private Boolean isExistTempVin(String vin_no)
+        {
+            var tableName = "t_temp_car_license";
+            var pkName = "vin";
+            var pkVal = vin_no;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+        /**
+         * 检查是否存在临时行驶证的发动机号
+         * */
+        private Boolean isExistEngineNo(String engine_no)
+        {
+            var tableName = "t_temp_car_license";
+            var pkName = "engine_no";
+            var pkVal = engine_no;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+        private Boolean isExistTempIdCard(String id_card)
+        {
+            var tableName = "t_temp_car_license";
+            var pkName = "id_card";
+            var pkVal = id_card;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+        /**
+         * 
+         * 
+         * 行驶证校验
+         * */
+        public BaseResponseDTO validata(String car_number, String engine_no, String car_frame_no)
+        {
+            BaseResponseDTO ret = new BaseResponseDTO();
+
+            if (isExistCarNumber(car_number))
+            {
+                ret.message = "数据库中以存在车牌为:" + car_number + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+            if (isExistMotorNo(engine_no))
+            {
+                ret.message = "数据库中以存在发动机号为:" + engine_no + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+            if (isExistCarFrameNo(car_frame_no))
+            {
+                ret.message = "数据库中以存在车架号为:" + car_frame_no + "的号码!";
+                ret.success = false;
+                return ret;
+            }
+            return ret;
+
+        }
+
+        private Boolean isExistMotorNo(String motor_no)
+        {
+            var tableName = "t_normal_car_license";
+            var pkName = "motor_no";
+            var pkVal = motor_no;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+        private Boolean isExistCarNumber(String carNumber)
+        {
+            var tableName = "t_normal_car_license";
+            var pkName = "car_number";
+            var pkVal = carNumber;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+        private Boolean isExistCarFrameNo(String CarFrameNo)
+        {
+            var tableName = "t_normal_car_license";
+            var pkName = "carframe_no";
+            var pkVal = CarFrameNo;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
+
+
+        public BaseResponseDTO validataByDriverLicense(String id_card)
+        {
+            BaseResponseDTO ret = new BaseResponseDTO();
+            if (isExistIdCardByDriverLicense(id_card))
+            {
+                ret.success = false;
+                ret.message = "数据库中已存在身份证号为:" + id_card + "的驾照!";
+                return ret;
+            }
+
+            return ret;
+        }
+
+        /**
+         * 校验驾驶证表中是否存在相同的身份证
+         * */
+        private Boolean isExistIdCardByDriverLicense(String id_card)
+        {
+            var tableName = "t_normal_driver_license";
+            var pkName = "id_card";
+            var pkVal = id_card;
+            return DbContext.IsExist(tableName, pkName, pkVal) > 0;
+        }
 
     }
 }

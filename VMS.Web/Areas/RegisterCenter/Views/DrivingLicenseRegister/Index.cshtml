@@ -52,7 +52,7 @@
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
         <td style="width:200px;"><input id="zsxs_addr"></input></td>
-        <td style="width:120px;text-align:right;">车牌号码:</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车牌号码:</td>
         <td style="width:100%;"><input id="zsxs_car_number"></input></td>
     </tr>
     <tr>
@@ -143,12 +143,19 @@
 </table>
 
 <div id="zsxs_photoDialog">
-    <button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zsxs_userinfo_video', 'zsxs_userinfo_canvas')">拍照</button>
 
-    <button id="zsxs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button>
+    <table>
 
-    <video id="zsxs_userinfo_video" width="500" height="500" autoplay="autoplay"></video>
-    <canvas id="zsxs_userinfo_canvas" width="500" height="500" />
+        <tr>
+            <td><video id="zsxs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zsxs_userinfo_video', 'zsxs_userinfo_canvas')">拍照</button></td>
+            <td><button id="zsxs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="zsxs_userinfo_canvas" width="300" height="200" /></td>
+        </tr>
+
+    </table>
+
+
 
 </div>
 
@@ -292,7 +299,6 @@
 
     function getDataZSXS() {
         var data = {};
-        debugger;
         data.name = $("#zsxs_name").textbox("getValue");//姓名     
 
         data.car_color = $("#zsxs_car_color").textbox("getValue");//车辆颜色
@@ -346,6 +352,131 @@
             message: ""
         };
 
+       
+       
+
+
+        //姓名
+        if (!isNull($("#zsxs_name").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写姓名!";
+            return message;
+        }
+
+        //国籍
+        if (!isNull($("#zsxs_nation").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写国籍!";
+            return message;
+        }
+
+
+        //地区
+        if (!isNull($("#zsxs_region").combobox("getValue"))) {
+            message.type = false;
+            message.message = "必须选择地区!";
+            return message;
+        }
+        //性别
+        if (!isNull($("#zsxs_sex").combobox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写性别!";
+            return message;
+        }
+
+        if (!isNull($("#zsxs_user_info_input").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传人员照片信息!";
+            return message;
+        }
+        //住址
+        if (!isNull($("#zsxs_addr").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写住址!";
+            return message;
+        }
+
+       
+
+        //车型
+        if (!isNull($("#zsxs_car_type").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车型!";
+            return message;
+        }
+
+        //临时车牌号
+        if (!isNull($("#zsxs_car_number").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写临时车牌号!";
+            return message;
+        }
+
+        //发动机
+        if (!isNull($("#zsxs_motor_no").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写发动机号!";
+            return message;
+        }
+
+        //车架
+        if (!isNull($("#zsxs_cardframe_no").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车架号!";
+            return message;
+        }
+
+        
+        //颜色
+        if (!isNull($("#zsxs_car_color").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车身颜色!";
+            return message;
+        }
+        
+        //出厂日期
+        if (!isNull($("#zsxs_produce_date").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写出厂日期!";
+            return message;
+        }
+
+        //核定载客
+        if (!isNull($("#zsxs_passenger").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写核定载客人数!";
+            return message;
+        }
+
+       
+
+
+        //
+        if (!isNull($("#zsxs_car_1_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传车辆照1!";
+            return message;
+        }
+
+        if (!isNull($("#zsxs_car_2_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传车辆照2!";
+            return message;
+        }
+
+        if (!isNull($("#zsxs_engine_no_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传发动机照!";
+            return message;
+        }
+
+
+        if (!isNull($("#zsxs_vin_no_value").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传车架照!";
+            return message;
+        }
+
         
 
 
@@ -356,7 +487,7 @@
     function initPhotoDialog_zsxs() {
         $('#zsxs_photoDialog').dialog({
             title: '人员照片信息采集',
-            width: 1000,
+            width: 800,
             height: 500,
             closed: true,
             cache: false,
@@ -396,12 +527,37 @@
     }
 
     function submit_ZSXS() {
+
         var message = validate_zsxs();
 
         if (!message.type) {
             alert(message.message);
             return;
         }
+        var data = {};
+
+        data.carframe_no = $("#zsxs_cardframe_no").textbox("getValue");//车架
+        data.motor_no = $("#zsxs_motor_no").textbox("getValue");//发动机号
+        data.car_number = $("#zsxs_car_number").textbox("getValue");//车牌
+
+        var url = "../../api/DriverLicenseApi/validata";
+        //校验是否存在
+        var valiMessage = {};
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (!ret.success) {
+                        alert(ret.message);
+                        return;
+                    } else {
+                        validataCallBack_zsxs();//正式提交
+                    }
+                });
+        }
+
+    }
+
+    function validataCallBack_zsxs() {
 
         var data = getDataZSXS();
 

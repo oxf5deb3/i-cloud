@@ -58,7 +58,12 @@ namespace VMS.IServices
         bool AddDrivingPermit(DrivingPermitDTO drivingPermitDTO);
 
 
-       
+        BaseResponseDTO validataTemp(String temp_car_number, String engine_no, String car_frame_no,String id_card);
+
+        BaseResponseDTO validata(String car_number, String engine_no, String car_frame_no);
+
+        BaseResponseDTO validataByDriverLicense(String id_card);
+
 
     }
 }

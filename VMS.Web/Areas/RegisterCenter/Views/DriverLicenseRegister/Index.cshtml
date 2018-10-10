@@ -83,13 +83,19 @@
 </table>
 
 <div id="zs_photoDialog">
-    <button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zs_userinfo_video', 'zs_userinfo_canvas')">拍照</button>
 
-    <button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button>
-    <button id="zs_userinfo_save" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">确定</button>
+    <table>
+        <tr>
+            <td><video id="zs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zs_userinfo_video', 'zs_userinfo_canvas')">拍照</button></td>
+            <td><button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="zs_userinfo_canvas" width="300" height="200" /></td>
+        </tr>
 
-    <video id="zs_userinfo_video" width="500" height="500" autoplay="autoplay"></video>
-    <canvas id="zs_userinfo_canvas" width="500" height="500" />
+    </table>
+
+
+    
 
 </div>
 
@@ -244,6 +250,13 @@
             message.message = "必须填写姓名!";
             return message;
         }
+
+        //住址
+        if (!isNull($("#now_addr").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写现住址!";
+            return message;
+        }
         
 
         if (!isNull($("#id_card").textbox("getValue"))) {
@@ -280,13 +293,37 @@
     
     }
 
-    function submit() {
+    function submit_ZSJS() {
+
         var message = valiedataZSJZ();
 
-        if(!message.type){
+        if (!message.type) {
             alert(message.message);
             return;
         }
+        var data = {};
+
+        data.id_card = $("#id_card").textbox("getValue");//身份证号
+
+        var url = "../../api/DriverLicenseApi/validataByDriverLicense";
+        //校验是否存在
+        var valiMessage = {};
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (!ret.success) {
+                        alert(ret.message);
+                        return;
+                    } else {
+                        validataCallBack_zsjs();//正式提交
+                    }
+                });
+        }
+
+    }
+
+    function validataCallBack_zsjs() {
+        
 
         var data = getDataZSJZ();
 
@@ -308,7 +345,7 @@
     function initPhotoDialog() {
         $('#zs_photoDialog').dialog({
             title: '人员照片信息采集',
-            width: 1000,
+            width: 800,
             height: 500,
             closed: true,
             cache: false,
@@ -374,7 +411,7 @@
 
         
         $("#zszj_submit").click(function () {
-            submit();
+            submit_ZSJS();
         })
     })
 </script>

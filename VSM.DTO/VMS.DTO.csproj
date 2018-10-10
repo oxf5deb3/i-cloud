@@ -62,6 +62,7 @@
     <Compile Include="GridResponseDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistical\DriverLicenseStatisticalDTO.cs" />
+    <Compile Include="Statistical\pieDTO.cs" />
     <Compile Include="TreeNodeDTO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

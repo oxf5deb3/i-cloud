@@ -69,5 +69,26 @@ namespace VMS.Services
 
             return null;
         }
+
+        public Dictionary<string, string> queryByCarTypeForOrderBy()
+        {
+            Dictionary<string, string> map = new Dictionary<string, string>();
+
+            String sql = "select permitted_card_type_no,COUNT(permitted_card_type_no) as permitted_card_type_count "
+             +"from t_normal_driver_license a"
+             +" group by permitted_card_type_no";
+
+            List<pieDTO> list = (List<pieDTO>)DbContext.GetDataListBySQL<pieDTO>(new StringBuilder(sql));
+
+            if(list.Count()>0){
+                foreach(pieDTO model in list){
+                    map.Add(model.permitted_card_type_no, model.permitted_card_type_count);
+                }
+
+                return map;
+            }
+                
+            return null;
+        }
     }
 }
