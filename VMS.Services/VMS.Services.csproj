@@ -57,8 +57,10 @@
     <Compile Include="BaseReportService.cs" />
     <Compile Include="CarNumber\CarNumberService.cs" />
     <Compile Include="DriverLicense\DriverLicenseService.cs" />
+    <Compile Include="FireControl\FireControlService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceBase.cs" />
+    <Compile Include="TrafficAccident\TrafficAccidentService.cs" />
     <Compile Include="Statistical\StatisticalService.cs" />
   </ItemGroup>
   <ItemGroup>

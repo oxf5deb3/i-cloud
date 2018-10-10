@@ -39,9 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="t_accident_records.cs" />
     <Compile Include="t_bd_permitted_car_type.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="t_bd_region.cs" />
+    <Compile Include="t_fire_accident_records.cs" />
+    <Compile Include="t_fire_equipment_register.cs" />
     <Compile Include="t_sys_group.cs" />
     <Compile Include="t_sys_group_role.cs" />
     <Compile Include="t_sys_oper_role.cs" />

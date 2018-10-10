@@ -1,88 +1,387 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section HeaderStyle{
-<style type="text/css">
-    body{
-      font-size:12px;
-    }
-    .textbox,.textbox-text
-    {
-      -moz-border-radius: 2px 2px 2px 2px;
-     -webkit-border-radius: 2px 2px 2px 2px;
-      border-radius: 2px 2px 2px 2px;
-    }
-    .form-horizontal .form-group{
-      margin-left:0px;
-      margin-right:0px;
-    }
-    .form-group{
-     margin-bottom:5px;
-    }
-    .red-star{
-       color:red;
-       font-size:15px;
-    }
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
 
-</style>
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        #query-params {
+            width: 100%;
+        }
+
+        label {
+            width: 100px;
+        }
+
+        form input {
+            width: 500px;
+        }
+
+        .red-star {
+            color: red;
+        }
+    </style>
 }
 
-<div class="q-condition">
-    <div class="btn-container">
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
-    </div>
-    <hr />
-    <table>
-        <tr>
-            <td style="width:250px;"> 驾驶证编号：<input class="easyui-textbox" style="width:150px"></td>
-            <td style="width:250px;">姓名：<input class="easyui-textbox" style="width:150px"></td>
-            <td style="width:250px;">身份证号码：<input class="easyui-textbox" style="width:150px"></td>
-            <td style="width:100%"></td>
-        </tr>
-        <tr>
-            <td>准驾车型：<input class="easyui-textbox" style="width:150px"></td>
-        </tr>
-    </table>
-</div>
-<hr />
-<div class="q-detail">
-    <table id="dgDetail"></table>
-</div>
-@section scripts{
-<script type="text/javascript">
-     function initGrid(){
-     //var height = $(window).height()-5;
-     var url = "/api/PermittedCarTypeApi/Query";
-     $('#dgDetail').datagrid({
-           url:url,
-           pagination:true,
-           pageSize:10,
-           pageList:[10,20,30,40,50],
-           checkOnSelect:true,
-           striped:true,
-           showHeader:true,
-           checkbox:true,
-           //singleSelect:true,
-           rownumbers:true,
-           onLoadError:function(){},
-           toolbar: '#toolbar',
-           width:'100%',
-           height:'100%',
-           columns:[[
-               {field:'type_no',title:'编码',width:80,halign:'center',align:'left'},
-               {field:'type_name',title:'名称',width:150,halign:'center',align:'left'},
-               {field:'memo',title:'备注',width:100,halign:'center',align:'left'}
-           ]]
-     });
-    }
-    function initUI(){
-       initGrid();
-    }
 
-    $(function(){
-       initUI();
-    })
-</script>
+<table id="query-params">
+    <tr>
+        <td><label>编号：</label><input id="id" /></td>
+        <td><label>事故时间(起)：</label><input class="easyui-datetimebox" id="timeBegin" /></td>
+        <td><label>事故时间(止)：</label><input class="easyui-datetimebox" id="timeEnd" /></td>
+        <td><label>事故地点：</label><input id="happenAddr" /></td>
+        <td><label>调解员：</label><input id="accidentMediator" /></td>
+    </tr>
+    <tr>
+        <td><label>甲方当事人：</label><input id="firstPartyMan" /></td>
+        <td><label>乙方当事人：</label><input id="secondPartyMan" /></td>
+        <td><label>调解单位：</label><input id="mediationUnit" /></td>
+        <td></td>
+        <td><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a></td>
+    </tr>
+</table>
+<table id="dataGrid"></table>
+<div id="toolbar" style="display:none;">
+    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="edit()"><i class="glyphicon glyphicon-pencil"></i>编辑</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="del()"><i class="glyphicon glyphicon-minus"></i>删除</a>
+    <!--<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="exportFile()"><i class="glyphicon glyphicon-download"></i>导出</a>-->
+    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="showPic()"><i class="glyphicon glyphicon-picture"></i>查看图片</a>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="accident" method="post" novalidate style="margin:0; padding:20px 50px">
+        <input type="hidden" name="id" required />
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>事故时间：
+            </label>
+            <input class="easyui-datetimebox" name="happenDate" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>事故地点：
+            </label>
+            <input name="happenAddr" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>甲方当事人：
+            </label>
+            <input name="firstPartyMan" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>甲方单位/地址：
+            </label>
+            <input name="firstPartyAddr" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>乙方当事人：
+            </label>
+            <input name="secondPartyMan" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>乙方单位/地址：
+            </label>
+            <input name="secondPartyAddr" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>事故描述：
+            </label>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="accidentDesc" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>调解单位：
+            </label>
+            <input name="mediationUnit" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>调解日期：
+            </label>
+            <input class="easyui-datetimebox" name="mediationDate" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>绘图记录：
+            </label>
+            <input name="drawRecorder" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>调解员：
+            </label>
+            <input name="accidentMediator" required>
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+
+<div id="dlg-upload" class="easyui-dialog" style="width:600px;height:300px"
+     data-options="closed:true, title:'添加图片',buttons:'#upload-tb',modal:true">
+    <form id="upload">
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>图片：
+            </label>
+            <input type="file" name="files" id="files" accept="image/png, image/jpeg, image/jpg" multiple required />
+        </div>
+    </form>
+</div>
+<div id="upload-tb">
+    <a href="javascript:upload()" class="easyui-linkbutton">上传</a>
+    <a href="javascript:$('#dlg-upload').dialog('close')" class="easyui-linkbutton">取消</a>
+</div>
+
+<div id="dlg-img" class="easyui-dialog" title="图片" style="width:89%; height:90%; padding:10px"
+     data-options="
+                closed:true,
+                modal:true,
+				iconCls: 'icon-save',
+				toolbar: [{
+					text:'添加图片',
+					iconCls:'icon-add',
+					handler:function(){
+						$('#dlg-upload').dialog('open').dialog('center');
+					}
+				},'-',{
+					text:'删除图片',
+					iconCls:'icon-remove',
+					handler:function(){
+					   if (imgNames) {
+                            if (imgNames.length > 2) {
+                                imgNames.splice(imgIndex, 1);
+                                imgIndex = 0;
+                                loadImg(imgNames[imgIndex]);
+                            }
+                       }
+                    }
+				},'-',{
+					text:'上一张',
+					handler:function(){
+						if (imgIndex > 0 && imgNames && imgNames.length > 1) {
+                            imgIndex--;
+                            loadImg(imgNames[imgIndex]);
+                        }
+					}
+				},'-',{
+					text:'下一张',
+					handler:function(){
+						if (imgIndex >= 0 && imgNames && imgNames.length > imgIndex + 1 && imgNames[imgIndex + 1] != '') {
+                            imgIndex++;
+                            loadImg(imgNames[imgIndex]);
+                        }
+					}
+				}],
+				buttons: [{
+					text:'保存',
+					iconCls:'icon-ok',
+					handler:function(){
+						$.ajax({
+                            url: '/api/TrafficAccidentApi/ModifyImgs',
+                            method: 'post',
+                            dataType: 'json',
+                            data: {
+                                id: id,
+                                imgUrl: imgNames.join(',')
+                            },
+                            success: function(result) {
+                                if (result.success) {
+                                    $.messager.alert('提示','修改成功' );
+                                    $('#dlg-img').dialog('close');
+                                    $('#dataGrid').datagrid('reload');
+                                } else {
+                                    $.messager.alert('提示', '修改失败' );
+                                }
+                            }
+                        });
+                    }
+               },{
+                    text:'取消',
+                    handler:function(){
+                        $('#dlg-img').dialog('close');
+                   }
+               }]
+     ">
+    <img id="img-show" />
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        var imgNames;
+        var imgIndex = -1;
+        var id = -1;
+        $('#dataGrid').datagrid({
+            columns: [[
+                { field: 'ck', checkbox: true },
+                { field: 'id', title: '编号', halign: 'center', align: 'left' },
+                { field: 'happenDate', title: '事故时间', halign: 'center', align: 'left' },
+                { field: 'happenAddr', title: '事故地点', halign: 'center', align: 'left' },
+                { field: 'firstPartyMan', title: '甲方当事人', halign: 'center', align: 'left' },
+                { field: 'firstPartyAddr', title: '甲方单位/地址', halign: 'center', align: 'left' },
+                { field: 'secondPartyMan', title: '乙方当事人', halign: 'center', align: 'left' },
+                { field: 'secondPartyAddr', title: '乙方单位/地址', halign: 'center', align: 'left' },
+                { field: 'accidentDesc', title: '事故经过', halign: 'center', align: 'left' },
+                { field: 'mediationUnit', title: '调解单位', halign: 'center', align: 'left' },
+                { field: 'mediationDate', title: '调解时间', halign: 'center', align: 'left' },
+                { field: 'drawRecorder', title: '绘图记录', halign: 'center', align: 'left' },
+                { field: 'accidentMediator', title: '调解员', halign: 'center', align: 'left' },
+                { field: 'operId', title: '登记人', halign: 'center', align: 'left' },
+                { field: 'operDate', title: '登记时间', halign: 'center', align: 'left' },
+                { field: 'modifyOperId', title: '最近修改人', halign: 'center', align: 'left' },
+                { field: 'modifyDate', title: '最近修改时间', halign: 'center', align: 'left' },
+                { field: 'imgUrl', hidden: true }
+            ]],
+            url: '/api/TrafficAccidentApi/ListAccident',
+            toolbar: '#toolbar',
+            height: $(window).height() - 35,
+            idField: 'id',
+            pagination: true,
+            pageList: [10, 20, 50],
+            fitColumns: true,
+            striped: true,
+            showHeader: true,
+            queryParams: getListParams()
+        });
+
+        function getListParams() {
+            return {
+                id: $('#id').val(),
+                happenAddr: $('#happenAddr').val(),
+                timeBegin: $('#timeBegin').val(),
+                timeEnd: $('#timeEnd').val(),
+                firstPartyMan: $('#firstPartyMan').val(),
+                secondPartyMan: $('#secondPartyMan').val(),
+                accidentMediator: $('#accidentMediator').val(),
+                mediationUnit: $('#mediationUnit').val()
+            }
+        }
+        function showPic() {
+            var row = $('#dataGrid').datagrid('getSelected');
+            if (row) {
+                var imgUrl = row.imgUrl;
+                id = row.id;
+                if (imgUrl && imgUrl.length > 0) {
+                    imgNames = imgUrl.split(",");
+                    if (imgNames && imgNames.length > 0) {
+                        imgIndex = 0;
+                        loadImg(imgNames[0]);
+                    }
+                }
+                $('#dlg-img').dialog('open').dialog('center');
+            } else {
+                $.messager.alert("提示", "请先选择一条记录");
+            }
+        }
+
+        function loadImg(name) {
+            if (name && !name == "" && name.length > 4) {
+                $('#img-show').prop('src', '/api/TrafficAccidentApi/getReadImg?imgName=' + name);
+            }
+        }
+
+        function upload() {
+            var formData = new FormData(document.getElementById("upload"));
+            formData.append("id", id);
+            $.ajax({
+                url: "/api/TrafficAccidentApi/AppendAccidentImg",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (ret) {
+                    if (ret.success) {
+                        $.messager.alert('提示', '添加成功');
+                        $('#files').val('');
+                        $('#dlg-upload').dialog('close');
+                        $('#dlg-img').dialog('close');
+                        $('#dataGrid').datagrid('reload');
+                    } else {
+                        $.messager.alert('提示', '添加失败');
+                    }
+                }
+            });
+        }
+        function query() {
+            $('#dataGrid').datagrid('load', getListParams());
+        }
+        function del() {
+            var rows = $('#dataGrid').datagrid('getSelections');
+            if (rows && rows.length > 0) {
+                var ids = new Array(rows.length);
+                for (var i = 0; i < rows.length; i++) {
+                    ids[i] = rows[i].id;
+                }
+                $.messager.confirm('提示', '请确定要删除编号为' + ids.join(" , ") + '的记录？', function (r) {
+                    if (r) {
+                        $.ajax({
+                            url: '/api/TrafficAccidentApi/DelAccident',
+                            method: 'post',
+                            dataType: 'json',
+                            data: { ids: ids.join(",") },
+                            success: function (result) {
+                                if (result.success) {
+                                    $.messager.alert("提示", "删除成功");
+                                    $('#dataGrid').datagrid('reload');
+                                } else {
+                                    $.messager.alert("提示", "删除失败");
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                $.messager.alert("提示", "请先选择至少一条记录");
+            }
+
+        }
+
+
+        function edit() {
+            var row = $('#dataGrid').datagrid('getSelected');
+            if (row) {
+                $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改记录');
+                $('#accident').form('load', row);
+            } else {
+                $.messager.alert("提示", "请先选择一条记录");
+            }
+        }
+
+        function save() {
+            if ($('#accident').form('validate')) {
+                $.ajax({
+                    url: '/api/TrafficAccidentApi/ModifyAccident',
+                    method: 'post',
+                    dataType: 'json',
+                    data: $('#accident').serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            $.messager.alert("提示", "修改成功");
+                            $('#dlg').dialog('close');        // close the dialog
+                            $('#dataGrid').datagrid('reload');
+                        } else {
+                            $.messager.alert("提示", "修改失败");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 }

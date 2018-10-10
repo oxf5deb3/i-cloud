@@ -1,5 +1,159 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
-消防设备登记
+@section HeaderStyle{
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+        }
+
+        #content {
+            width: 600px;
+            margin: 30px 30px;
+        }
+
+        textarea, input {
+            width: 400px;
+        }
+
+        #div-imgs {
+            height: 200px;
+            width: 400px;
+            overflow: scroll;
+        }
+
+        .imgs {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            margin: 0 10px;
+        }
+
+        label {
+            width: 100px;
+        }
+
+        #div-imgs {
+            display: inline-block;
+        }
+    </style>
+}
+
+
+<div style="padding-left:10px;"><span style="color:blue">提示:</span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
+<div id="content">
+    <form action="javascript:submit()" id="equipment">
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>设备名称：
+            </label>
+            <input name="name" id="name" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>设备型号：
+            </label>
+            <input id="modelNum" name="modelNum" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>设备数量：
+            </label>
+            <input id="count" name="count" required>
+        </div>
+        <div class="item">
+            <label><span class="red-star">*</span>负责人：</label>
+
+            <input id="liable" name="liable" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>安装地址：
+            </label>
+            <textarea rows="3" name="address" id="address" required></textarea>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>安装时间：
+            </label>
+            <input class="easyui-datetimebox" id="datetime" name="datetime" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>用途描述：
+            </label>
+            <textarea rows="3" name="desc" id="desc" required></textarea>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>上传图片：
+            </label>
+            <div id="div-imgs"></div>
+            <input type="file" name="imgs" id="imgs" accept="image/png, image/jpeg, image/gif, image/jpg" multiple required />
+        </div>
+        <div style="text-align:center;">
+            <button type="reset" class="btn btn-primary btn-sm">重置</button>
+            <button id="btn-submit" type="submit" class="btn btn-info btn-sm">提交</button>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var imgArray;
+        let count = 0;
+        $('#imgs').change(function () {
+            var objThis = $(this)[0];
+            var imgs = objThis.files;
+            for (var i = 0; i < imgs.length; i++) {
+                var innerHtml = "<img class='imgs' id='img" + imgs[i].name + "' src='" + window.URL.createObjectURL(imgs[i]) + "' />";
+                $('#div-imgs').append(innerHtml);
+            }
+        });
+
+        function submit() {
+            var formData = new FormData(document.getElementById("equipment"));
+            $.ajax({
+                url: "../../api/FireControlApi/addFireEquipMent",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (ret) {
+                    if (ret.success) {
+                        $.messager.alert('提示', '添加成功');
+                    } else {
+                        $.messager.alert('提示', '添加失败');
+                    }
+                }
+            });
+        }
+    </script>
+}

@@ -62,8 +62,11 @@
     <Compile Include="DriverLicense\TemporaryDriverLicenseDTO.cs" />
     <Compile Include="DrivingPermit\DrivingPermitDTO.cs" />
     <Compile Include="DrivingPermit\TemporaryDrivingPermitDTO.cs" />
+    <Compile Include="FireControl\FireAccidentDTO.cs" />
+    <Compile Include="FireControl\FireEquipmentDTO.cs" />
     <Compile Include="GridResponseDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrafficAccident\TrafficAccidentDTO.cs" />
     <Compile Include="Statistical\DriverLicenseStatisticalDTO.cs" />
     <Compile Include="Statistical\pieDTO.cs" />
     <Compile Include="TreeNodeDTO.cs" />

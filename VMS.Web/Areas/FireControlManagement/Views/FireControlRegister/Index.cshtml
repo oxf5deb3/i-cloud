@@ -3,4 +3,145 @@
     Layout="~/Views/Shared/_Layout.cshtml";
 
 }
-消防事故登记
+@section HeaderStyle{
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+        .item {
+            margin-bottom: 20px;
+        }
+        #content {
+            width: 600px;
+            margin:30px 30px;
+        }
+        textarea, input {
+            width: 400px;
+        }
+        #div-imgs {
+            height:200px;
+            width: 400px;
+            overflow: scroll;
+        }
+        .imgs {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            margin:0 10px;
+        }
+        label {
+            width: 100px;
+        }
+        #div-imgs {
+            display: inline-block;
+        }
+    </style>
+}
+
+
+<div style="padding-left:10px;"><span style="color:blue">提示:</span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
+<div id="content">
+    <form action="javascript:submit()" id="accident">
+        <div class="item">
+            <label><span class="red-star">*</span>事故地点：
+            </label>
+            <input name="address" id="address" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>事故时间：
+            </label>
+                <input class="easyui-datetimebox" id="datetime" name="datetime" required>
+</div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>事故描述：
+            </label>
+                <textarea rows="3" name="desc" id="desc" required></textarea>
+</div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>出警车辆：
+            </label>
+                <textarea rows="3" name="cars" id="cars" required></textarea>
+</div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>出警人员：
+            </label>
+                <textarea rows="3" name="names" id="names" required></textarea>
+</div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>处理结果：
+            </label>
+                <textarea rows="3" name="result" id="result" required></textarea>
+</div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>上传图片：
+            </label>
+                <div id="div-imgs"></div>
+                <input type="file" name="imgs" id="imgs" accept="image/png, image/jpeg, image/jpg" multiple required />
+
+</div>
+        <div style="text-align:center;">
+            <button type="reset" class="btn btn-primary btn-sm">重置</button>
+            <button id="btn-submit" type="submit" class="btn btn-info btn-sm">提交</button>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var imgArray;
+        let count = 0;
+        $('#imgs').change(function(){
+            var objThis = $(this)[0];
+            var imgs = objThis.files;
+            for (var i = 0; i < imgs.length; i++) {
+                var innerHtml = "<img class='imgs' id='img" + imgs[i].name + "' src='" + window.URL.createObjectURL(imgs[i]) + "' />";
+                $('#div-imgs').append(innerHtml);
+            }
+        });
+
+        function submit() {
+            var formData = new FormData(document.getElementById("accident"));
+            $.ajax({
+                url: "../../api/FireControlApi/addFireAccident",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (ret) {
+                    if (ret.success) {
+                        $.messager.alert('提示', '添加成功');
+                    } else {
+                        $.messager.alert('提示', '添加失败');
+                    }
+                }
+            });
+        }
+   </script>
+}

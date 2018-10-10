@@ -49,9 +49,11 @@
     <Compile Include="BaseData\IRegionService.cs" />
     <Compile Include="CarNumber\ICarNumberService.cs" />
     <Compile Include="DriverLicense\IDriverLicenseService.cs" />
+    <Compile Include="FireControl\IFireControlService.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Statistical\IStatisticalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrafficAccident\ITrafficAccidentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VMS.Model\VMS.Model.csproj">

@@ -16,7 +16,7 @@ namespace VMS.Models
             //写到队列
             exceptionQueue.Enqueue(ex);
             //跳转到错误页面
-            filterContext.HttpContext.Response.Redirect("/Shared/Error.cshtml");
+            //filterContext.HttpContext.Response.Redirect("/Shared/Error.cshtml");
         }
     }
 
