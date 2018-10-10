@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VMS.DTO.DrivingPermit;
+using VMS.DTO;
 using VMS.IServices;
 using VMS.Utils;
 
@@ -12,7 +12,7 @@ namespace VMS.Services
     public class CarNumberService : BaseReportService, ICarNumberService
     {
 
-        public List<DTO.DrivingPermit.DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DTO.DrivingPermit.DrivingPermitDTO data)
+        public List<DTO.DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DTO.DrivingPermitDTO data)
         {
             String param = "";
 

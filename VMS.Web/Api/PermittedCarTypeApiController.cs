@@ -12,7 +12,6 @@ using VMS.ServiceProvider;
 using VMS.IServices;
 using System.Text;
 using VMS.Model;
-using VMS.DTO.DriverLicense;
 
 namespace VMS.Api
 {

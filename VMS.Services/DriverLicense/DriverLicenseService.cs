@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using VMS.IServices;
 using VMS.DTO;
 using VMS.Model;
-using VMS.DTO.DriverLicense;
-using VMS.DTO.DrivingPermit;
 using VMS.Utils;
 using System.Data;
 
@@ -36,8 +34,9 @@ namespace VMS.Services
       ",oper_id" +
       ",modify_date" +
       ",modiry_oper_id" +
-      ",user_photo_path" +
-      ",id_card,addr,b.region_name,c.type_name as permitted_car_type_name");
+      //",user_photo_path" +
+      //",id_card,
+            ",addr,b.region_name,c.type_name as permitted_car_type_name");
             sql.Append(" from t_normal_driver_license a");
             sql.Append(" left join t_bd_region  b on a.region_no = b.region_no");
             sql.Append(" left join t_bd_permitted_car_type c on a.permitted_card_type_no= c.type_no");

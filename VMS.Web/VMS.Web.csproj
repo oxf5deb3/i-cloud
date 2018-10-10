@@ -163,6 +163,9 @@
     <Compile Include="Areas\Statistical\Controllers\trendController.cs" />
     <Compile Include="Areas\Statistical\Controllers\VehicleLicenseSController.cs" />
     <Compile Include="Areas\Statistical\StatisticalAreaRegistration.cs" />
+    <Compile Include="Areas\SystemLog\Controllers\LoginLogController.cs" />
+    <Compile Include="Areas\SystemLog\Controllers\OperateLogController.cs" />
+    <Compile Include="Areas\SystemLog\SystemLogAreaRegistration.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentRegisterController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\TrafficAccidentManagementAreaRegistration.cs" />
@@ -290,6 +293,7 @@
     <Content Include="images\air-balloon-1.png" />
     <Content Include="images\air-balloon-2.png" />
     <Content Include="images\arrow-down.png" />
+    <Content Include="images\default.jpg" />
     <Content Include="images\login-bg.jpg" />
     <Content Include="images\login-foot.jpg" />
     <Content Include="images\login.png" />
@@ -298,6 +302,11 @@
     <Content Include="images\rtl.png" />
     <Content Include="images\tab-close.png" />
     <Content Include="Log\a.txt" />
+    <Content Include="PrintTemplate\DrivingLicenseTemplate.html" />
+    <Content Include="PrintTemplate\TempDriverLicenseTemplate.html" />
+    <Content Include="PrintTemplate\TempDrivingLicenseTemplate.html" />
+    <Content Include="PrintTemplate\TempLicenseBackTemplate.html" />
+    <Content Include="PrintTemplate\TempLicenseFontTemplate.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\BaseData\Views\PermittedCarType\Index.cshtml" />
@@ -325,6 +334,8 @@
     <Content Include="Areas\CarNumberManagement\Views\CarNumber\Index.cshtml" />
     <Content Include="Areas\CarNumberManagement\Views\TempCarNumber\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\DrivingLicense\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\LoginLog\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\OperateLog\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\trend\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\VehicleLicenseS\Index.cshtml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -347,6 +358,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Sql\InitData.sql" />
     <Content Include="Sql\InitTable.sql" />
+    <Content Include="PrintTemplate\DriverLicenseTemplate.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

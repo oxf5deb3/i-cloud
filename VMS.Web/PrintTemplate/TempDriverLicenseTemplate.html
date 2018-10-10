@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>打印临时驾驶证</title>
+    <link href="/Content/Site.css" rel="stylesheet" />
+    <style type="text/css">
+        td {
+            padding: 0px;
+        }
+
+        tr {
+            line-height: 22px;
+        }
+
+        #content {
+            font-size: 14px;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <style type="text/css">
+            @media print {
+                .noprint {
+                    visibility: hidden;
+                }
+        </style>
+        <table style="width:460px;text-align:left; table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑'; background:#fff;float:left;">
+            <tr>
+                <td>
+                    <table style="width:100%;height:180px;table-layout:fixed;border-collapse: collapse;">
+                        <tr style="height:0px;">
+                            <td style="width:100px;padding:0px;"></td>
+                            <td style="width:164px;padding:0px;"></td>
+                            <td style="padding:0px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:center;font-size:24px;font-weight:bold;width:100%;height:50px;"><span class="noprint">缅甸佤邦境外机动车临时驾驶证</span></td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="font-size:16px;"><span class="noprint">姓名:</span>
+                            <span style="display:inline-block;border-bottom:1px solid #000;width:80px;">_user_name</span>
+                            <span class="noprint">性别:</span><span style="display:inline-block;border-bottom:1px solid #000;width:50px;">_sex</span>
+                            <span class="noprint">于</span><span style="display:inline-block;border-bottom:1px solid #000;width:50px;">_birthday_year</span>
+                            <span class="noprint">年</span><span style="display:inline-block;border-bottom:1px solid #000;width:40px;">_birthday_month</span>
+                            <span class="noprint">月生</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table style="table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑';">
+                                    <tr style="height:32px;">
+                                        <td><span class="noprint">国籍及地址:</span>
+                                        <span style="display:inline-block;width:160px;border-bottom:1px solid #000;margin:0px 4px;">_nation</span></td>
+                                    </tr>
+                                    <tr style="height:32px;"><td><span class="noprint">准驾车型:</span>
+                                        <span style="display:inline-block;width:176px;border-bottom:1px solid #000;margin:0px 4px;">_car_type</span></td></tr>
+                                    <tr style="height:32px;"><td><span class="noprint">行驶区域:</span>
+                                        <span style="display:inline-block;width:96px;border-bottom:1px solid #000;margin:0px 4px;">_region_name</span>
+                                        <span class="noprint">发证机关章</span></td></tr>
+                                    <tr style="height:10px;"><td></td></tr>
+                                </table>
+
+                            </td>
+                            <td style="padding:0px 20px;font-size:16px;">
+                                <div style="margin:0px auto;width:100%;height:100%;line-height: 145px;text-align:center;writing-mode: vertical-lr;writing-mode: tb-lr;">
+                                <img src="/images/default.jpg" style="height:100%;"/></div>
+                            </td>
+                        </tr>
+                        <tr style="height:10px;">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:left;font-size:16px;">
+                                <span class="noprint">有效期:</span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;">_valid_date_start_year</span>
+                                <span class="noprint">年</span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;">_valid_date_start_month</span>
+                                </span><span class="noprint">月</span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;">_valid_date_start_day</span>
+                                </span><span class="noprint">
+                                    日至
+                                </span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;">_valid_date_end_year</span>
+                                </span><span class="noprint">
+                                    年
+                                </span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;">_valid_date_end_month</span>
+                                </span><span class="noprint">
+                                    月
+                                </span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;">_valid_date_end_day</span>
+                                </span><span class="noprint">日</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+

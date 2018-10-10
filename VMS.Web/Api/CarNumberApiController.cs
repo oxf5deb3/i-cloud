@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using VMS.DTO;
-using VMS.DTO.DrivingPermit;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;

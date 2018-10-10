@@ -7,8 +7,6 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using VMS.DTO;
-using VMS.DTO.DriverLicense;
-using VMS.DTO.DrivingPermit;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
@@ -39,6 +37,15 @@ namespace VMS.Api
                 var lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
                 ret.total = total;
                 ret.rows.AddRange(lst);
+                try
+                {
+                     var logService = Instance<ILogService>.Create;
+                     logService.WriteOperateLog(new OperateLogDTO() { oper_desc = "驾驶证查询", memo = "", region_no = "", oper_id = operInfo.user_id, oper_date = DateTime.Now });
+                }
+                catch (Exception E)
+                {
+                    
+                }
                 return ret;
 
             }

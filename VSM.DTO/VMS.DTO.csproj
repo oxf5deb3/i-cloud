@@ -42,7 +42,10 @@
     <Compile Include="Account\GroupDTO.cs" />
     <Compile Include="Account\GroupRoleDTO.cs" />
     <Compile Include="Account\LoginDTO.cs" />
+    <Compile Include="Account\LoginLogDTO.cs" />
+    <Compile Include="Account\OperateLogDTO.cs" />
     <Compile Include="Account\ResDTO.cs" />
+    <Compile Include="Account\RightMenuDTO.cs" />
     <Compile Include="Account\RoleDTO.cs" />
     <Compile Include="Account\RoleRightDTO.cs" />
     <Compile Include="Account\RoleUserGroupDTO.cs" />

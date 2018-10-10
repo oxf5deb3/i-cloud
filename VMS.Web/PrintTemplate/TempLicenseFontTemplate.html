@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>打印牌照</title>
+    <link href="/Content/Site.css" rel="stylesheet" />
+    <style type="text/css">
+        td {
+            padding: 0px;
+        }
+
+        tr {
+            line-height: 22px;
+        }
+
+        #content {
+            font-size: 14px;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <style type="text/css">
+            @media print {
+                .noprint {
+                    visibility: hidden;
+                }
+        </style>
+        <table style="width:640px;font-size:12px; font-family:'微软雅黑'; background:#fff;border-radius:10px;border:6px solid #000;">
+            <tr>
+                <td>
+                    <table style="width:100%;height:390px;table-layout:fixed;border-collapse: collapse;">
+                        <tr style="height:60px;font-weight: bold;">
+                            <td style="font-size:24px;text-align:center;padding:20px 10px;">
+                                二0
+                                <span style="display:inline-block;width:50px;border-bottom:1px solid #000;"></span>年
+                                <span style="display:inline-block;width:40px;border-bottom:1px solid #000;"></span>月
+                                <span style="display:inline-block;width:40px;border-bottom:1px solid #000;"></span>日
+                                <span style="display:inline-block;width:5px;"></span>前
+                                <span style="display:inline-block;width:5px;"></span>有
+                                <span style="display:inline-block;width:5px;"></span>效
+                            </td>
+                        </tr>
+                        <tr style="height:35%;letter-spacing:45px;text-align:center;font-size:70px;color:red;border-top:1px solid #000;font-weight: bold;">
+                            <td>
+                                临时牌照
+                            </td>
+                        </tr>
+                        <tr style="height:65%;text-align:center;font-size:130px;border-bottom:1px solid #000;font-weight: bold;">
+                            <td>W03332</td>
+                        </tr>
+                        <tr style="height:40px;padding:0px;font-size:25px;letter-spacing:10px;font-weight: bold;">
+                            <td style="padding:20px 60px;"><span style="float:left;">限定在</span><span style="float:right;">区域内行驶</span></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+

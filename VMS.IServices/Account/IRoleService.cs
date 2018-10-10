@@ -26,6 +26,8 @@ namespace VMS.IServices
 
         bool AddRole(RoleUserGroupDTO role);
         bool EditRole(RoleUserGroupDTO role);
+
+        List<RightMenuDTO> LoadMenu(string oper_id);
         List<t_sys_role> GetPageList(StringBuilder SqlWhere, IList<SqlParam> IList_param, int pageIndex, int pageSize, ref int count);
     }
 }

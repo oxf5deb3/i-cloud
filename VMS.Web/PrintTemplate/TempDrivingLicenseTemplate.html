@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>打印临时行驶证</title>
+    <link href="/Content/Site.css" rel="stylesheet" />
+    <style type="text/css">
+        td {
+            padding: 0px;
+        }
+
+        tr {
+            line-height: 22px;
+        }
+
+        #content {
+            font-size: 14px;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <style type="text/css">
+            @media print {
+                .noprint {
+                    visibility: hidden;
+                }
+        </style>
+        <table style="width:460px;text-align:left; table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑'; background:#fff;float:left;">
+            <tr>
+                <td>
+                    <table style="width:100%;height:140px;table-layout:fixed;border-collapse: collapse;">
+                        <tr style="height:0px;">
+                            <td style="width:100px;padding:0px;"></td>
+                            <td style="width:50%;padding:0px;"></td>
+                            <td style="width:100px;padding:0px;"></td>
+                            <td style="width:50%;padding:0px;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align:center;font-size:24px;font-weight:bold;width:100%;">
+                            <span class="noprint">缅甸佤邦境外机动车临时行车证</span></td>
+
+                        </tr>
+                        <tr>
+                            <td><span class="noprint">车&nbsp;&nbsp;主:</span></td>
+                            <td style="border-bottom:1px solid #000;"></td>
+                            <td><span class="noprint">车&nbsp;&nbsp;型:</span></td>
+                            <td style="border-bottom:1px solid #000;"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="noprint">车身颜色:</span></td>
+                            <td style="border-bottom:1px solid #000;"></td>
+                            <td><span class="noprint">临时牌照:</span></td>
+                            <td style="border-bottom:1px solid #000;"></td>
+                        </tr>
+                        <tr>
+                            <td><span class="noprint">发动机号:</span></td>
+                            <td style="border-bottom:1px solid #000;"></td>
+                            <td style="letter-spacing:5px;"><span class="noprint">底盘号:</span></td>
+                            <td style="border-bottom:1px solid #000;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="text-align:left;">
+                                <span class="noprint">核定载客:</span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;"></span>
+                                <span class="noprint">人，核定载货:</span>
+                                <span style="display:inline-block;width:25px;border-bottom:1px solid #000;margin:0px 4px;"></span>
+                                <span class="noprint">千克</span>
+</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+

@@ -8,27 +8,106 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>打印订单窗口</title>
+    @Styles.Render("~/Content/css")
     <style type="text/css">
         td{
           padding:0px;
         }
+        tr{line-height:22px;}
     </style>
 </head>
 <body>
     <button id="btnPrint">打印</button>
     <div id="content">
+        <table style="width:380px;font-size:12px; font-family:'微软雅黑'; background:#fff;border-radius:10px;">
+            <tr>
+                <td>
+                    <table style="width:100%;height:200px;table-layout:fixed;border-collapse: collapse;">
+                        <tr style="height:30px;">
+                            <td colspan="2" style="font-size:15px;text-align:center;width:100px">
+                                <span class="noprint">缅甸第二特区（佤邦）机动车驾驶证正证</span>
+</td>
+                        </tr>
+                        <tr style="">
+                            <td colspan="2">
+                                <span class="noprint" style="padding-left:100px;">W证号</span><span id="id_no">zsjs20181009123564</span>
+                            </td>
+                        </tr>
+                        <tr style="">
+                            <td colspan="2"><span class="noprint">姓名</span><span id="name" style="text-align:center;display:inline-block;width:70px;border-bottom:1px dotted #000">宋立夫</span> <span class="noprint">男女</span><span id="name" style="text-align:center;display:inline-block;width:50px;border-bottom:1px dotted #000">2018</span><span class="noprint"> 年</span><span id="name" style="text-align:center;display:inline-block;width:50px;border-bottom:1px dotted #000">03</span> <span class="noprint">月生</span></td>
+                        </tr>
+                        <tr style="">
+                            <td colspan="2"><span class="noprint">单位或住址</span><span id="name" style="text-align:center;display:inline-block;min-width:200px;border-bottom:1px dotted #000">深圳市南山区</span> </td>
+                        </tr>
+                        <tr rowspan="3">
+                            <td colspan="2">
+                                <table style="width:100%;height:100%;table-layout:fixed;border-collapse: collapse;">
+                                    <tr>
+                                        <td style="">
+                                            <table style="width:100%;height:100%;table-layout:fixed;border-collapse: collapse;">
+                                                <tr>
+                                                    <td><span class="noprint">发证机关章</span><span style="display:inline-block;width:4px;"></span><span class="noprint">初次领证日期</span><span id="name" style="text-align:center;display:inline-block;width:50px;border-bottom:1px dotted #000">2018</span><span class="noprint">年</span><span id="name" style="text-align:center;display:inline-block;width:20px;border-bottom:1px dotted #000">10</span><span class="noprint">月</span><span id="name" style="text-align:center;display:inline-block;width:20px;border-bottom:1px dotted #000">18</span><span class="noprint">日</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="noprint">准驾车型</span><span id="name" style="margin-left:5px;text-align:center;display:inline-block;width:150px;border:1px dotted #000">三轮车</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="noprint">有效日期</span><span id="name" style="text-align:center;display:inline-block;width:50px;border-bottom:1px dotted #000">2018</span><span class="noprint">年</span><span id="name" style="text-align:center;display:inline-block;width:20px;border-bottom:1px dotted #000">10</span><span class="noprint">月</span><span id="name" style="text-align:center;display:inline-block;width:20px;border-bottom:1px dotted #000">01</span><span class="noprint">日至</span><span id="name" style="text-align:center;display:inline-block;width:50px;border-bottom:1px dotted #000">2018</span><span class="noprint">年</span><span id="name" style="text-align:center;display:inline-block;width:20px;border-bottom:1px dotted #000">10</span><span class="noprint">月</span><span id="name" style="text-align:center;display:inline-block;width:20px;border-bottom:1px dotted #000">09</span><span class="noprint">日</span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td style="width:68px;">
+                                            <div style="width:100%;height:100%;border:1px dotted #000;margin-right:4px;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table style="width:380px;font-size:12px; font-family:'微软雅黑'; background:#fff;border-radius:10px;">
+            <tr>
+                <td>
+                    <table style="width:100%;height:200px;table-layout:fixed;border-collapse: collapse;">
+                        <tr style="height:30px;">
+                            <td colspan="2" style="font-size:15px;text-align:center;width:100px">
+                                <span class="noprint">缅甸第二特区（佤邦）机动车驾驶证副证</span>
+</td>
+                        </tr>
+
+                        <tr style="height:40px;">
+                            <td colspan="2"><span class="noprint">姓名</span><span id="name" style="text-align:center;display:inline-block;width:70px;border-bottom:1px dotted #000">宋立夫</span><span class="noprint"> W证号</span><span id="name" style="text-align:center;border-bottom:1px dotted #000">201802654555888779456123</span> </td>
+                        </tr>
+                        <tr style="">
+                            <td colspan="2">
+                                <div style="word-break:break-all;line-height:30px;height:100%;">
+                                    <span class="noprint">审验</span>
+                                    <span id="name" style="text-align:center;border-bottom:1px dotted #000">深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区深圳市南山区v</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+        </table>
         <table style="width:640px;font-size:12px; font-family:'微软雅黑'; background:#fff;border-radius:10px;border:6px solid #000;">
             <tr>
                 <td>
                     <table style="width:100%;height:260px;table-layout:fixed;border-collapse: collapse;">
                         <tr style="height:60px;font-weight: bold;">
-                            <td style="font-size:24px;text-align:center;padding:20px 10px;">二0
-                            <span style="display:inline-block;width:50px;border-bottom:1px solid #000;"></span>年
-                            <span style="display:inline-block;width:40px;border-bottom:1px solid #000;"></span>月
-                            <span style="display:inline-block;width:40px;border-bottom:1px solid #000;"></span>日
-                            <span style="display:inline-block;width:5px;"></span>前
-                            <span style="display:inline-block;width:5px;"></span>有
-                            <span style="display:inline-block;width:5px;"></span>效</td>
+                            <td style="font-size:24px;text-align:center;padding:20px 10px;">
+                                二0
+                                <span style="display:inline-block;width:50px;border-bottom:1px solid #000;"></span>年
+                                <span style="display:inline-block;width:40px;border-bottom:1px solid #000;"></span>月
+                                <span style="display:inline-block;width:40px;border-bottom:1px solid #000;"></span>日
+                                <span style="display:inline-block;width:5px;"></span>前
+                                <span style="display:inline-block;width:5px;"></span>有
+                                <span style="display:inline-block;width:5px;"></span>效
+                            </td>
                         </tr>
                         <tr style="height:35%;letter-spacing:45px;text-align:center;font-size:70px;color:red;border-top:1px solid #000;font-weight: bold;">
                             <td>
@@ -50,7 +129,7 @@
 
 
 
-        <table style=" width:460px;text-align:left; table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑'; background:#fff;float:left;">
+        <table style="width:460px;text-align:left; table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑'; background:#fff;float:left;">
             <tr>
                 <td>
                     <table style="width:100%;height:180px;border:1px solid #000;table-layout:fixed;border-collapse: collapse;">
@@ -100,7 +179,7 @@
             </tr>
         </table>
 
-        <table style=" width:460px;text-align:left; table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑'; background:#fff;float:left;">
+        <table style="width:460px;text-align:left; table-layout:fixed;font-size:16px; font-family:simsun,'微软雅黑'; background:#fff;float:left;">
             <tr>
                 <td>
                     <table style="width:100%;height:180px;border:1px solid #000;table-layout:fixed;border-collapse: collapse;">

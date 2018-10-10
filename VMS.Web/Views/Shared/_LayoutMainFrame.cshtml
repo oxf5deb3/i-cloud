@@ -273,7 +273,7 @@
                             <li data-name="home" class="vmsui-nav-item">
                                 <a href="javascript:;" data-url="../Statistical/VehicleLicenseS/Index">
                                     <i class="vmsui-space"></i>
-                                    <cite>行驶证证统计情况</cite>
+                                    <cite>行驶证统计情况</cite>
                                     <span class=""></span>
                                 </a>
                             </li>
@@ -326,23 +326,16 @@
 
                         <ul class="vmsui-nav-child">
                             <li data-name="home" class="vmsui-nav-item">
-                                <a href="javascript:;">
+                                <a data-url="../SystemLog/LoginLog/Index" href="javascript:;">
                                     <i class="vmsui-space"></i>
                                     <cite>登陆日志</cite>
                                     <span class=""></span>
                                 </a>
                             </li>
                             <li data-name="home" class="vmsui-nav-item">
-                                <a href="javascript:;">
+                                <a data-url="../SystemLog/OperateLog/Index" href="javascript:;">
                                     <i class="vmsui-space"></i>
                                     <cite>操作日志</cite>
-                                    <span class=""></span>
-                                </a>
-                            </li>
-                            <li data-name="home" class="vmsui-nav-item">
-                                <a data-url="../Print/Index" href="javascript:;">
-                                    <i class="vmsui-space"></i>
-                                    <cite>打印日志</cite>
                                     <span class=""></span>
                                 </a>
                             </li>
@@ -358,10 +351,12 @@
             <div class="left-page"></div>
             <div class="tabs-title">
                 <ul>
+                    <!--
                     <li class="tab-title-item tab-title-selected">
                         <span>准驾车型</span>
                         <i class="tab-close"></i>
                     </li>
+                    -->
                 </ul>
             </div>
             <div class="right-page"></div>
@@ -374,9 +369,11 @@
             </div>
         </div>
         <div class="body-content vmsui-tabs-body">
+             <!--
             <div class="tab-body-item tab-body-selected">
                 <iframe src="../BaseData/PermittedCarType/Index" frameborder="0"></iframe>
-            </div>
+               
+            </div> -->
             <!-- @RenderBody()-->
         </div>
     </div>

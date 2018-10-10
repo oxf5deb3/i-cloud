@@ -74,30 +74,75 @@ begin
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
                        values('4000','','0','','glyphicon glyphicon-list-alt','车牌号管理','0000','0000','1001',GETDATE(),4)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('4001','4000','1','../CarNumberManagement/TempCarNumber/Index','','临时车牌号','0000','0000','1001',GETDATE(),20)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('4002','4000','1','../CarNumberManagement/CarNumber/Index','','正式车牌号','0000','0000','1001',GETDATE(),21)
+
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('5000','','0','','glyphicon glyphicon-list-alt','事故管理','0000','0000','1001',GETDATE(),5)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('5001','5000','1','../TrafficAccidentManagement/TrafficAccidentRegister/Index','','交通事故登记','0000','0000','1001',GETDATE(),20)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('5002','5000','1','../TrafficAccidentManagement/TrafficAccidentQuery/Index','','交通事故查询','0000','0000','1001',GETDATE(),21)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('5001','5000','1','../TrafficAccidentManagement/TrafficAccidentRegister/Index','','交通事故登记','0000','0000','1001',GETDATE(),22)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('5002','5000','1','../TrafficAccidentManagement/TrafficAccidentQuery/Index','','交通事故查询','0000','0000','1001',GETDATE(),23)
    
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6000','','0','','glyphicon glyphicon-list-alt','消防管理','0000','0000','1001',GETDATE(),6)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6001','6000','1','../FireControlManagement/FireControlRegister/Index','','消防事故登记','0000','0000','1001',GETDATE(),22)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6002','6000','1','../FireControlManagement/FireControlQuery/Index','','消防事故查询','0000','0000','1001',GETDATE(),23)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6003','6000','1','../FireControlManagement/FireEquipmentRegister/Index','','消防设备登记','0000','0000','1001',GETDATE(),24)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6004','6000','1','../FireControlManagement/FireEquipmentQuery/Index','','消防设备查询','0000','0000','1001',GETDATE(),25)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6001','6000','1','../FireControlManagement/FireControlRegister/Index','','消防事故登记','0000','0000','1001',GETDATE(),24)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6002','6000','1','../FireControlManagement/FireControlQuery/Index','','消防事故查询','0000','0000','1001',GETDATE(),25)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6003','6000','1','../FireControlManagement/FireEquipmentRegister/Index','','消防设备登记','0000','0000','1001',GETDATE(),26)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6004','6000','1','../FireControlManagement/FireEquipmentQuery/Index','','消防设备查询','0000','0000','1001',GETDATE(),27)
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
                        values('7000','','0','','glyphicon glyphicon-file','统计分析','0000','0000','1001',GETDATE(),7)
-   
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('7001','7000','1','../Statistical/DrivingLicense/Index','','驾驶证统计情况','0000','0000','1001',GETDATE(),28)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('7002','7000','1','../Statistical/trend/Index','','驾驶证发展趋势统计','0000','0000','1001',GETDATE(),29)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('7003','7000','1','../Statistical/VehicleLicenseS/Index','','行驶证统计情况','0000','0000','1001',GETDATE(),30)
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
                        values('8000','','0','','glyphicon glyphicon-user','用户管理','0000','0000','1001',GETDATE(),8)
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
-   values('8001','8000','1','../Account/User/Index','','系统用户','0000','0000','1001',GETDATE(),26)
+   values('8001','8000','1','../Account/User/Index','','系统用户','0000','0000','1001',GETDATE(),31)
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
-   values('8002','8000','1','../Account/UserGroup/Index','','用户组','0000','0000','1001',GETDATE(),27)
+   values('8002','8000','1','../Account/UserGroup/Index','','系统用户组','0000','0000','1001',GETDATE(),32)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('8003','8000','1','../Account/Role/Index','','系统角色','0000','0000','1001',GETDATE(),33)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('8004','8000','1','../Account/RoleRes/Index','','角色权限','0000','0000','1001',GETDATE(),34)
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
-                       values('9000','','0','','glyphicon glyphicon-cog','系统设置','0000','0000','1001',GETDATE(),9)
+                       values('9000','','0','','glyphicon glyphicon-cog','系统日志','0000','0000','1001',GETDATE(),9)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('9001','9000','1','../SystemLog/LoginLog/Index','','登陆日志','0000','0000','1001',GETDATE(),35)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+   values('9002','9000','1','../SystemLog/OperateLog/Index','','操作日志','0000','0000','1001',GETDATE(),36)
 end
 go
+--超级管理员默认写入,账号:1001 密码:1001///////////////////////////////////////////////////////
+if not exists(select 1 from t_sys_user where user_id='1001' and user_pwd='AA41D8FF38420ABE')
+begin
+  insert into t_sys_user(user_id,user_pwd,user_name,sex,age,tel,email,status,last_login_time,create_date)
+values('1001','AA41D8FF38420ABE','超级管理员','0','28','15200790169','oxf5de98@163.com','0',null,getdate())
+end
+go
+--写入超管角色
+if not exists(select 1 from t_sys_role where role_name='系统管理员')
+begin
+   insert into t_sys_role(role_name,create_id,create_date,status,memo) values('系统管理员','1001',getdate(),'0','系统默认')
+end
+if not exists(select 1 from t_sys_oper_role where role_id =(select top 1 id from t_sys_role where role_name='系统管理员') and user_id='1001')
+begin
+   insert into t_sys_oper_role(role_id,user_id) select (select top 1 id from t_sys_role where role_name='系统管理员') as role_id,'1001' as user_id
+end
+go
+--写入超管权限
+if not exists(select 1 from t_sys_role_right where role_id=(select id from t_sys_role where role_name='系统管理员'))
+begin
+   insert into t_sys_role_right(role_id,res_id,grant_id) select (select top 1 id from t_sys_role where role_name='系统管理员') as role_id,id as res_id,'0000' as grant_id from t_sys_resource 
+end
+else
+begin
+  delete from t_sys_role_right where role_id=(select id from t_sys_role where role_name='系统管理员')
+  insert into t_sys_role_right(role_id,res_id,grant_id) select (select top 1 id from t_sys_role where role_name='系统管理员') as role_id,id as res_id,'0000' as grant_id from t_sys_resource 
+end
+go
+--超级管理员默认写入,账号:1001 密码:1001////////////////////////////////////////////////

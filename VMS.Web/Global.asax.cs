@@ -23,6 +23,9 @@ namespace VMS
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //应用程序启动时，自动加载配置log4Net  
+            //XmlConfigurator.Configure();
             //注册自定义ControllerFactory
             //ControllerBuilder.Current.SetControllerFactory(new CustomControllerFactory());
 

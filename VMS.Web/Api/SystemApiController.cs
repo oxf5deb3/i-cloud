@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Security;
+using VMS.Controllers;
 using VMS.DTO;
 using VMS.IServices;
+using VMS.Model;
 using VMS.ServiceProvider;
 using VMS.Utils;
 
@@ -19,9 +22,26 @@ namespace VMS.Api
     {
         //加载菜单
         [HttpPost]
-        public BaseTResponseDTO<List<string>> LoadMenu()
+        public BaseTResponseDTO<List<RightMenuDTO>> LoadMenu()
         {
-
+            var ret = new BaseTResponseDTO<List<RightMenuDTO>>();
+            try
+            {
+                var obj = Instance<IRoleService>.Create;
+                var oper_id = operInfo.user_id;
+                var lst = obj.LoadMenu(oper_id);
+                ret.data = lst;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+            //var sb = new StringBuilder();
+            //var obj = Instance<IRoleService>.Create;
+            //var lst = obj.GetAllResource(sb, paramlst, ref total);
 
 
             return null;
@@ -71,7 +91,7 @@ namespace VMS.Api
                 dto.user_pwd = "";
                 dto.user_name = user.user_name;
                 userData = JsonConvert.SerializeObject(dto);
-                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, "login", DateTime.Now, DateTime.Now.AddMinutes(30), false, userData, FormsAuthentication.FormsCookiePath);
+                FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, GlobalVar.LOGIN_KEY, DateTime.Now, DateTime.Now.AddMinutes(30), false, userData, FormsAuthentication.FormsCookiePath);
                 string enyTicket = FormsAuthentication.Encrypt(ticket);
                 HttpCookie cookie = new HttpCookie(ticket.Name, enyTicket);
                 if (!ticket.IsPersistent)
@@ -79,6 +99,16 @@ namespace VMS.Api
                     cookie.Expires = ticket.Expiration;
                 }
                 HttpContext.Current.Response.Cookies.Add(cookie);
+                HttpContext.Current.Session.Add(GlobalVar.LOGIN_KEY, enyTicket);
+                try
+                {
+                    var logservice = Instance<ILogService>.Create;
+                    logservice.WriteLoginLog(new LoginLogDTO() { region_no = "", ip = ip, login_id = dto.user_id, login_date = DateTime.Now });
+                }
+                catch (Exception ex)
+                {
+                }
+              
                 return ret;
             }
             catch (Exception ex)
@@ -96,10 +126,16 @@ namespace VMS.Api
             try
             {
                 FormsAuthentication.SignOut();
-              
+
                 var cookie = HttpContext.Current.Response.Cookies["login"];
-                if (cookie != null) {
+                if (cookie != null)
+                {
                     cookie.Expires = DateTime.Now.AddDays(-1);
+                }
+                var session = HttpContext.Current.Session[GlobalVar.LOGIN_KEY];
+                if (session != null)
+                {
+                    HttpContext.Current.Session.Remove(GlobalVar.LOGIN_KEY);
                 }
                 return ret;
             }

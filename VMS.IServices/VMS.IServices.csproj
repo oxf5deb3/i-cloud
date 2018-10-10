@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\ILogService.cs" />
+    <Compile Include="Account\ILoginLogService.cs" />
+    <Compile Include="Account\IOperateLogService.cs" />
     <Compile Include="Account\IRoleService.cs" />
     <Compile Include="Account\IUserGroupService.cs" />
     <Compile Include="Account\IUserService.cs" />

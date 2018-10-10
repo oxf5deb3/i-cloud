@@ -52,9 +52,26 @@
 <div class="q-detail">
     <table id="dgDetail"></table>
 </div>
+<div id="print" style="display:none;"></div>
+<div id="bb" style="display:none;">
+    <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
+    <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
+</div>
 @section scripts{
     <script type="text/javascript">
-
+         function print(){
+       var body = $('#print').dialog('body');
+       var oWin = window.open("", "_blank");
+        oWin.document.write(body.find("#content").html());
+        oWin.focus();
+        oWin.document.close();
+        oWin.print();
+        //oWin.close();
+        return false;
+    }
+    function cancelPrint(){
+      $('#print').dialog('close');
+    }
         function getQueryParams() {
             var params = {};
             var id_no = $('#id_no').textbox('getValue');
@@ -67,6 +84,43 @@
 
             return params;
         }
+         function initPrint(){
+            $('#print').dialog({
+                    width:430,
+                    height:450,
+                    noheader:true,
+                    border:false,
+                    modal:true,
+                    onLoad:function(){
+                        return;
+                         var ckRows = $('#dgDetail').datagrid('getChecked');
+                         var data = ckRows[0];
+                         var birthday = new Date(data.birthday);
+                         var validdatestart = new Date(data.valid_date_start);
+                         var validdateend = new Date(data.valid_date_end);
+                         var first_get_license_date = new Date(data.first_get_license_date);
+                         var body = $('#print').dialog('body');
+                         var html = body.html().replace(/_id_no/g,data.id_no).replace(/_user_name/g,data.name).replace(/_birthday_year/g,birthday.getFullYear()).
+                         replace(/_birthday_month/g,birthday.getMonth()+1).replace(/_addr/g,data.addr).
+                         replace(/_first_get_license_date_year/g,first_get_license_date.getFullYear()).
+                         replace(/_first_get_license_date_month/g,first_get_license_date.getMonth()+1).
+                         replace(/_first_get_license_date_day/g,first_get_license_date.getDate()).
+                         replace(/_permitted_car_type_name/g,data.permitted_car_type_name).
+                         replace(/_valid_date_start_year/g,validdatestart.getFullYear()).
+                         replace(/_valid_date_start_month/g,validdatestart.getMonth()+1).
+                         replace(/_valid_date_start_day/g,validdatestart.getDate()).
+                         replace(/_valid_date_end_year/g,validdateend.getFullYear()).
+                         replace(/_valid_date_end_month/g,validdateend.getMonth()+1).
+                         replace(/_valid_date_end_day/g,validdateend.getDate()).
+                         replace(/_photo_path/g,data.user_photo_path==null?'/images/default.jpg':data.user_photo_path);
+
+                         body.html(html);
+                    },
+                    href:'/PrintTemplate/DrivingLicenseTemplate.html',
+                    buttons:'#bb'
+       });
+     $('#print').dialog('open');
+    }
         function initBtn() {
             $('#btnQuery').linkbutton({
                 onClick: function () {
@@ -77,10 +131,11 @@
             $('#btnPrint').linkbutton({
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getChecked');
-                    if (ckRows.length <= 0) {
-                        $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
-                        return;
-                    }
+                   // if (ckRows.length <= 0) {
+                   //     $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                   //     return;
+                   // }
+                    initPrint();
                 }
 
             });

@@ -36,6 +36,7 @@ namespace VMS
                       ));
             bundles.Add(new StyleBundle("~/Content/easyuicss").Include(
                      "~/Content/EasyUI/bootstrap/easyui.css",
+                     "~/Content/EasyUI/color.css",
                      "~/Content/EasyUI/icon.css"));
         }
     }

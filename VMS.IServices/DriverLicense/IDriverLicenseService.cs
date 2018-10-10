@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VMS.DTO;
-using VMS.DTO.DriverLicense;
-using VMS.DTO.DrivingPermit;
 
 namespace VMS.IServices
 {

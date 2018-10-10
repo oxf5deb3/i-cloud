@@ -436,5 +436,30 @@ namespace VMS.Services
             lstParams.Add(new SqlParam("@role_id",role_id));
             return DbContext.GetDataListBySQL<RoleRightDTO>(sql, lstParams.ToArray()) as List<RoleRightDTO>;
         }
+
+
+        public List<RightMenuDTO> LoadMenu(string oper_id)
+        {
+            var sql = new StringBuilder();
+            sql.Append(" select * from ( ");
+            sql.Append(" select d.id,d.pid,d.level,d.res_uri,d.res_img,d.res_desc,d.sort_code ");
+            sql.Append(" from t_sys_user a");
+            sql.Append(" left join t_sys_oper_role b on a.user_id=b.user_id");
+            sql.Append(" left join t_sys_role_right c on b.role_id=c.role_id");
+            sql.Append(" left join t_sys_resource d on c.res_id = d.id");
+            sql.Append(" left join t_sys_resource_type e on d.res_type_id=e.id");
+            sql.Append(" where a.user_id=@oper_id and e.type_name='Menu'");
+            sql.Append(" union ");
+            sql.Append(" select i.id,i.pid,i.level,i.res_uri,i.res_img,i.res_desc,i.sort_code from t_sys_user_group f ");
+            sql.Append(" left join t_sys_group_role g on f.group_id=g.group_id ");
+            sql.Append(" left join t_sys_role_right h on g.role_id=h.role_id ");
+            sql.Append(" left join t_sys_resource i on h.res_id = i.id ");
+            sql.Append(" left join t_sys_resource_type j on i.res_type_id=j.id ");
+            sql.Append(" where f.user_id=@oper_id and j.type_name='Menu' ");
+            sql.Append(" ) as t order by id,level,sort_code ");
+            var lstParams = new List<SqlParam>();
+            lstParams.Add(new SqlParam("@oper_id", oper_id));
+            return DbContext.GetDataListBySQL<RightMenuDTO>(sql, lstParams.ToArray()) as List<RightMenuDTO>;
+        }
     }
 }

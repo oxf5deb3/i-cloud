@@ -134,7 +134,7 @@ namespace VMS.Api
                     ret.message = string.Format("不存在存在此角色名称[{0}],请刷新重试!", dto.role_name);
                     return ret;
                 }
-                dto.create_id = "1001";
+                dto.create_id = operInfo.user_id;
                 dto.create_date = DateTime.Now;
                 ret.success = service.EditRole(dto);
                 return ret;
