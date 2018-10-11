@@ -92,7 +92,7 @@
                     border:false,
                     modal:true,
                     onLoad:function(){
-                        return;
+
                          var ckRows = $('#dgDetail').datagrid('getChecked');
                          var data = ckRows[0];
                          //var birthday = new Date(data.birthday);
@@ -100,18 +100,14 @@
                          //var validdateend = new Date(data.valid_date_end);
                          //var first_get_license_date = new Date(data.first_get_license_date);
                          var body = $('#print').dialog('body');
-                         var html = body.html().replace(/_user_name/g,'songlf').replace(/_sex/g,'男').replace(/_birthday_year/g,'2018').
-                         replace(/_birthday_month/g,'09').replace(/_birthday_day/g,'20').
-                         replace(/_nation/g,'中国').
-                         replace(/_car_type/g,'三轮').
-                         replace(/_region_name/g,'佤邦').
-                         replace(/_valid_date_start_year/g,'2018').
-                         replace(/_valid_date_start_month/g,'08').
-                         replace(/_valid_date_start_day/g,'20').
-                         replace(/_valid_date_end_year/g,'2018').
-                         replace(/_valid_date_end_month/g,'12').
-                         replace(/_valid_date_end_day/g,'20').
-                         replace(//images/default.jpg/g,data.user_photo_path==null?'/images/default.jpg':data.user_photo_path);
+                         var html = body.html().replace(/_car_owner/g,'songlf').
+                         replace(/_car_type/g,'奥迪').
+                         replace(/_car_color/g,'褐色').
+                         replace(/_temp_car_license/g,'W0002').
+                         replace(/_engine_no/g,'20678').
+                         replace(/_bottom_no/g,'a023674789').
+                         replace(/_check_passegers/g,'45').
+                         replace(/_check_weight/g,'100');
 
                          body.html(html);
                     },

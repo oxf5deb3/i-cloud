@@ -27,13 +27,21 @@
                 .noprint {
                     visibility: hidden;
                 }
+
+                .noborder {
+                    border: none !important;
+                }
+            }
         </style>
         <table style="width:420px; font-family:'微软雅黑'; background:#fff;border-radius:10px;">
             <tr>
                 <td>
                     <table style="width:100%;height:200px;table-layout:fixed;border-collapse: collapse;">
                         <tr>
-                            <td style="width:60px"></td><td style="width:140px"></td><td style="width:60px"></td><td></td>
+                            <td style="width:60px"></td>
+                            <td style="width:140px"></td>
+                            <td style="width:60px"></td>
+                            <td></td>
                         </tr>
                         <tr style="height:30px;">
                             <td colspan="4" style="text-align:center;">
@@ -43,43 +51,45 @@
 
                         <tr style="font-size: 14px;">
                             <td><span class="noprint">号牌号码</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_car_num</span> </td>
+                            <td><span class="noborder" style="border-bottom:1px dotted #000;text-align:center;display:inline-block;">_car_num</span> </td>
                             <td><span class="noprint">车辆类型</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_car_type</span> </td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_car_type</span> </td>
                         </tr>
                         <tr style="font-size: 14px;">
                             <td><span class="noprint">车&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;主</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_car_owner</span> </td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000;text-align: center; display: inline-block;">_car_owner</span> </td>
                             <td><span class="noprint">住&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_owner_addr</span> </td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_owner_addr</span> </td>
                         </tr>
                         <tr style="font-size: 14px;">
                             <td><span class="noprint">发动机号</span> </td>
-                            <td><span style="text-align:center;display:inline-block;">_engine_no</span> </td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000;text-align: center; display: inline-block;">_engine_no</span> </td>
                             <td><span class="noprint">车&nbsp;架&nbsp;号</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_frame_no</span></td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000;text-align: center; display: inline-block;">_frame_no</span></td>
                         </tr>
                         <tr style="font-size: 14px;">
                             <td><span class="noprint">核定载客</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_id_no</span> </td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_check_passengers</span> </td>
                             <td><span class="noprint">人车颜色</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_car_color</span></td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_car_color</span></td>
                         </tr>
                         <tr style="font-size: 14px;">
-                            <td colspan="4"><span class="noprint">发证日期</span> 
-                            <span style="text-align:center;display:inline-block;">_send_date_year</span>年
-                            <span style="text-align:center;display:inline-block;">_send_date_month</span>月
-                            <span style="text-align:center;display:inline-block;">_send_date_day</span>日</td>
+                            <td colspan="4">
+                                <span class="noprint">发证日期</span>
+                                <span class="noborder" style="border-bottom: 1px dotted #000; text-align:center;display:inline-block;">_send_date_year</span>年
+                                <span class="noborder" style="border-bottom: 1px dotted #000; text-align:center;display:inline-block;">_send_date_month</span>月
+                                <span class="noborder" style="border-bottom: 1px dotted #000; text-align:center;display:inline-block;">_send_date_day</span>日
+                            </td>
                         </tr>
 
                     </table>
                 </td>
             </tr>
         </table>
-        <table style="width:420px;font-family:'微软雅黑'; background:#fff;border-radius:10px;">
+        <table style="width:420px;font-family:'微软雅黑'; background:#fff;margin-top:20px;">
             <tr>
                 <td>
-                    <table style="width:100%;height:180px;table-layout:fixed;border-collapse: collapse;">
+                    <table style="width:100%;height:160px;table-layout:fixed;border-collapse: collapse;">
                         <tr>
                             <td style="width:60px"></td>
                             <td style="width:140px"></td>
@@ -93,19 +103,19 @@
                         </tr>
                         <tr style="font-size: 14px;">
                             <td><span class="noprint">车牌号码</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_car_num</span></td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_car_num</span></td>
                             <td><span class="noprint">车辆类型</span></td>
-                            <td><span style="text-align:center;display:inline-block;">_car_type</span></td>
+                            <td><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_car_type</span></td>
                         </tr>
                         <tr style=" font-size: 14px;">
                             <td><span class="noprint">车主</span></td>
-                            <td colspan="3"><span style="text-align:center;display:inline-block;">_car_owner</span></td>
+                            <td colspan="3"><span class="noborder" style="border-bottom: 1px dotted #000; text-align: center; display: inline-block;">_car_owner</span></td>
                         </tr>
                         <tr style="font-size: 14px;">
                             <td colspan="4">
                                 <div style="word-break: break-all; line-height: 30px; height: 100%; font-size: 14px;">
                                     <span class="noprint">检验</span>
-                                    <span style="text-align:center;">山区深圳市南山区深圳市南山区深圳市南山区v</span>
+                                    <span class="noborder" style="border-bottom: 1px dotted #000; text-align: center;">山区深圳市南山区深圳市南山区深圳市南山区v</span>
                                 </div>
                             </td>
                         </tr>

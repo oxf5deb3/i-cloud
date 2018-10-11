@@ -92,27 +92,19 @@
                     border:false,
                     modal:true,
                     onLoad:function(){
-                        return;
                          var ckRows = $('#dgDetail').datagrid('getChecked');
-                         var data = ckRows[0];
-                         var birthday = new Date(data.birthday);
-                         var validdatestart = new Date(data.valid_date_start);
-                         var validdateend = new Date(data.valid_date_end);
-                         var first_get_license_date = new Date(data.first_get_license_date);
                          var body = $('#print').dialog('body');
-                         var html = body.html().replace(/_id_no/g,data.id_no).replace(/_user_name/g,data.name).replace(/_birthday_year/g,birthday.getFullYear()).
-                         replace(/_birthday_month/g,birthday.getMonth()+1).replace(/_addr/g,data.addr).
-                         replace(/_first_get_license_date_year/g,first_get_license_date.getFullYear()).
-                         replace(/_first_get_license_date_month/g,first_get_license_date.getMonth()+1).
-                         replace(/_first_get_license_date_day/g,first_get_license_date.getDate()).
-                         replace(/_permitted_car_type_name/g,data.permitted_car_type_name).
-                         replace(/_valid_date_start_year/g,validdatestart.getFullYear()).
-                         replace(/_valid_date_start_month/g,validdatestart.getMonth()+1).
-                         replace(/_valid_date_start_day/g,validdatestart.getDate()).
-                         replace(/_valid_date_end_year/g,validdateend.getFullYear()).
-                         replace(/_valid_date_end_month/g,validdateend.getMonth()+1).
-                         replace(/_valid_date_end_day/g,validdateend.getDate()).
-                         replace(/_photo_path/g,data.user_photo_path==null?'/images/default.jpg':data.user_photo_path);
+                         var html = body.html() .replace(/_car_num/g,'w00032').
+                         replace(/_car_type/g,'三轮').
+                         replace(/_car_owner/g,'宋立夫').
+                         replace(/_owner_addr/g,'海南').
+                         replace(/_engine_no/g,'12345678').
+                         replace(/_frame_no/g,'147852').
+                         replace(/_check_passengers/g,'40').
+                         replace(/_car_color/g,'红色').
+                         replace(/_send_date_year/g,'2018').
+                         replace(/_send_date_month/g,'10').
+                         replace(/_send_date_day/g,'11');
 
                          body.html(html);
                     },
