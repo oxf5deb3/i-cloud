@@ -28,16 +28,16 @@ namespace VMS
                       "~/Content/site.css"));
 
             //easyui
-            bundles.Add(new ScriptBundle("~/bundles/easyuijs").Include(
-                      "~/Scripts/EasyUI/jquery.easyui.min.js",
-                      "~/Scripts/EasyUI/locale/easyui-lang-zh_CN.js",
-                      "~/Scripts/echarts.js"
+            //bundles.Add(new ScriptBundle("~/bundles/easyuijs").Include(
+            //          "~/Scripts/EasyUI/jquery.easyui.min.js",
+             //         "~/Scripts/EasyUI/locale/easyui-lang-zh_CN.js",
+             //         "~/Scripts/echarts.js"
 
-                      ));
-            bundles.Add(new StyleBundle("~/Content/easyuicss").Include(
-                     "~/Content/EasyUI/bootstrap/easyui.css",
-                     "~/Content/EasyUI/color.css",
-                     "~/Content/EasyUI/icon.css"));
+             //         ));
+            //bundles.Add(new StyleBundle("~/Content/easyuicss").Include(
+            //         "~/Content/EasyUI/bootstrap/easyui.css",
+            //         "~/Content/EasyUI/color.css",
+            //         "~/Content/EasyUI/icon.css"));
         }
     }
 }

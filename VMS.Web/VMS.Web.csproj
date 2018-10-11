@@ -311,7 +311,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\BaseData\Views\PermittedCarType\Index.cshtml" />
     <Content Include="Areas\BaseData\Views\Region\Index.cshtml" />
-    <Content Include="Content\EasyUI\icons\Thumbs.db" />
     <Content Include="Areas\RegisterCenter\Views\TempDriverLicenseRegister\Index.cshtml" />
     <Content Include="Areas\RegisterCenter\Views\DriverLicenseRegister\Index.cshtml" />
     <Content Include="Areas\RegisterCenter\Views\DrivingLicenseRegister\Index.cshtml" />
@@ -338,6 +337,7 @@
     <Content Include="Areas\SystemLog\Views\OperateLog\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\trend\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\VehicleLicenseS\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\vms.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\common.js" />
     <Content Include="Scripts\EasyUI\jquery.easyui.min.js" />
@@ -359,7 +359,9 @@
     <Content Include="Sql\InitData.sql" />
     <Content Include="Sql\InitTable.sql" />
     <Content Include="PrintTemplate\DriverLicenseTemplate.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
