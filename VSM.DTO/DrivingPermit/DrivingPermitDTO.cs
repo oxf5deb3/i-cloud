@@ -8,7 +8,8 @@ namespace VMS.DTO
 {
     public class DrivingPermitDTO
     {
-        public string card_owner { get; set; }
+        public decimal id { get; set; }
+        public string car_owner { get; set; }
         public string duty { get; set; }
         public string work_unit { get; set; }
         public string region_no { get; set; }
@@ -17,7 +18,7 @@ namespace VMS.DTO
         public string produce_date { get; set; }
         public string issue_license_date { get; set; }
 
-
+        public string product_date { get; set; }
         public string addr { get; set; }
         public string car_1_value { get; set; } //车辆照1
         public string car_2_value { get; set; } //车辆照2
@@ -42,6 +43,12 @@ namespace VMS.DTO
         public String TotalCount { get; set; }
 
         public string region_name { get; set; }
+
+        public string user_photo_path { get; set; }
+        public string car_1_img_path { get; set; }
+        public string car_2_img_path { get; set; }
+        public string engine_no_img_path { get; set; }
+        public string vin_no_img_path { get; set; }
 
     }
 }

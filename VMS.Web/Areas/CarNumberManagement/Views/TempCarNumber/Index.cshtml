@@ -32,6 +32,7 @@
     <div class="btn-container">
         <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+        <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
     </div>
     <hr/>
     <table>
@@ -47,9 +48,71 @@
 <div class="q-detail">
     <table id="dgDetail"></table>
 </div>
+
+<div id="dlg-edit" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="license" method="post" novalidate style="margin:0; padding:20px 50px">
+        <input type="hidden" name="id" required />
+        <table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>驾驶证编号:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="id_no" id="id_no" readonly required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>身份证号码:</td>
+                <td style="width:100%;"><input class="easyui-textbox" name="id_card" id="lsxs_id_card" readonly required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
+                <td style="width:100%;"><input class="easyui-textbox" name="name" id="zsxs_name" readonly required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
+                <td style="width:200px;"><input name="sex" id="sex" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
+                <td style="width:100%;"><input class="easyui-datebox" data-optioin="{readonly:true}"name="birthday" id="lsxs_birth_date" readonly required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="region_name" id="zsxs_region" readonly required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="now_addr" id="zsxs_addr" readonly required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车牌号码:</td>
+                <td style="width:100%;"><input class="easyui-textbox" name="temp_number" id="zsxs_car_number" required></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-edit').dialog('close')" style="width:90px">取消</a>
+</div>
 @section scripts{
 <script type="text/javascript">
-
+    function save() {
+        if ($('#license').form('validate')) {
+            $.ajax({
+                url: '/api/CarNumberApi/ModifyTempCarNumber',
+                method: 'post',
+                dataType: 'json',
+                data: $('#license').serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $.messager.alert("提示", "修改成功");
+                        $('#dlg-edit').dialog('close');        // close the dialog
+                        $('#dgDetail').datagrid('reload');
+                    } else {
+                        $.messager.alert("提示", "修改失败");
+                    }
+                }
+            });
+        }
+    }
      function getQueryParams(){
         var params = {};
         var temp_number = $('#temp_number').textbox('getValue');
@@ -75,6 +138,19 @@
              }
          }
 
+       });
+
+       $('#btnEdit').linkbutton({
+           onClick: function () {
+               var ckRows = $('#dgDetail').datagrid('getSelected');
+               if (ckRows) {
+                   $('#license').form('load', ckRows);
+                   $('#dlg-edit').dialog('open').dialog('center');
+                   $('#dgDetail').datagrid('reload');
+               } else {
+                   $.messager.alert('提示', '请先选中一行数据!', 'info');
+               }
+           }
        });
     }
      function initQueryUI(){
@@ -143,7 +219,16 @@
     $(function () {
 
         initUI();
-        
+        $('#sex').combobox({
+            valueField: 'id',
+            width: 180,
+            panelHeight: 70,
+            editable: false,
+            readonly: true,
+            textField: 'text',
+            value: 0,
+            data: [{ id: 0, text: '男' }, { id: 1, text: '女' }]
+        });
     })
 </script>
 }

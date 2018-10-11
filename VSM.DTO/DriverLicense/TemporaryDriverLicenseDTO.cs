@@ -8,11 +8,11 @@ namespace VMS.DTO
 {
     public class TemporaryDriverLicenseDTO : BaseReportDTO
     {
-
-        public string id_no{get;set;}
-        public string name{get;set;}
+        public decimal id  { get; set; }
+        public string id_no {get;set;}
+        public string name {get;set;}
         
-        public string sex{get;set;}
+        public string sex {get;set;}
 
         public string birthday { get; set; }
 
@@ -39,6 +39,8 @@ namespace VMS.DTO
         public LoginDTO userInfo { get;set;}
 
         public string user_photo_base64 { get; set; }
+
+        public string user_photo_path { get; set; }
 
         public string permitted_car_type_name { get; set; }
 

@@ -8,6 +8,7 @@ namespace VMS.DTO
 {
     public class TemporaryDrivingPermitDTO
     {
+        public decimal id { get; set; }
         public string check_man { get; set; }
         public string old_addr { get; set; }
         public string now_addr { get; set; }
@@ -60,6 +61,10 @@ namespace VMS.DTO
         public string region_name { get; set; }
 
         public string permitted_card_type_name { get; set; }
-
+        public string user_photo_path { get; set; }
+        public string car_1_img_path { get; set; }
+        public string car_2_img_path { get; set; }
+        public string engine_no_img_path { get; set; }
+        public string vin_no_img_path { get; set; }
     }
 }

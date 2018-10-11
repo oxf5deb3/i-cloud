@@ -31,12 +31,12 @@
 
 <table id="query-params">
     <tr>
-        <td><label>编号：</label><input id="id" /></td>
-        <td><label>事故地点：</label><input id="address" /></td>
+        <td><label>编号：</label><input class="easyui-textbox" id="id" /></td>
+        <td><label>事故地点：</label><input class="easyui-textbox" id="address" /></td>
         <td><label>事故时间(起)：</label><input class="easyui-datetimebox" id="timeBegin" /></td>
         <td><label>事故时间(止)：</label><input class="easyui-datetimebox" id="timeEnd" /></td>
-        <td><label>出警车辆：</label><input id="cars" /></td>
-        <td><label>出警人员：</label><input id="men" /></td>
+        <td><label>出警车辆：</label><input class="easyui-textbox" id="cars" /></td>
+        <td><label>出警人员：</label><input class="easyui-textbox" id="men" /></td>
         <td><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a></td>
     </tr>
 </table>
@@ -55,7 +55,7 @@
             <label>
                 <span class="red-star">*</span>事故地点：
             </label>
-            <input name="address" id="address" required>
+            <input class="easyui-textbox" name="address" id="address" required>
         </div>
         <div class="item">
             <label>

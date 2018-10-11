@@ -28,6 +28,34 @@ namespace VMS.IServices
         List<TemporaryDriverLicenseDTO> queryTemporaryDrivingLicense(int index, int pageSize, TemporaryDriverLicenseDTO data);
 
         /// <summary>
+        /// 修改正式驾驶证
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        bool ModifyZsDriverLicense(DriverLicenseDTO dto);
+
+        /// <summary>
+        /// 修改临时驾驶证
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        bool ModifyLsDriverLicense(TemporaryDriverLicenseDTO dto);
+
+        /// <summary>
+        /// 修改正式行驶证
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        bool ModifyZsDrivingPermit(DrivingPermitDTO dto);
+
+        /// <summary>
+        /// 修改临时行驶证
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        bool ModifyLsDrivingPermit(TemporaryDrivingPermitDTO dto);
+
+        /// <summary>
         /// 添加驾驶证
         /// </summary>
         /// <param name="driverLicenseDTO"></param>

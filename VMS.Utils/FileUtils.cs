@@ -46,6 +46,26 @@ namespace VMS.Utils
 
         }
 
+        public static bool Base64ToFileAndSave(string base64, string path, FileMode mode)
+        {
+            bool bTrue = false;
+            try
+            {
+                byte[] buffer = Convert.FromBase64String(base64);
+                FileStream fs = new FileStream(path, mode);
+                fs.Write(buffer, 0, buffer.Length);
+                fs.Close(); bTrue = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return bTrue;
+
+
+        }
+
 
         /**
          * 将文件转换成base64

@@ -18,6 +18,66 @@ namespace VMS.Api
     {
 
         [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO ModifyTempCarNumber([FromBody]JObject data) {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var dto = data.ToObject<TemporaryDrivingPermitDTO>();
+                var service = Instance<ICarNumberService>.Create;
+                dto.userInfo = operInfo;
+                bool res = service.ModifyTempCarNumber(dto);
+
+                if (res)
+                {
+                    return ret;
+                }
+                else
+                {
+                    ret.message = "修改失败";
+                    ret.success = false;
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+
+
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO ModifyCarNumber([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var dto = data.ToObject<DrivingPermitDTO>();
+                var service = Instance<ICarNumberService>.Create;
+                dto.userInfo = operInfo;
+                bool res = service.ModifyCarNumber(dto);
+
+                if (res)
+                {
+                    return ret;
+                }
+                else
+                {
+                    ret.message = "修改失败";
+                    ret.success = false;
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+
+        [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.HttpGet]
         public GridResponseDTO<DrivingPermitDTO> queryDrivingPermit([FromBody]JObject data)
         {

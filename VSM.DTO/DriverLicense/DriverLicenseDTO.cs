@@ -8,6 +8,8 @@ namespace VMS.DTO
 {
     public  class DriverLicenseDTO
     {
+        public decimal id { get; set; }
+
         public string id_no { get; set; }
 
         public string name { get; set; }

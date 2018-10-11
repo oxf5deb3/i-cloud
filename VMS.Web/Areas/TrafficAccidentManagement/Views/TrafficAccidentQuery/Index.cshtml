@@ -35,16 +35,16 @@
 
 <table id="query-params">
     <tr>
-        <td><label>编号：</label><input id="id" /></td>
+        <td><label>编号：</label><input class="easyui-textbox" id="id" /></td>
         <td><label>事故时间(起)：</label><input class="easyui-datetimebox" id="timeBegin" /></td>
         <td><label>事故时间(止)：</label><input class="easyui-datetimebox" id="timeEnd" /></td>
-        <td><label>事故地点：</label><input id="happenAddr" /></td>
-        <td><label>调解员：</label><input id="accidentMediator" /></td>
+        <td><label>事故地点：</label><input class="easyui-textbox" id="happenAddr" /></td>
+        <td><label>调解员：</label><input class="easyui-textbox" id="accidentMediator" /></td>
     </tr>
     <tr>
-        <td><label>甲方当事人：</label><input id="firstPartyMan" /></td>
-        <td><label>乙方当事人：</label><input id="secondPartyMan" /></td>
-        <td><label>调解单位：</label><input id="mediationUnit" /></td>
+        <td><label>甲方当事人：</label><input class="easyui-textbox" id="firstPartyMan" /></td>
+        <td><label>乙方当事人：</label><input class="easyui-textbox" id="secondPartyMan" /></td>
+        <td><label>调解单位：</label><input class="easyui-textbox" id="mediationUnit" /></td>
         <td></td>
         <td><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a></td>
     </tr>
@@ -70,31 +70,31 @@
             <label>
                 <span class="red-star">*</span>事故地点：
             </label>
-            <input name="happenAddr" required>
+            <input class="easyui-textbox" name="happenAddr" required>
         </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>甲方当事人：
             </label>
-            <input name="firstPartyMan" required>
+            <input class="easyui-textbox" name="firstPartyMan" required>
         </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>甲方单位/地址：
             </label>
-            <input name="firstPartyAddr" required>
+            <input class="easyui-textbox" name="firstPartyAddr" required>
         </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>乙方当事人：
             </label>
-            <input name="secondPartyMan" required>
+            <input class="easyui-textbox" name="secondPartyMan" required>
         </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>乙方单位/地址：
             </label>
-            <input name="secondPartyAddr" required>
+            <input class="easyui-textbox" name="secondPartyAddr" required>
         </div>
         <div class="item">
             <label>
@@ -106,7 +106,7 @@
             <label>
                 <span class="red-star">*</span>调解单位：
             </label>
-            <input name="mediationUnit" required>
+            <input class="easyui-textbox" name="mediationUnit" required>
         </div>
         <div class="item">
             <label>
@@ -118,13 +118,13 @@
             <label>
                 <span class="red-star">*</span>绘图记录：
             </label>
-            <input name="drawRecorder" required>
+            <input class="easyui-textbox" name="drawRecorder" required>
         </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>调解员：
             </label>
-            <input name="accidentMediator" required>
+            <input class="easyui-textbox" name="accidentMediator" required>
         </div>
     </form>
 </div>

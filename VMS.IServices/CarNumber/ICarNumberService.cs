@@ -13,5 +13,9 @@ namespace VMS.IServices
 
         List<TemporaryDrivingPermitDTO> queryTemporaryDrivingByPage(int index, int pageSize, TemporaryDrivingPermitDTO data);
 
+        bool ModifyCarNumber(DrivingPermitDTO dto);
+
+        bool ModifyTempCarNumber(TemporaryDrivingPermitDTO dto);
+
     }
 }

@@ -6,11 +6,36 @@ using System.Threading.Tasks;
 using VMS.DTO;
 using VMS.IServices;
 using VMS.Utils;
+using VMS.Model;
 
 namespace VMS.Services
 {
     public class CarNumberService : BaseReportService, ICarNumberService
     {
+        public bool ModifyCarNumber(DrivingPermitDTO dto) {
+            var sql = new StringBuilder("update t_normal_car_license set car_number = @car_number, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
+            SqlParam[] sqlParams = new SqlParam[] {
+                new SqlParam("@car_number", dto.car_number),
+                new SqlParam("@id", dto.id),
+                new SqlParam("@modify_oper_id", dto.userInfo.user_id),
+                new SqlParam("@modify_date", DateTime.Now.ToString())
+            };
+
+            return DbContext.ExecuteBySql(sql, sqlParams) > 0;
+        }
+
+        public bool ModifyTempCarNumber(TemporaryDrivingPermitDTO dto)
+        {
+            var sql = new StringBuilder("update t_temp_car_license set temp_number = @car_number, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
+            SqlParam[] sqlParams = new SqlParam[] {
+                new SqlParam("@car_number", dto.temp_number),
+                new SqlParam("@id", dto.id),
+                new SqlParam("@modify_oper_id", dto.userInfo.user_id),
+                new SqlParam("@modify_date", DateTime.Now.ToString())
+            };
+
+            return DbContext.ExecuteBySql(sql, sqlParams) > 0;
+        }
 
         public List<DTO.DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DTO.DrivingPermitDTO data)
         {

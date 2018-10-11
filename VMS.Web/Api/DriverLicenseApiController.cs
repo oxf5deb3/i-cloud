@@ -34,7 +34,13 @@ namespace VMS.Api
                 var pagesize = CommonHelper.GetInt(condition["rows"]);
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
-                var lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
+                List<DriverLicenseDTO> lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
+
+                // 读取图片base64内容
+                lst.ForEach(p => {
+                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                });
+
                 ret.total = total;
                 ret.rows.AddRange(lst);
                 try
@@ -55,6 +61,134 @@ namespace VMS.Api
                 ret.success = false;
                 return ret;
             }
+        }
+
+        // 修改正式驾照
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO ModifyZsDriverLicense([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var dto = data.ToObject<DriverLicenseDTO>();
+                var service = Instance<IDriverLicenseService>.Create;
+                dto.userInfo = operInfo;
+                bool res = service.ModifyZsDriverLicense(dto);
+
+                if (res)
+                {
+                    return ret;
+                }
+                else
+                {
+                    ret.message = "修改失败";
+                    ret.success = false;
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+
+        }
+
+        // 修改临时驾照
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO ModifyLsDriverLicense([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var dto = data.ToObject<TemporaryDriverLicenseDTO>();
+                var service = Instance<IDriverLicenseService>.Create;
+                dto.userInfo = operInfo;
+                bool res = service.ModifyLsDriverLicense(dto);
+
+                if (res)
+                {
+                    return ret;
+                }
+                else
+                {
+                    ret.message = "修改失败";
+                    ret.success = false;
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+
+        }
+
+        // 修改正式行驶证
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO ModifyZsDrivingPermit([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var dto = data.ToObject<DrivingPermitDTO>();
+                var service = Instance<IDriverLicenseService>.Create;
+                dto.userInfo = operInfo;
+                bool res = service.ModifyZsDrivingPermit(dto);
+
+                if (res)
+                {
+                    return ret;
+                }
+                else
+                {
+                    ret.message = "修改失败";
+                    ret.success = false;
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+
+        }
+
+        // 修改临时行驶证
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO ModifyLsDrivingPermit([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var dto = data.ToObject<TemporaryDrivingPermitDTO>();
+                var service = Instance<IDriverLicenseService>.Create;
+                dto.userInfo = operInfo;
+                bool res = service.ModifyLsDrivingPermit(dto);
+
+                if (res)
+                {
+                    return ret;
+                }
+                else
+                {
+                    ret.message = "修改失败";
+                    ret.success = false;
+                    return ret;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+
         }
 
         //新增正式驾照
@@ -241,6 +375,11 @@ namespace VMS.Api
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
                 List<TemporaryDriverLicenseDTO> lst = obj.queryTemporaryDrivingLicense(pageindex, pagesize, dtoData);
+                // 读取图片base64内容
+                lst.ForEach(p =>
+                {
+                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                });
                 ret.total = Int16.Parse(lst[0].TotalCount);
                 ret.rows.AddRange(lst);
                 return ret;
@@ -273,6 +412,13 @@ namespace VMS.Api
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
                 List<DrivingPermitDTO> lst = obj.queryDrivingPermitByPage(pageindex, pagesize, dtoData);
+                lst.ForEach(p => {
+                    p.car_1_value = FileUtils.fileToBase64(p.car_1_img_path);
+                    p.car_2_value = FileUtils.fileToBase64(p.car_2_img_path);
+                    p.vin_no_value = FileUtils.fileToBase64(p.vin_no_img_path);
+                    p.engine_no_value = FileUtils.fileToBase64(p.engine_no_img_path);
+                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                });
                 ret.total = Int16.Parse(lst[0].TotalCount);
                 ret.rows.AddRange(lst);
                 return ret;
@@ -307,6 +453,14 @@ namespace VMS.Api
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
                 List<TemporaryDrivingPermitDTO> lst = obj.queryTemporaryDrivingByPage(pageindex, pagesize, dtoData);
+                lst.ForEach(p =>
+                {
+                    p.car_1_value = FileUtils.fileToBase64(p.car_1_img_path);
+                    p.car_2_value = FileUtils.fileToBase64(p.car_2_img_path);
+                    p.vin_no_value = FileUtils.fileToBase64(p.vin_no_img_path);
+                    p.engine_no_value = FileUtils.fileToBase64(p.engine_no_img_path);
+                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                });
                 ret.total = Int16.Parse(lst[0].TotalCount);
                 ret.rows.AddRange(lst);
                 return ret;

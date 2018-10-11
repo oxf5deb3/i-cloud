@@ -8,6 +8,7 @@ using VMS.DTO;
 using VMS.Model;
 using VMS.Utils;
 using System.Data;
+using System.IO;
 
 namespace VMS.Services
 {
@@ -34,9 +35,8 @@ namespace VMS.Services
       ",oper_id" +
       ",modify_date" +
       ",modiry_oper_id" +
-      //",user_photo_path" +
-      //",id_card,
-            ",addr,b.region_name,c.type_name as permitted_car_type_name");
+      ",user_photo_path" +
+      ",id_card,addr,a.region_no, b.region_name,c.type_name as permitted_car_type_name");
             sql.Append(" from t_normal_driver_license a");
             sql.Append(" left join t_bd_region  b on a.region_no = b.region_no");
             sql.Append(" left join t_bd_permitted_car_type c on a.permitted_card_type_no= c.type_no");
@@ -129,6 +129,261 @@ namespace VMS.Services
             return DbContext.ExecuteBySql(insertSql, paramlst.ToArray()) > 0;
         }
 
+        public bool ModifyZsDriverLicense(DriverLicenseDTO dto) {
+            try
+            {
+                String path = BASE_PATH + dto.name + "_" + dto.id_no + ".jpg";
+                FileUtils.Base64ToFileAndSave(dto.user_photo_base64, path, FileMode.Create);
+
+                var sql = new StringBuilder("update t_normal_driver_license set name = @name, sex = @sex,birthday = @birthday,region_no = @region_no, addr = @addr, work_unit = @work_unit,");
+                sql.Append(" permitted_card_type_no = @permitted_card_type_no, first_get_license_date = @first_get_license_date, valid_date_start = @valid_date_start, valid_date_end = @valid_date_end, ");
+                sql.Append(" id_card = @id_card, modiry_oper_id = @modify_oper_id, modify_date = @modify_date, user_photo_path = @user_photo_path where id = @id");
+
+                List<SqlParam> paramlst = new List<SqlParam>();
+                paramlst.Add(new SqlParam("@name", dto.name));
+                paramlst.Add(new SqlParam("@sex", dto.sex));
+                paramlst.Add(new SqlParam("@birthday", dto.birthday));
+                paramlst.Add(new SqlParam("@region_no", dto.region_no));
+                paramlst.Add(new SqlParam("@addr", dto.addr));
+                paramlst.Add(new SqlParam("@work_unit", dto.work_unit));
+                paramlst.Add(new SqlParam("@permitted_card_type_no", dto.permitted_card_type_no));
+                paramlst.Add(new SqlParam("@first_get_license_date", dto.first_get_license_date));
+                paramlst.Add(new SqlParam("@valid_date_start", dto.valid_date_start));
+                paramlst.Add(new SqlParam("@valid_date_end", dto.valid_date_end));
+
+                paramlst.Add(new SqlParam("@id_card", dto.id_card));
+                paramlst.Add(new SqlParam("@modify_oper_id", dto.userInfo.user_id));
+                paramlst.Add(new SqlParam("@modify_date", DateTime.Now.Date.ToString("yyyy-MM-dd")));
+                paramlst.Add(new SqlParam("@user_photo_path", path));
+                paramlst.Add(new SqlParam("@id", dto.id));
+                return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+
+        public bool ModifyLsDriverLicense(TemporaryDriverLicenseDTO dto)
+        {
+            try
+            {
+                String photoBase64 = dto.user_photo_base64.Substring(dto.user_photo_base64.IndexOf(",") + 1);
+                String path = BASE_PATH + dto.name + "_" + dto.id_no + ".jpg";
+                FileUtils.Base64ToFileAndSave(photoBase64, path, FileMode.Create);
+
+                var sql = new StringBuilder("update t_temp_driver_license set name = @name, sex = @sex, birthday = @birthday, nation_no = @nation_no, folk = @folk, now_addr = @now_addr, old_addr = @old_addr, ");
+                sql.Append("permitted_card_type_no = @permitted_card_type_no, check_man = @check_man, check_date = @check_date, start_date = @start_date, end_date = @end_date, region_no = @region_no, modify_oper_id = @modify_oper_id, ");
+                sql.Append("modify_date = @modify_date, user_photo_path = @user_photo_path where id = @id");
+
+                List<SqlParam> paramlst = new List<SqlParam>();
+                paramlst.Add(new SqlParam("@name", dto.name));
+                paramlst.Add(new SqlParam("@sex", dto.sex));
+                paramlst.Add(new SqlParam("@birthday", dto.birthday));
+                paramlst.Add(new SqlParam("@nation_no", dto.nation_no));
+                paramlst.Add(new SqlParam("@folk", dto.folk));
+                paramlst.Add(new SqlParam("@now_addr", dto.now_addr));
+                paramlst.Add(new SqlParam("@old_addr", dto.old_addr));
+                paramlst.Add(new SqlParam("@permitted_card_type_no", dto.permitted_card_type_no));
+                paramlst.Add(new SqlParam("@check_man", dto.check_man));
+                paramlst.Add(new SqlParam("@check_date", dto.check_date));
+
+                paramlst.Add(new SqlParam("@start_date", dto.start_date));
+                paramlst.Add(new SqlParam("@end_date", dto.end_date));
+                paramlst.Add(new SqlParam("@region_no", dto.region_no));
+                paramlst.Add(new SqlParam("@modify_oper_id", dto.userInfo.user_id));
+                paramlst.Add(new SqlParam("@modify_date", DateTime.Now.Date.ToString("yyyy-MM-dd")));
+                paramlst.Add(new SqlParam("@user_photo_path", path));
+                paramlst.Add(new SqlParam("@id", dto.id));
+
+                return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            } 
+        }
+
+
+        public bool ModifyZsDrivingPermit(DrivingPermitDTO drivingPermitDTO)
+        {
+            //人员信息照base64
+            String userInfoPhotoBase64 = drivingPermitDTO.user_photo_base64.
+                Substring(drivingPermitDTO.user_photo_base64.IndexOf(",") + 1);
+            //车辆1base64
+            String car_1_value_base64 = drivingPermitDTO.car_1_value.
+                Substring(drivingPermitDTO.car_1_value.IndexOf(",") + 1);
+            //车辆2base64
+            String car_2_value_base64 = drivingPermitDTO.car_2_value.
+                Substring(drivingPermitDTO.car_2_value.IndexOf(",") + 1);
+            //发动机base64
+            String engine_no_value_base64 = drivingPermitDTO.engine_no_value.
+                Substring(drivingPermitDTO.engine_no_value.IndexOf(",") + 1);
+            //车架base64
+            String vin_no_value_base64 = drivingPermitDTO.vin_no_value.
+               Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
+
+            //人员信息照文件名
+            String userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_USERINFO);
+
+            String car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_1);
+
+            String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
+
+            String fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_fadongji);
+
+            String chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+
+
+
+            FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath, FileMode.Create);//创建人员信息照
+            FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath, FileMode.Create);//创建车辆信息照1
+
+            FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath, FileMode.Create);//创建车辆信息照2
+
+            FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath, FileMode.Create);//创建发动机号照
+
+            FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath, FileMode.Create);//创建车架照
+
+            var sql = new StringBuilder("update t_normal_car_license set car_owner = @car_owner, duty = @duty, work_unit = @work_unit, region_no = @region_no, plate_no = @plate_no, brand_no = @brand_no,");
+            sql.Append(" motor_no = @motor_no, carframe_no = @carframe_no, car_color = @car_color, product_date = @product_date ,issue_license_date = @issue_license_date,");
+            sql.Append("addr = @addr, car_number = @car_number, car_type = @car_type, end_date = @end_date, name = @name, nation = @nation, passenger = @passenger, sex = @sex, ");
+            sql.Append("start_date = @start_date, modify_oper_id = @modify_oper_id, modify_date = @modify_date, car_1_img_path = @car_1_img_path, car_2_img_path = @car_2_img_path, ");
+            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path where id = @id");
+
+            List<SqlParam> paramlst = new List<SqlParam>();
+            paramlst.Add(new SqlParam("@car_owner", drivingPermitDTO.car_owner));
+            paramlst.Add(new SqlParam("@duty ", drivingPermitDTO.duty));
+            paramlst.Add(new SqlParam("@work_unit", drivingPermitDTO.work_unit));
+            paramlst.Add(new SqlParam("@region_no", drivingPermitDTO.region_no));
+            paramlst.Add(new SqlParam("@plate_no", drivingPermitDTO.plate_no));
+
+            paramlst.Add(new SqlParam("@brand_no", drivingPermitDTO.brand_no));
+            paramlst.Add(new SqlParam("@motor_no", drivingPermitDTO.motor_no));
+            paramlst.Add(new SqlParam("@carframe_no", drivingPermitDTO.carframe_no));
+            paramlst.Add(new SqlParam("@car_color", drivingPermitDTO.car_color));
+            paramlst.Add(new SqlParam("@product_date", drivingPermitDTO.product_date));
+
+            paramlst.Add(new SqlParam("@issue_license_date", drivingPermitDTO.issue_license_date));
+            paramlst.Add(new SqlParam("@addr", drivingPermitDTO.addr));
+            paramlst.Add(new SqlParam("@car_number", drivingPermitDTO.car_number));
+            paramlst.Add(new SqlParam("@car_type", drivingPermitDTO.car_type));
+            paramlst.Add(new SqlParam("@end_date", drivingPermitDTO.end_date));
+
+            paramlst.Add(new SqlParam("@name", drivingPermitDTO.name));
+            paramlst.Add(new SqlParam("@nation", drivingPermitDTO.nation));
+            paramlst.Add(new SqlParam("@passenger", drivingPermitDTO.passenger));
+            paramlst.Add(new SqlParam("@sex", drivingPermitDTO.sex));
+            paramlst.Add(new SqlParam("@start_date", drivingPermitDTO.start_date));
+
+            paramlst.Add(new SqlParam("@modify_oper_id", drivingPermitDTO.userInfo.user_id));
+            paramlst.Add(new SqlParam("@modify_date", DateTime.Now.Date.ToString("yyyy-MM-dd")));
+            paramlst.Add(new SqlParam("@user_photo_path", userInfoPhotoPath));
+            paramlst.Add(new SqlParam("@car_1_img_path", car_1_PhotoPath));
+            paramlst.Add(new SqlParam("@car_2_img_path", car_2_PhotoPath));
+
+            paramlst.Add(new SqlParam("@engine_no_img_path", fadongjiPhotoPath));
+            paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
+            paramlst.Add(new SqlParam("@id", drivingPermitDTO.id));
+
+
+            return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
+        }
+
+        public bool ModifyLsDrivingPermit(TemporaryDrivingPermitDTO drivingPermitDTO) {
+            //人员信息照base64
+            String userInfoPhotoBase64 = drivingPermitDTO.user_photo_base64.
+                Substring(drivingPermitDTO.user_photo_base64.IndexOf(",") + 1);
+            //车辆1base64
+            String car_1_value_base64 = drivingPermitDTO.car_1_value.
+                Substring(drivingPermitDTO.car_1_value.IndexOf(",") + 1);
+            //车辆2base64
+            String car_2_value_base64 = drivingPermitDTO.car_2_value.
+                Substring(drivingPermitDTO.car_2_value.IndexOf(",") + 1);
+            //发动机base64
+            String engine_no_value_base64 = drivingPermitDTO.engine_no_value.
+                Substring(drivingPermitDTO.engine_no_value.IndexOf(",") + 1);
+            //车架base64
+            String vin_no_value_base64 = drivingPermitDTO.vin_no_value.
+               Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
+
+            //人员信息照文件名
+            String userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_USERINFO);
+
+            String car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_1);
+
+            String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
+
+            String fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_fadongji);
+
+            String chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+
+
+
+            FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath, FileMode.Create);//创建人员信息照
+            FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath, FileMode.Create);//创建车辆信息照1
+
+            FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath, FileMode.Create);//创建车辆信息照2
+
+            FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath, FileMode.Create);//创建发动机号照
+
+            FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath, FileMode.Create);//创建车架照
+
+
+
+            var sql = new StringBuilder("update t_temp_car_license set check_man = @check_man, addr = @addr, folk = @folk, nation_no = @nation_no, birthday = @birthday, sex = @sex, permitted_car_type_no = @permitted_car_type_no, ");
+            sql.Append("name = @name, check_date = @check_date, car_type = @car_type, temp_number = @temp_number, engine_no = @engine_no, vin = @vin, passenger = @passenger, cargo = @cargo,label_type = @label_type,");
+            sql.Append("start_date = @start_date, end_date = @end_date, modify_oper_id = @modify_oper_id, modify_date = @modify_date, car_1_img_path = @car_1_img_path, car_2_img_path = @car_2_img_path, ");
+            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path where id = @id");
+
+            List<SqlParam> paramlst = new List<SqlParam>();
+            paramlst.Add(new SqlParam("@check_man", drivingPermitDTO.check_man));
+            paramlst.Add(new SqlParam("@addr ", drivingPermitDTO.addr));
+            paramlst.Add(new SqlParam("@folk", drivingPermitDTO.folk));
+            paramlst.Add(new SqlParam("@nation_no", drivingPermitDTO.nation_no));
+            paramlst.Add(new SqlParam("@birthday", drivingPermitDTO.birthday));
+
+            paramlst.Add(new SqlParam("@sex", drivingPermitDTO.sex));
+            paramlst.Add(new SqlParam("@permitted_car_type_no", drivingPermitDTO.permitted_card_type_no));
+            paramlst.Add(new SqlParam("@name", drivingPermitDTO.name));
+            paramlst.Add(new SqlParam("@check_date", drivingPermitDTO.check_date));
+            paramlst.Add(new SqlParam("@car_type", drivingPermitDTO.car_type));
+
+            paramlst.Add(new SqlParam("@temp_number", drivingPermitDTO.temp_number));
+            paramlst.Add(new SqlParam("@engine_no", drivingPermitDTO.engine_no));
+            paramlst.Add(new SqlParam("@vin", drivingPermitDTO.vin));
+            paramlst.Add(new SqlParam("@passenger", drivingPermitDTO.passenger));
+            paramlst.Add(new SqlParam("@cargo", drivingPermitDTO.cargo));
+            paramlst.Add(new SqlParam("@label_type", drivingPermitDTO.label_type));
+
+            paramlst.Add(new SqlParam("@start_date", drivingPermitDTO.start_date));
+            paramlst.Add(new SqlParam("@end_date", drivingPermitDTO.end_date));
+            paramlst.Add(new SqlParam("@modify_oper_id", drivingPermitDTO.userInfo.user_id));
+            paramlst.Add(new SqlParam("@modify_date", DateTime.Now.Date.ToString("yyyy-MM-dd")));
+            paramlst.Add(new SqlParam("@user_photo_path", userInfoPhotoPath));
+
+            paramlst.Add(new SqlParam("@car_1_img_path", car_1_PhotoPath));
+            paramlst.Add(new SqlParam("@car_2_img_path", car_2_PhotoPath));
+            paramlst.Add(new SqlParam("@engine_no_img_path", fadongjiPhotoPath));
+            paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
+            paramlst.Add(new SqlParam("@id", drivingPermitDTO.id));
+
+            return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
+        }
+
         public bool AddDrivingLicense(DriverLicenseDTO driverLicenseDTO)
         {
 
@@ -157,11 +412,6 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@oper_id", driverLicenseDTO.userInfo.user_id));
             paramlst.Add(new SqlParam("@oper_date", DateTime.Now.Date.ToString("yyyy-MM-dd")));
             paramlst.Add(new SqlParam("@user_photo_path", path));
-
-
-
-
-
 
 
             return DbContext.ExecuteBySql(insertSql, paramlst.ToArray()) > 0;
@@ -215,8 +465,8 @@ namespace VMS.Services
 
 
             var insertSql = new StringBuilder();
-            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path) "
-            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path)");
+            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,user_photo_path) "
+            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@user_photo_path)");
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@check_man", temporaryDrivingPermitDTO.check_man));
             paramlst.Add(new SqlParam("@sex", temporaryDrivingPermitDTO.sex));
@@ -311,11 +561,11 @@ namespace VMS.Services
 
             var insertSql = new StringBuilder();
             insertSql.Append("insert into t_normal_car_license(car_owner,duty,work_unit,region_no,plate_no,brand_no,motor_no,carframe_no,car_color,product_date,issue_license_date," +
-            "addr,car_number,car_type,end_date,id_no,name,nation,passenger,sex,start_date,oper_id,oper_date,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path)"
+            "addr,car_number,car_type,end_date,id_no,name,nation,passenger,sex,start_date,oper_id,oper_date,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,user_photo_path)"
             + "values(@car_owner,@duty,@work_unit,@region_no,@plate_no,@brand_no,@motor_no,@carframe_no,@car_color,@product_date,@issue_license_date"
-            + ",@addr,@car_number,@car_type,@end_date,@id_no,@name,@nation,@passenger,@sex,@start_date,@oper_id,@oper_date,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path)");
+            + ",@addr,@car_number,@car_type,@end_date,@id_no,@name,@nation,@passenger,@sex,@start_date,@oper_id,@oper_date,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@user_photo_path)");
             List<SqlParam> paramlst = new List<SqlParam>();
-            paramlst.Add(new SqlParam("@car_owner", drivingPermitDTO.card_owner));
+            paramlst.Add(new SqlParam("@car_owner", drivingPermitDTO.car_owner));
             paramlst.Add(new SqlParam("@duty ", drivingPermitDTO.duty));
             paramlst.Add(new SqlParam("@work_unit", drivingPermitDTO.work_unit));
             paramlst.Add(new SqlParam("@region_no", drivingPermitDTO.region_no));
@@ -406,7 +656,7 @@ namespace VMS.Services
      + " ,[end_date]"
       + ",[id_no]"
       + ",[ck_ret]"
-      + ",[user_photo_path],b.region_name,c.type_name as permitted_car_type_name from t_temp_driver_license a left join t_bd_region  b on a.region_no = b.region_no left join t_bd_permitted_car_type c on a.permitted_card_type_no= c.type_no  "
+      + ",[user_photo_path],a.region_no,b.region_name,c.type_name as permitted_car_type_name from t_temp_driver_license a left join t_bd_region  b on a.region_no = b.region_no left join t_bd_permitted_car_type c on a.permitted_card_type_no= c.type_no  "
       + "where 1=1 " + param
      + " ) as o)as oo where rownumber>=" + end;
             List<SqlParam> paramlst = new List<SqlParam>();
@@ -446,7 +696,7 @@ namespace VMS.Services
      + " ,[brand_no],[motor_no],[carframe_no],[car_color],[product_date],[issue_license_date]"
       + ",[status],[oper_date] ,[oper_id],[modify_date],[modify_oper_id] ,[time_stamp]"
       + ",[user_photo_path],[car_1_img_path],[car_2_img_path],[engine_no_img_path],[vin_no_img_path]"
-     + ",[start_date],[sex],[car_number],[end_date] ,[name],[nation],[passenger],b.region_name "
+     + ",[start_date],[sex],[car_number],[end_date] ,[name],[nation],[passenger],b.region_name, a.region_no "
   + "FROM [VehicleManagementSystem].[dbo].[t_normal_car_license] a "
   + "left join t_bd_region b on a.region_no=b.region_no"
   + " where 1=1 " + param
@@ -485,18 +735,14 @@ namespace VMS.Services
 	 +"  ,[oper_id],[modify_date],[modify_oper_id],[time_stamp],[user_photo_path],[car_1_img_path] "
      +"  ,[car_2_img_path],[engine_no_img_path],[vin_no_img_path],[img4_url],[img5_url],[car_type] " 
       +" ,[temp_number],[engine_no],[vin],[passenger],[cargo],[label_type],[id_no],[id_card] "
-     + "  ,[start_date],[end_date],[addr],c.type_name as permitted_card_type_name "
+     + "  ,[start_date],[end_date],[addr],c.type_name as permitted_card_type_name,a.region_no, a.permitted_car_type_no as permitted_card_type_no "
   +" FROM [VehicleManagementSystem].[dbo].[t_temp_car_license] a  "
   +" left join t_bd_region b on a.region_no=b.region_no "
   +" left join t_bd_permitted_car_type c on a.permitted_car_type_no=c.type_no "
    +" where 1=1  "
    + " )as oo) as o where rownumber>=" + ((index - 1) * pageSize + 1) + ";";
 
-
-
             var querySql = new StringBuilder(sql);
-
-
 
             return (List<TemporaryDrivingPermitDTO>)DbContext.GetDataListBySQL<TemporaryDrivingPermitDTO>(querySql);
         }
