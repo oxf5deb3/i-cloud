@@ -108,10 +108,20 @@
                     onLoad:function(){
                          var ckRows = $('#dgDetail').datagrid('getChecked');
                          var body = $('#print').dialog('body');
-                         var html = body.html().replace(/_year/g,'18').
-                         replace(/_month/g,'10').replace(/_day/g,'12').
-                         replace(/_region/g,'佤邦');
-
+                         var html = body.html().replace(/_car_owner/g,'songlf').
+                         replace(/_car_num/g,'14rt560').replace(/_car_type/g,'三轮').
+                         replace(/_factory_license_no/g,'Wrty').
+                         replace(/_engine_no/g,'W45678').
+                         replace(/_car_frame_no/g,'Wrty789988').
+                         replace(/_check_weight/g,'150').
+                         replace(/_check_passengers/g,'40').
+                         replace(/_region/g,'佤邦').
+                         replace(/_valid_date_start_year/g,'18').
+                         replace(/_valid_date_start_month/g,'01').
+                         replace(/_valid_date_start_day/g,'20').
+                         replace(/_valid_date_end_year/g,'18').
+                         replace(/_valid_date_end_month/g,'10').
+                         replace(/_valid_date_end_day/g,'11');
                          body.html(html);
                     },
                     href:'/PrintTemplate/TempLicenseBackTemplate.html',

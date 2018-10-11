@@ -27,72 +27,77 @@
                 .noprint {
                     visibility: hidden;
                 }
+
+                .noborder {
+                    border: none !important;
+                }
+            }
         </style>
         <!--临时牌照机动车行驶证-->
         <table width="800" border="0" align="center" cellpadding="3" cellspacing="0" style="font-size:12px; font-family:'微软雅黑'; background:#fff;">
             <tr>
                 <td>
-                    <table style="border:6px solid #000;width:100%;height:500px;border-radius:10px;">
+                    <table class="noborder" style="border:6px solid #000;width:100%;height:500px;border-radius:10px;">
                         <tr style="height:80px;padding:0px;font-weight: bold;">
-                            <td colspan="13" style="text-align:center;padding:0px;letter-spacing:15px;font-size:40px;">临时牌照机动车行驶证</td>
+                            <td colspan="13" style="text-align:center;padding:0px;letter-spacing:15px;font-size:40px;"><span class="noprint">临时牌照机动车行驶证</span></td>
                         </tr>
                         <tr>
                             <td colspan="13" style="padding-left:60px;padding-right:60px;">
                                 <table style="table-layout: fixed;border:2px solid #000;width:100%;height:100%;font-size:15px;border-collapse:collapse;">
                                     <tr style="border-bottom:1px solid #000">
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">机动车所有人</td>
-                                        <td style="border-right:1px solid #000;"></td>
-                                        <td style="border-right:1px solid #000;width:100px;text-align:center">号牌号码</td>
-                                        <td style=""></td>
+                                        <td style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint"></span>机动车所有人</td>
+                                        <td style="border-right:1px solid #000;">_car_owner</td>
+                                        <td style="border-right:1px solid #000;width:100px;text-align:center"><span class="noprint"></span>号牌号码</td>
+                                        <td style="">_car_num</td>
                                     </tr>
-                                    <tr style="border-bottom:1px solid #000">
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">车辆类型</td>
-                                        <td style="border-right:1px solid #000;"></td>
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">厂牌型号</td>
-                                        <td></td>
+                                    <tr class="noborder" style="border-bottom:1px solid #000">
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">车辆类型</span></td>
+                                        <td class="noborder" style="border-right:1px solid #000;">_car_type</td>
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">厂牌型号</span></td>
+                                        <td>_factory_license_no</td>
                                     </tr>
-                                    <tr style="border-bottom:1px solid #000">
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">发动机号码</td>
-                                        <td style="border-right:1px solid #000;"></td>
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">车辆识别代号/车架号码</td>
-                                        <td></td>
+                                    <tr class="noborder" style="border-bottom:1px solid #000">
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">发动机号码</span></td>
+                                        <td class="noborder" style="border-right:1px solid #000;">_engine_no</td>
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">车辆识别代号/车架号码</span></td>
+                                        <td>_car_frame_no</td>
                                     </tr>
-                                    <tr style="border-bottom:1px solid #000">
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">核定载质量</td>
-                                        <td style="border-right:1px solid #000;"><span style="float:right;">千克</span></td>
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">核定载客</td>
-                                        <td><span style="float:right;">人</span></td>
+                                    <tr class="noborder" style="border-bottom:1px solid #000">
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">核定载质量</span></td>
+                                        <td class="noborder" style="border-right:1px solid #000;">_check_weight<span style="float:right;"><span class="noprint">千克</span></span></td>
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">核定载客</span></td>
+                                        <td>_check_passengers<span style="float:right;">人</span></td>
                                     </tr>
-                                    <tr style="border-bottom:1px solid #000">
-                                        <td style="border-right:1px solid #000;width:100px;;text-align:center">行驶区域</td>
-                                        <td colspan="3">限定在<span style="float:right;">区域内行驶</span></td>
+                                    <tr class="noborder" style="border-bottom:1px solid #000">
+                                        <td class="noborder" style="border-right:1px solid #000;width:100px;;text-align:center"><span class="noprint">行驶区域</span></td>
+                                        <td colspan="3"><span class="noprint"></span>限定在_region<span style="float:right;"><span class="noprint">区域内行驶</span></span></td>
 
                                     </tr>
                                     <tr>
                                         <td colspan="2" style="padding:0px;border-right:1px solid #000;">
                                             <table style="height:100%;width:100%;border-collapse:collapse;border-spacing:0px;">
                                                 <tr>
-                                                    <td style="padding:0px;border-right:1px solid #000;width:150px">发证机关章</td>
-                                                    <td>签发人</td>
+                                                    <td class="noborder" style="padding:0px;border-right:1px solid #000;width:150px"><span class="noprint">发证机关章</span></td>
+                                                    <td><span class="noprint">签发人</span></td>
                                                 </tr>
                                                 <tr style="height:20px;">
-                                                    <td style="padding:0px;border-right:1px solid #000;"></td>
-                                                    <td style="padding:0px;border-bottom:1px solid #000;"></td>
+                                                    <td class="noborder" style="padding:0px;border-right:1px solid #000;"></td>
+                                                    <td class="noborder" style="padding:0px;border-bottom:1px solid #000;"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="padding:0px;border-right:1px solid #000;"></td>
-                                                    <td>签发日期</td>
+                                                    <td class="noborder" style="padding:0px;border-right:1px solid #000;"></td>
+                                                    <td><span class="noprint">签发日期</span></td>
                                                 </tr>
                                                 <tr style="height:20px;">
-                                                    <td style="padding:0px;border-right:1px solid #000;"></td>
-                                                    <td><span style="float:right;">年&nbsp;&nbsp;&nbsp;月&nbsp;&nbsp;&nbsp;日</span></td>
+                                                    <td class="noborder" style="padding:0px;border-right:1px solid #000;"></td>
+                                                    <td><span style="float:right;"><span class="noprint">年</span>&nbsp;&nbsp;&nbsp;<span class="noprint">月</span>&nbsp;&nbsp;&nbsp;<span class="noprint">日</span></span></td>
                                                 </tr>
                                             </table>
                                         </td>
 
                                         <td colspan="2">
                                             <table style="width:100%;border-collapse:collapse;height:100%;">
-                                                <tr style="height:25%;" rowspan="2"><td colspan="2" style="padding:0px;text-align:left;">备注:</td><td></td></tr>
+                                                <tr style="height:25%;" rowspan="2"><td colspan="2" style="padding:0px;text-align:left;"><span class="noprint">备注:</span></td><td></td></tr>
                                                 <tr style="height:25%;"></tr>
                                                 <tr rowspan="2"></tr>
                                                 <tr></tr>
@@ -103,20 +108,20 @@
                                 </table>
                             </td>
                         </tr>
-                        <tr style="height:70px;padding:0px;font-size:25px;letter-spacing:10px;font-weight: bold;">
-                            <td style="padding-left:60px;">有效期二0</td>
-                            <td></td>
-                            <td>年</td>
-                            <td></td>
-                            <td>月</td>
-                            <td></td>
-                            <td>日至二0</td>
-                            <td></td>
-                            <td>年</td>
-                            <td></td>
-                            <td>月</td>
-                            <td></td>
-                            <td style="padding-right:48px;text-align:right">日</td>
+                        <tr style="height:70px;padding:0px;font-size:25px;font-weight: bold;">
+                            <td style="padding-left: 60px; letter-spacing: 10px;"><span class="noprint">有效期二0</span></td>
+                            <td>_valid_date_start_year</td>
+                            <td><span class="noprint">年</span></td>
+                            <td>_valid_date_start_month</td>
+                            <td><span class="noprint">月</span></td>
+                            <td>_valid_date_start_day</td>
+                            <td style="letter-spacing: 10px;"><span class="noprint">日至二0</span></td>
+                            <td>_valid_date_end_year</td>
+                            <td><span class="noprint">年</span></td>
+                            <td>_valid_date_end_month</td>
+                            <td><span class="noprint">月</span></td>
+                            <td>_valid_date_end_day</td>
+                            <td style="padding-right:48px;text-align:right"><span class="noprint">日</span></td>
                         </tr>
                     </table>
                 </td>
