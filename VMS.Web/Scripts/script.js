@@ -1,5 +1,6 @@
 
 $(function () {
+    document.title = "佤邦司法委交通警察车辆管理";
     airBalloon('div.air-balloon');
     bindEvent();
 });
