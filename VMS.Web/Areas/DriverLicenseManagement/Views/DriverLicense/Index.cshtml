@@ -278,6 +278,7 @@
                     var ckRows = $('#dgDetail').datagrid('getSelected');
                     if (ckRows) {
                         $('#license').form('load', ckRows);
+                        $('#zs_user_info_photo').prop('src', 'data:image/jpeg;base64,' + ckRows.user_photo_base64).show();
                         $('#dlg-edit').dialog('open').dialog('center');
                     } else {
                         $.messager.alert('提示', '请先选中一行数据!', 'info');

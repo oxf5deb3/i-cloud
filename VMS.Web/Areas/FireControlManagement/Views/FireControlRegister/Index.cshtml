@@ -104,7 +104,7 @@
                 <span class="red-star">*</span>上传图片：
             </label>
             <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" class="easyui-linkbutton">选择</a>
-            <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple required />
+            <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple/>
 </div>
         <div style="text-align:center;">
             <button type="reset" id="btn-rest" class="btn btn-primary btn-sm">重置</button>
@@ -125,15 +125,13 @@
 						$('#imgs').trigger('click');
 					}
 				},'-',{
-					text:'删除图片',
+					text:'清空图片',
 					iconCls:'icon-remove',
 					handler:function(){
-					   if (imgBase) {
-                              imgBase.splice(imgIndex, 1);
-                              cimgs.splice(imgIndex, 1);
-                              imgIndex = 0;
-                              $('#img-show').prop('src', imgBase[imgIndex]);
-                       }
+                        $('#img-show').prop('src', '');
+					    imgBase = null;
+                        imgIndex = -1;
+                        cimgs = [];
                     }
 				},'-',{
 					text:'上一张',
@@ -158,13 +156,6 @@
 					handler:function(){
                          $('#dlg-img').dialog('close');
                     }
-               },{
-                    text:'清空',
-                    handler:function(){
-                        imgBase = null;
-                        imgIndex = -1;
-                        cimgs = [];
-                   }
                }]
      ">
     <img id="img-show" />
@@ -207,6 +198,10 @@
         });
 
         function submit() {
+            if(!cimgs || cimgs.length == 0) {
+                $.messager.alert('提示', '请先选择图片');
+                return false;
+            }
             var formData = new FormData(document.getElementById("accident"));
             for (var i = 0; i < cimgs.length; i++) {
                 formData.append('imgs[]', cimgs[i]);
@@ -220,12 +215,9 @@
                 processData: false,
                 success: function (ret) {
                     if (ret.success) {
-                        $.messager.alert('提示', '添加成功');
-                        $('#btn-rest').trigger('click');
-                        imgBase = null;
-                        imgIndex = -1;
-                        cimgs = [];
-                        $('#img-show').prop('src', '');
+                        $.messager.alert('提示', '添加成功', 'info', function (r) {
+                            location.reload();
+                        });
                     } else {
                         $.messager.alert('提示', '添加失败');
                     }
