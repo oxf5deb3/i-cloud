@@ -88,7 +88,7 @@
         <tr>
             <td><video id="zs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
             <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zs_userinfo_video', 'zs_userinfo_canvas')">拍照</button></td>
-            <td><button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas('')" type="button">重置</button></td>
             <td><canvas id="zs_userinfo_canvas" width="300" height="200" /></td>
         </tr>
 
@@ -328,17 +328,18 @@
         var data = getDataZSJZ();
 
         var url = "../../api/DriverLicenseApi/addZsDriverLicense";
-
         if (data != undefined) {
             $.post(url, data, 'json')
                 .success(function (ret) {
                     if (ret.success) {
                         alert("添加成功!");
+                        location.reload();
                     } else {
                         alert("添加失败!");
                     }
                 });
         }
+        
     }
 
     //初始化人员照片信息采集对话框

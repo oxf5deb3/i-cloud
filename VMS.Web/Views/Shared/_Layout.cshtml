@@ -30,7 +30,7 @@
     @RenderSection("scripts", required: false)
 
     <script type="text/javascript">
-
+    $.ajaxSettings.async = false;
     $.extend($.fn.filebox.methods, {
         getFile: function (myself) {
             var temp = $(myself).next().children("[type='file']");
@@ -69,6 +69,8 @@
         });
     }
 
+
+    let video = {};
         //初始化摄像头组件
     function initPhoto(videoId) {
         let constraints = {
@@ -76,7 +78,7 @@
             audio: true
         };
         //获得video摄像头区域            
-        let video = document.getElementById(videoId);
+         video = document.getElementById(videoId);
         //这里介绍新的方法，返回一个 Promise对象            
         // 这个Promise对象返回成功后的回调函数带一个 MediaStream 对象作为其参数           
         // then()是Promise对象里的方法            
@@ -122,11 +124,11 @@
             audio: true
         };
         //获得video摄像头区域            
-        let video = document.getElementById(videoId);
+        let close = video;
                   
         let promise = navigator.mediaDevices.getUserMedia(constraints);
         promise.then(function (MediaStream) {
-            video.srcObject = MediaStream;
+            //video.srcObject = MediaStream;
             MediaStream.getTracks()[1].stop();
         });
     }
