@@ -4,8 +4,9 @@
 }
 @section HeaderStyle{
     <style type="text/css">
-        body {
+        html, body {
             font-size: 12px;
+            height: 85%;
         }
 
         .textbox, .textbox-text {
@@ -42,8 +43,8 @@
         <td><label>安装时间(止)：</label><input class="easyui-datetimebox" id="timeEnd" /></td>
     </tr>
     <tr>
-        <td><label>安装地址：</label><input id="address" /></td>
-        <td><label>负责人：</label><input id="liable" /></td>
+        <td><label>安装地址：</label><input class="easyui-textbox" id="address" /></td>
+        <td><label>负责人：</label><input class="easyui-textbox" id="liable" /></td>
         <td colspan="2"></td>
         <td><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a></td>
     </tr>
@@ -123,7 +124,7 @@
     <a href="javascript:$('#dlg-upload').dialog('close')" class="easyui-linkbutton">取消</a>
 </div>
 
-<div id="dlg-img" class="easyui-dialog" title="图片" style="width:89%; height:90%; padding:10px"
+<div id="dlg-img" class="easyui-dialog" title="图片" style="width: 89%; height:100%; padding: 10px; text-align: center;"
      data-options="
                 closed:true,
                 modal:true,
@@ -221,7 +222,7 @@
             ]],
             url: '/api/FireControlApi/ListEquipment',
             toolbar: '#toolbar',
-            height: $(window).height() - 35,
+            height: $(window).height() * 0.85,
             idField: 'id',
             pagination: true,
             pageList: [10, 20, 50],

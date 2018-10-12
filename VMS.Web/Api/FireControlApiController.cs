@@ -184,6 +184,7 @@ namespace VMS.Api
                 HttpFileCollection filelist = httpRequest.Files;
                 if (filelist != null && filelist.Count > 0)
                 {
+                    Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
                     for (int i = 0; i < filelist.Count; i++)
@@ -193,7 +194,7 @@ namespace VMS.Api
                         {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + fileExtension;
+                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
                             tempFile.SaveAs(IMG_EQUIPMENT_PATH + imgName);
                             imgs.Append(imgName).Append(",");
                         }
@@ -245,6 +246,7 @@ namespace VMS.Api
                 HttpFileCollection filelist = httpRequest.Files;
                 if (filelist != null && filelist.Count > 0)
                 {
+                    Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
                     for (int i = 0; i < filelist.Count; i++)
@@ -254,7 +256,7 @@ namespace VMS.Api
                         {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + fileExtension;
+                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
                             tempFile.SaveAs(IMG_ACCIDENT_PATH + imgName);
                             imgs.Append(imgName).Append(",");
                         }
@@ -306,6 +308,7 @@ namespace VMS.Api
                 HttpFileCollection filelist = httpRequest.Files;
                 if (filelist != null && filelist.Count > 0)
                 {
+                    Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
                     for (int i = 0; i < filelist.Count; i++) {
@@ -313,7 +316,7 @@ namespace VMS.Api
                         if (tempFile.ContentLength > 0) {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + fileExtension;
+                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
                             tempFile.SaveAs(IMG_ACCIDENT_PATH + imgName);
                             imgs.Append(imgName).Append(",");
                         }
@@ -585,6 +588,7 @@ namespace VMS.Api
                 HttpFileCollection filelist = httpRequest.Files;
                 if (filelist != null && filelist.Count > 0)
                 {
+                    Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
                     for (int i = 0; i < filelist.Count; i++)
@@ -594,7 +598,7 @@ namespace VMS.Api
                         {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + fileExtension;
+                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
                             tempFile.SaveAs(IMG_EQUIPMENT_PATH + imgName);
                             imgs.Append(imgName).Append(",");
                         }

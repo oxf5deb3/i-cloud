@@ -22,7 +22,6 @@ namespace VMS.Api
     public class TrafficAccidentApiController : BaseApiController
     {
         public const string IMG_ACCIDENT_PATH = "F:\\traffic-accident-imgs\\";
-
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddAccident()
         {
@@ -34,6 +33,7 @@ namespace VMS.Api
                 HttpFileCollection filelist = httpRequest.Files;
                 if (filelist != null && filelist.Count > 0)
                 {
+                    Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
                     for (int i = 0; i < filelist.Count; i++)
@@ -43,7 +43,7 @@ namespace VMS.Api
                         {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + fileExtension;
+                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
                             tempFile.SaveAs(IMG_ACCIDENT_PATH + imgName);
                             imgs.Append(imgName).Append(",");
                         }
@@ -221,7 +221,7 @@ namespace VMS.Api
         }
 
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyEquipment([FromBody]JObject data)
+        public BaseResponseDTO ModifyAccident([FromBody]JObject data)
         {
             var ret = new BaseResponseDTO();
             try
@@ -318,6 +318,7 @@ namespace VMS.Api
                 HttpFileCollection filelist = httpRequest.Files;
                 if (filelist != null && filelist.Count > 0)
                 {
+                    Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
                     for (int i = 0; i < filelist.Count; i++)
@@ -327,7 +328,7 @@ namespace VMS.Api
                         {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + fileExtension;
+                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
                             tempFile.SaveAs(IMG_ACCIDENT_PATH + imgName);
                             imgs.Append(imgName).Append(",");
                         }

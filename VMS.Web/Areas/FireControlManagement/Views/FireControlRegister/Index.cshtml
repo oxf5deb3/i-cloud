@@ -5,10 +5,10 @@
 }
 @section HeaderStyle{
     <style type="text/css">
-        body {
+        html, body {
+            height: 85%;
             font-size: 12px;
         }
-
         .textbox, .textbox-text {
             -moz-border-radius: 2px 2px 2px 2px;
             -webkit-border-radius: 2px 2px 2px 2px;
@@ -34,6 +34,7 @@
         #content {
             width: 600px;
             margin:30px 30px;
+            height: 100%;
         }
         textarea, input {
             width: 400px;
@@ -102,41 +103,129 @@
             <label>
                 <span class="red-star">*</span>上传图片：
             </label>
-                <div id="div-imgs"></div>
-            <input class="easyui-filebox" type="file" name="imgs" id="imgs" accept="image/png, image/jpeg, image/jpg" multiple required />
-
+            <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" class="easyui-linkbutton">选择</a>
+            <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple required />
 </div>
         <div style="text-align:center;">
-            <button type="reset" class="btn btn-primary btn-sm">重置</button>
+            <button type="reset" id="btn-rest" class="btn btn-primary btn-sm">重置</button>
             <button id="btn-submit" type="submit" class="btn btn-info btn-sm">提交</button>
         </div>
     </form>
 </div>
 
+<div id="dlg-img" class="easyui-dialog" title="图片" style="width:89%; height:100%; padding:10px; text-align:center;"
+     data-options="
+                closed:true,
+                modal:true,
+				iconCls: 'icon-save',
+				toolbar: [{
+					text:'选择图片',
+					iconCls:'icon-add',
+					handler:function(){
+						$('#imgs').trigger('click');
+					}
+				},'-',{
+					text:'删除图片',
+					iconCls:'icon-remove',
+					handler:function(){
+					   if (imgBase) {
+                              imgBase.splice(imgIndex, 1);
+                              cimgs.splice(imgIndex, 1);
+                              imgIndex = 0;
+                              $('#img-show').prop('src', imgBase[imgIndex]);
+                       }
+                    }
+				},'-',{
+					text:'上一张',
+					handler:function(){
+						if (imgIndex > 0 && imgBase && imgBase.length > 1) {
+                            imgIndex--;
+                             $('#img-show').prop('src', imgBase[imgIndex]);
+                        }
+					}
+				},'-',{
+					text:'下一张',
+					handler:function(){
+						if (imgIndex >= 0 && imgBase && imgBase.length > imgIndex + 1 && imgBase[imgIndex + 1] != '') {
+                            imgIndex++;
+                            $('#img-show').prop('src', imgBase[imgIndex]);
+                        }
+					}
+				}],
+				buttons: [{
+					text:'确定',
+					iconCls:'icon-ok',
+					handler:function(){
+                         $('#dlg-img').dialog('close');
+                    }
+               },{
+                    text:'清空',
+                    handler:function(){
+                        imgBase = null;
+                        imgIndex = -1;
+                        cimgs = [];
+                   }
+               }]
+     ">
+    <img id="img-show" />
+</div>
 @section scripts {
     <script type="text/javascript">
-        var imgArray;
+        var imgBase;
+        var imgIndex = -1;
         let count = 0;
-        $('#imgs').change(function(){
+        var cimgs = [];
+        $('#imgs').change(function () {
             var objThis = $(this)[0];
             var imgs = objThis.files;
-            for (var i = 0; i < imgs.length; i++) {
-                var innerHtml = "<img class='imgs' id='img" + imgs[i].name + "' src='" + window.URL.createObjectURL(imgs[i]) + "' />";
-                $('#div-imgs').append(innerHtml);
+            if (imgs && imgs.length) {
+                // 原始FileList对象不可更改，所以将其赋予cimgs提供接下来的修改
+                Array.prototype.push.apply(cimgs, imgs);
             }
+            var fileIndex = 0;
+            var reader = new FileReader();
+            imgBase = new Array(imgs.length);
+            reader.readAsDataURL(imgs[fileIndex]);
+            reader.onabort = function (e) {
+                console.log("文件读取异常" + imgs[fileIndex].name);
+            };
+            reader.onerror = function (e) {
+                console.log("文件读取出现错误" + imgs[fileIndex].name);
+            };
+            reader.onload = function (e) {
+                if (e.target.result) {
+                    imgBase[fileIndex] = e.target.result;
+                    fileIndex++;
+                    if (fileIndex < imgs.length) {
+                        reader.readAsDataURL(imgs[fileIndex]);
+                    } else {
+                        imgIndex = 0;
+                        $('#img-show').prop('src', imgBase[0]);
+                    }
+                }
+            };
         });
 
         function submit() {
             var formData = new FormData(document.getElementById("accident"));
+            for (var i = 0; i < cimgs.length; i++) {
+                formData.append('imgs[]', cimgs[i]);
+            }
             $.ajax({
                 url: "../../api/FireControlApi/addFireAccident",
                 type: "POST",
                 data: formData,
+                async: false,
                 contentType: false,
                 processData: false,
                 success: function (ret) {
                     if (ret.success) {
                         $.messager.alert('提示', '添加成功');
+                        $('#btn-rest').trigger('click');
+                        imgBase = null;
+                        imgIndex = -1;
+                        cimgs = [];
+                        $('#img-show').prop('src', '');
                     } else {
                         $.messager.alert('提示', '添加失败');
                     }

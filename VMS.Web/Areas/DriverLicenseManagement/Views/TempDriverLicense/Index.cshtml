@@ -34,6 +34,7 @@
     <div class="btn-container">
         <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+        <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
     </div>
     <hr />
     <table>
@@ -56,21 +57,155 @@
     <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
     <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
 </div>
+<div id="dlg-edit" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="license" method="post" novalidate style="margin:0; padding:20px 50px">
+        <input type="hidden" name="id" id="id" required />
+        <table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>临时驾驶证编号:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="id_no" id="ls_no" readonly required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
+                <td style="width:100%;"><input class="easyui-textbox" name="name" id="name" required></td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
+                <td style="width:200px;"><input name="sex" id="sex" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
+                <td style="width:100%;"><input class="easyui-datebox" name="birthday" id="birth_date" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
+                <td style="width:200px;"><input name="region_no" id="region" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>国籍:</td>
+                <td style="width:100%;"><input name="nation_no" id="nation" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>现住址:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="now_addr" id="now_addr" required></td>
+                <td style="width:120px;text-align:right;">原住址:</td>
+                <td style="width:100%;"><input class="easyui-textbox" name="old_addr" id="old_addr"></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
+                <td style="width:200px;"><input name="permitted_card_type_no" id="car_type_1" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>民族:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="folk" id="folk" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
+                <td colspan="3" style="width:200px;"><input class="easyui-datebox" name="start_date" id="start_date" required>&nbsp;&nbsp;至&nbsp;&nbsp;<input class="easyui-datebox" name="end_date" id="end_date" required></td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>人员信息像:</td>
+                <td><button type="button" class="btn btn-info btn-sm" style="width:78px" id="zs_select_user_info">拍照</button></td>
+                <td><img src="#" id="zs_user_info_photo" style=" height: 80px;width: 100px;display:none" /></td>
+                <td><input type="hidden" class="easyui-textbox" name="user_photo_base64" id="zs_user_info_input" value="" required /></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-edit').dialog('close')" style="width:90px">取消</a>
+</div>
+
+<div id="zs_photoDialog">
+    <table>
+        <tr>
+            <td><video id="zs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zs_userinfo_video', 'zs_userinfo_canvas')">拍照</button></td>
+            <td><button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="zs_userinfo_canvas" width="300" height="200" /></td>
+        </tr>
+    </table>
+</div>
 @section scripts{
     <script type="text/javascript">
-  function print(){
-       var body = $('#print').dialog('body');
-       var oWin = window.open("", "_blank");
-        oWin.document.write(body.find("#content").html());
-        oWin.focus();
-        oWin.document.close();
-        oWin.print();
-        //oWin.close();
-        return false;
-    }
-    function cancelPrint(){
-      $('#print').dialog('close');
-    }
+        $("#zs_select_user_info").click(function () {
+            $("#zs_photoDialog").dialog("open");
+        });
+        function save() {
+            if ($('#license').form('validate')) {
+                $.ajax({
+                    url: '/api/DriverLicenseApi/ModifyLsDriverLicense',
+                    method: 'post',
+                    dataType: 'json',
+                    data: $('#license').serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            $.messager.alert("提示", "修改成功");
+                            $('#dlg-edit').dialog('close');        // close the dialog
+                            $('#dgDetail').datagrid('reload');
+                        } else {
+                            $.messager.alert("提示", "修改失败");
+                        }
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            initPhotoDialog();
+        });
+        var oldBase64 = null;
+        //初始化人员照片信息采集对话框
+        function initPhotoDialog() {
+            $('#zs_photoDialog').dialog({
+                title: '人员照片信息采集',
+                width: 800,
+                height: 500,
+                closed: true,
+                cache: false,
+                onOpen: function () {
+                    initPhoto("zs_userinfo_video");//初始化摄像头组件
+                },
+                onClose: function () {
+                    cleanCanvas("zs_userinfo_canvas");//清除缓存
+                    closePhoto("zs_userinfo_video");//关闭摄像头
+                },
+                buttons: [{
+                    text: '确定',
+                    handler: function () {
+                        var data = getCanvasForBase64("zs_userinfo_canvas");//获取照片转为base64
+                        $("#zs_user_info_photo").attr("src", data);//存储为缩略图
+                        if (oldBase64 == null) {
+                            oldBase64 = $('#zs_user_info_input').val();
+                        }
+                        $("#zs_user_info_input").attr("value", data.substring(data.indexOf(',') + 1));//将base64存储到隐藏域中,做非空校验
+                        $("#zs_user_info_photo").css("display", "");
+                        $("#zs_photoDialog").dialog("close");//关闭dialog
+                        cleanCanvas("zs_userinfo_canvas");//清除缓存
+                        closePhoto("zs_userinfo_video");//关闭摄像头
+                    }
+                }, {
+                    text: '取消',
+                    handler: function () {
+                        cleanCanvas("zs_userinfo_canvas");//清除缓存
+                        closePhoto("zs_userinfo_video");//关闭摄像头
+                        if (oldBase64 != null) {
+                            $("#zs_user_info_input").attr("value", oldBase64)// 还原数据
+                        }
+                        $("#zs_photoDialog").dialog("close");//关闭dialog
+
+                    }
+                }]
+            });
+        }
+        function print() {
+            var body = $('#print').dialog('body');
+            var oWin = window.open("", "_blank");
+            oWin.document.write(body.find("#content").html());
+            oWin.focus();
+            oWin.document.close();
+            oWin.print();
+            //oWin.close();
+            return false;
+        }
+        function cancelPrint() {
+            $('#print').dialog('close');
+        }
         function getQueryParams() {
             var params = {};
             var id_no = $('#id_no').textbox('getValue');
@@ -83,7 +218,7 @@
 
             return params;
         }
-         function initPrint(){
+        function initPrint() {
             $('#print').dialog({
                     width:470,
                     height:300,
@@ -111,14 +246,13 @@
                          replace(/_valid_date_end_month/g,'12').
                          replace(/_valid_date_end_day/g,'20').
                          replace(/\/images\/default.jpg/g,data.user_photo_path==null?'/images/default.jpg':data.user_photo_path);
-
-                         body.html(html);
-                    },
-                    href:'/PrintTemplate/TempDriverLicenseTemplate.html',
-                    buttons:'#bb'
-       });
-     $('#print').dialog('open');
-    }
+                    body.html(html);
+                },
+                href: '/PrintTemplate/TempDriverLicenseTemplate.html',
+                buttons: '#bb'
+            });
+            $('#print').dialog('open');
+        }
         function initBtn() {
             $('#btnQuery').linkbutton({
                 onClick: function () {
@@ -136,6 +270,18 @@
                     initPrint();
                 }
 
+            });
+            $('#btnEdit').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getSelected');
+                    if (ckRows) {
+                        $('#license').form('load', ckRows);
+                        $('#dlg-edit').dialog('open').dialog('center');
+                        $('#dgDetail').datagrid('reload');
+                    } else {
+                        $.messager.alert('提示', '请先选中一行数据!', 'info');
+                    }
+                }
             });
         }
         function initQueryUI() {
@@ -190,7 +336,7 @@
                     { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' },
                     { field: 'folk', title: '民族', width: 100, halign: 'center', align: 'left' },
                     { field: 'start_date', title: '有效期起', width: 180, halign: 'center', align: 'left' },
-                    { field: 'end_date', title: '有效期止', width: 180, halign: 'center', align: 'left' },
+                    { field: 'end_date', title: '有效期止', width: 180, halign: 'center', align: 'left' }
                 ]]
             });
         }
@@ -203,6 +349,52 @@
 
         $(function () {
             initUI();
+            $('#sex').combobox({
+                valueField: 'id',
+                width: 180,
+                panelHeight: 70,
+                editable: false,
+                textField: 'text',
+                value: 0,
+                data: [{ id: 0, text: '男' }, { id: 1, text: '女' }]
+            });
+            $('#region').combobox({
+                valueField: 'region_no',
+                width: 180,
+                panelHeight: 50,
+                editable: false,
+                textField: 'region_name',
+            });
+            var url = '../../api/RegionApi/QueryAll';
+            $.post(url, {}, 'json')
+            .success(function (ret) {
+                if (ret.success) {
+                    $('#region').combobox('loadData', ret.data);
+                }
+            });
+            $('#nation').combobox({
+                valueField: 'id',
+                width: 180,
+                panelHeight: 70,
+                editable: false,
+                textField: 'text',
+                value: 1,
+                data: [{ id: 1, text: '中国' }]
+            });
+
+            $('#car_type_1').combobox({
+                valueField: 'type_no',
+                width: 180,
+                editable: false,
+                textField: 'type_name',
+            });
+            url = '../../api/PermittedCarTypeApi/QueryAll';
+            $.post(url, {}, 'json')
+           .success(function (ret) {
+               if (ret.success) {
+                   $('#car_type_1').combobox('loadData', ret.data);
+               }
+           });
         })
     </script>
 }

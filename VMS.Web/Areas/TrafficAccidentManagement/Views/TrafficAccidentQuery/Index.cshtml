@@ -4,8 +4,9 @@
 }
 @section HeaderStyle{
     <style type="text/css">
-        body {
+        html, body {
             font-size: 12px;
+            height: 85%;
         }
 
         .textbox, .textbox-text {
@@ -149,7 +150,7 @@
     <a href="javascript:$('#dlg-upload').dialog('close')" class="easyui-linkbutton">取消</a>
 </div>
 
-<div id="dlg-img" class="easyui-dialog" title="图片" style="width:89%; height:90%; padding:10px"
+<div id="dlg-img" class="easyui-dialog" title="图片" style="width: 89%; height: 90%; padding: 10px; text-align: center;"
      data-options="
                 closed:true,
                 modal:true,
@@ -251,7 +252,7 @@
             ]],
             url: '/api/TrafficAccidentApi/ListAccident',
             toolbar: '#toolbar',
-            height: $(window).height() - 35,
+            height: $(window).height() * 0.85,
             idField: 'id',
             pagination: true,
             pageList: [10, 20, 50],
