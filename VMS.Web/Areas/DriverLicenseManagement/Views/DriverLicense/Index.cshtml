@@ -233,7 +233,7 @@
                     var validdateend = new Date(data.valid_date_end);
                     var first_get_license_date = new Date(data.first_get_license_date);
                     var body = $('#print').dialog('body');
-                    var html = body.html().replace(/_id_no/g, data.id_no).replace(/_user_name/g, data.name).replace(/_birthday_year/g, birthday.getFullYear()).
+                    var html = body.html().replace(/_id_no/g, data.id_card).replace(/_user_name/g, data.name).replace(/_birthday_year/g, birthday.getFullYear()).
                     replace(/_birthday_month/g, birthday.getMonth() + 1).replace(/_addr/g, data.addr).
                     replace(/_first_get_license_date_year/g, first_get_license_date.getFullYear()).
                     replace(/_first_get_license_date_month/g, first_get_license_date.getMonth() + 1).
