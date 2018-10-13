@@ -33,8 +33,6 @@
 <div class="q-condition">
     <div class="btn-container">
         <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:120px">打印临时牌照</a>
-        <a href="#" id="btnPrintBack" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:150px">打印临时行驶证</a>
         <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
     </div>
     <hr />
@@ -51,12 +49,6 @@
 <div class="q-detail">
     <table id="dgDetail"></table>
 </div>
-<div id="print" style="display:none;"></div>
-<div id="bb" style="display:none;">
-    <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
-    <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
-</div>
-
 <div id="dlg-edit" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
     <form id="license" method="post" novalidate style="margin:0; padding:20px 50px">
         <input type="hidden" name="id" required />
@@ -119,19 +111,7 @@
             }
         }
 
-        function print() {
-            var body = $('#print').dialog('body');
-            var oWin = window.open("", "_blank");
-            oWin.document.write(body.find("#content").html());
-            oWin.focus();
-            oWin.document.close();
-            oWin.print();
-            //oWin.close();
-            return false;
-        }
-        function cancelPrint() {
-            $('#print').dialog('close');
-        }
+       
         function getQueryParams() {
             var params = {};
             var car_number = $('#car_number').textbox('getValue');
@@ -141,58 +121,7 @@
 
             return params;
         }
-        function initPrint() {
-            $('#print').dialog({
-                    width:650,
-                    height:450,
-                    noheader:true,
-                    border:false,
-                    modal:true,
-                    onLoad:function(){
-
-                         var ckRows = $('#dgDetail').datagrid('getChecked');
-                         var body = $('#print').dialog('body');
-                        var html = body.html().replace(/_year/g,'18').
-                         replace(/_month/g,'10').replace(/_day/g,'12').
-                         replace(/_region/g,'佤邦');
-                    body.html(html);
-                },
-                href: '/PrintTemplate/TempLicenseFontTemplate.html',
-                buttons: '#bb'
-            });
-            $('#print').dialog('open');
-        }
-        function initPrintBack() {
-            $('#print').dialog({
-                    width:820,
-                    height:560,
-                    noheader:true,
-                    border:false,
-                    modal:true,
-                    onLoad:function(){
-                         var ckRows = $('#dgDetail').datagrid('getChecked');
-                         var body = $('#print').dialog('body');
-                         var html = body.html().replace(/_car_owner/g,'songlf').
-                         replace(/_car_num/g,'14rt560').replace(/_car_type/g,'三轮').
-                         replace(/_factory_license_no/g,'Wrty').
-                         replace(/_engine_no/g,'W45678').
-                         replace(/_car_frame_no/g,'Wrty789988').
-                         replace(/_check_weight/g,'150').
-                         replace(/_check_passengers/g,'40').
-                         replace(/_region/g,'佤邦').
-                         replace(/_valid_date_start_year/g,'18').
-                         replace(/_valid_date_start_month/g,'01').
-                         replace(/_valid_date_start_day/g,'20').
-                         replace(/_valid_date_end_year/g,'18').
-                         replace(/_valid_date_end_month/g,'10').
-                         replace(/_valid_date_end_day/g,'11');
-                    body.html(html);
-                },
-                href: '/PrintTemplate/TempLicenseBackTemplate.html',
-                buttons: '#bb'
-            });
-            $('#print').dialog('open');
-        }
+        
         function initBtn() {
             $('#btnQuery').linkbutton({
                 onClick: function () {
@@ -200,28 +129,7 @@
                 }
 
             });
-            $('#btnPrint').linkbutton({
-                onClick: function () {
-                    var ckRows = $('#dgDetail').datagrid('getChecked');
-                    //if(ckRows.length<=0){
-                    //    $.messager.alert('提示','请先选中一行需要打印的数据!','info');
-                    //    return ;
-                    //}
-                    initPrint();
-                }
-
-            });
-            $('#btnPrintBack').linkbutton({
-                onClick: function () {
-                    var ckRows = $('#dgDetail').datagrid('getChecked');
-                    //if(ckRows.length<=0){
-                    //    $.messager.alert('提示','请先选中一行需要打印的数据!','info');
-                    //    return ;
-                    //}
-                    initPrintBack();
-                }
-
-            });
+           
 
             $('#btnEdit').linkbutton({
                 onClick: function () {

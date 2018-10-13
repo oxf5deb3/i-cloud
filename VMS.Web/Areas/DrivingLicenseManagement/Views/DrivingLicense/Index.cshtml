@@ -288,18 +288,20 @@
                     modal:true,
                     onLoad:function(){
                          var ckRows = $('#dgDetail').datagrid('getChecked');
+                         var data=ckRows[0];
+                         var sendLicenseDate = new Date(data.issue_license_date);
                          var body = $('#print').dialog('body');
-                         var html = body.html() .replace(/_car_num/g,'w00032').
-                         replace(/_car_type/g,'三轮').
-                         replace(/_car_owner/g,'宋立夫').
-                         replace(/_owner_addr/g,'海南').
-                         replace(/_engine_no/g,'12345678').
-                         replace(/_frame_no/g,'147852').
-                         replace(/_check_passengers/g,'40').
-                         replace(/_car_color/g,'红色').
-                         replace(/_send_date_year/g,'2018').
-                         replace(/_send_date_month/g,'10').
-                         replace(/_send_date_day/g,'11');
+                         var html = body.html() .replace(/_car_num/g,data.car_number).
+                         replace(/_car_type/g,data.car_type).
+                         replace(/_car_owner/g,data.name).
+                         replace(/_owner_addr/g,data.addr).
+                         replace(/_engine_no/g,data.motor_no).
+                         replace(/_frame_no/g,data.carframe_no).
+                         replace(/_check_passengers/g,data.passenger).
+                         replace(/_car_color/g,data.car_color).
+                         replace(/_send_date_year/g,sendLicenseDate.getFullYear()).
+                         replace(/_send_date_month/g,sendLicenseDate.getMonth() + 1).
+                         replace(/_send_date_day/g,sendLicenseDate.getDate());
 
                          body.html(html);
                     },
@@ -318,10 +320,10 @@
             $('#btnPrint').linkbutton({
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getChecked');
-                   // if (ckRows.length <= 0) {
-                   //     $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
-                   //     return;
-                   // }
+                    if (ckRows.length <= 0) {
+                        $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                        return;
+                    }
                     initPrint();
                 }
 

@@ -31,7 +31,8 @@
 <div class="q-condition">
     <div class="btn-container">
         <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
-        <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+        <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:120px">打印临时牌照</a>
+        <a href="#" id="btnPrintBack" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:150px">打印临时行驶证</a>
         <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
     </div>
     <hr/>
@@ -48,7 +49,11 @@
 <div class="q-detail">
     <table id="dgDetail"></table>
 </div>
-
+<div id="print" style="display:none;"></div>
+<div id="bb" style="display:none;">
+    <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
+    <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
+</div>
 <div id="dlg-edit" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
     <form id="license" method="post" novalidate style="margin:0; padding:20px 50px">
         <input type="hidden" name="id" required />
@@ -113,6 +118,19 @@
             });
         }
     }
+     function print() {
+            var body = $('#print').dialog('body');
+            var oWin = window.open("", "_blank");
+            oWin.document.write(body.find("#content").html());
+            oWin.focus();
+            oWin.document.close();
+            oWin.print();
+            //oWin.close();
+            return false;
+        }
+        function cancelPrint() {
+            $('#print').dialog('close');
+        }
      function getQueryParams(){
         var params = {};
         var temp_number = $('#temp_number').textbox('getValue');
@@ -122,6 +140,64 @@
 
        return params;
      }
+    function initPrint() {
+            $('#print').dialog({
+                    width:650,
+                    height:450,
+                    noheader:true,
+                    border:false,
+                    modal:true,
+                    onLoad:function(){
+
+                         var ckRows = $('#dgDetail').datagrid('getChecked');
+                        var data=ckRows[0];
+                         var body = $('#print').dialog('body');
+                        var validDateEnd = new Date(data.end_date);
+                        var html = body.html().replace(/_year/g,validDateEnd.getFullYear()).
+                         replace(/_month/g,validDateEnd.getMonth() + 1).
+                         replace(/_day/g,validDateEnd.getDate()).
+                         replace(/_region/g,data.region_name);
+                    body.html(html);
+                },
+                href: '/PrintTemplate/TempLicenseFontTemplate.html',
+                buttons: '#bb'
+            });
+            $('#print').dialog('open');
+        }
+        function initPrintBack() {
+            $('#print').dialog({
+                    width:820,
+                    height:560,
+                    noheader:true,
+                    border:false,
+                    modal:true,
+                    onLoad:function(){
+                         var ckRows = $('#dgDetail').datagrid('getChecked');
+                         var data = ckRows[0];
+                         var validdatestart = new Date(data.start_date);
+                         var validdateend = new Date(data.end_date);
+                         var body = $('#print').dialog('body');
+                         var html = body.html().replace(/_car_owner/g,data.name).
+                         replace(/_car_num/g,data.temp_number).replace(/_car_type/g,data.car_type).
+                         replace(/_factory_license_no/g,data.label_type).
+                         replace(/_engine_no/g,data.engine_no).
+                         replace(/_car_frame_no/g,data.vin).
+                         replace(/_check_weight/g,data.cargo).
+                         replace(/_check_passengers/g,data.passenger).
+                         replace(/_region/g,data.region_name).
+                         replace(/_valid_date_start_year/g,validdatestart.getFullYear().toString().substring(2)).
+                         replace(/_valid_date_start_month/g,validdatestart.getMonth() + 1).
+                         replace(/_valid_date_start_day/g,validdatestart.getDate()).
+                         replace(/_valid_date_end_year/g, validdateend.getFullYear().toString().substring(2)).
+                         replace(/_valid_date_end_month/g, validdateend.getMonth() + 1).
+                         replace(/_valid_date_end_day/g,validdateend.getDate());
+                    body.html(html);
+                },
+                href: '/PrintTemplate/TempLicenseBackTemplate.html',
+                buttons: '#bb'
+            });
+            $('#print').dialog('open');
+        }
     function initBtn(){
        $('#btnQuery').linkbutton({
          onClick:function(){
@@ -129,16 +205,28 @@
          }
 
        });
-       $('#btnPrint').linkbutton({
-         onClick:function(){
-             var ckRows = $('#dgDetail').datagrid('getChecked');
-             if(ckRows.length<=0){
-                 $.messager.alert('提示','请先选中一行需要打印的数据!','info');
-                 return ;
-             }
-         }
+        $('#btnPrint').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getChecked');
+                    //if(ckRows.length<=0){
+                    //    $.messager.alert('提示','请先选中一行需要打印的数据!','info');
+                    //    return ;
+                    //}
+                    initPrint();
+                }
 
-       });
+            });
+            $('#btnPrintBack').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getChecked');
+                    //if(ckRows.length<=0){
+                    //    $.messager.alert('提示','请先选中一行需要打印的数据!','info');
+                    //    return ;
+                    //}
+                    initPrintBack();
+                }
+
+            });
 
        $('#btnEdit').linkbutton({
            onClick: function () {
@@ -205,7 +293,7 @@
                { field: 'engine_no', title: '发动机号', width: 180, halign: 'center', align: 'left' },
                { field: 'vin', title: '车架号', width: 180, halign: 'center', align: 'left' },
                { field: 'temp_number', title: '临时车牌号', width: 180, halign: 'center', align: 'left' },
-               
+
            ]]
      });
     }

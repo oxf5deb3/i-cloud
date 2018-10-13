@@ -303,14 +303,14 @@
                          //var validdateend = new Date(data.valid_date_end);
                          //var first_get_license_date = new Date(data.first_get_license_date);
                          var body = $('#print').dialog('body');
-                         var html = body.html().replace(/_car_owner/g,'songlf').
-                         replace(/_car_type/g,'奥迪').
-                         replace(/_car_color/g,'褐色').
-                         replace(/_temp_car_license/g,'W0002').
-                         replace(/_engine_no/g,'20678').
-                         replace(/_bottom_no/g,'a023674789').
-                         replace(/_check_passegers/g,'45').
-                         replace(/_check_weight/g,'100');
+                         var html = body.html().replace(/_car_owner/g,data.name).
+                         replace(/_car_type/g,data.car_type).
+                         replace(/_car_color/g,'').
+                         replace(/_temp_car_license/g,data.temp_number).
+                         replace(/_engine_no/g,data.engine_no).
+                         replace(/_bottom_no/g,data.vin).
+                         replace(/_check_passegers/g,data.passenger).
+                         replace(/_check_weight/g,data.cargo);
                     body.html(html);
                 },
                 href: '/PrintTemplate/TempDrivingLicenseTemplate.html',
@@ -328,10 +328,10 @@
             $('#btnPrint').linkbutton({
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getChecked');
-                    //if (ckRows.length <= 0) {
-                    //    $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
-                    //    return;
-                    //}
+                    if (ckRows.length <= 0) {
+                        $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                        return;
+                    }
                     initPrint();
                 }
 
