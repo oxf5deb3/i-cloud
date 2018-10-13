@@ -347,7 +347,7 @@ namespace VMS.Services
             var sql = new StringBuilder("update t_temp_car_license set check_man = @check_man, addr = @addr, folk = @folk, nation_no = @nation_no, birthday = @birthday, sex = @sex, permitted_car_type_no = @permitted_car_type_no, ");
             sql.Append("name = @name, check_date = @check_date, car_type = @car_type, temp_number = @temp_number, engine_no = @engine_no, vin = @vin, passenger = @passenger, cargo = @cargo,label_type = @label_type,");
             sql.Append("start_date = @start_date, end_date = @end_date, modify_oper_id = @modify_oper_id, modify_date = @modify_date, car_1_img_path = @car_1_img_path, car_2_img_path = @car_2_img_path, ");
-            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path where id = @id");
+            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path ,car_color=@car_color where id = @id");
 
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@check_man", drivingPermitDTO.check_man));
@@ -379,6 +379,9 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@car_2_img_path", car_2_PhotoPath));
             paramlst.Add(new SqlParam("@engine_no_img_path", fadongjiPhotoPath));
             paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
+
+            paramlst.Add(new SqlParam("@car_color", drivingPermitDTO.car_color));
+
             paramlst.Add(new SqlParam("@id", drivingPermitDTO.id));
 
             return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
@@ -465,8 +468,8 @@ namespace VMS.Services
 
 
             var insertSql = new StringBuilder();
-            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,user_photo_path) "
-            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@user_photo_path)");
+            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,car_color) "
+            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@car_color)");
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@check_man", temporaryDrivingPermitDTO.check_man));
             paramlst.Add(new SqlParam("@sex", temporaryDrivingPermitDTO.sex));
@@ -502,6 +505,7 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@car_2_img_path", car_2_PhotoPath));
             paramlst.Add(new SqlParam("@engine_no_img_path", fadongjiPhotoPath));
             paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
+            paramlst.Add(new SqlParam("@car_color", temporaryDrivingPermitDTO.car_color));
 
 
 
@@ -735,7 +739,7 @@ namespace VMS.Services
 	 +"  ,[oper_id],[modify_date],[modify_oper_id],[time_stamp],[user_photo_path],[car_1_img_path] "
      +"  ,[car_2_img_path],[engine_no_img_path],[vin_no_img_path],[img4_url],[img5_url],[car_type] " 
       +" ,[temp_number],[engine_no],[vin],[passenger],[cargo],[label_type],[id_no],[id_card] "
-     + "  ,[start_date],[end_date],[addr],c.type_name as permitted_card_type_name,a.region_no, a.permitted_car_type_no as permitted_card_type_no "
+     + "  ,[start_date],[end_date],[addr],c.type_name as permitted_card_type_name,a.region_no, a.permitted_car_type_no as permitted_card_type_no,a.car_color "
   +" FROM [dbo].[t_temp_car_license] a  "
   +" left join t_bd_region b on a.region_no=b.region_no "
   +" left join t_bd_permitted_car_type c on a.permitted_car_type_no=c.type_no "

@@ -84,9 +84,9 @@
             </tr>
             <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
-                <td style="width:200px;"><input class="easyui-textbox" name="now_addr" id="lsxs_now_addr" required></td>
+                <td style="width:200px;"><input class="easyui-textbox" name="addr" id="lsxs_addr" required></td>
                 <td style="width:120px;text-align:right;">单位:</td>
-                <td style="width:100%;"><input class="easyui-textbox" name="addr" id="lsxs_work_unit"></td>
+                <td style="width:100%;"><input class="easyui-textbox" name="work_unit" id="lsxs_work_unit"></td>
             </tr>
             <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
@@ -119,6 +119,11 @@
             </tr>
 
             <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色</td>
+                <td style="width:200px;"><input class="easyui-textbox" id="lsxs_car_color" name="car_color"></input></td>
+            </tr>
+
+            <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
                 <td colspan="3" style="width:200px;"><input class="easyui-datebox" name="start_date" id="start_date" required>&nbsp;&nbsp;至&nbsp;&nbsp;<input class="easyui-datebox" name="end_date" id="end_date" required></td>
             </tr>
@@ -126,7 +131,7 @@
             <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>人员信息像:</td>
                 <td><button type="button" class="btn btn-info btn-sm" style="width:78px" id="zs_select_user_info">拍照</button></td>
-                <td><img src="#" id="zs_user_info_photo" style=" height: 80px;width: 100px;display:none" /></td>
+                <td><img src="#" id="zs_user_info_photo" style=" height: 50px;width: 100px;display:none" /></td>
                 <td><input type="hidden" name="user_photo_base64" id="zs_user_info_input" value="" required /></td>
             </tr>
             <tr>
@@ -135,7 +140,7 @@
                     <input id="zsxs_car_1_input" class="easyui-filebox"
                            data-options="buttonText:'选择照片',accept: 'image/*'" />
                 </td>
-                <td><img src="" id="zsxs_car_1_img" style=" height :80px;width :100px;display:none"></td>
+                <td><img src="" id="zsxs_car_1_img" style=" height :50px;width :100px;display:none"></td>
                 <td><input type="hidden" name="car_1_value" id="zsxs_car_1_value" value="" required></td>
 
             </tr>
@@ -146,7 +151,7 @@
                     <input id="zsxs_car_2_input" class="easyui-filebox"
                            data-options="buttonText:'选择照片',accept: 'image/*'" />
                 </td>
-                <td><img src="" id="zsxs_car_2_img" style=" height :80px;width :100px;display:none"></td>
+                <td><img src="" id="zsxs_car_2_img" style=" height :50px;width :100px;display:none"></td>
                 <td><input type="hidden"  name="car_2_value" id="zsxs_car_2_value" value="" required></td>
 
             </tr>
@@ -157,7 +162,7 @@
                     <input id="zsxs_engine_no_input" class="easyui-filebox"
                            data-options="buttonText:'选择照片',accept: 'image/*'" />
                 </td>
-                <td><img src="" id="zsxs_engine_no_img" style=" height :80px;width :100px;display:none"></td>
+                <td><img src="" id="zsxs_engine_no_img" style=" height :50px;width :100px;display:none"></td>
                 <td><input type="hidden" name="engine_no_value" id="zsxs_engine_no_value" value="" required></td>
 
             </tr>
@@ -168,7 +173,7 @@
                     <input id="zsxs_vin_no_input" class="easyui-filebox"
                            data-options="buttonText:'选择照片',accept: 'image/*'" />
                 </td>
-                <td><img src="" id="zsxs_vin_no_img" style=" height:80px;width:100px;display:none"></td>
+                <td><img src="" id="zsxs_vin_no_img" style=" height:50px;width:100px;display:none"></td>
                 <td><input type="hidden" name="vin_no_value" id="zsxs_vin_no_value" value="" required></td>
 
             </tr>
@@ -204,7 +209,7 @@
                     data: $('#license').serialize(),
                     success: function (result) {
                         if (result.success) {
-                            $.messager.alert("提示", "修改成功", 'info', function (r) { $('#license')[0].reset(); });
+                            $.messager.alert("提示", "修改成功", 'info', function (r) { });
                             $('#dlg-edit').dialog('close');        // close the dialog
                             $('#dgDetail').datagrid('reload');
                         } else {

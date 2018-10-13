@@ -83,6 +83,11 @@
         <td style="width:200px;"><input id="lsxs_cargo"></input></td>
 
     </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色</td>
+        <td style="width:200px;"><input id="lsxs_car_color"></input></td>
+    </tr>
         
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
@@ -221,7 +226,10 @@
       });
     $('#lsxs_name').textbox({
           width:180,
-      });
+    });
+    $('#lsxs_car_color').textbox({
+        width: 180,
+    });
     $('#lsxs_sex').combobox({
          valueField:'id',
          width:180,
@@ -417,6 +425,13 @@
             return message;
         }
 
+        //车身颜色
+        if (!isNull($("#lsxs_car_color").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车辆颜色!";
+            return message;
+        }
+
         //车型
         if (!isNull($("#lsxs_car_type").textbox("getValue"))) {
             message.type = false;
@@ -508,6 +523,8 @@
         data.user_photo_base64 = $("#lsxs_user_info_input").attr("value");//人员信息照片
 
         data.car_type = $("#lsxs_car_type").textbox("getValue");//车型
+        data.car_color = $("#lsxs_car_color").textbox("getValue");//颜色
+
 
         data.label_type = $("#lsxs_label_type").textbox("getValue");//厂牌车型
         data.cargo = $("#lsxs_cargo").textbox("getValue");//载货千克

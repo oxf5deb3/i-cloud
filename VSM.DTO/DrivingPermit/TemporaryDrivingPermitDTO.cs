@@ -66,5 +66,7 @@ namespace VMS.DTO
         public string car_2_img_path { get; set; }
         public string engine_no_img_path { get; set; }
         public string vin_no_img_path { get; set; }
+
+        public string car_color { get; set; }
     }
 }
