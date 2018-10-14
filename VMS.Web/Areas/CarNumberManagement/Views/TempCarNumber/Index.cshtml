@@ -148,12 +148,11 @@
                     border:false,
                     modal:true,
                     onLoad:function(){
-
-                         var ckRows = $('#dgDetail').datagrid('getChecked');
+                        var ckRows = $('#dgDetail').datagrid('getChecked');
                         var data=ckRows[0];
-                         var body = $('#print').dialog('body');
+                        var body = $('#print').dialog('body');
                         var validDateEnd = new Date(data.end_date);
-                        var html = body.html().replace(/_year/g,validDateEnd.getFullYear()).
+                        var html = body.html().replace(/_year/g,validDateEnd.getFullYear().toString().substring(2)).
                          replace(/_month/g,validDateEnd.getMonth() + 1).
                          replace(/_day/g,validDateEnd.getDate()).
                          replace(/_region/g,data.region_name);
@@ -208,10 +207,10 @@
         $('#btnPrint').linkbutton({
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getChecked');
-                    //if(ckRows.length<=0){
-                    //    $.messager.alert('提示','请先选中一行需要打印的数据!','info');
-                    //    return ;
-                    //}
+                    if(ckRows.length<=0){
+                        $.messager.alert('提示','请先选中一行需要打印的数据!','info');
+                        return ;
+                    }
                     initPrint();
                 }
 
@@ -219,10 +218,10 @@
             $('#btnPrintBack').linkbutton({
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getChecked');
-                    //if(ckRows.length<=0){
-                    //    $.messager.alert('提示','请先选中一行需要打印的数据!','info');
-                    //    return ;
-                    //}
+                    if(ckRows.length<=0){
+                        $.messager.alert('提示','请先选中一行需要打印的数据!','info');
+                        return ;
+                    }
                     initPrintBack();
                 }
 
