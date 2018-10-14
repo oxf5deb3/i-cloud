@@ -315,7 +315,8 @@
                          replace(/_engine_no/g,data.engine_no).
                          replace(/_bottom_no/g,data.vin).
                          replace(/_check_passegers/g,data.passenger).
-                         replace(/_check_weight/g,data.cargo);
+                         replace(/_check_weight/g, data.cargo);
+
                     body.html(html);
                 },
                 href: '/PrintTemplate/TempDrivingLicenseTemplate.html',
