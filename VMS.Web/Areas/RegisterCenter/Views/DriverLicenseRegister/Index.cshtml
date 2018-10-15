@@ -179,7 +179,7 @@
           
           value:now.pattern('yyyy-MM-dd'),
           onSelect:function(date){
-            var endDate = new Date(date.getFullYear(),date.getMonth()+6,date.getDate());
+            var endDate = new Date(date.getFullYear(),date.getMonth()+48,date.getDate());
             $('#end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
          }
       });

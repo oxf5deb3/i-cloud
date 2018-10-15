@@ -220,11 +220,12 @@
                 required: true,
                 value: now.pattern('yyyy-MM-dd'),
                 onSelect: function (date) {
-                    var endDate = new Date(date.getFullYear(), date.getMonth() + 6, date.getDate());
-                    $('#end_date').datebox('setValue', endDate.pattern('yyyy-MM-dd'));
+                    var endDate = new Date(date.getFullYear(), date.getMonth() + 3, date.getDate());
+                    console.log(endDate.pattern('yyyy-MM-dd'))
+                    $('#end_date').datebox('setValue', endDate.pattern('yyyy-MM-dd').toString());
                 }
             });
-            var end = new Date(now.getFullYear(), now.getMonth() + 6, now.getDate());
+            var end = new Date(now.getFullYear(), now.getMonth() + 3, now.getDate());
             $('#end_date').datebox({
                 width: 180,
                 panelWidth: 180,

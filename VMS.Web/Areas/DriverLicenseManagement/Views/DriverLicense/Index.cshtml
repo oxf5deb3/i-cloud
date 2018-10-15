@@ -202,7 +202,7 @@
             oWin.focus();
             oWin.document.close();
             oWin.print();
-            //oWin.close();
+            oWin.close();
             return false;
         }
         function cancelPrint() {
@@ -238,7 +238,7 @@
                     replace(/_first_get_license_date_year/g, first_get_license_date.getFullYear()).
                     replace(/_first_get_license_date_month/g, first_get_license_date.getMonth() + 1).
                     replace(/_first_get_license_date_day/g, first_get_license_date.getDate()).
-                    replace(/_permitted_car_type_name/g, data.permitted_car_type_name).
+                    replace(/_permitted_car_type_name/g, data.permitted_card_type_no.substring(1)).
                     replace(/_valid_date_start_year/g, validdatestart.getFullYear()).
                     replace(/_valid_date_start_month/g, validdatestart.getMonth() + 1).
                     replace(/_valid_date_start_day/g, validdatestart.getDate()).
