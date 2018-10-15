@@ -32,7 +32,7 @@
     <div class="btn-container">
         <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:120px">打印临时牌照</a>
-        <a href="#" id="btnPrintBack" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:150px">打印临时行驶证</a>
+        <a href="#" id="btnPrintBack" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:150px">打印临时牌照背面</a>
         <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
     </div>
     <hr/>
@@ -125,7 +125,7 @@
             oWin.focus();
             oWin.document.close();
             oWin.print();
-            //oWin.close();
+            oWin.close();
             return false;
         }
         function cancelPrint() {
