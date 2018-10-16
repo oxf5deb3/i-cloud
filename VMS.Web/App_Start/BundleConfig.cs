@@ -21,9 +21,9 @@ namespace VMS
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js",
-                      "~/Scripts/echarts.js",
-                      "~/Scripts/EasyUI/locale/easyui-lang-zh_CN.js"));
+                      "~/Scripts/respond.js"));
+                      //"~/Scripts/echarts.js",
+                      //"~/Scripts/EasyUI/locale/easyui-lang-zh_CN.js"
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
