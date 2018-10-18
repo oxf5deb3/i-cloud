@@ -323,33 +323,47 @@ namespace VMS.Services
                Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
 
             //人员信息照文件名
-            String userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+            String userInfoPhotoPath = "";
+            if (StringUtils.isNull(userInfoPhotoBase64))
+            {
+                 userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
                 drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_USERINFO);
+                 FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath, FileMode.Create);//创建人员信息照
 
-            String car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+            }
+            String car_1_PhotoPath = "";
+            if (StringUtils.isNull(car_1_value_base64))
+            {
+                 car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
                 drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_1);
+                 FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath, FileMode.Create);//创建车辆信息照1
 
-            String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+            }
+            String car_2_PhotoPath = "";
+            if(StringUtils.isNull(car_2_value_base64)){
+                  car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
                 drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
+                  FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath, FileMode.Create);//创建车辆信息照2
 
-            String fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+            }
+            String fadongjiPhotoPath = "";
+            if (StringUtils.isNull(engine_no_value_base64))
+            {
+                 fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
                 drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_fadongji);
+                 FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath, FileMode.Create);//创建发动机号照
 
-            String chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+           }
 
+            String chejiaPhotoPath = "";
+            if (StringUtils.isNull(vin_no_value_base64))
+            {
+                 chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+               drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+                 FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath, FileMode.Create);//创建车架照
 
-
-            FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath, FileMode.Create);//创建人员信息照
-            FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath, FileMode.Create);//创建车辆信息照1
-
-            FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath, FileMode.Create);//创建车辆信息照2
-
-            FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath, FileMode.Create);//创建发动机号照
-
-            FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath, FileMode.Create);//创建车架照
-
-
+           }
+           
 
             var sql = new StringBuilder("update t_temp_car_license set check_man = @check_man, addr = @addr, folk = @folk, nation_no = @nation_no, birthday = @birthday, sex = @sex, permitted_car_type_no = @permitted_car_type_no, ");
             sql.Append("name = @name, check_date = @check_date, car_type = @car_type, temp_number = @temp_number, engine_no = @engine_no, vin = @vin, passenger = @passenger, cargo = @cargo,label_type = @label_type,");
@@ -449,41 +463,48 @@ namespace VMS.Services
                Substring(temporaryDrivingPermitDTO.vin_no_value.IndexOf(",") + 1);
 
             //人员信息照文件名
-            String userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
-                temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_USERINFO);
-
-            String car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
-                temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_car_1);
-
-            String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
-                temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_car_2);
-            String fadongjiPhotoPath="";
-            if (StringUtils.isNull(temporaryDrivingPermitDTO.engine_no_value))
+            String userInfoPhotoPath = "";
+            if (StringUtils.isNull(userInfoPhotoBase64))
             {
-                  fadongjiPhotoPath= BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
-                temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_fadongji);
-                  FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath);//创建发动机号照
+                userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
+               temporaryDrivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_USERINFO);
+                FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath, FileMode.Create);//创建人员信息照
+
+            }
+            String car_1_PhotoPath = "";
+            if (StringUtils.isNull(car_1_value_base64))
+            {
+                car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
+               temporaryDrivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_1);
+                FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath, FileMode.Create);//创建车辆信息照1
+
+            }
+            String car_2_PhotoPath = "";
+            if (StringUtils.isNull(car_2_value_base64))
+            {
+                car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
+              temporaryDrivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
+                FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath, FileMode.Create);//创建车辆信息照2
+
+            }
+            String fadongjiPhotoPath = "";
+            if (StringUtils.isNull(engine_no_value_base64))
+            {
+                fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
+               temporaryDrivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_fadongji);
+                FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath, FileMode.Create);//创建发动机号照
 
             }
 
-            String chejiaPhotoPath="";
-            if (StringUtils.isNull(temporaryDrivingPermitDTO.vin_no_value))
+            String chejiaPhotoPath = "";
+            if (StringUtils.isNull(vin_no_value_base64))
             {
                 chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
-                temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_chejia);
-                FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath);//创建车架照
+              temporaryDrivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+                FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath, FileMode.Create);//创建车架照
 
             }
-          
-            
            
-
-
-            FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath);//创建人员信息照
-            FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath);//创建车辆信息照1
-
-            FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath);//创建车辆信息照2
-
 
 
 
@@ -550,51 +571,53 @@ namespace VMS.Services
             //车辆2base64
             String car_2_value_base64 = drivingPermitDTO.car_2_value.
                 Substring(drivingPermitDTO.car_2_value.IndexOf(",") + 1);
-           
-          
+            //发动机base64
+            String engine_no_value_base64 = drivingPermitDTO.engine_no_value.
+                Substring(drivingPermitDTO.engine_no_value.IndexOf(",") + 1);
+            //车架base64
+            String vin_no_value_base64 = drivingPermitDTO.vin_no_value.
+               Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
 
             //人员信息照文件名
-            String userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_USERINFO);
-
-            String car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_1);
-
-            String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
-
-           
-
-
-
-            FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath);//创建人员信息照
-            FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath);//创建车辆信息照1
-
-            FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath);//创建车辆信息照2
-
-       
-
-            String fadongjiPhotoPath = "";
-            if (StringUtils.isNull(drivingPermitDTO.engine_no_value))
+            String userInfoPhotoPath = "";
+            if (StringUtils.isNull(userInfoPhotoBase64))
             {
-                //发动机base64
-                String engine_no_value_base64 = drivingPermitDTO.engine_no_value.
-                    Substring(drivingPermitDTO.engine_no_value.IndexOf(",") + 1);
+                userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+               drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_USERINFO);
+                FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath, FileMode.Create);//创建人员信息照
+
+            }
+            String car_1_PhotoPath = "";
+            if (StringUtils.isNull(car_1_value_base64))
+            {
+                car_1_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+               drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_1);
+                FileUtils.Base64ToFileAndSave(car_1_value_base64, car_1_PhotoPath, FileMode.Create);//创建车辆信息照1
+
+            }
+            String car_2_PhotoPath = "";
+            if (StringUtils.isNull(car_2_value_base64))
+            {
+                car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+              drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
+                FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath, FileMode.Create);//创建车辆信息照2
+
+            }
+            String fadongjiPhotoPath = "";
+            if (StringUtils.isNull(engine_no_value_base64))
+            {
                 fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-              drivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_fadongji);
-                FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath);//创建发动机号照
+               drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_fadongji);
+                FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath, FileMode.Create);//创建发动机号照
 
             }
 
             String chejiaPhotoPath = "";
-            if (StringUtils.isNull(drivingPermitDTO.vin_no_value))
+            if (StringUtils.isNull(vin_no_value_base64))
             {
-                //车架base64
-                String vin_no_value_base64 = drivingPermitDTO.vin_no_value.
-                   Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
                 chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_chejia);
-                FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath);//创建车架照
+              drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+                FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath, FileMode.Create);//创建车架照
 
             }
 

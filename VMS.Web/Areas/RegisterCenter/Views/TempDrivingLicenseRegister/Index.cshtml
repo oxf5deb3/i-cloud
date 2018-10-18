@@ -55,10 +55,9 @@
         <td style="width:100%;"><input id="lsxs_work_unit"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>联系方式:</td>
+        <td style="width:120px;text-align:right;">联系方式:</td>
         <td style="width:200px;"><input id="lsxs_phone"></input></td>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>厂牌型号:</td>
-        <td style="width:100%;"><input id="lsxs_label_type"></input></td>
+        
     </tr>
     <tr>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>车型:</td>
@@ -77,9 +76,9 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>核定载客(人):</td>
+        <td style="width:120px;text-align:right;">核定载客(人):</td>
         <td style="width:100%;"><input id="lsxs_passenger"></input></td>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>核定载货(千克):</td>
+        <td style="width:120px;text-align:right;">核定载货(千克):</td>
         <td style="width:200px;"><input id="lsxs_cargo"></input></td>
 
     </tr>
@@ -104,7 +103,7 @@
     </tr>
     
     <tr >
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆照1:</td>
+        <td style="width:120px;text-align:right;">车辆照1:</td>
         <td><input id="car_1_input" name="name" class="easyui-filebox"
        data-options="buttonText:'选择照片',accept: 'image/*'" /></td>
         <td><img src="" id="car_1_img" style=" height :80px;width :100px;display:none"></td>
@@ -113,7 +112,7 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆照2:</td>
+        <td style="width:120px;text-align:right;">车辆照2:</td>
         <td>
             <input id="car_2_input" name="name" class="easyui-filebox"
                    data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -413,12 +412,7 @@
             return message;
         }
 
-        //厂牌型号
-        if (!isNull($("#lsxs_label_type").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写厂牌型号!";
-            return message;
-        }
+       
 
         //车身颜色
         if (!isNull($("#lsxs_car_color").textbox("getValue"))) {
@@ -442,36 +436,7 @@
         }
 
       
-        
-
-        //核定载客
-        if (!isNull($("#lsxs_passenger").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写核定载客人数!";
-            return message;
-        }
-
-        //核定载货
-        if (!isNull($("#lsxs_cargo").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写核定载货量!";
-            return message;
-        }
-
-        
-        //
-        if (!isNull($("#car_1_value").attr("value"))) {
-            message.type = false;
-            message.message = "必须上传车辆照1!";
-            return message;
-        }
-
-        if (!isNull($("#car_2_value").attr("value"))) {
-            message.type = false;
-            message.message = "必须上传车辆照2!";
-            return message;
-        }
-
+       
 
         return message;
     }
