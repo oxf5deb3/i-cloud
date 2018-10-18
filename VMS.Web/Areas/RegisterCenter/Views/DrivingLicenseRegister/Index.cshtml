@@ -56,9 +56,9 @@
         <td style="width:100%;"><input id="zsxs_car_number"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号码:</td>
+        <td style="width:120px;text-align:right;">发动机号码:</td>
         <td style="width:200px;"><input id="zsxs_motor_no"></input></td>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号码:</td>
+        <td style="width:120px;text-align:right;">车架号码:</td>
         <td style="width:100%;"><input id="zsxs_cardframe_no"></input></td>
     </tr>
 
@@ -77,8 +77,9 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
-        <td colspan="3" style="width:200px;"><input id="zsxs_start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="zsxs_end_date"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>联系方式:</td>
+        <td style="width:200px;"><input id="zsxs_phone"></input></td>
+        
     </tr>
 
     <tr>
@@ -112,7 +113,7 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号码:</td>
+        <td style="width:120px;text-align:right;">发动机号码:</td>
         <td>
             <input id="zsxs_engine_no_input" name="name" class="easyui-filebox"
                    data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -123,7 +124,7 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号码:</td>
+        <td style="width:120px;text-align:right;">车架号码:</td>
         <td>
             <input id="zsxs_vin_no_input" name="name" class="easyui-filebox"
                    data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -170,7 +171,11 @@
       });
     $('#zsxs_name').textbox({
           width:180,
-      });
+    });
+    $('#zsxs_phone').textbox({
+        width: 180,
+    });
+    
     $('#zsxs_sex').combobox({
          valueField:'id',
          width:180,
@@ -246,13 +251,7 @@
          editable:false,
          textField:'type_name',
     });
-      url='../../api/PermittedCarTypeApi/QueryAll';
-        $.post(url,{},'json')
-       .success(function(ret){
-          if(ret.success){
-            $('#car_type').combobox('loadData',ret.data);
-          }
-       });
+     
       $('#first_get_license_date').datebox({
           width:180,
           panelWidth:180,
@@ -274,17 +273,17 @@
           panelHeight: 180,
           editable: false,
           
-          value: now.pattern('yyyy-MM-dd'),
+          value: now.pattern('MM/dd/yyyy'),
       });
         $('#zsxs_start_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          value:now.pattern('yyyy-MM-dd'),
+          value: now.pattern('MM/dd/yyyy'),
           onSelect:function(date){
             var endDate = new Date(date.getFullYear(),date.getMonth()+48,date.getDate());
-            $('#zsxs_end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
+            $('#zsxs_end_date').datebox('setValue', endDate.pattern('MM/dd/yyyy'));
          }
       });
       var end = new Date(now.getFullYear(),now.getMonth()+6,now.getDate());
@@ -293,16 +292,16 @@
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          value:end.pattern('yyyy-MM-dd'),
+          value: end.pattern('MM/dd/yyyy'),
       });
     }
 
     function getDataZSXS() {
         var data = {};
         data.name = $("#zsxs_name").textbox("getValue");//姓名     
+        data.phone = $("#zsxs_phone").textbox("getValue");//电话  
 
         data.car_color = $("#zsxs_car_color").textbox("getValue");//车辆颜色
-        data.end_date = $("#zsxs_end_date").textbox("getValue");
         data.id_no = $("#zsxs_id_no").textbox("getValue");//驾驶证编号
         data.name = $("#zsxs_name").textbox("getValue");//姓名     
         data.nation = $("#zsxs_nation").textbox("getValue");//国籍  
@@ -312,7 +311,6 @@
         data.addr = $("#zsxs_addr").textbox("getValue");//住址
         data.region_no = $("#zsxs_region").combobox("getValue");//地区
         data.sex = $("#zsxs_sex").combobox("getValue");//性别
-        data.start_date = $("#zsxs_start_date").textbox("getValue");//开始日期
         data.user_photo_base64 = $("#zsxs_user_info_input").attr("value");//人员信息照片
 
         data.car_type = $("#zsxs_car_type").textbox("getValue");//车型
@@ -412,19 +410,10 @@
             return message;
         }
 
-        //发动机
-        if (!isNull($("#zsxs_motor_no").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写发动机号!";
-            return message;
-        }
+        
+        
 
-        //车架
-        if (!isNull($("#zsxs_cardframe_no").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写车架号!";
-            return message;
-        }
+        
 
         
         //颜色
@@ -461,19 +450,6 @@
         if (!isNull($("#zsxs_car_2_value").attr("value"))) {
             message.type = false;
             message.message = "必须上传车辆照2!";
-            return message;
-        }
-
-        if (!isNull($("#zsxs_engine_no_value").attr("value"))) {
-            message.type = false;
-            message.message = "必须上传发动机照!";
-            return message;
-        }
-
-
-        if (!isNull($("#zsxs_vin_no_value").attr("value"))) {
-            message.type = false;
-            message.message = "必须上传车架照!";
             return message;
         }
 

@@ -27,7 +27,9 @@ namespace VMS
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/EasyUI/color.css",
+                     "~/Content/EasyUI/icon.css"));
 
             //easyui
             //bundles.Add(new ScriptBundle("~/bundles/easyuijs").Include(

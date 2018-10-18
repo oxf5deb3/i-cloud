@@ -64,6 +64,56 @@
 <hr style="margin-top:0px;" />
 <div id="content">
     <form action="javascript:submit()" id="accident">
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>当事人姓名：
+            </label>
+            <input class="easyui-textbox" name="name" id="name" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>性别：
+            </label>
+            <input class="easyui-textbox" name="sex" id="sex" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>年龄：
+            </label>
+            <input class="easyui-textbox" name="age" id="age" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>民族：
+            </label>
+            <input class="easyui-textbox" name="folk" id="folk" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>地址：
+            </label>
+            <input class="easyui-textbox" name="addr" id="addr" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>电话：
+            </label>
+            <input class="easyui-textbox" name="phone" id="phone" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>火灾损失：
+            </label>
+            <input class="easyui-textbox" name="loss" id="loss" required>
+        </div>
+
         <div class="item">
             <label><span class="red-star">*</span>事故地点：
             </label>
@@ -77,10 +127,25 @@
 </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故描述：
+                <span class="red-star">*</span>事故原因：
             </label>
             <textarea class="easyui-textbox" rows="3" name="desc" id="desc" required></textarea>
-</div>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>财物损失：
+            </label>
+            <textarea class="easyui-textbox" rows="3" name="finance_loss" id="finance_loss" required></textarea>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>人员伤亡：
+            </label>
+            <textarea class="easyui-textbox" rows="3" name="casualties" id="casualties" required></textarea>
+        </div>
+
         <div class="item">
             <label>
                 <span class="red-star">*</span>出警车辆：
@@ -130,7 +195,7 @@
 					handler:function(){
                         $('#img-show').prop('src', '');
 					    imgBase = null;
-                        imgIndex = -1;
+                        imgIndex = 0;
                         cimgs = [];
                     }
 				},'-',{

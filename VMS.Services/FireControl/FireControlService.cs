@@ -18,8 +18,8 @@ namespace VMS.Services
             try
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("insert into t_fire_accident_records(happen_date, happen_addr, accident_desc, out_police_cars, out_police_mans, process_results, oper_id, oper_date, img_url)");
-                sql.Append(" values(@happen_date, @happen_addr, @accident_desc, @out_police_cars, @out_police_mans, @process_results, @oper_id, @oper_date, @img_url)");
+                sql.Append("insert into t_fire_accident_records(happen_date, happen_addr, accident_desc, out_police_cars, out_police_mans, process_results, oper_id, oper_date, img_url,name,sex,age,folk,addr,phone,loss,finance_loss,casualties)");
+                sql.Append(" values(@happen_date, @happen_addr, @accident_desc, @out_police_cars, @out_police_mans, @process_results, @oper_id, @oper_date, @img_url,@name,@sex,@age,@folk,@addr,@phone,@loss,@finance_loss,@casualties)");
                 List<SqlParam> sqlParams = new List<SqlParam>();
                 sqlParams.Add(new SqlParam("@happen_date", dto.datetime));
                 sqlParams.Add(new SqlParam("@happen_addr", dto.address));
@@ -30,6 +30,20 @@ namespace VMS.Services
                 sqlParams.Add(new SqlParam("@oper_id", dto.operId));
                 sqlParams.Add(new SqlParam("@oper_date", DateTime.Now.ToString()));
                 sqlParams.Add(new SqlParam("@img_url", dto.imgs));
+
+
+                sqlParams.Add(new SqlParam("@name", dto.name));
+                sqlParams.Add(new SqlParam("@sex", dto.sex));
+                sqlParams.Add(new SqlParam("@age", dto.age));
+                sqlParams.Add(new SqlParam("@folk", dto.folk));
+                sqlParams.Add(new SqlParam("@addr", dto.addr));
+                sqlParams.Add(new SqlParam("@phone", dto.phone));
+                sqlParams.Add(new SqlParam("@loss", dto.loss));
+                sqlParams.Add(new SqlParam("@finance_loss", dto.finance_loss));
+                sqlParams.Add(new SqlParam("@casualties", dto.casualties));
+
+
+
                 return DbContext.ExecuteBySql(sql, sqlParams.ToArray()) > 0;
             }
             catch
@@ -65,7 +79,7 @@ namespace VMS.Services
         }
 
         public List<t_fire_accident_records> ListAccident(StringBuilder sqlWhere, IList<SqlParam> sqlParams, int pageIndex, int pageSize, ref int count) {
-            StringBuilder sb = new StringBuilder("select id, happen_date, happen_addr, accident_desc, out_police_cars, out_police_mans, process_results, oper_id, oper_date, modify_oper_id, modify_date, img_url from t_fire_accident_records where 1=1 ");
+            StringBuilder sb = new StringBuilder("select id, happen_date, happen_addr, accident_desc, out_police_cars, out_police_mans, process_results, oper_id, oper_date, modify_oper_id, modify_date, img_url,name,sex,age,folk,addr,phone,loss,finance_loss,casualties from t_fire_accident_records where 1=1 ");
             var dt = DbContext.GetPageList(sb.Append(sqlWhere.ToString()).ToString() , sqlParams.ToArray(), "id", "desc", pageIndex, pageSize, ref count);
             return DataTableHelper.DataTableToIList<t_fire_accident_records>(dt) as List<t_fire_accident_records>;
         }
@@ -74,6 +88,7 @@ namespace VMS.Services
             try
             {
                 StringBuilder sb = new StringBuilder("update t_fire_accident_records set happen_date = @happen_date, happen_addr = @happen_addr, accident_desc = @accident_desc, out_police_cars = @out_police_cars, out_police_mans = @out_police_mans");
+                sb.Append(",name=@name,sex=@sex,age=@age,folk=@folk,addr=@addr,phone=@phone,loss=@loss,finance_loss=@finance_loss,casualties=@casualties");
                 sb.Append(", process_results = @process_results, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
                 List<SqlParam> sqlParams = new List<SqlParam>();
                 sqlParams.Add(new SqlParam("@happen_date", entity.datetime));
@@ -84,6 +99,15 @@ namespace VMS.Services
                 sqlParams.Add(new SqlParam("@process_results", entity.result));
                 sqlParams.Add(new SqlParam("@modify_oper_id", entity.modifyOperId));
                 sqlParams.Add(new SqlParam("@modify_date", DateTime.Now.ToString()));
+                sqlParams.Add(new SqlParam("@name", entity.name));
+                sqlParams.Add(new SqlParam("@sex", entity.sex));
+                sqlParams.Add(new SqlParam("@age", entity.age));
+                sqlParams.Add(new SqlParam("@folk", entity.folk));
+                sqlParams.Add(new SqlParam("@addr", entity.addr));
+                sqlParams.Add(new SqlParam("@phone", entity.phone));
+                sqlParams.Add(new SqlParam("@loss", entity.loss));
+                sqlParams.Add(new SqlParam("@finance_loss", entity.finance_loss));
+                sqlParams.Add(new SqlParam("@casualties", entity.casualties));
                 sqlParams.Add(new SqlParam("@id", entity.id));
                 return DbContext.ExecuteBySql(sb, sqlParams.ToArray()) > 0;
             }

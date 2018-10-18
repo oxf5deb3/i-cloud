@@ -25,5 +25,17 @@ namespace VMS.Model
         public string modify_oper_id { get; set; }
         public DateTime modify_date { get; set; }
         public string img_url { get; set; }
+
+
+
+        public string duty { get; set; }
+
+        public string dingPartyAddr { get; set; }
+
+        public string dingPartyMan { get; set; }
+
+        public string bingPartyMan { get; set; }
+
+        public string bingPartyAddr { get; set; }
     }
 }

@@ -413,11 +413,11 @@ namespace VMS.Api
                 var obj = Instance<IDriverLicenseService>.Create;
                 List<DrivingPermitDTO> lst = obj.queryDrivingPermitByPage(pageindex, pagesize, dtoData);
                 lst.ForEach(p => {
-                    p.car_1_value = FileUtils.fileToBase64(p.car_1_img_path);
-                    p.car_2_value = FileUtils.fileToBase64(p.car_2_img_path);
-                    p.vin_no_value = FileUtils.fileToBase64(p.vin_no_img_path);
-                    p.engine_no_value = FileUtils.fileToBase64(p.engine_no_img_path);
-                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                    p.car_1_value = p.car_1_img_path==null?"":FileUtils.fileToBase64(p.car_1_img_path);
+                    p.car_2_value = p.car_2_img_path == null ? "" : FileUtils.fileToBase64(p.car_2_img_path);
+                    p.vin_no_value = p.vin_no_img_path == null ? "" : FileUtils.fileToBase64(p.vin_no_img_path);
+                    p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
+                    p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
                 });
                 ret.total = Int16.Parse(lst[0].TotalCount);
                 ret.rows.AddRange(lst);
@@ -455,11 +455,11 @@ namespace VMS.Api
                 List<TemporaryDrivingPermitDTO> lst = obj.queryTemporaryDrivingByPage(pageindex, pagesize, dtoData);
                 lst.ForEach(p =>
                 {
-                    p.car_1_value = FileUtils.fileToBase64(p.car_1_img_path);
-                    p.car_2_value = FileUtils.fileToBase64(p.car_2_img_path);
-                    p.vin_no_value = FileUtils.fileToBase64(p.vin_no_img_path);
-                    p.engine_no_value = FileUtils.fileToBase64(p.engine_no_img_path);
-                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                    p.car_1_value = p.car_1_img_path==null?"":FileUtils.fileToBase64(p.car_1_img_path);
+                    p.car_2_value = p.car_2_img_path == null ? "" : FileUtils.fileToBase64(p.car_2_img_path);
+                    p.vin_no_value = p.vin_no_img_path == null ? "" : FileUtils.fileToBase64(p.vin_no_img_path);
+                    p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
+                    p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
                 });
                 ret.total = Int16.Parse(lst[0].TotalCount);
                 ret.rows.AddRange(lst);
@@ -517,6 +517,8 @@ namespace VMS.Api
 
             return message;
         }
+
+      
 
     }
 

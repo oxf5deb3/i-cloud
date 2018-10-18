@@ -42,7 +42,6 @@
             <td style="width:250px;"> 驾驶证编号：<input class="easyui-textbox" id="id_no" style="width:150px"></td>
             <td style="width:250px;">姓名：<input class="easyui-textbox" id="name" style="width:150px"></td>
             <td style="width:250px;">车牌号码：<input class="easyui-textbox" id="car_number" style="width:150px"></td>
-            <td style="width:250px;">准驾车型：<input id="car_type" style="width:150px"></td>
             <td style="width:100%"></td>
 
         </tr>
@@ -89,11 +88,11 @@
                 <td style="width:100%;"><input class="easyui-textbox" name="work_unit" id="lsxs_work_unit"></td>
             </tr>
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
-                <td style="width:200px;"><input name="permitted_card_type_no" id="lsxs_permitted_card_type_no" required></td>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>厂牌型号:</td>
+                <td style="width:120px;text-align:right;">厂牌型号:</td>
                 <td style="width:100%;"><input class="easyui-textbox" name="label_type" id="lsxs_label_type" required></td>
-            </tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色</td>
+                <td style="width:200px;"><input class="easyui-textbox" id="lsxs_car_color" name="car_color"></input></td>
+             </tr>
             <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>车型:</td>
                 <td style="width:100%;"><input class="easyui-textbox" name="car_type" id="lsxs_car_type" required></td>
@@ -103,9 +102,9 @@
             </tr>
 
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号:</td>
+                <td style="width:120px;text-align:right;">发动机号:</td>
                 <td style="width:100%;"><input class="easyui-textbox" id="lsxs_engine_no" name="engine_no" required></td>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号:</td>
+                <td style="width:120px;text-align:right;">车架号:</td>
                 <td style="width:200px;"><input class="easyui-textbox" id="lsxs_vin" name="vin" required></td>
 
             </tr>
@@ -119,9 +118,12 @@
             </tr>
 
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色</td>
-                <td style="width:200px;"><input class="easyui-textbox" id="lsxs_car_color" name="car_color"></input></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>联系方式:</td>
+                <td style="width:200px;"><input class="easyui-textbox"  name="phone"></input></td>
+
             </tr>
+
+            
 
             <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
@@ -157,7 +159,7 @@
             </tr>
 
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号码:</td>
+                <td style="width:120px;text-align:right;">发动机号码:</td>
                 <td>
                     <input id="zsxs_engine_no_input" class="easyui-filebox"
                            data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -168,7 +170,7 @@
             </tr>
 
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号码:</td>
+                <td style="width:120px;text-align:right;">车架号码:</td>
                 <td>
                     <input id="zsxs_vin_no_input" class="easyui-filebox"
                            data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -228,7 +230,7 @@
         function initPhotoDialog() {
             $('#zs_photoDialog').dialog({
                 title: '人员照片信息采集',
-                width: 800,
+                width: 650,
                 height: 500,
                 closed: true,
                 cache: false,
@@ -284,10 +286,8 @@
             var params = {};
             var id_no = $('#id_no').textbox('getValue');
             var name = $('#name').textbox('getValue');
-            var permitted_card_type = $('#car_type').combobox('getValue');
             params.id_no = id_no;
             params.name = name;
-            params.permitted_car_type_no = permitted_card_type;
 
 
             return params;
@@ -295,7 +295,7 @@
         function initPrint() {
             $('#print').dialog({
                     width:470,
-                    height:240,
+                    height:256,
                     noheader:true,
                     border:false,
                     modal:true,
@@ -312,8 +312,8 @@
                          replace(/_car_type/g,data.car_type).
                          replace(/_car_color/g,data.car_color).
                          replace(/_temp_car_license/g,data.temp_number).
-                         replace(/_engine_no/g,data.engine_no).
-                         replace(/_bottom_no/g,data.vin).
+                         replace(/_engine_no/g,data.engine_no==null?"":data.engine).
+                         replace(/_bottom_no/g,data.vin==null?"":data.vin).
                          replace(/_check_passegers/g,data.passenger).
                          replace(/_check_weight/g, data.cargo);
 
@@ -347,6 +347,11 @@
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getSelected');
                     if (ckRows) {
+
+                        ckRows.end_date = dateUtil(ckRows.end_date);
+                        ckRows.start_date = dateUtil(ckRows.start_date);
+                        ckRows.birthday = dateUtil(ckRows.birthday);
+
                         $('#license').form('load', ckRows);
                         $('#zs_user_info_photo').prop('src', 'data:image/jpeg;base64,' + ckRows.user_photo_base64).show();
                         $('#zsxs_car_1_img').prop('src', 'data:image/jpeg;base64,' + ckRows.car_1_value).show();
@@ -361,17 +366,7 @@
             });
         }
         function initQueryUI() {
-            $('#car_type').combobox({
-                valueField: 'type_no',
-                textField: 'type_name',
-            });
-            var url = '../../api/PermittedCarTypeApi/QueryAll';
-            $.post(url, {}, 'json')
-           .success(function (ret) {
-               if (ret.success) {
-                   $('#car_type').combobox('loadData', ret.data);
-               }
-           });
+           
 
         }
         function initGrid() {
@@ -409,7 +404,6 @@
                         }
                     },
                     { field: 'car_type', title: '车型', width: 80, halign: 'center', align: 'left' },
-                    { field: 'permitted_card_type_name', title: '准驾车型', width: 80, halign: 'center', align: 'left' },
                     { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' },
                     { field: 'temp_number', title: '临时车牌号', width: 100, halign: 'center', align: 'left' },
                     { field: 'start_date', title: '有效期起', width: 180, halign: 'center', align: 'left' },
@@ -450,19 +444,7 @@
                 }
             });
 
-            $('#lsxs_permitted_card_type_no').combobox({
-                valueField: 'type_no',
-                width: 180,
-                editable: false,
-                textField: 'type_name',
-            });
-            url = '../../api/PermittedCarTypeApi/QueryAll';
-            $.post(url, {}, 'json')
-           .success(function (ret) {
-               if (ret.success) {
-                   $('#lsxs_permitted_card_type_no').combobox('loadData', ret.data);
-               }
-           });
+            
             selectFileAndDisplay("zsxs_car_1_input", "zsxs_car_1_img", "zsxs_car_1_value");
             selectFileAndDisplay("zsxs_car_2_input", "zsxs_car_2_img", "zsxs_car_2_value");
 

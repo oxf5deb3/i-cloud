@@ -22,8 +22,11 @@ namespace VMS.Api
     public class FireControlApiController : BaseApiController
     {
 
-        public const string IMG_ACCIDENT_PATH = "F:\\accident-imgs\\";
-        public const string IMG_EQUIPMENT_PATH = "F:\\equipment-imgs\\";
+        public const string IMG_ACCIDENT_PATH = "D:\\VMS\\image\\accident-imgs\\";
+        public const string IMG_EQUIPMENT_PATH = "D:\\VMS\\image\\equipment-imgs\\";
+
+        //public const string IMG_ACCIDENT_PATH = "C:\\存储\\资料\\";
+        //public const string IMG_EQUIPMENT_PATH = "C:\\存储\\资料\\";
 
         public GridResponseDTO<FireAccidentDTO> ListAccident()
         {
@@ -79,7 +82,17 @@ namespace VMS.Api
                     operId = e.oper_id,
                     operDate = e.oper_date.ToString(),
                     modifyOperId = e.modify_oper_id,
-                    modifyDate = e.modify_date.ToString()
+                    modifyDate = e.modify_date.ToString(),
+                    name=e.name,
+                    sex=e.sex,
+                    age=e.age,
+                    addr=e.addr,
+                    folk=e.folk,
+                    loss=e.loss,
+                    casualties=e.casualties,
+                    finance_loss=e.finance_loss,
+                    phone=e.phone
+
                 }));
                 return ret;
 
@@ -330,6 +343,16 @@ namespace VMS.Api
                     dto.result = httpRequest.Form["result"];
                     dto.operId = operInfo.user_id;
                     dto.imgs = imgs.ToString();
+                    dto.name = httpRequest.Form["name"];
+                    dto.sex = httpRequest.Form["sex"];
+                    dto.age = httpRequest.Form["datetime"];
+                    dto.folk = httpRequest.Form["folk"];
+                    dto.addr = httpRequest.Form["addr"];
+                    dto.phone = httpRequest.Form["datetime"];
+                    dto.loss = httpRequest.Form["loss"];
+                    dto.finance_loss = httpRequest.Form["finance_loss"];
+                    dto.casualties = httpRequest.Form["casualties"];
+
 
                     var service = Instance<IFireControlService>.Create;
 

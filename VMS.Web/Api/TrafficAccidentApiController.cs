@@ -21,7 +21,9 @@ namespace VMS.Api
     //事故
     public class TrafficAccidentApiController : BaseApiController
     {
-        public const string IMG_ACCIDENT_PATH = "F:\\traffic-accident-imgs\\";
+        //public const string IMG_ACCIDENT_PATH = "C:\\存储\\资料\\";
+
+        public const string IMG_ACCIDENT_PATH = "D:\\VMS\\image\\traffic-accident-imgs\\";
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddAccident()
         {
@@ -61,6 +63,12 @@ namespace VMS.Api
                     dto.mediationDate = httpRequest.Form["mediationDate"];
                     dto.drawRecorder = httpRequest.Form["drawRecorder"];
                     dto.accidentMediator = httpRequest.Form["accidentMediator"];
+                    dto.bingPartyAddr = httpRequest.Form["bingPartyAddr"];
+                    dto.bingPartyMan = httpRequest.Form["bingPartyMan"];
+                    dto.dingPartyAddr = httpRequest.Form["dingPartyAddr"];
+                    dto.dingPartyMan = httpRequest.Form["dingPartyMan"];
+                    dto.duty = httpRequest.Form["duty"];
+
                     dto.operId = operInfo.user_id;
                     dto.imgUrl  = imgs.ToString();
 
@@ -177,7 +185,12 @@ namespace VMS.Api
                     operId = e.oper_id,
                     operDate = e.oper_date.ToString(),
                     modifyOperId = e.modify_oper_id,
-                    modifyDate = e.modify_date.ToString()
+                    modifyDate = e.modify_date.ToString(),
+                    bingPartyAddr=e.bingPartyAddr,
+                    bingPartyMan = e.bingPartyMan,
+                    dingPartyMan = e.dingPartyMan,
+                    dingPartyAddr = e.dingPartyAddr,
+                    duty = e.duty
                 }));
                 return ret;
 

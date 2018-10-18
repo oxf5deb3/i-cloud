@@ -55,8 +55,8 @@
         <td style="width:100%;"><input id="lsxs_work_unit"></input></td>
     </tr>
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
-        <td style="width:200px;"><input id="lsxs_permitted_card_type_no"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>联系方式:</td>
+        <td style="width:200px;"><input id="lsxs_phone"></input></td>
         <td style="width:120px;text-align:right;"><span class="red-star">*</span>厂牌型号:</td>
         <td style="width:100%;"><input id="lsxs_label_type"></input></td>
     </tr>
@@ -69,9 +69,9 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号:</td>
+        <td style="width:120px;text-align:right;">发动机号:</td>
         <td style="width:100%;"><input id="lsxs_engine_no"></input></td>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号:</td>
+        <td style="width:120px;text-align:right;">车架号:</td>
         <td style="width:200px;"><input id="lsxs_vin"></input></td>
 
     </tr>
@@ -85,8 +85,9 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色</td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色:</td>
         <td style="width:200px;"><input id="lsxs_car_color"></input></td>
+        
     </tr>
         
     <tr>
@@ -123,7 +124,7 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>发动机号码:</td>
+        <td style="width:120px;text-align:right;">发动机号码:</td>
         <td>
             <input id="engine_no_input" name="name" class="easyui-filebox"
                    data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -134,7 +135,7 @@
     </tr>
 
     <tr>
-        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车架号码:</td>
+        <td style="width:120px;text-align:right;">车架号码:</td>
         <td>
             <input id="vin_no_input" name="name" class="easyui-filebox"
                    data-options="buttonText:'选择照片',accept: 'image/*'" />
@@ -180,7 +181,12 @@
         $('#lsxs_cargo').textbox({
           width:180,
           
-      });
+        });
+        
+        $('#lsxs_phone').textbox({
+            width: 180,
+
+        });
 
         $('#lsxs_passenger').textbox({
           width: 180,
@@ -267,19 +273,12 @@
        $('#lsxs_work_unit').textbox({
           width:180,
       });
-       $('#lsxs_permitted_card_type_no').combobox({
-         valueField:'type_no',
+       $('#lsxs_permitted_card_type_no').textbox({
+     
          width:180,
-         editable:false,
-         textField:'type_name',
+         
     });
-      url='../../api/PermittedCarTypeApi/QueryAll';
-        $.post(url,{},'json')
-       .success(function(ret){
-          if(ret.success){
-              $('#lsxs_permitted_card_type_no').combobox('loadData', ret.data);
-          }
-       });
+      
      
      var now = new Date();
         $('#lsxs_start_date').datebox({
@@ -287,19 +286,19 @@
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          value:now.pattern('yyyy-MM-dd'),
+          value: now.pattern('MM/dd/yyyy'),
           onSelect:function(date){
             var endDate = new Date(date.getFullYear(),date.getMonth()+3,date.getDate());
-            $('#lsxs_end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
+            $('#lsxs_end_date').datebox('setValue', endDate.pattern('MM/dd/yyyy'));
          }
       });
-      var end = new Date(now.getFullYear(),now.getMonth()+6,now.getDate());
+      var end = new Date(now.getFullYear(),now.getMonth()+3,now.getDate());
         $('#lsxs_end_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          value:end.pattern('yyyy-MM-dd'),
+          value: end.pattern('MM/dd/yyyy'),
       });
     }
 
@@ -371,11 +370,7 @@
             message.message = "必须填写出生日期!";
             return message;
         }
-        if (!isNull($("#lsxs_permitted_card_type_no").combobox("getValue"))) {
-            message.type = false;
-            message.message = "必须选择准驾车型!";
-            return message;
-        }
+      
 
 
         //姓名
@@ -446,19 +441,8 @@
             return message;
         }
 
-        //发动机
-        if (!isNull($("#lsxs_engine_no").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写发动机号!";
-            return message;
-        }
-
-        //车架
-        if (!isNull($("#lsxs_vin").textbox("getValue"))) {
-            message.type = false;
-            message.message = "必须填写车架号!";
-            return message;
-        }
+      
+        
 
         //核定载客
         if (!isNull($("#lsxs_passenger").textbox("getValue"))) {
@@ -488,19 +472,6 @@
             return message;
         }
 
-        if (!isNull($("#engine_no_value").attr("value"))) {
-            message.type = false;
-            message.message = "必须上传发动机照!";
-            return message;
-        }
-        
-
-        if (!isNull($("#vin_no_value").attr("value"))) {
-            message.type = false;
-            message.message = "必须上传车架照!";
-            return message;
-        }
-
 
         return message;
     }
@@ -508,10 +479,10 @@
     function getDataLSXS() {
         var data = {};
         data.birthday = $("#lsxs_birth_date").textbox("getValue");//出生日期
-        data.permitted_card_type_no = $("#lsxs_permitted_card_type_no").textbox("getValue");//准驾车型
         data.id_card = $("#lsxs_id_card").textbox("getValue");//身份证
 
         data.end_date = $("#lsxs_end_date").textbox("getValue");
+        data.phone = $("#lsxs_phone").textbox("getValue");
         data.id_no = $("#lsxs_no").textbox("getValue");//驾驶证编号
         data.name = $("#lsxs_name").textbox("getValue");//姓名
         data.work_unit = $("#lsxs_work_unit").textbox("getValue");//单位

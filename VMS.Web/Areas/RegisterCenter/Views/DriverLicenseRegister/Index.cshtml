@@ -150,19 +150,12 @@
        $('#work_unit').textbox({
           width:180,
       });
-       $('#car_type').combobox({
-         valueField:'type_no',
+       $('#car_type').textbox({
+     
          width:180,
-         editable:false,
-         textField:'type_name',
+         
     });
-      url='../../api/PermittedCarTypeApi/QueryAll';
-        $.post(url,{},'json')
-       .success(function(ret){
-          if(ret.success){
-            $('#car_type').combobox('loadData',ret.data);
-          }
-       });
+      
       $('#first_get_license_date').datebox({
           width:180,
           panelWidth:180,
@@ -177,19 +170,19 @@
           panelHeight:180,
           editable:false,
           
-          value:now.pattern('yyyy-MM-dd'),
+          value: now.pattern('MM/dd/yyyy'),
           onSelect:function(date){
             var endDate = new Date(date.getFullYear(),date.getMonth()+48,date.getDate());
-            $('#end_date').datebox('setValue',endDate.pattern('yyyy-MM-dd'));
+            $('#end_date').datebox('setValue', endDate.pattern('MM/dd/yyyy'));
          }
       });
-      var end = new Date(now.getFullYear(),now.getMonth()+6,now.getDate());
+      var end = new Date(now.getFullYear(),now.getMonth()+48,now.getDate());
         $('#end_date').datebox({
           width:180,
           panelWidth:180,
           panelHeight:180,
           editable:false,
-          value:end.pattern('yyyy-MM-dd'),
+          value: end.pattern('MM/dd/yyyy'),
       });
     }
 
@@ -237,7 +230,7 @@
             message.message = "必须填写出生日期!";
             return message;
         }
-        if (!isNull($("#car_type").combobox("getValue"))) {
+        if (!isNull($("#car_type").textbox("getValue"))) {
             message.type = false;
             message.message = "必须选择准驾车型!";
             return message;
@@ -248,6 +241,13 @@
         if (!isNull($("#zs_name").textbox("getValue"))) {
             message.type = false;
             message.message = "必须填写姓名!";
+            return message;
+        }
+
+        //驾驶证编号
+        if (!isNull($("#zs_no").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写驾驶证编号!";
             return message;
         }
 
@@ -398,7 +398,6 @@
 
     $(function(){
         initUI();
-        initCarNo();
         initPhotoDialog();
 
 

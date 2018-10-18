@@ -15,7 +15,8 @@ namespace VMS.Services
     public class DriverLicenseService : BaseReportService, IDriverLicenseService
     {
 
-        public const string BASE_PATH = "C:\\存储\\资料\\";
+        public const string BASE_PATH = "D:\\VMS\\image\\JSZ\\";
+        //public const string BASE_PATH = "C:\\存储\\资料\\";
 
         public override string GetSqlString(IDictionary<string, dynamic> qcondition)
         {
@@ -257,7 +258,7 @@ namespace VMS.Services
             sql.Append(" motor_no = @motor_no, carframe_no = @carframe_no, car_color = @car_color, product_date = @product_date ,issue_license_date = @issue_license_date,");
             sql.Append("addr = @addr, car_number = @car_number, car_type = @car_type, end_date = @end_date, name = @name, nation = @nation, passenger = @passenger, sex = @sex, ");
             sql.Append("start_date = @start_date, modify_oper_id = @modify_oper_id, modify_date = @modify_date, car_1_img_path = @car_1_img_path, car_2_img_path = @car_2_img_path, ");
-            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path where id = @id");
+            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path,phone=@phone where id = @id");
 
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@car_owner", drivingPermitDTO.car_owner));
@@ -292,7 +293,13 @@ namespace VMS.Services
 
             paramlst.Add(new SqlParam("@engine_no_img_path", fadongjiPhotoPath));
             paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
+
+            paramlst.Add(new SqlParam("@phone", drivingPermitDTO.phone));
+
+
+
             paramlst.Add(new SqlParam("@id", drivingPermitDTO.id));
+           
 
 
             return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
@@ -347,7 +354,7 @@ namespace VMS.Services
             var sql = new StringBuilder("update t_temp_car_license set check_man = @check_man, addr = @addr, folk = @folk, nation_no = @nation_no, birthday = @birthday, sex = @sex, permitted_car_type_no = @permitted_car_type_no, ");
             sql.Append("name = @name, check_date = @check_date, car_type = @car_type, temp_number = @temp_number, engine_no = @engine_no, vin = @vin, passenger = @passenger, cargo = @cargo,label_type = @label_type,");
             sql.Append("start_date = @start_date, end_date = @end_date, modify_oper_id = @modify_oper_id, modify_date = @modify_date, car_1_img_path = @car_1_img_path, car_2_img_path = @car_2_img_path, ");
-            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path ,car_color=@car_color where id = @id");
+            sql.Append("engine_no_img_path = @engine_no_img_path, vin_no_img_path = @vin_no_img_path, user_photo_path = @user_photo_path ,car_color=@car_color,phone=@phone where id = @id");
 
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@check_man", drivingPermitDTO.check_man));
@@ -381,8 +388,11 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
 
             paramlst.Add(new SqlParam("@car_color", drivingPermitDTO.car_color));
+            paramlst.Add(new SqlParam("@phone", drivingPermitDTO.phone));
+
 
             paramlst.Add(new SqlParam("@id", drivingPermitDTO.id));
+
 
             return DbContext.ExecuteBySql(sql, paramlst.ToArray()) > 0;
         }
@@ -447,13 +457,26 @@ namespace VMS.Services
 
             String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
                 temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_car_2);
-
-            String fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
+            String fadongjiPhotoPath="";
+            if (StringUtils.isNull(temporaryDrivingPermitDTO.engine_no_value))
+            {
+                  fadongjiPhotoPath= BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
                 temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_fadongji);
+                  FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath);//创建发动机号照
 
-            String chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
+            }
+
+            String chejiaPhotoPath="";
+            if (StringUtils.isNull(temporaryDrivingPermitDTO.vin_no_value))
+            {
+                chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(temporaryDrivingPermitDTO.name,
                 temporaryDrivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_chejia);
+                FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath);//创建车架照
 
+            }
+          
+            
+           
 
 
             FileUtils.Base64ToFileAndSave(userInfoPhotoBase64, userInfoPhotoPath);//创建人员信息照
@@ -461,15 +484,13 @@ namespace VMS.Services
 
             FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath);//创建车辆信息照2
 
-            FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath);//创建发动机号照
 
-            FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath);//创建车架照
 
 
 
             var insertSql = new StringBuilder();
-            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,car_color) "
-            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@car_color)");
+            insertSql.Append("insert into t_temp_car_license(check_man,addr,folk,nation_no,birthday,sex,permitted_car_type_no,name,check_date,car_type,temp_number,engine_no,vin,passenger,cargo,label_type,start_date,end_date,user_photo_path,id_no,id_card,oper_id,oper_date,region_no,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,car_color,phone) "
+            + "values(@check_man,@addr,@folk,@nation_no,@birthday,@sex,@permitted_card_type_no,@name,@check_date,@car_type,@temp_number,@engine_no,@vin,@passenger,@cargo,@label_type,@start_date,@end_date,@user_photo_path,@id_no,@id_card,@oper_id,@oper_date,@region_no,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@car_color,@phone)");
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@check_man", temporaryDrivingPermitDTO.check_man));
             paramlst.Add(new SqlParam("@sex", temporaryDrivingPermitDTO.sex));
@@ -506,6 +527,8 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@engine_no_img_path", fadongjiPhotoPath));
             paramlst.Add(new SqlParam("@vin_no_img_path", chejiaPhotoPath));
             paramlst.Add(new SqlParam("@car_color", temporaryDrivingPermitDTO.car_color));
+            paramlst.Add(new SqlParam("@phone", temporaryDrivingPermitDTO.phone));
+
 
 
 
@@ -527,12 +550,8 @@ namespace VMS.Services
             //车辆2base64
             String car_2_value_base64 = drivingPermitDTO.car_2_value.
                 Substring(drivingPermitDTO.car_2_value.IndexOf(",") + 1);
-            //发动机base64
-            String engine_no_value_base64 = drivingPermitDTO.engine_no_value.
-                Substring(drivingPermitDTO.engine_no_value.IndexOf(",") + 1);
-            //车架base64
-            String vin_no_value_base64 = drivingPermitDTO.vin_no_value.
-               Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
+           
+          
 
             //人员信息照文件名
             String userInfoPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
@@ -544,11 +563,7 @@ namespace VMS.Services
             String car_2_PhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
                 drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_car_2);
 
-            String fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_fadongji);
-
-            String chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
-                drivingPermitDTO.id_no, FileUtils.certificateType_ZSXS, FileUtils.PHOTO_TYPE_chejia);
+           
 
 
 
@@ -557,17 +572,38 @@ namespace VMS.Services
 
             FileUtils.Base64ToFileAndSave(car_2_value_base64, car_2_PhotoPath);//创建车辆信息照2
 
-            FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath);//创建发动机号照
+       
 
-            FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath);//创建车架照
+            String fadongjiPhotoPath = "";
+            if (StringUtils.isNull(drivingPermitDTO.engine_no_value))
+            {
+                //发动机base64
+                String engine_no_value_base64 = drivingPermitDTO.engine_no_value.
+                    Substring(drivingPermitDTO.engine_no_value.IndexOf(",") + 1);
+                fadongjiPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+              drivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_fadongji);
+                FileUtils.Base64ToFileAndSave(engine_no_value_base64, fadongjiPhotoPath);//创建发动机号照
 
+            }
+
+            String chejiaPhotoPath = "";
+            if (StringUtils.isNull(drivingPermitDTO.vin_no_value))
+            {
+                //车架base64
+                String vin_no_value_base64 = drivingPermitDTO.vin_no_value.
+                   Substring(drivingPermitDTO.vin_no_value.IndexOf(",") + 1);
+                chejiaPhotoPath = BASE_PATH + FileUtils.generateFileName(drivingPermitDTO.name,
+                drivingPermitDTO.id_no, FileUtils._certificateType_LSXS, FileUtils.PHOTO_TYPE_chejia);
+                FileUtils.Base64ToFileAndSave(vin_no_value_base64, chejiaPhotoPath);//创建车架照
+
+            }
 
 
             var insertSql = new StringBuilder();
             insertSql.Append("insert into t_normal_car_license(car_owner,duty,work_unit,region_no,plate_no,brand_no,motor_no,carframe_no,car_color,product_date,issue_license_date," +
-            "addr,car_number,car_type,end_date,id_no,name,nation,passenger,sex,start_date,oper_id,oper_date,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,user_photo_path)"
+            "addr,car_number,car_type,end_date,id_no,name,nation,passenger,sex,start_date,oper_id,oper_date,car_1_img_path,car_2_img_path,engine_no_img_path,vin_no_img_path,user_photo_path,phone)"
             + "values(@car_owner,@duty,@work_unit,@region_no,@plate_no,@brand_no,@motor_no,@carframe_no,@car_color,@product_date,@issue_license_date"
-            + ",@addr,@car_number,@car_type,@end_date,@id_no,@name,@nation,@passenger,@sex,@start_date,@oper_id,@oper_date,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@user_photo_path)");
+            + ",@addr,@car_number,@car_type,@end_date,@id_no,@name,@nation,@passenger,@sex,@start_date,@oper_id,@oper_date,@car_1_img_path,@car_2_img_path,@engine_no_img_path,@vin_no_img_path,@user_photo_path,@phone)");
             List<SqlParam> paramlst = new List<SqlParam>();
             paramlst.Add(new SqlParam("@car_owner", drivingPermitDTO.car_owner));
             paramlst.Add(new SqlParam("@duty ", drivingPermitDTO.duty));
@@ -596,6 +632,8 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@start_date", drivingPermitDTO.start_date));
             paramlst.Add(new SqlParam("@oper_id", drivingPermitDTO.userInfo.user_id));
             paramlst.Add(new SqlParam("@oper_date", DateTime.Now.Date.ToString("yyyy-MM-dd")));
+            paramlst.Add(new SqlParam("@phone", drivingPermitDTO.phone));
+
 
 
 
@@ -692,7 +730,7 @@ namespace VMS.Services
 
             if (StringUtils.isNull(data.car_number))
             {
-                param += " and a.name like" + StringUtils.FuzzyQueryAppend(data.car_number);
+                param += " and a.car_number like" + StringUtils.FuzzyQueryAppend(data.car_number);
             }
 
             String sql = "select top "+pageSize+" o.* from (select row_number() over(order by id) as rownumber,COUNT(1) OVER() AS TotalCount,* from("
@@ -700,7 +738,7 @@ namespace VMS.Services
      + " ,[brand_no],[motor_no],[carframe_no],[car_color],[product_date],[issue_license_date]"
       + ",[status],[oper_date] ,[oper_id],[modify_date],[modify_oper_id] ,[time_stamp]"
       + ",[user_photo_path],[car_1_img_path],[car_2_img_path],[engine_no_img_path],[vin_no_img_path]"
-     + ",[start_date],[sex],[car_number],[end_date] ,[name],[nation],[passenger],b.region_name, a.region_no "
+     + ",[start_date],[sex],[car_number],[end_date] ,[name],phone,[nation],[passenger],b.region_name, a.region_no "
   + "FROM [dbo].[t_normal_car_license] a "
   + "left join t_bd_region b on a.region_no=b.region_no"
   + " where 1=1 " + param
@@ -729,16 +767,12 @@ namespace VMS.Services
                 param += " and a.name like" + StringUtils.FuzzyQueryAppend(data.name);
             }
 
-            if (StringUtils.isNull(data.permitted_card_type_no))
-            {
-                param += " and a.name like" + StringUtils.FuzzyQueryAppend(data.permitted_card_type_no);
-            }
 
             String sql = "select top "+pageSize+" o.* from (select row_number() over(order by id) as rownumber,COUNT(1) OVER() AS TotalCount,* from(SELECT [id],[name],[sex],[birthday],[folk],[now_addr],[old_addr],b.region_name "
      +" ,[permitted_car_type_no],[check_man],[check_date],[nation_no],[status],[oper_date] "
 	 +"  ,[oper_id],[modify_date],[modify_oper_id],[time_stamp],[user_photo_path],[car_1_img_path] "
      +"  ,[car_2_img_path],[engine_no_img_path],[vin_no_img_path],[img4_url],[img5_url],[car_type] " 
-      +" ,[temp_number],[engine_no],[vin],[passenger],[cargo],[label_type],[id_no],[id_card] "
+      +" ,[temp_number],[engine_no],[vin],[passenger],[cargo],[label_type],[id_no],[id_card],phone "
      + "  ,[start_date],[end_date],[addr],c.type_name as permitted_card_type_name,a.region_no, a.permitted_car_type_no as permitted_card_type_no,a.car_color "
   +" FROM [dbo].[t_temp_car_license] a  "
   +" left join t_bd_region b on a.region_no=b.region_no "
@@ -760,18 +794,6 @@ namespace VMS.Services
 
             if(isExistTmpCarNumber(temp_car_number)){
                 ret.message = "数据库中以存在临时车牌为:" + temp_car_number + "的号码!";
-                ret.success = false;
-                return ret;
-            }
-            if (isExistEngineNo(engine_no))
-            {
-                ret.message = "数据库中以存在发动机号为:" + engine_no + "的号码!";
-                ret.success = false;
-                return ret;
-            }
-            if (isExistTempVin(car_frame_no))
-            {
-                ret.message = "数据库中以存在车架号为:" + car_frame_no + "的号码!";
                 ret.success = false;
                 return ret;
             }
@@ -844,18 +866,7 @@ namespace VMS.Services
                 ret.success = false;
                 return ret;
             }
-            if (isExistMotorNo(engine_no))
-            {
-                ret.message = "数据库中以存在发动机号为:" + engine_no + "的号码!";
-                ret.success = false;
-                return ret;
-            }
-            if (isExistCarFrameNo(car_frame_no))
-            {
-                ret.message = "数据库中以存在车架号为:" + car_frame_no + "的号码!";
-                ret.success = false;
-                return ret;
-            }
+            
             return ret;
 
         }

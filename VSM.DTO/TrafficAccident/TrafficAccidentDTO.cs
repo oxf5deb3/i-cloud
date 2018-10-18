@@ -25,5 +25,15 @@ namespace VMS.DTO.TrafficAccident
         public string modifyOperId { get; set; }
         public string modifyDate { get; set; }
         public string imgUrl { get; set; }
+
+        public string duty { get; set; }
+
+        public string dingPartyAddr { get; set; }
+
+        public string dingPartyMan { get; set; }
+
+        public string bingPartyAddr { get; set; }
+
+        public string bingPartyMan { get; set; }
     }
 }

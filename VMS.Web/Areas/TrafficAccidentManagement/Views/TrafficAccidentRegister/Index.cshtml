@@ -108,9 +108,36 @@
             </label>
             <input class="easyui-textbox" name="secondPartyAddr" id="secondPartyAddr" required>
         </div>
+
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故描述：
+                丙方当事人：
+            </label>
+            <input class="easyui-textbox" name="bingPartyMan" id="bingPartyMan" >
+        </div>
+        <div class="item">
+            <label>
+                丙方单位/地址：
+            </label>
+            <input class="easyui-textbox" name="bingPartyAddr" id="bingPartyAddr" >
+        </div>
+
+        <div class="item">
+            <label>
+                丁方当事人：
+            </label>
+            <input class="easyui-textbox" name="dingPartyMan" id="dingPartyMan" >
+        </div>
+        <div class="item">
+            <label>
+                丁方单位/地址：
+            </label>
+            <input class="easyui-textbox" name="dingPartyAddr" id="dingPartyAddr" >
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>事故经过：
             </label>
             <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="accidentDesc" id="accidentDesc" required>
         </div>
@@ -137,6 +164,14 @@
                 <span class="red-star">*</span>调解员：
             </label>
             <input class="easyui-textbox" name="accidentMediator" id="accidentMediator" required>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>责任认定：
+            </label>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="duty" id="duty" required>
+
         </div>
         <div class="item">
             <label>
@@ -168,7 +203,7 @@
 					handler:function(){
                         $('#img-show').prop('src', '');
 					    imgBase = null;
-                        imgIndex = -1;
+                        imgIndex = 0;
                         cimgs = [];
                     }
 				},'-',{

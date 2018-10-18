@@ -193,23 +193,11 @@
             $('#old_addr').textbox({
                 width: 180,
             });
-            $('#car_type').combobox({
-                valueField: 'type_no',
+            $('#car_type').textbox({
                 width: 180,
-                editable: false,
-                textField: 'type_name',
+                
             });
-            url = '../../api/PermittedCarTypeApi/QueryAll';
-            $.post(url, {}, 'json')
-           .success(function (ret) {
-               if (ret.success) {
-                   $('#car_type').combobox('loadData', ret.data);
-               }
-           });
-
-
-       
-           
+            
             
             var now = new Date();
             $('#start_date').datebox({
@@ -218,11 +206,11 @@
                 panelHeight: 180,
                 editable: false,
                 required: true,
-                value: now.pattern('yyyy-MM-dd'),
+                value: now.pattern('MM/dd/yyyy'),
                 onSelect: function (date) {
                     var endDate = new Date(date.getFullYear(), date.getMonth() + 3, date.getDate());
-                    console.log(endDate.pattern('yyyy-MM-dd'))
-                    $('#end_date').datebox('setValue', endDate.pattern('yyyy-MM-dd').toString());
+                    console.log(endDate.pattern('MM/dd/yyyy'))
+                    $('#end_date').datebox('setValue', endDate.pattern('MM/dd/yyyy').toString());
                 }
             });
             var end = new Date(now.getFullYear(), now.getMonth() + 3, now.getDate());
@@ -232,7 +220,7 @@
                 panelHeight: 180,
                 editable: false,
                 required: true,
-                value: end.pattern('yyyy-MM-dd'),
+                value: end.pattern('MM/dd/yyyy'),
             });
         }
        
@@ -282,7 +270,7 @@
                 message.message = "必须填写出生日期!";
                 return message;
             }
-            if (!isNull($("#car_type").combobox("getValue"))) {
+            if (!isNull($("#car_type").textbox("getValue"))) {
                 message.type = false;
                 message.message = "必须选择准驾车型!";
                 return message;

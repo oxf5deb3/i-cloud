@@ -53,6 +53,55 @@
     <form id="accident" method="post" novalidate style="margin:0; padding:20px 50px">
         <input type="hidden" name="id" required />
         <div class="item">
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>当事人姓名：
+                </label>
+                <input class="easyui-textbox" name="name" id="name" required>
+            </div>
+
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>性别：
+                </label>
+                <input class="easyui-textbox" name="sex" id="sex" required>
+            </div>
+
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>年龄：
+                </label>
+                <input class="easyui-textbox" name="age" id="age" required>
+            </div>
+
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>民族：
+                </label>
+                <input class="easyui-textbox" name="folk" id="folk" required>
+            </div>
+
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>地址：
+                </label>
+                <input class="easyui-textbox" name="addr" id="addr" required>
+            </div>
+
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>电话：
+                </label>
+                <input class="easyui-textbox" name="phone" id="phone" required>
+            </div>
+
+            <div class="item">
+                <label>
+                    <span class="red-star">*</span>火灾损失：
+                </label>
+                <input class="easyui-textbox" name="loss" id="loss" required>
+            </div>
+
             <label>
                 <span class="red-star">*</span>事故地点：
             </label>
@@ -66,10 +115,25 @@
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故描述：
+                <span class="red-star">*</span>事故经过：
             </label>
             <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="desc" id="desc" required>
         </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>财物损失：
+            </label>
+            <textarea class="easyui-textbox" rows="3" name="finance_loss" id="finance_loss" required></textarea>
+        </div>
+
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>人员伤亡：
+            </label>
+            <textarea class="easyui-textbox" rows="3" name="casualties" id="casualties" required></textarea>
+        </div>
+
         <div class="item">
             <label>
                 <span class="red-star">*</span>出警车辆：
@@ -194,6 +258,8 @@
         columns: [[
             { field: 'ck', checkbox: true },
             { field: 'id', title: '编号', halign: 'center', align: 'left' },
+            { field: 'name', title: '当事人姓名', halign: 'center', align: 'left' },
+
             { field: 'address', title: '事故地点', halign: 'center', align: 'left' },
             { field: 'desc', title: '事故经过', halign: 'center', align: 'left' },
             { field: 'datetime', title: '发生时间', halign: 'center', align: 'left' },

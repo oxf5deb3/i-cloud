@@ -31,5 +31,24 @@ namespace VMS.DTO.FireControl
         public string modifyOperId { get; set; }
 
         public string modifyDate { get; set; }
+
+        public string name { get; set; }
+        public string sex { get; set; }
+
+        public string age { get; set; }
+
+        public string folk { get; set; }
+
+        public string addr { get; set; }
+
+        public string phone { get; set; }
+
+        public string loss { get; set; }
+        public string finance_loss { get; set; }
+
+        public string casualties { get; set; }
+
+
+
     }
 }

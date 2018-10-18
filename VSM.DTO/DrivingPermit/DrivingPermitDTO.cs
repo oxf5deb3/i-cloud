@@ -50,5 +50,7 @@ namespace VMS.DTO
         public string engine_no_img_path { get; set; }
         public string vin_no_img_path { get; set; }
 
+        public string phone { get; set; }
+
     }
 }

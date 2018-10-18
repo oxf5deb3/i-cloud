@@ -337,6 +337,7 @@
     <Content Include="Areas\SystemLog\Views\OperateLog\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\trend\Index.cshtml" />
     <Content Include="Areas\Statistical\Views\VehicleLicenseS\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <None Include="Properties\PublishProfiles\vms.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\common.js" />
