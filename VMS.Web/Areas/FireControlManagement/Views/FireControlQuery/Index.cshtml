@@ -47,8 +47,13 @@
     <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="del()"><i class="glyphicon glyphicon-minus"></i>删除</a>
     <!--<a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="exportFile()"><i class="glyphicon glyphicon-download"></i>导出</a>-->
     <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="showPic()"><i class="glyphicon glyphicon-picture"></i>查看图片</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="showPrint()"><i class="glyphicon glyphicon-print"></i>打印</a>
 </div>
-
+<div id="print" style="display:none;"></div>
+<div id="bb" style="display:none;">
+    <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
+    <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
+</div>
 <div id="dlg" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
     <form id="accident" method="post" novalidate style="margin:0; padding:20px 50px">
         <input type="hidden" name="id" required />
@@ -251,6 +256,57 @@
 
 @section scripts{
 <script type="text/javascript">
+     function print() {
+            var body = $('#print').dialog('body');
+            var oWin = window.open("", "_blank");
+            oWin.document.write(body.find("#content").html());
+            oWin.focus();
+            oWin.document.close();
+            oWin.print();
+            oWin.close();
+            return false;
+        }
+        function cancelPrint() {
+            $('#print').dialog('close');
+        }
+        function initPrint() {
+            $('#print').dialog({
+                width: 600,
+                height: 470,
+                noheader: true,
+                border: false,
+                modal: true,
+                onLoad: function () {
+                    var ckRows = $('#dataGrid').datagrid('getChecked');
+                    var data = ckRows[0];
+                    var birthday = new Date(data.happen_date);
+
+                    var body = $('#print').dialog('body');
+                    var html = body.html().
+                    replace(/_fire_addr/g, (birthday.pattern('yyyy-MM-dd'))+(data.happen_addr==null?"":data.happen_addr)).
+                    replace(/_fire_reason/g, data.accident_desc==null?"":data.accident_desc)
+                   .replace(/_fire_police/g, data.out_police_mans==null?"":data.out_police_mans).
+                    replace(/_fire_man/g, "").replace(/_fire_memo/g, data.process_results).
+                    replace(/_fire_loss_amt/g,'').
+                    replace(/_fire_loss_man/g, '').
+                    replace(/_fire_recorder/g, '').
+                    replace(/_fire_date/g, '');
+
+                    body.html(html);
+                },
+                href: '/PrintTemplate/FireAccidentTemplate.html',
+                buttons: '#bb'
+            });
+            $('#print').dialog('open');
+        }
+        function showPrint(){
+            var ckRows = $('#dataGrid').datagrid('getChecked');
+            if (ckRows.length <= 0) {
+                $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                return;
+            }
+            initPrint();
+        }
     var imgNames;
     var imgIndex = -1;
     var id = -1;
@@ -296,7 +352,7 @@
             id = row.id;
             if (imgUrl && imgUrl.length > 0) {
                 imgNames = imgUrl.split(",");
-                
+
                 if (imgNames && imgNames.length > 0) {
                     imgIndex = 0;
                     loadImg(imgNames[0]);
@@ -373,7 +429,7 @@
         } else {
             $.messager.alert("提示", "请先选择至少一条记录");
         }
-        
+
     }
 
 

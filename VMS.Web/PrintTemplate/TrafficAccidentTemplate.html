@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>打印驾驶证</title>
+    <title>事故调解表</title>
     <link href="/Content/Site.css" rel="stylesheet" />
     <style type="text/css">
         td {
@@ -33,67 +33,100 @@
                 }
                }
          </style>
-         <div style="width:420px; font-family:'微软雅黑'; background:#fff;position:relative;font-size:12px;">
-            <div style="margin-top:10px;">
-                <span class="noprint" style="margin-left:90px;">缅甸第二特区（佤邦）机动车驾驶证正证</span>
+         <div style="width:100%; font-family:'微软雅黑'; background:#fff;position:relative;font-size:14px;">
+             <p style="text-align: center;font-size: 24px;">缅甸第二特区（佤邦）司法委交通警察大队</p>
+             <p style="letter-spacing:10px;text-align: center;font-size: 28px;font-family: '宋体'">事故调解书</p>
+           <div style="border:1px solid #000;margin-left:10px;margin-right:10px;">
+               <table style="width:100%;table-layout:fixed;border-collapse:collapse;height:90px;">
+                <tr>
+                <td style="text-align:center;width:80px;border-right: 1px solid #000;">事故时间</td>
+                <td style="width:200px;">_ac_date</td>
+                <td style="text-align:center;width:80px;border-left:1px solid #000;border-right: 1px solid #000;">事故地点</td>
+                <td>_ac_addr</td>
+                </tr>
+                <tr style="border-top: 1px solid #000;border-bottom: 1px solid #000;">
+                <td style="text-align:center;border-right: 1px solid #000;">甲方当事人</td>
+                <td>_a_man</td>
+                <td style="text-align:center;border-left:1px solid #000;border-right: 1px solid #000;">住址或单位</td>
+                <td>_a_addr</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #000;">
+                <td style="text-align:center;border-right: 1px solid #000;">乙方当事人</td>
+                <td>_b_man</td>
+                <td style="text-align:center;border-left:1px solid #000;border-right: 1px solid #000;">住址或单位</td>
+                <td>_b_addr</td>
+                </tr>
+            </table>
+            <div style="height: 330px;position: relative;overflow: hidden;border-bottom: 1px solid #000;">
+ <span style="position:absolute;left:0px;top:0px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:30px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:60px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:90px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:120px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:150px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:180px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:210px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:240px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                    <span style="position:absolute;left:0px;top:270px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+            事故经过:<span style="word-break:break-all;line-height:30px;">_ac_desc</span>
             </div>
-             <div style="margin-top:10px;">
-                 <span class="noprint" style="margin-left:80px">W证号</span><span>_id_no</span>
-             </div>    
-             <div style="margin-top:13px;">
-                 <span class="noprint">姓名</span>
-                 <span class="noborder" style="padding-left:-5px;border-bottom:1px dotted #000;text-align:left;display:inline-block;width:40px;">_user_name</span> <span class="noprint">男女</span><span class="noborder" style="padding-left:-5px;border-bottom: 1px dotted #000; text-align: left; display: inline-block; width: 50px;">_birthday_year</span><span class="noprint"> 年</span><span class="noborder" style="padding-left:-12px;border-bottom: 1px dotted #000; text-align: left; display: inline-block; width: 50px;">_birthday_month</span> <span class="noprint">月生</span>
-
-             </div>
-             <div style="margin-top:10px;">
-                 <span class="noprint">单位或住址</span>
-                 <span class="noborder" style="padding-left:20px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; min-width: 200px;">_addr</span>
-
-
-             </div>   
-             <div style="margin-top:12px;">
-                 <span class="noprint">发证机关章</span><span class="noprint">初次领证日期</span><span class="noborder" style="margin-left: -10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 40px;">_first_get_license_date_year</span><span class="noprint">年</span><span class="noborder" style="position:relative;left:-10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 20px;">_first_get_license_date_month</span><span class="noprint">月</span><span class="noborder" style="position:relative;left:-19px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 20px;">_first_get_license_date_day</span><span class="noprint">日</span>
-             </div>
-             <div style="margin-top:8px;">
-                 <span class="noprint">准驾车型</span><span class="noborder" style="padding-left:60px;border-bottom: 1px dotted #000;margin-left: 5px; text-align: left; display: inline-block; width: 150px;">_permitted_car_type_name</span>
-
-             </div>
-             <div style="margin-top:20px;">
-                 <span class="noprint">有效期</span><span class="noborder" style="margin-left:-5px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 30px;">_valid_date_start_year</span><span class="noborder" style="position:relative;left:10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 15px;">_valid_date_start_month</span><span class="noborder" style="position:relative;left:18px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 10px;">_valid_date_start_day</span><span class="noprint" style="position:relative;left:10px;">至</span><span class="noborder" style="position:relative;left:25px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 35px;">_valid_date_end_year</span><span class="noborder" style="position:relative;left:32px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 20px;">_valid_date_end_month</span><span class="noborder" style="position:relative;left:34px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 10px;">_valid_date_end_day</span></td>
-             </div>
-                                                 
-                                                
-                                                
-                                                
-                                             <div class="noborder" style="display:none;position:absolute;left:269px;top:103px;width:80px;height:80px;border:1px dotted #000;margin-right:4px;">
-                                                 <img src="/images/default.jpg" style="width:100%;height:100%;" />
-                                             </div>
-                         </div>   
-         <table style="width:420px;font-family:'微软雅黑'; background:#fff;margin-top:45px;">
-             <tr>
-                 <td>
-                     <table style="width:100%;height:160px;table-layout:fixed;border-collapse: collapse;">
-                         <tr style="height: 30px;">
-                             <td colspan="2" style="text-align:center;width:100px">
-                                 <span class="noprint">缅甸第二特区（佤邦）机动车驾驶证副证</span>
-                             </td>
-                         </tr>
-                         <tr style="height:5px;"></tr>
-                         <tr style="height: 40px;font-size:10px;position:relative; ">
-                             <td colspan="2"><span class="noprint">姓名</span><span class="noborder" style="padding-left:20px;border-bottom: 1px dotted #000;text-align: center; display: inline-block; min-width: 70px;">_user_name</span><span class="noprint"> W证号</span><span class="noborder" style="padding-left:45px;border-bottom: 1px dotted #000;text-align: left;min-width:200px;display:inline-block;">_id_no</span> </td>
-                         </tr>
-                         <tr style="font-size:10px">
-                             <td colspan="2">
-                                 <div style="word-break: break-all; line-height: 30px; height: 100%; font-size: 14px;">
-                                     <span class="noprint">审验</span>
-                                     <span class="noborder" style="display:inline-block;width:200px;border-bottom: 1px dotted #000;text-align: center;"></span>
-                                 </div>
-                             </td>
-                         </tr>
-
-                     </table>
-                 </td>
-             </tr>
-         </table>
+            <div style="height: 330px;position: relative;overflow: hidden;">
+             <span style="position:absolute;left:0px;top:0px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:30px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:60px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:90px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:120px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:150px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:180px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:210px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:240px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:270px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+                      <span style="position:absolute;left:0px;top:300px;display:inline-block;height:30px;width:100%;border-bottom:1px solid #000;word-break:break-all;">
+                     </span>
+            责任认定:<span style="word-break:break-all;line-height:30px;">_ac_duty_man</span>
+            </div>
+            <table style="width:100%;height:90px;table-layout:fixed;border-collapse:collapse;">
+            <tr style="border-top:1px solid #000;border-bottom: 1px solid #000;">
+            <td style="text-align:center;width: 80px;border-right: 1px solid #000;">事故调解员</td>
+            <td style="width: 200px;">_ac_peace_man</td>
+            <td style="text-align:center;width: 80px;border-left:1px solid #000;border-right: 1px solid #000;">绘图记录</td>
+            <td>_ac_recorder</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #000;">
+            <td style="text-align:center;border-right: 1px solid #000;">甲方签名</td>
+            <td></td>
+            <td style="text-align:center;border-left:1px solid #000;border-right: 1px solid #000;">调解时间</td>
+            <td>_peace_date</td>
+            </tr>
+            <tr>
+            <td style="text-align:center;border-right: 1px solid #000;">乙方签名</td>
+            <td></td>
+            <td style="text-align:center;border-left:1px solid #000;border-right: 1px solid #000;">调解单位</td>
+            <td>_peace_unit</td>
+            </tr>
+            </table>
+           </div>
+            
+         </div>
      </div>
     

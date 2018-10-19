@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>打印驾驶证</title>
+    <title>临时机动车辆登记表</title>
     <link href="/Content/Site.css" rel="stylesheet" />
     <style type="text/css">
         td {
@@ -15,6 +15,10 @@
         }
         #content{
             font-size:10px;
+        }
+        body{
+            margin:0px;
+
         }
     </style>
 </head>
@@ -28,72 +32,104 @@
                  .noborder {
                      border: none !important;
                  }
-				 #content{
+         #content{
                     font-size:10px;
                 }
                }
          </style>
-         <div style="width:420px; font-family:'微软雅黑'; background:#fff;position:relative;font-size:12px;">
-            <div style="margin-top:10px;">
-                <span class="noprint" style="margin-left:90px;">缅甸第二特区（佤邦）机动车驾驶证正证</span>
-            </div>
-             <div style="margin-top:10px;">
-                 <span class="noprint" style="margin-left:80px">W证号</span><span>_id_no</span>
-             </div>    
-             <div style="margin-top:13px;">
-                 <span class="noprint">姓名</span>
-                 <span class="noborder" style="padding-left:-5px;border-bottom:1px dotted #000;text-align:left;display:inline-block;width:40px;">_user_name</span> <span class="noprint">男女</span><span class="noborder" style="padding-left:-5px;border-bottom: 1px dotted #000; text-align: left; display: inline-block; width: 50px;">_birthday_year</span><span class="noprint"> 年</span><span class="noborder" style="padding-left:-12px;border-bottom: 1px dotted #000; text-align: left; display: inline-block; width: 50px;">_birthday_month</span> <span class="noprint">月生</span>
-
-             </div>
-             <div style="margin-top:10px;">
-                 <span class="noprint">单位或住址</span>
-                 <span class="noborder" style="padding-left:20px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; min-width: 200px;">_addr</span>
-
-
-             </div>   
-             <div style="margin-top:12px;">
-                 <span class="noprint">发证机关章</span><span class="noprint">初次领证日期</span><span class="noborder" style="margin-left: -10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 40px;">_first_get_license_date_year</span><span class="noprint">年</span><span class="noborder" style="position:relative;left:-10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 20px;">_first_get_license_date_month</span><span class="noprint">月</span><span class="noborder" style="position:relative;left:-19px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 20px;">_first_get_license_date_day</span><span class="noprint">日</span>
-             </div>
-             <div style="margin-top:8px;">
-                 <span class="noprint">准驾车型</span><span class="noborder" style="padding-left:60px;border-bottom: 1px dotted #000;margin-left: 5px; text-align: left; display: inline-block; width: 150px;">_permitted_car_type_name</span>
-
-             </div>
-             <div style="margin-top:20px;">
-                 <span class="noprint">有效期</span><span class="noborder" style="margin-left:-5px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 30px;">_valid_date_start_year</span><span class="noborder" style="position:relative;left:10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 15px;">_valid_date_start_month</span><span class="noborder" style="position:relative;left:18px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 10px;">_valid_date_start_day</span><span class="noprint" style="position:relative;left:10px;">至</span><span class="noborder" style="position:relative;left:25px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 35px;">_valid_date_end_year</span><span class="noborder" style="position:relative;left:32px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 20px;">_valid_date_end_month</span><span class="noborder" style="position:relative;left:34px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 10px;">_valid_date_end_day</span></td>
-             </div>
-                                                 
-                                                
-                                                
-                                                
-                                             <div class="noborder" style="display:none;position:absolute;left:269px;top:103px;width:80px;height:80px;border:1px dotted #000;margin-right:4px;">
-                                                 <img src="/images/default.jpg" style="width:100%;height:100%;" />
-                                             </div>
-                         </div>   
-         <table style="width:420px;font-family:'微软雅黑'; background:#fff;margin-top:45px;">
-             <tr>
-                 <td>
-                     <table style="width:100%;height:160px;table-layout:fixed;border-collapse: collapse;">
-                         <tr style="height: 30px;">
-                             <td colspan="2" style="text-align:center;width:100px">
-                                 <span class="noprint">缅甸第二特区（佤邦）机动车驾驶证副证</span>
-                             </td>
+         <div style="font-family:'宋体'; background:#fff;position:relative;font-size:14px;">
+         <p style="text-align: center;font-size: 24px;letter-spacing:12px;font-weight: bold;">缅甸佤交通警察大队</p>
+             <p style="letter-spacing:8px;text-align: center;font-size: 20px;font-family: '宋体'">临时机动车辆登记表</p>
+             <div style="border: 1px solid #000;margin:0px 10px;">
+                 <table  style="width:100%;table-layout: fixed;border-collapse: collapse;border-bottom: 1px solid #000;">
+                 <tr>
+                 <td style="letter-spacing:8px;text-align:center;width:70px;border-right:1px solid #000;">车主</td>
+                 <td style="width:20%;border-right:1px solid #000;">_car_owner</td>
+                 <td style="width:80%;border-right:1px solid #000;">
+                     <table style="width:100%;table-layout: fixed;border-collapse: collapse;">
+                         <tr style="border-bottom:1px solid #000;">
+                         <td style="letter-spacing:8px;text-align:center;width:70px;border-right:1px solid #000;">原籍</td>
+                         <td style="width:50%;">_owner_org_nation</td>
+             <td style="letter-spacing:8px;width:70px;text-align:center;border-left:1px solid #000;border-right:1px solid #000;">电话</td>
+             <td style="width:50%;">_tel</td>
                          </tr>
-                         <tr style="height:5px;"></tr>
-                         <tr style="height: 40px;font-size:10px;position:relative; ">
-                             <td colspan="2"><span class="noprint">姓名</span><span class="noborder" style="padding-left:20px;border-bottom: 1px dotted #000;text-align: center; display: inline-block; min-width: 70px;">_user_name</span><span class="noprint"> W证号</span><span class="noborder" style="padding-left:45px;border-bottom: 1px dotted #000;text-align: left;min-width:200px;display:inline-block;">_id_no</span> </td>
+                         <tr style="">
+                         <td style="letter-spacing:8px;text-align:center;border-right:1px solid #000;">现住</td>
+                         <td colspan="3">_owner_now_addr</td>
+             
                          </tr>
-                         <tr style="font-size:10px">
-                             <td colspan="2">
-                                 <div style="word-break: break-all; line-height: 30px; height: 100%; font-size: 14px;">
-                                     <span class="noprint">审验</span>
-                                     <span class="noborder" style="display:inline-block;width:200px;border-bottom: 1px dotted #000;text-align: center;"></span>
-                                 </div>
-                             </td>
-                         </tr>
-
                      </table>
                  </td>
-             </tr>
-         </table>
+                 <td style="width:100px;text-align: center;vertical-align: bottom;">车主</td>
+                 </tr>
+               <tr style="border-bottom: 1px solid #000;">
+               <td style="text-align:center;border-right:1px solid #000;border-top:1px solid #000;">驾驶员</td>
+               <td style="border-top:1px solid #000;border-right:1px solid #000;"></td>
+               <td style="border-right:1px solid #000;">
+                   <table style="width:100%;table-layout: fixed;border-collapse: collapse;">
+                     <tr style="border-bottom:1px solid #000;">
+           <td style="letter-spacing:8px;border-top:1px solid #000;width:71px;text-align:center;border-bottom:1px solid #000;border-right:1px solid #000;">原籍</td>
+           <td style="border-top:1px solid #000;width:100%;"></td>
+           </tr>
+                     <tr >
+           <td style="letter-spacing:8px;text-align:center;border-right:1px solid #000;">现住</td>
+           <td ></td>
+           </tr>
+                   </table>
+               </td>
+               <td style="text-align: center;vertical-align: top;">照片</td>
+               </tr>
+               <tr style="height:40px;">
+                 <td style="border-bottom: 1px solid #000;letter-spacing:8px;text-align:center;border-right:1px solid #000;">车型</td>
+                 <td style="border-bottom: 1px solid #000;border-right:1px solid #000;">_car_type</td>
+                 <td style="border-bottom: 1px solid #000;border-right:1px solid #000;">
+                   <table style="width:100%;border-spacing:0px;height:100%;table-layout: fixed;border-collapse: collapse;">
+                   <tr style="height:40px;">
+                   <td style="text-align:center;width:50px;border-right:1px solid #000;">颜色</td>
+                   <td style="width:50px;border-right:1px solid #000;">_car_color</td>
+                   <td style="text-align:center;width:40px;border-right:1px solid #000;">车牌号码</td>
+                   <td >_car_num</td>
+                   </tr>
+                   </table>
+                 </td>
+                 <td style="vertical-align: bottom;text-align:center;border-left: 1px solid #000;">驾驶员</td>
+               </tr>
+               <tr style="height:40px;">
+                 <td style="text-align:center;border-bottom:1px solid #000;border-right:1px solid #000;letter-spacing:6px;">发动机号码</td>
+                 <td>_engine_no</td>
+                 <td  style="">
+                   <table style="width:100%;table-layout: fixed;border-collapse: collapse;">
+                   <tr style="height:40px;">
+                   <td style="width:51px;border-right:1px solid #000;"></td>
+                   <td style="text-align:center;border-right:1px solid #000;letter-spacing:4px;width:50px;">底盘号码</td>
+                   <td>_frame_no</td>
+                   </tr>
+                   </table>
+                 </td>
+                 <td style="vertical-align: top;text-align:center;border-left: 1px solid #000;">照片</td>
+               </tr>
+               <tr style="height:30px;">
+           <td style="text-align:center;border-right:1px solid #000;">填发员</td>
+         <td style="width:100px;border-right:1px solid #000;border-top:1px solid #000;"></td>
+         <td colspan="2" style="border-top:1px solid #000;">发证日期
+                 <span style="float:right;"><span style="text-align:center;display:inline-block;width:40px;">_send_date_year</span>年<span style="text-align:center;display:inline-block;width:30px;">_send_date_month</span>月<span style="text-align:center;display:inline-block;width:30px;">_send_date_day</span>日</span></td>
+        
+         </tr>
+             </table>
+
+                <div style="height:600px;">
+                    <div style="height:300px;width:200px;float: left;">_img1</div>
+                    <div style="height:300px;width:200px;float: left;">_img2</div>
+                </div>
+                <div style="height:30px;line-height: 30px;">
+                   <span style="float:right;">检审员<span style="display:inline-block;width:270px;"></span></span>
+               </div>
+               <div  style="height:30px;line-height: 30px;">
+  <span style="float:right;"><span style="text-align:center;display:inline-block;width:40px;"></span>年<span style="text-align:center;display:inline-block;width:30px;"></span>月<span style="text-align:center;display:inline-block;width:30px;"></span>日</span> 
+                </div>
+               
+             </div>
+            
+         </div>
      </div>
     

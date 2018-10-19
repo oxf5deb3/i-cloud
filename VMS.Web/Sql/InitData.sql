@@ -69,7 +69,7 @@ begin
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('2002','2000','1','../DriverLicenseManagement/TempDriverLicense/Index','','临时驾驶证查询','0000','0000','1001',GETDATE(),17)
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('3000','','0','','glyphicon glyphicon-book','行驶证管理','0000','0000','1001',GETDATE(),3)
-   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('3001','3000','1','../DrivingLicenseManagement/DrivingLicense/Index','','行驾驶证查询','0000','0000','1001',GETDATE(),18)
+   insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('3001','3000','1','../DrivingLicenseManagement/DrivingLicense/Index','','行驶证查询','0000','0000','1001',GETDATE(),18)
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('3002','3000','1','../DrivingLicenseManagement/TempDrivingLicense/Index','','临时行驶证查询','0000','0000','1001',GETDATE(),19)
 
    insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
@@ -146,3 +146,28 @@ begin
 end
 go
 --超级管理员默认写入,账号:1001 密码:1001////////////////////////////////////////////////
+
+--菜单切换
+if exists(select 1 from t_sys_resource where id='2002' and res_desc='临时驾驶证查询')
+begin
+  update t_sys_resource set res_uri='../DrivingLicenseManagement/DrivingLicense/Index',res_desc='行驶证查询' where id='2002'
+end
+go
+if exists(select 1 from t_sys_resource where id='3001' and res_desc='行驾驶证查询')
+begin
+  update t_sys_resource set res_uri='../DriverLicenseManagement/TempDriverLicense/Index',res_desc='临时驾驶证查询' where id='3001'
+end
+go
+if exists(select 1 from t_sys_resource where id='2000' and res_desc='驾驶证管理')
+begin
+  update t_sys_resource set res_desc='正式证件管理' where id='2000'
+end
+go
+if exists(select 1 from t_sys_resource where id='3000' and res_desc='行驶证管理')
+begin
+   update t_sys_resource set res_desc='临时证件管理' where id='3000'
+end
+go
+
+
+

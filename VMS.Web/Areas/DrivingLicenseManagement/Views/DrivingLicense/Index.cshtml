@@ -34,6 +34,7 @@
     <div class="btn-container">
         <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查询</a>
         <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印</a>
+        <a href="#" id="btnPrintBak" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:80px">打印存档</a>
         <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:80px">修改</a>
     </div>
     <hr />
@@ -297,7 +298,7 @@
                          replace(/_car_owner/g,data.name).
                          replace(/_owner_addr/g,data.addr).
                          replace(/_engine_no/g,data.motor_no).
-                         replace(/_frame_no/g, data.carframe_no == null ? "" : data.carframe_no).
+                         replace(/_frame_no/g, data.carframe_no == null ? "" : carframe_no).
                          replace(/_check_passengers/g, data.passenger == null ? "" : data.passenger).
                          replace(/_car_color/g,data.car_color).
                          replace(/_send_date_year/g,sendLicenseDate.getFullYear()).
@@ -307,6 +308,41 @@
                          body.html(html);
                     },
                     href:'/PrintTemplate/DrivingLicenseTemplate.html',
+                    buttons:'#bb'
+       });
+     $('#print').dialog('open');
+    }
+         function initPrintBak(){
+            $('#print').dialog({
+                    width:600,
+                    height:400,
+                    noheader:true,
+                    border:false,
+                    modal:true,
+                    onLoad:function(){
+                         var ckRows = $('#dgDetail').datagrid('getChecked');
+                         var data=ckRows[0];
+                         var sendLicenseDate = new Date(data.issue_license_date);
+                         var body = $('#print').dialog('body');
+                         var html = body.html().
+                         replace(/_car_num/g,data.car_number==null?"":data.car_number).//车牌号码
+                         replace(/_car_type/g,data.car_type==null?"":data.car_type).//车型
+                         replace(/_car_owner/g,data.name==null?"":data.name).//车主
+                         replace(/_tel/,data.phone==null?"":data.phone).
+                         replace(/_owner_org_nation/,data.nation==null?"":data.nation),//原籍
+                         replace(/_owner_now_addr/g,data.addr==null?"":data.addr).//现住
+                         replace(/_engine_no/g,data.motor_no==null?"":data.motor_no).
+                         replace(/_frame_no/g, data.carframe_no == null ? "" : data.carframe_no).
+                         replace(/_check_passengers/g, data.passenger == null ? "" : data.passenger).
+                         replace(/_car_color/g,data.car_color==null?"":data.car_color).
+                         replace(/_send_date_year/g,sendLicenseDate.getFullYear()).
+                         replace(/_send_date_month/g,sendLicenseDate.getMonth() + 1).
+                         replace(/_send_date_day/g,sendLicenseDate.getDate()).
+                         replace(/_img1/,data.car_1_img_path==null?"":'<img src="'+data.car_1_img_path+'"  />').
+                         replace(/_img2/,data.car_2_img_path==null?"":'<img src="'+data.car_2_img_path+'"  />');
+                         body.html(html);
+                    },
+                    href:'/PrintTemplate/CarRegisterTemplate.html',
                     buttons:'#bb'
        });
      $('#print').dialog('open');
@@ -329,7 +365,17 @@
                 }
 
             });
+           $('#btnPrintBak').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getChecked');
+                    if (ckRows.length <= 0) {
+                        $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                        return;
+                    }
+                    initPrintBak();
+                }
 
+            });
             $('#btnEdit').linkbutton({
                 onClick: function () {
                     var ckRows = $('#dgDetail').datagrid('getSelected');
@@ -352,8 +398,8 @@
             });
         }
         function initQueryUI() {
-           
-            
+
+
 
         }
         function initGrid() {
@@ -431,8 +477,8 @@
                 }
             });
 
-           
-    
+
+
            selectFileAndDisplay("zsxs_car_1_input", "zsxs_car_1_img", "zsxs_car_1_value");
            selectFileAndDisplay("zsxs_car_2_input", "zsxs_car_2_img", "zsxs_car_2_value");
 

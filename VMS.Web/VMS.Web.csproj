@@ -302,11 +302,15 @@
     <Content Include="images\rtl.png" />
     <Content Include="images\tab-close.png" />
     <Content Include="Log\a.txt" />
+    <Content Include="PrintTemplate\CarRegisterTemplate.html" />
     <Content Include="PrintTemplate\DrivingLicenseTemplate.html" />
+    <Content Include="PrintTemplate\FireAccidentTemplate.html" />
+    <Content Include="PrintTemplate\TempCarRegisterTemplate.html" />
     <Content Include="PrintTemplate\TempDriverLicenseTemplate.html" />
     <Content Include="PrintTemplate\TempDrivingLicenseTemplate.html" />
     <Content Include="PrintTemplate\TempLicenseBackTemplate.html" />
     <Content Include="PrintTemplate\TempLicenseFontTemplate.html" />
+    <Content Include="PrintTemplate\TrafficAccidentTemplate.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\BaseData\Views\PermittedCarType\Index.cshtml" />
