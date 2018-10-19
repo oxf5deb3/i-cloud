@@ -1,6 +1,6 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 @section HeaderStyle{
@@ -9,6 +9,7 @@
             height: 85%;
             font-size: 12px;
         }
+
         .textbox, .textbox-text {
             -moz-border-radius: 2px 2px 2px 2px;
             -webkit-border-radius: 2px 2px 2px 2px;
@@ -28,31 +29,38 @@
             color: red;
             font-size: 15px;
         }
+
         .item {
             margin-bottom: 20px;
         }
+
         #content {
             width: 600px;
-            margin:30px 30px;
+            margin: 30px 30px;
             height: 100%;
         }
+
         textarea, input {
             width: 400px;
         }
+
         #div-imgs {
-            height:200px;
+            height: 200px;
             width: 400px;
             overflow: scroll;
         }
+
         .imgs {
             display: inline-block;
             width: 300px;
             height: 300px;
-            margin:0 10px;
+            margin: 0 10px;
         }
+
         label {
             width: 100px;
         }
+
         #div-imgs {
             display: inline-block;
         }
@@ -111,32 +119,33 @@
             <label>
                 <span class="red-star">*</span>火灾损失：
             </label>
-            <input class="easyui-textbox" name="loss" id="loss" required>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="loss" id="loss" required>
         </div>
 
         <div class="item">
-            <label><span class="red-star">*</span>事故地点：
+            <label>
+                <span class="red-star">*</span>火灾地点：
             </label>
             <input class="easyui-textbox" name="address" id="address" required>
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故时间：
+                <span class="red-star">*</span>火灾时间：
             </label>
-                <input class="easyui-datetimebox" id="datetime" name="datetime" required>
-</div>
+            <input class="easyui-datetimebox" id="datetime" name="datetime" required>
+        </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故原因：
+                <span class="red-star">*</span>火灾原因：
             </label>
-            <textarea class="easyui-textbox" rows="3" name="desc" id="desc" required></textarea>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="desc" id="desc" required>
         </div>
 
         <div class="item">
             <label>
                 <span class="red-star">*</span>财物损失：
             </label>
-            <textarea class="easyui-textbox" rows="3" name="finance_loss" id="finance_loss" required></textarea>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="finance_loss" id="finance_loss" required></textarea>
         </div>
 
         <div class="item">
@@ -150,27 +159,27 @@
             <label>
                 <span class="red-star">*</span>出警车辆：
             </label>
-            <textarea class="easyui-textbox" rows="3" name="cars" id="cars" required></textarea>
-</div>
+            <input class="easyui-textbox" name="cars" id="cars" required>
+        </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>出警人员：
             </label>
             <textarea class="easyui-textbox" rows="3" name="names" id="names" required></textarea>
-</div>
+        </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>处理结果：
             </label>
             <textarea class="easyui-textbox" rows="3" name="result" id="result" required></textarea>
-</div>
+        </div>
         <div class="item">
             <label>
                 <span class="red-star">*</span>上传图片：
             </label>
-            <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" class="easyui-linkbutton">选择</a>
-            <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple/>
-</div>
+            <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" id="btn-select" class="easyui-linkbutton">选择</a>
+            <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple />
+        </div>
         <div style="text-align:center;">
             <button type="reset" id="btn-rest" class="btn btn-primary btn-sm">重置</button>
             <button id="btn-submit" type="submit" class="btn btn-info btn-sm">提交</button>
@@ -197,6 +206,8 @@
 					    imgBase = null;
                         imgIndex = 0;
                         cimgs = [];
+                        resetImgs();
+                        
                     }
 				},'-',{
 					text:'上一张',
@@ -231,39 +242,47 @@
         var imgIndex = -1;
         let count = 0;
         var cimgs = [];
-        $('#imgs').change(function () {
-            var objThis = $(this)[0];
+
+        function resetImgs() {
+           $("#imgs").remove();
+           $('#btn-select').after('<input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple />');
+           $('#imgs').on('change', change);
+        }
+        $('#imgs').on('change', change);
+        function change() {
+            var objThis = $('#imgs')[0];
             var imgs = objThis.files;
-            if (imgs && imgs.length) {
+            if (imgs && imgs.length > 0) {
                 // 原始FileList对象不可更改，所以将其赋予cimgs提供接下来的修改
                 Array.prototype.push.apply(cimgs, imgs);
-            }
-            var fileIndex = 0;
-            var reader = new FileReader();
-            imgBase = new Array(imgs.length);
-            reader.readAsDataURL(imgs[fileIndex]);
-            reader.onabort = function (e) {
-                console.log("文件读取异常" + imgs[fileIndex].name);
-            };
-            reader.onerror = function (e) {
-                console.log("文件读取出现错误" + imgs[fileIndex].name);
-            };
-            reader.onload = function (e) {
-                if (e.target.result) {
-                    imgBase[fileIndex] = e.target.result;
-                    fileIndex++;
-                    if (fileIndex < imgs.length) {
-                        reader.readAsDataURL(imgs[fileIndex]);
-                    } else {
-                        imgIndex = 0;
-                        $('#img-show').prop('src', imgBase[0]);
+                var fileIndex = 0;
+                var reader = new FileReader();
+                imgBase = new Array(imgs.length);
+                reader.readAsDataURL(imgs[fileIndex]);
+                reader.onabort = function (e) {
+                    console.log("文件读取异常" + imgs[fileIndex].name);
+                };
+                
+                reader.onerror = function (e) {
+                    console.log("文件读取出现错误" + imgs[fileIndex].name);
+                };
+                reader.onload = function (e) {
+                    if (e.target.result) {
+                        imgBase[fileIndex] = e.target.result;
+                        fileIndex++;
+                        if (fileIndex < imgs.length) {
+                            reader.readAsDataURL(imgs[fileIndex]);
+                        } else {
+                            imgIndex = 0;
+                            $('#img-show').prop('src', imgBase[0]);
+                        }
                     }
-                }
-            };
-        });
+                };
+            }
 
+        }
         function submit() {
-            if(!cimgs || cimgs.length == 0) {
+            if (!cimgs || cimgs.length == 0) {
                 $.messager.alert('提示', '请先选择图片');
                 return false;
             }
@@ -289,5 +308,5 @@
                 }
             });
         }
-   </script>
+    </script>
 }

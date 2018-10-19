@@ -197,9 +197,7 @@ if not exists(select * from sysobjects where xtype='U' and id=OBJECT_ID('t_fire_
 create table t_fire_equipment_register
 (
    id decimal(16,0) identity(1,1) primary key,
-   eq_name varchar(100) not null,
-   eq_type varchar(100) not null,
-   eq_qty int not null,
+   eq_name varchar(200) not null,
    install_addr varchar(200) not null,
    usage_desc varchar(200) not null,
    install_date datetime not null,

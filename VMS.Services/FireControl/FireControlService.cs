@@ -57,12 +57,10 @@ namespace VMS.Services
             try
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("insert into t_fire_equipment_register(eq_name, eq_type, eq_qty, install_addr, install_date, usage_desc, person_liable, oper_id, oper_date, img_url)");
-                sql.Append(" values(@eq_name, @eq_type, @eq_qty, @install_addr, @install_date, @usage_desc, @person_liable, @oper_id, @oper_date, @img_url)");
+                sql.Append("insert into t_fire_equipment_register(eq_name, install_addr, install_date, usage_desc, person_liable, oper_id, oper_date, img_url)");
+                sql.Append(" values(@eq_name, @install_addr, @install_date, @usage_desc, @person_liable, @oper_id, @oper_date, @img_url)");
                 List<SqlParam> sqlParams = new List<SqlParam>();
                 sqlParams.Add(new SqlParam("@eq_name", dto.name));
-                sqlParams.Add(new SqlParam("@eq_type", dto.model));
-                sqlParams.Add(new SqlParam("@eq_qty", dto.count));
                 sqlParams.Add(new SqlParam("@install_addr", dto.address));
                 sqlParams.Add(new SqlParam("@install_date", dto.datetime));
                 sqlParams.Add(new SqlParam("@usage_desc", dto.desc));
@@ -155,7 +153,7 @@ namespace VMS.Services
 
         public List<t_fire_equipment_register> ListEquipment(StringBuilder sqlWhere, IList<SqlParam> sqlParams, int pageIndex, int pageSize, ref int count)
         {
-            StringBuilder sb = new StringBuilder("select id, eq_name, eq_type, eq_qty, install_addr, usage_desc, install_date, person_liable, oper_id, oper_date, modify_oper_id, modify_date, img_url from t_fire_equipment_register where 1=1 ");
+            StringBuilder sb = new StringBuilder("select id, eq_name, install_addr, usage_desc, install_date, person_liable, oper_id, oper_date, modify_oper_id, modify_date, img_url from t_fire_equipment_register where 1=1 ");
             var dt = DbContext.GetPageList(sb.Append(sqlWhere.ToString()).ToString(), sqlParams.ToArray(), "id", "desc", pageIndex, pageSize, ref count);
             return DataTableHelper.DataTableToIList<t_fire_equipment_register>(dt) as List<t_fire_equipment_register>;
         }
@@ -164,12 +162,10 @@ namespace VMS.Services
         {
             try
             {
-                StringBuilder sb = new StringBuilder("update t_fire_equipment_register set eq_name = @eq_name, eq_type = @eq_type, eq_qty = @eq_qty, install_addr = @install_addr, usage_desc = @usage_desc");
+                StringBuilder sb = new StringBuilder("update t_fire_equipment_register set eq_name = @eq_name, install_addr = @install_addr, usage_desc = @usage_desc");
                 sb.Append(", install_date = @install_date, person_liable = @person_liable, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
                 List<SqlParam> sqlParams = new List<SqlParam>();
                 sqlParams.Add(new SqlParam("@eq_name", entity.name));
-                sqlParams.Add(new SqlParam("@eq_type", entity.model));
-                sqlParams.Add(new SqlParam("@eq_qty", entity.count));
                 sqlParams.Add(new SqlParam("@install_addr", entity.address));
                 sqlParams.Add(new SqlParam("@usage_desc", entity.desc));
                 sqlParams.Add(new SqlParam("@install_date", entity.datetime));

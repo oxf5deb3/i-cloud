@@ -37,15 +37,14 @@
 <table id="query-params">
     <tr>
         <td><label>编号：</label><input class="easyui-textbox" id="id" /></td>
-        <td><label>设备名称：</label><input class="easyui-textbox" id="name" /></td>
-        <td><label>设备型号：</label><input class="easyui-textbox" id="model" /></td>
+        <td><label>设备信息：</label><input class="easyui-textbox" id="name" /></td>
+        <td><label>安装地址：</label><input class="easyui-textbox" id="address" /></td>
         <td><label>安装时间(起)：</label><input class="easyui-datetimebox" id="timeBegin" /></td>
         <td><label>安装时间(止)：</label><input class="easyui-datetimebox" id="timeEnd" /></td>
     </tr>
     <tr>
-        <td><label>安装地址：</label><input class="easyui-textbox" id="address" /></td>
         <td><label>负责人：</label><input class="easyui-textbox" id="liable" /></td>
-        <td colspan="2"></td>
+        <td colspan="3"></td>
         <td><a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a></td>
     </tr>
 </table>
@@ -60,24 +59,7 @@
 <div id="dlg" class="easyui-dialog" style="width:800px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
     <form id="accident" method="post" novalidate style="margin:0; padding:20px 50px">
         <input type="hidden" name="id" required />
-        <div class="item">
-            <label>
-                <span class="red-star">*</span>设备名称：
-            </label>
-            <input class="easyui-textbox" name="name" id="name" required>
-        </div>
-        <div class="item">
-            <label>
-                <span class="red-star">*</span>设备型号：
-            </label>
-            <input class="easyui-textbox" id="model" name="model" required>
-        </div>
-        <div class="item">
-            <label>
-                <span class="red-star">*</span>设备数量：
-            </label>
-            <input class="easyui-textbox" id="count" name="count" required>
-        </div>
+        <div class="item" id="item-div"></div>
         <div class="item">
             <label><span class="red-star">*</span>负责人：</label>
 
@@ -207,9 +189,7 @@
             columns: [[
                 { field: 'ck', checkbox: true },
                 { field: 'id', title: '编号', halign: 'center', align: 'left' },
-                { field: 'name', title: '设备名称', halign: 'center', align: 'left' },
-                { field: 'model', title: '设备型号', halign: 'center', align: 'left' },
-                { field: 'count', title: '数量', halign: 'center', align: 'left' },
+                { field: 'name', title: '设备信息', halign: 'center', align: 'left' },
                 { field: 'address', title: '安装地址', halign: 'center', align: 'left' },
                 { field: 'datetime', title: '安装时间', halign: 'center', align: 'left' },
                 { field: 'desc', title: '用途描述', halign: 'center', align: 'left' },
@@ -234,7 +214,6 @@
                 timeBegin: $('#timeBegin').val(),
                 timeEnd: $("#timeEnd").val(),
                 name: $('#name').val(),
-                model: $('#model').val(),
                 liable: $('#liable').val()
             }
         });
@@ -291,7 +270,6 @@
                 timeBegin: $('#timeBegin').val(),
                 timeEnd: $("#timeEnd").val(),
                 name: $('#name').val(),
-                model: $('#model').val(),
                 liable: $('#liable').val()
             });
         }
@@ -328,10 +306,22 @@
 
 
         function edit() {
+            $('.add-item').remove();
             var row = $('#dataGrid').datagrid('getSelected');
             if (row) {
-                $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改记录');
                 $('#accident').form('load', row);
+                var names = row.name.split("=>");
+                if (names.length > 0) {
+                    for (var i = 0; i < names.length; i++) {
+                        if (i == 0) {
+                            $('#item-div').after("<div class='item add-item' id='item-info'><label><span class='red-star'>*</span>设备信息：</label><input class='easyui-textbox' name='name' value='" + names[i] + "' required><a href='javascript:addItem()' class='easyui-linkbutton' plain='true' iconcls='icon-add'></a></div>");
+                        } else {
+                            $('#item-info').after("<div class='item add-item'><label><span class='red-star'></span></label><input class='easyui-textbox' name='name' value='" + names[i] + "' required></div>");
+                        }
+                    }
+                }
+                $('#datetime').prev().val(row.datetiem);
+                $('#dlg').dialog('open').dialog('center').dialog('setTitle', '修改记录');
             } else {
                 $.messager.alert("提示", "请先选择一条记录");
             }
@@ -339,11 +329,24 @@
 
         function save() {
             if ($('#accident').form('validate')) {
+                var formData = new FormData(document.getElementById("accident"));
+                formData.delete('name');
+                var names = document.getElementsByName('name');
+                var name = '';
+                for (var j = 0; j < names.length; j++) {
+                    name += names[j].value;
+                    if (j < names.length - 1) {
+                        name += '=>';
+                    }
+                }
+                formData.append('name', name);
                 $.ajax({
                     url: '/api/FireControlApi/ModifyEquipment',
                     method: 'post',
                     dataType: 'json',
-                    data: $('#accident').serialize(),
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function (result) {
                         if (result.success) {
                             $.messager.alert("提示", "修改成功");
@@ -355,6 +358,11 @@
                     }
                 });
             }
+        }
+
+        function addItem() {
+            $('#item-info').after("<div class='item add-item'><label><span class='red-star'></span></label><input class='easyui-textbox' name='name' required></div>");
+            $.parser.parse($('#accident'));
         }
     </script>
 }

@@ -23,10 +23,10 @@ namespace VMS.Api
     {
 
         public const string IMG_ACCIDENT_PATH = "D:\\VMS\\image\\accident-imgs\\";
-        public const string IMG_EQUIPMENT_PATH = "D:\\VMS\\image\\equipment-imgs\\";
+        //public const string IMG_EQUIPMENT_PATH = "D:\\VMS\\image\\equipment-imgs\\";
 
         //public const string IMG_ACCIDENT_PATH = "C:\\存储\\资料\\";
-        //public const string IMG_EQUIPMENT_PATH = "C:\\存储\\资料\\";
+        public const string IMG_EQUIPMENT_PATH = "C:\\存储\\资料\\";
 
         public GridResponseDTO<FireAccidentDTO> ListAccident()
         {
@@ -46,31 +46,47 @@ namespace VMS.Api
                     paramlst.Add(new SqlParam("@id", Decimal.Parse(httpRequest["id"])));
                 }
 
-                if (httpRequest["address"] != null && !string.IsNullOrEmpty(httpRequest["address"])) { 
+                if (httpRequest["address"] != null && !string.IsNullOrEmpty(httpRequest["address"]))
+                {
                     sb.Append(" and happen_addr like @address");
                     paramlst.Add(new SqlParam("@address", "%" + httpRequest["address"] + "%"));
                 }
-                if (httpRequest["timeBegin"] != null && !string.IsNullOrEmpty(httpRequest["timeBegin"])) { 
+                if (httpRequest["timeBegin"] != null && !string.IsNullOrEmpty(httpRequest["timeBegin"]))
+                {
                     sb.Append(" and happen_date >  @timeBegin");
                     paramlst.Add(new SqlParam("@timeBegin", httpRequest["timeBegin"]));
                 }
-                if (httpRequest["timeEnd"] != null && !string.IsNullOrEmpty(httpRequest["timeEnd"])) { 
+                if (httpRequest["timeEnd"] != null && !string.IsNullOrEmpty(httpRequest["timeEnd"]))
+                {
                     sb.Append(" and happen_date < @timeEnd");
                     paramlst.Add(new SqlParam("@timeEnd", httpRequest["timeEnd"]));
                 }
-                if (httpRequest["cars"] != null && !string.IsNullOrEmpty(httpRequest["cars"])) { 
+                if (httpRequest["cars"] != null && !string.IsNullOrEmpty(httpRequest["cars"]))
+                {
                     sb.Append(" and out_police_cars like @cars");
                     paramlst.Add(new SqlParam("@cars", "%" + httpRequest["cars"] + "%"));
                 }
-                if (httpRequest["men"] != null && !string.IsNullOrEmpty(httpRequest["men"])) { 
+                if (httpRequest["men"] != null && !string.IsNullOrEmpty(httpRequest["men"]))
+                {
                     sb.Append(" and out_police_mans like @men");
                     paramlst.Add(new SqlParam("@men", "%" + httpRequest["men"] + "%"));
+                }
+                if (httpRequest["name"] != null && !string.IsNullOrEmpty(httpRequest["name"]))
+                {
+                    sb.Append(" and name = @name");
+                    paramlst.Add(new SqlParam("@name", httpRequest["cars"]));
+                }
+                if (httpRequest["phone"] != null && !string.IsNullOrEmpty(httpRequest["phone"]))
+                {
+                    sb.Append(" and phone = @phone");
+                    paramlst.Add(new SqlParam("@phone", httpRequest["phone"]));
                 }
                 string err = string.Empty;
                 var obj = Instance<IFireControlService>.Create;
                 var lst = obj.ListAccident(sb, paramlst, pageIndex, pageSize, ref total);
                 ret.total = total;
-                ret.rows.AddRange(lst.Select(e => new FireAccidentDTO() {
+                ret.rows.AddRange(lst.Select(e => new FireAccidentDTO()
+                {
                     id = e.id,
                     address = e.happen_addr,
                     datetime = e.happen_date.ToString(),
@@ -83,15 +99,15 @@ namespace VMS.Api
                     operDate = e.oper_date.ToString(),
                     modifyOperId = e.modify_oper_id,
                     modifyDate = e.modify_date.ToString(),
-                    name=e.name,
-                    sex=e.sex,
-                    age=e.age,
-                    addr=e.addr,
-                    folk=e.folk,
-                    loss=e.loss,
-                    casualties=e.casualties,
-                    finance_loss=e.finance_loss,
-                    phone=e.phone
+                    name = e.name,
+                    sex = e.sex,
+                    age = e.age,
+                    addr = e.addr,
+                    folk = e.folk,
+                    loss = e.loss,
+                    casualties = e.casualties,
+                    finance_loss = e.finance_loss,
+                    phone = e.phone
 
                 }));
                 return ret;
@@ -128,11 +144,6 @@ namespace VMS.Api
                     sb.Append(" and eq_name like @eq_name");
                     paramlst.Add(new SqlParam("@eq_name", "%" + httpRequest["name"] + "%"));
                 }
-                if (httpRequest["model"] != null && !string.IsNullOrEmpty(httpRequest["model"]))
-                {
-                    sb.Append(" and eq_type like @eq_type");
-                    paramlst.Add(new SqlParam("@eq_type", "%" + httpRequest["model"] + "%"));
-                }
                 if (httpRequest["address"] != null && !string.IsNullOrEmpty(httpRequest["address"]))
                 {
                     sb.Append(" and install_addr like @install_addr");
@@ -153,7 +164,7 @@ namespace VMS.Api
                     sb.Append(" and person_liable like @person_liable");
                     paramlst.Add(new SqlParam("@person_liable", "%" + httpRequest["liable"] + "%"));
                 }
-               
+
                 string err = string.Empty;
                 var obj = Instance<IFireControlService>.Create;
                 var lst = obj.ListEquipment(sb, paramlst, pageIndex, pageSize, ref total);
@@ -162,8 +173,6 @@ namespace VMS.Api
                 {
                     id = e.id,
                     name = e.eq_name,
-                    model = e.eq_type,
-                    count = e.eq_qty,
                     address = e.install_addr,
                     datetime = e.install_date.ToString(),
                     desc = e.usage_desc,
@@ -250,7 +259,7 @@ namespace VMS.Api
 
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AppendAccidentImg()
-        { 
+        {
             var ret = new BaseResponseDTO();
 
             try
@@ -324,9 +333,11 @@ namespace VMS.Api
                     Random random = new Random();
                     StringBuilder imgs = new StringBuilder();
                     HttpPostedFile tempFile = null;
-                    for (int i = 0; i < filelist.Count; i++) {
+                    for (int i = 0; i < filelist.Count; i++)
+                    {
                         tempFile = filelist[i];
-                        if (tempFile.ContentLength > 0) {
+                        if (tempFile.ContentLength > 0)
+                        {
                             string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
                             string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
                             string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
@@ -357,7 +368,7 @@ namespace VMS.Api
                     var service = Instance<IFireControlService>.Create;
 
                     bool res = service.AddFireAccident(dto);
-                    
+
                     if (res)
                     {
                         return ret;
@@ -368,7 +379,9 @@ namespace VMS.Api
                         ret.success = false;
                         return ret;
                     }
-                } else {
+                }
+                else
+                {
                     ret.message = "缺少图片";
                     ret.success = false;
                     return ret;
@@ -388,7 +401,7 @@ namespace VMS.Api
         {
             var ret = new BaseResponseDTO();
             try
-            { 
+            {
                 var httpRequest = HttpContext.Current.Request;
                 var ids = CommonHelper.GetString(httpRequest.Form["ids"]);
                 var service = Instance<IFireControlService>.Create;
@@ -418,8 +431,8 @@ namespace VMS.Api
         {
             var ret = new BaseResponseDTO();
             try
-            {   
-               var httpRequest = HttpContext.Current.Request;
+            {
+                var httpRequest = HttpContext.Current.Request;
                 var ids = CommonHelper.GetString(httpRequest.Form["ids"]);
                 var service = Instance<IFireControlService>.Create;
                 bool res = service.DelAccident(ids);
@@ -500,16 +513,25 @@ namespace VMS.Api
                 ret.success = false;
                 ret.message = ex.Message;
                 return ret;
-            } 
+            }
         }
 
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyEquipment([FromBody]JObject data)
+        public BaseResponseDTO ModifyEquipment()
         {
             var ret = new BaseResponseDTO();
             try
             {
-                var dto = data.ToObject<FireEquipmentDTO>();
+                var httpRequest = HttpContext.Current.Request;
+
+                var dto = new FireEquipmentDTO();
+                dto.id = Decimal.Parse(httpRequest.Form["id"]);
+                dto.datetime = httpRequest.Form["datetime"];
+                dto.address = httpRequest.Form["address"];
+                dto.desc = httpRequest.Form["desc"];
+                dto.name = httpRequest.Form["name"];
+                dto.liable = httpRequest.Form["liable"];
+                dto.modifyOperId = operInfo.user_id;
                 var service = Instance<IFireControlService>.Create;
                 dto.modifyOperId = operInfo.user_id;
                 bool res = service.ModifyEquipment(dto);
@@ -562,10 +584,11 @@ namespace VMS.Api
                 ret.message = ex.Message;
                 return ret;
             }
-           
+
         }
 
-        public void getReadImg() {
+        public void getReadImg()
+        {
             try
             {
                 var httpRequest = HttpContext.Current.Request;
@@ -577,7 +600,8 @@ namespace VMS.Api
                 {
                     path = IMG_ACCIDENT_PATH;
                 }
-                else {
+                else
+                {
                     path = IMG_EQUIPMENT_PATH;
                 }
 
@@ -595,7 +619,7 @@ namespace VMS.Api
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -631,8 +655,6 @@ namespace VMS.Api
                     dto.address = httpRequest.Form["address"];
                     dto.desc = httpRequest.Form["desc"];
                     dto.name = httpRequest.Form["name"];
-                    dto.model = httpRequest.Form["modelNum"];
-                    dto.count = int.Parse(httpRequest.Form["count"]);
                     dto.liable = httpRequest.Form["liable"];
                     dto.operId = operInfo.user_id;
                     dto.imgs = imgs.ToString();

@@ -177,7 +177,7 @@
             <label>
                 <span class="red-star">*</span>上传图片：
             </label>
-            <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" class="easyui-linkbutton">选择</a>
+            <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" id="btn-select" class="easyui-linkbutton">选择</a>
             <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple/>
         </div>
         <div style="text-align:center;">
@@ -205,6 +205,7 @@
 					    imgBase = null;
                         imgIndex = 0;
                         cimgs = [];
+                        resetImgs();
                     }
 				},'-',{
 					text:'上一张',
@@ -240,36 +241,44 @@
         var imgIndex = -1;
         let count = 0;
         var cimgs= [];
-        $('#imgs').change(function () {
-            var objThis = $(this)[0];
+        function resetImgs() {
+            $("#imgs").remove();
+            $('#btn-select').after('<input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple />');
+            $('#imgs').on('change', change);
+        }
+        $('#imgs').on('change', change);
+        function change() {
+            var objThis = $('#imgs')[0];
             var imgs = objThis.files;
-            if (imgs && imgs.length) {
+            if (imgs && imgs.length > 0) {
                 // 原始FileList对象不可更改，所以将其赋予cimgs提供接下来的修改
                 Array.prototype.push.apply(cimgs, imgs);
-            }
-            var fileIndex = 0;
-            var reader = new FileReader();
-            imgBase = new Array(imgs.length);
-            reader.readAsDataURL(imgs[fileIndex]);
-            reader.onabort = function (e) {
-                console.log("文件读取异常" + imgs[fileIndex].name);
-            };
-            reader.onerror = function (e) {
-                console.log("文件读取出现错误" + imgs[fileIndex].name);
-            };
-            reader.onload = function (e) {
-                if (e.target.result) {
-                    imgBase[fileIndex] = e.target.result;
-                    fileIndex++;
-                    if (fileIndex < imgs.length) {
-                        reader.readAsDataURL(imgs[fileIndex]);
-                    } else {
-                        imgIndex = 0;
-                        $('#img-show').prop('src', imgBase[0]);
+                var fileIndex = 0;
+                var reader = new FileReader();
+                imgBase = new Array(imgs.length);
+                reader.readAsDataURL(imgs[fileIndex]);
+                reader.onabort = function (e) {
+                    console.log("文件读取异常" + imgs[fileIndex].name);
+                };
+
+                reader.onerror = function (e) {
+                    console.log("文件读取出现错误" + imgs[fileIndex].name);
+                };
+                reader.onload = function (e) {
+                    if (e.target.result) {
+                        imgBase[fileIndex] = e.target.result;
+                        fileIndex++;
+                        if (fileIndex < imgs.length) {
+                            reader.readAsDataURL(imgs[fileIndex]);
+                        } else {
+                            imgIndex = 0;
+                            $('#img-show').prop('src', imgBase[0]);
+                        }
                     }
-                }
-            };
-        });
+                };
+            }
+
+        }
 
         function submit() {
             if (!cimgs || cimgs.length == 0) {

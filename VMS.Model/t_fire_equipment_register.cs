@@ -12,10 +12,6 @@ namespace VMS.Model
 
         public string eq_name { get; set; }
 
-        public string eq_type { get; set; }
-
-        public int eq_qty { get; set; }
-
         public string install_addr { get; set; }
 
         public string usage_desc { get; set; }
