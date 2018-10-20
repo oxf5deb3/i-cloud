@@ -284,16 +284,17 @@
                 onLoad: function () {
                     var ckRows = $('#dataGrid').datagrid('getChecked');
                     var data = ckRows[0];
-                    var birthday = new Date(data.happen_date);
+                    var birthday = new Date(data.datetime);
 
                     var body = $('#print').dialog('body');
                     var html = body.html().
-                    replace(/_fire_addr/g, (birthday.pattern('yyyy-MM-dd'))+(data.happen_addr==null?"":data.happen_addr)).
-                    replace(/_fire_reason/g, data.accident_desc==null?"":data.accident_desc)
-                   .replace(/_fire_police/g, data.out_police_mans==null?"":data.out_police_mans).
-                    replace(/_fire_man/g, "").replace(/_fire_memo/g, data.process_results).
-                    replace(/_fire_loss_amt/g,'').
-                    replace(/_fire_loss_man/g, '').
+                    replace(/_fire_addr/g, (birthday.pattern('yyyy-MM-dd'))+(data.address==null?"":data.address)).
+                    replace(/_fire_reason/g, data.desc==null?"":data.desc)
+                   .replace(/_fire_police/g, '').
+                    replace(/_fire_man/g, (data.name==null?"":data.name)+data.addr==null?"":data.addr).replace(/_fire_memo/g, '').
+                    replace(/_fire_amt/,data.loss==null?"":data.loss).
+                    replace(/_fire_loss_amt/g,data.finance_loss==null?"":data.finance_loss).
+                    replace(/_fire_loss_man/g, data.casualties==null?"":data.casualties).
                     replace(/_fire_recorder/g, '').
                     replace(/_fire_date/g, '');
 

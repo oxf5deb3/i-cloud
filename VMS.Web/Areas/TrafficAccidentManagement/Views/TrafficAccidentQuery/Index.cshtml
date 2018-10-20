@@ -262,21 +262,21 @@
                 onLoad: function () {
                     var ckRows = $('#dataGrid').datagrid('getChecked');
                     var data = ckRows[0];
-                    var birthday = new Date(data.happen_date);
-                    var validdatestart = new Date(data.mediation_date);
+                    var birthday = new Date(data.happenDate);
+                    var validdatestart = new Date(data.mediationDate);
 
                     var body = $('#print').dialog('body');
                     var html = body.html().
-                    replace(/_a_man/g, data.first_party_man==null?"":data.first_party_man).
-                    replace(/_b_man/g, data.second_party_man==null?"":data.second_party_man).
-                    replace(/_a_addr/g, data.first_party_addr==null?"":data.first_party_addr).
-                    replace(/_b_addr/g, data.second_party_addr==null?"":data.second_party_addr).
-                    replace(/_ac_addr/g, data.happen_addr==null?"":data.happen_addr).
-                    replace(/_ac_desc/g, data.accident_desc==null?"":data.accident_desc).
-                    replace(/_peace_unit/g, data.mediation_unit==null?"":data.mediation_unit).
-                    replace(/_ac_peace_man/g, data.accident_mediator==null?"":data.accident_mediator).
-                    replace(/_ac_recorder/g, data.draw_recorder==null?"":data.draw_recorder).
-                    replace(/_ac_duty_man/g,'').
+                    replace(/_a_man/g, data.firstPartyMan==null?"":data.firstPartyMan).
+                    replace(/_b_man/g, data.secondPartyMan==null?"":data.secondPartyMan).
+                    replace(/_a_addr/g, data.firstPartyAddr==null?"":data.firstPartyAddr).
+                    replace(/_b_addr/g, data.secondPartyAddr==null?"":data.secondPartyAddr).
+                    replace(/_ac_addr/g, data.happenAddr==null?"":data.happenAddr).
+                    replace(/_ac_desc/g, data.accidentDesc==null?"":data.accidentDesc).
+                    replace(/_peace_unit/g, data.mediationUnit==null?"":data.mediationUnit).
+                    replace(/_ac_peace_man/g, data.accidentMediator==null?"":data.accidentMediator).
+                    replace(/_ac_recorder/g, data.drawRecorder==null?"":data.drawRecorder).
+                    replace(/_ac_duty_man/g,data.duty==null?"":data.duty).
                     replace(/_ac_date/g, birthday.pattern('yyyy-MM-dd')).
                     replace(/_peace_date/g, validdatestart.pattern('yyyy-MM-dd'));
                
