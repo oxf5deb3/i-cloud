@@ -338,8 +338,8 @@
                          replace(/_send_date_year/g,sendLicenseDate.getFullYear()).
                          replace(/_send_date_month/g,sendLicenseDate.getMonth() + 1).
                          replace(/_send_date_day/g,sendLicenseDate.getDate()).
-                         replace(/_img1/,data.car_1_value==null?"":'<img style="width:100%;height:100%;" src="data:image/jpg;base64,'+data.car_1_value+'"  />').
-                         replace(/_img2/,data.car_2_value==null?"":'<img style="width:100%;height:100%;" src="data:image/jpg;base64,'+data.car_2_value+'"  />');
+                         replace(/_img1/,(data.car_1_value==null || data.car_1_value=='')?"":'<img style="width:100%;height:100%;" src="data:image/jpg;base64,'+data.car_1_value+'"  />').
+                         replace(/_img2/,(data.car_2_value==null || data.car_2_value=='')?"":'<img style="width:100%;height:100%;" src="data:image/jpg;base64,'+data.car_2_value+'"  />');
                          body.html(html);
                     },
                     href:'/PrintTemplate/CarRegisterTemplate.html',
