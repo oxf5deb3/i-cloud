@@ -334,6 +334,7 @@
 
                          var ckRows = $('#dgDetail').datagrid('getChecked');
                          var data = ckRows[0];
+                         var sendLicenseDate = new Date(data.issue_license_date);
                          var body = $('#print').dialog('body');
                          var html = body.html().
                          replace(/_car_num/g,data.car_number==null?"":data.car_number).//车牌号码
