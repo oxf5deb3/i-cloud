@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace VMS.DTO.Trailer
+{
+   public class TrailerQueryDTO
+    {
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public string startTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public string endTime { get; set; }
+
+    }
+}
