@@ -1,0 +1,118 @@
+﻿.datagrid-row-over,
+.datagrid-header td.datagrid-header-over {
+  background: #e6e6e6;
+  color: #3d28ce !important;
+  cursor: default;
+}
+.datagrid-row-selected {
+  background: #dde3f9!important;
+  color: #000!important;
+}
+.panel-header,
+.panel-body {
+  border-color: #e0e0e0!important;
+}
+
+.tree-node-selected {
+  background: #464646!important;
+  color: #fff!important;
+}
+.datagrid-header
+ {
+  background: #F2F2F2 !important;
+}
+.datagrid-td-rownumber
+ {
+  background: #fff !important;
+}
+hr{
+    margin:5px 0px;
+}
+p{
+    margin-bottom:2px;
+}
+.q-condition {
+    //min-height:120px;
+    //background-color:#bbb;
+}
+.q-condition hr{
+    margin-top:2px;
+}
+.q-detail{
+    min-height:470px;
+}
+.line-default{
+    background-color:#393D49;
+    height:1px;
+    margin:0px;
+}
+.q-condition .l-btn{
+    background:#ffe3e3 !important;
+    border:none!important;
+    border:2px !important;
+}
+
+.q-condition .textbox .textbox-text {
+    font-size: 12px;
+    border: 0;
+    margin: 0;
+    padding: 0 2px;
+    white-space: normal;
+    vertical-align: top;
+    outline-style: none;
+    resize: none;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.q-condition>table{
+    height:100%;
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+}
+@media print {
+    .noprint {
+        visibility: hidden;
+    }
+}
+.notice {
+    background: url(/images/notice.png) no-repeat;
+    width: 16px;
+    height: 16px;
+    background-size:16px 16px;
+    display: inline-block;
+    vertical-align: sub;
+    margin-right: 5px;
+   
+}
+.full-screen,.small-screen {
+    background: url(/images/full-screen.png) no-repeat;
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+    display: inline-block !important;
+    vertical-align: sub;
+    padding: 0px 20px 0px 0px !important;
+}
+.exit {
+    background: url(/images/exit.png) no-repeat;
+    background-position:0px 15px;
+    display: inline-block !important;
+    background-size: 16px 16px;
+}
+    .exit i{
+        display:inline-block;
+        width:16px;
+        height:16px;
+    }
+    .tips {
+        height: 25px;
+        line-height: 25px;
+    }
+.q-condition .l-btn-icon {
+    background-size: 16px 16px !important;
+}

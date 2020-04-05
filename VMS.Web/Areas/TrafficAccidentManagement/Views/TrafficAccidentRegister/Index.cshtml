@@ -1,0 +1,333 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@section HeaderStyle{
+    <style type="text/css">
+        html, body {
+            font-size: 12px;
+            height: 85%;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+        }
+
+        /*#content {
+            width: 100%;
+            margin: 30px 30px;
+            height: 100%;
+        }*/
+
+        textarea, input {
+            width: 300px;
+        }
+
+        #div-imgs {
+            height: 200px;
+            width: 400px;
+            overflow: scroll;
+        }
+
+        .imgs {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            margin: 0 10px;
+        }
+
+       .title{
+           text-align:right;
+       }
+
+        #div-imgs {
+            display: inline-block;
+        }
+    </style>
+}
+
+
+<div style="padding-left:10px;"><span style="color:blue">提示:</span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
+<div id="content">
+    <form action="javascript:submit()" id="accident">
+        <table style="table-layout:fixed;border-collapse:collapse;width:100%">
+            <tr class="item">
+                <td class="title" style="width:100px;">
+                    <label>
+                        <span class="red-star">*</span>事故时间：
+                    </label>
+                </td>
+                <td style="width:50%"><input class="easyui-datetimebox" id="happenDate" name="happenDate" required></td>
+                <td class="title" style="width:100px;">
+                    <label>
+                        <span class="red-star">*</span>事故地点：
+                    </label>
+                </td>
+                <td  style="width:50%"><input class="easyui-textbox" name="happenAddr" id="happenAddr" required></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>甲方当事人：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="firstPartyMan" id="firstPartyMan" required></td>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>甲方单位/地址：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="firstPartyAddr" id="firstPartyAddr" required></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>乙方当事人：
+                    </label>
+                </td>
+                <td> <input class="easyui-textbox" name="secondPartyMan" id="secondPartyMan" required></td>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>乙方单位/地址：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="secondPartyAddr" id="secondPartyAddr" required></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        丙方当事人：
+                    </label>
+                </td>
+                <td> <input class="easyui-textbox" name="bingPartyMan" id="bingPartyMan"></td>
+                <td class="title">
+                    <label>
+                        丙方单位/地址：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="bingPartyAddr" id="bingPartyAddr"></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        丁方当事人：
+                    </label>
+                </td>
+                <td> <input class="easyui-textbox" name="dingPartyMan" id="dingPartyMan"></td>
+                <td class="title">
+                    <label>
+                        丁方单位/地址：
+                    </label>
+                </td>
+                <td> <input class="easyui-textbox" name="dingPartyAddr" id="dingPartyAddr"></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>事故经过：
+                    </label>
+                </td>
+                <td>
+                    <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="accidentDesc" id="accidentDesc" required>
+                </td>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>调解单位：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="mediationUnit" id="mediationUnit" required></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>调解日期：
+                    </label>
+                </td>
+                <td><input class="easyui-datetimebox" name="mediationDate" id="mediationDate" required></td>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>绘图记录：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="drawRecorder" id="drawRecorder" required></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>调解员：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" name="accidentMediator" id="accidentMediator" required></td>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>责任认定：
+                    </label>
+                </td>
+                <td><input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="duty" id="duty" required></td>
+            </tr>
+            <tr>
+                <td class="title">
+                    <label>
+                        <span class="red-star">*</span>上传图片：
+                    </label>
+                </td>
+                <td colspan="3">
+                    <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" id="btn-select" class="easyui-linkbutton">选择</a>
+                    <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="padding-left:100px;">
+                    <button type="reset" id="btn-rest" class="btn btn-primary btn-sm">重置</button>
+                    <button id="btn-submit" type="submit" class="btn btn-info btn-sm">提交</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-img" class="easyui-dialog" title="图片" style="width:89%; height:100%; padding:10px; text-align:center;"
+     data-options="
+     closed:true,
+     modal:true,
+     iconCls: 'icon-save' ,
+     toolbar: [{
+     text:'选择图片',
+     iconCls:'icon-add',
+     handler:function(){
+     $('#imgs').trigger('click');
+     }
+     },'-',{
+     text:'清空图片',
+     iconCls:'icon-remove',
+     handler:function(){
+     $('#img-show').prop('src', '' );
+     imgBase=null;
+     imgIndex=0;
+     cimgs=[];
+     resetImgs();
+     }
+     },'-',{
+     text:'上一张',
+     handler:function(){
+     if (imgIndex>
+    0 && imgBase && imgBase.length > 1) {
+    imgIndex--;
+    $('#img-show').prop('src', imgBase[imgIndex]);
+    }
+    }
+    },'-',{
+    text:'下一张',
+    handler:function(){
+    if (imgIndex >= 0 && imgBase && imgBase.length > imgIndex + 1 && imgBase[imgIndex + 1] != '') {
+    imgIndex++;
+    $('#img-show').prop('src', imgBase[imgIndex]);
+    }
+    }
+    }],
+    buttons: [{
+    text:'确定',
+    iconCls:'icon-ok',
+    handler:function(){
+    $('#dlg-img').dialog('close');
+    }
+    }]
+    ">
+    <img id="img-show" />
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var imgBase;
+        var imgIndex = -1;
+        let count = 0;
+        var cimgs = [];
+        function resetImgs() {
+            $("#imgs").remove();
+            $('#btn-select').after('<input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple />');
+            $('#imgs').on('change', change);
+        }
+        $('#imgs').on('change', change);
+        function change() {
+            var objThis = $('#imgs')[0];
+            var imgs = objThis.files;
+            if (imgs && imgs.length > 0) {
+                // 原始FileList对象不可更改，所以将其赋予cimgs提供接下来的修改
+                Array.prototype.push.apply(cimgs, imgs);
+                var fileIndex = 0;
+                var reader = new FileReader();
+                imgBase = new Array(imgs.length);
+                reader.readAsDataURL(imgs[fileIndex]);
+                reader.onabort = function (e) {
+                    console.log("文件读取异常" + imgs[fileIndex].name);
+                };
+
+                reader.onerror = function (e) {
+                    console.log("文件读取出现错误" + imgs[fileIndex].name);
+                };
+                reader.onload = function (e) {
+                    if (e.target.result) {
+                        imgBase[fileIndex] = e.target.result;
+                        fileIndex++;
+                        if (fileIndex < imgs.length) {
+                            reader.readAsDataURL(imgs[fileIndex]);
+                        } else {
+                            imgIndex = 0;
+                            $('#img-show').prop('src', imgBase[0]);
+                        }
+                    }
+                };
+            }
+
+        }
+
+        function submit() {
+            if (!cimgs || cimgs.length == 0) {
+                $.messager.alert('提示', '请先选择图片');
+                return false;
+            }
+            var formData = new FormData(document.getElementById("accident"));
+            for (var i = 0; i < cimgs.length; i++) {
+                formData.append('imgs[]', cimgs[i]);
+            }
+            $.ajax({
+                url: "/api/TrafficAccidentApi/AddAccident",
+                type: "POST",
+                data: formData,
+                async: false,
+                contentType: false,
+                processData: false,
+                success: function (ret) {
+                    if (ret.success) {
+                        $.messager.alert('提示', '添加成功', 'info', function (r) {
+                            location.reload();
+                        });
+                    } else {
+                        $.messager.alert('提示', '添加失败');
+                    }
+                }
+            });
+        }
+    </script>
+}

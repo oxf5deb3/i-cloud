@@ -1,0 +1,113 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    body{
+      font-size:12px;
+    }
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+    .form-horizontal .form-group{
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .form-group{
+     margin-bottom:5px;
+    }
+    .red-star{
+       color:red;
+       font-size:15px;
+    }
+
+</style>
+}
+
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:60px">查询</a>
+    </div>
+    <hr />
+    <table>
+        <tr>
+            <td style="width:250px;"> 操作员账号：<input class="easyui-textbox" id="oper_id" style="width:150px"></td>
+            <td style="width:250px;"></td>
+            <td style="width:250px;"></td>
+            <td style="width:100%"></td>
+        </tr>
+    </table>
+</div>
+<hr />
+
+    <table id="dgDetail"></table>
+
+
+    @section scripts{
+<script type="text/javascript">
+
+     function getQueryParams(){
+        var params = {};
+        var oper_id = $('#oper_id').textbox('getValue');
+        params.oper_id=oper_id;
+       return params;
+     }
+
+    function initBtn(){
+       $('#btnQuery').linkbutton({
+         onClick:function(){
+            $('#dgDetail').datagrid('reload');
+         }
+
+       });
+
+    }
+     function initQueryUI(){
+      }
+     function initGrid(){
+         var height = $(document).height() - $('.q-condition').outerHeight(true) - 15;
+     var url = "/api/LogApi/OperateLogQuery";
+     $('#dgDetail').datagrid({
+           url:url,
+           pagination:true,
+           pageSize:10,
+           pageList:[10,20,30,40,50],
+           checkOnSelect:true,
+           striped:true,
+           showHeader:true,
+           checkbox:true,
+           singleSelect:true,
+           rownumbers:true,
+           onBeforeLoad:function(param){
+             var otherParams = getQueryParams();
+             return $.extend(param,otherParams);
+           },
+           onLoadError:function(){},
+           toolbar: '#toolbar',
+           width:'100%',
+         height: height,
+           columns:[[
+               {field:'oper_desc',title:'操作描述',width:160,halign:'center',align:'left'},
+               {field:'memo',title:'其他',width:80,halign:'center',align:'left'},
+               {field:'oper_id',title:'操作员',width:80,halign:'center',align:'left'},
+               {field:'oper_date',title:'操作日期',width:180,halign:'center',align:'left'},
+           ]]
+     });
+    }
+    function initUI(){
+       initBtn();
+       initQueryUI();
+       initGrid();
+    }
+
+    $(function () {
+
+        initUI();
+
+    })
+</script>
+    }
