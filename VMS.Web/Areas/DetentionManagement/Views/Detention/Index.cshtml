@@ -1,0 +1,336 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <style type="text/css">
+        /*html, body {
+            font-size: 12px;
+            height: 85%;
+        }*/
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .div-tabs-div {
+            width: 50%;
+            float: left;
+            padding: 5px;
+        }
+
+        label {
+            width: 105px;
+        }
+        /*#query-params {
+            width: 100%;
+            margin: 10px 0px 10px 0px;
+        }*/
+    </style>
+}
+
+<div id="query-params">
+
+</div>
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" class="easyui-linkbutton" onclick="add()" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+        <a href="#" class="easyui-linkbutton" onclick="upDate()" data-options="iconCls:'icon-edit'" style="width:60px">编辑</a>
+        <a href="#" class="easyui-linkbutton" onclick="del()" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+    </div>
+    <hr />
+</div>
+<table id="dataGrid"></table>
+<div id="dlg" class="easyui-dialog" style="display:none;width:800px;height:380px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <input type="hidden" name="detentionId" id="detentionId" />
+    <div style="padding:20px;">
+        <div class="div-tabs-div">
+            <label>
+                <span class="red-star"></span>共扣押人员：
+            </label>
+            <input class="easyui-textbox" name="totalDetention" id="totalDetention" style="width:160px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>男：
+            <input class="easyui-textbox" name="totalDetentionBoy" id="totalDetentionBoy" style="width:80px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>女：
+            <input class="easyui-textbox" name="totalDetentionGirl" id="totalDetentionGirl" style="width:80px">
+        </div>
+        <div class="div-tabs-div">
+            <label>
+                <span class="red-star"></span>交通事故扣押：
+            </label>
+            <input class="easyui-textbox" name="trafficAccidentDetention" id="trafficAccidentDetention" style="width:160px">
+        </div>
+        <div class="div-tabs-div">
+            <label>
+                不配合扣押：
+            </label>
+            <input class="easyui-textbox" name="notCooperateDetention" id="notCooperateDetention" style="width:160px">
+        </div>
+        <div class="div-tabs-div">
+            <label>
+                移交警局(人)：
+            </label>
+            <input class="easyui-textbox" name="devolvePoliceTotal" id="devolvePoliceTotal" style="width:160px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>男：
+            <input class="easyui-textbox" name="devolvePoliceBoy" id="devolvePoliceBoy" style="width:80px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>女：
+            <input class="easyui-textbox" name="devolvePoliceGirl" id="devolvePoliceGirl" style="width:80px">
+        </div>
+
+        <div class="div-tabs-div">
+            <label>
+                移交检察院(人)：
+            </label>
+            <input class="easyui-textbox" name="devolveProcuratorateTotal" id="devolveProcuratorateTotal" style="width:160px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>男：
+            <input class="easyui-textbox" name="devolveProcuratorateBoy" id="devolveProcuratorateBoy" style="width:80px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>女：
+            <input class="easyui-textbox" name="devolveProcuratorateGirl" id="devolveProcuratorateGirl" style="width:80px">
+        </div>
+
+        <div class="div-tabs-div">
+            <label>
+                <span class="red-star"></span>现扣押(人)：
+            </label>
+            <input class="easyui-textbox" name="nowDetentionTotal" id="nowDetentionTotal" style="width:160px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>男：
+            <input class="easyui-textbox" name="nowDetentionBoy" id="nowDetentionBoy" style="width:80px">
+        </div>
+        <div style="width: 25%;float: left;padding: 5px">
+            <span class="red-star"></span>女：
+            <input class="easyui-textbox" name="nowDetentionGirl" id="nowDetentionGirl" style="width:80px">
+        </div>
+        <div class="div-tabs-div">
+            <label>
+                <span class="red-star"></span>已释放(人)：
+            </label>
+            <input class="easyui-textbox" name="alreadyRelease" id="alreadyRelease" style="width:160px">
+        </div>
+        <div class="div-tabs-div">
+                <span class="red-star"></span>备注：
+            <input class="easyui-textbox" name="remark" id="remark" style="width:160px">
+        </div>
+    </div>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        $('#dataGrid').datagrid({
+            columns: [[
+                { field: 'ck', checkbox: true, width: 60 },
+                { field: 'detentionId', title: '编号', halign: 'center', align: 'center', width: 70, hidden: true },
+                { field: 'totalDetention', title: '总扣押人员', halign: 'center', align: 'center', width: 60 },
+                { field: 'totalDetentionBoy', title: '扣押人员(男)', halign: 'center', align: 'center', width: 60 },
+                { field: 'totalDetentionGirl', title: '扣押人员(女)', halign: 'center', align: 'center', width: 60 },
+                { field: 'trafficAccidentDetention', title: '交通事故扣押', halign: 'center', align: 'center', width: 60 },
+                { field: 'notCooperateDetention', title: '不配合扣押', halign: 'center', align: 'center', width: 60 },
+                { field: 'devolvePoliceTotal', title: '总移交警局', halign: 'center', align: 'center', width: 60 },
+                { field: 'devolvePoliceBoy', title: '移交人员(男)', halign: 'center', align: 'center', width: 60 },
+                { field: 'devolvePoliceGirl', title: '移交人员(女)', halign: 'center', align: 'center', width: 60 },
+                { field: 'devolveProcuratorateTotal', title: '共移交检察院', halign: 'center', align: 'center', width: 60 },
+                { field: 'devolveProcuratorateBoy', title: '移交人员(男)', halign: 'center', align: 'center', width: 60 },
+                { field: 'devolveProcuratorateGirl', title: '移交人员(女)', halign: 'center', align: 'center', width: 60 },
+                { field: 'nowDetentionTotal', title: '现扣押', halign: 'center', align: 'center', width: 60 },
+                { field: 'nowDetentionBoy', title: '现扣押(男)', halign: 'center', align: 'center', width: 60 },
+                { field: 'nowDetentionGirl', title: '现扣押(女)', halign: 'center', align: 'center', width: 60 },
+                { field: 'alreadyRelease', title: '已释放', halign: 'center', align: 'center', width: 60 },
+                { field: 'remark', title: '备注', halign: 'center', align: 'center', width: 60 }
+            ]],
+            url: '/api/DetentionApi/QueryDetention',
+            //toolbar: '#toolbar',
+            height: $(window).height() * 0.85,
+            pagination: true,
+            pageList: [10, 20, 50],
+            fitColumns: true,
+            checkOnSelect: true,
+            checkbox: true,
+            striped: true,
+            rownumbers: true,
+            showHeader: true,
+            queryParams: getListParams()
+        });
+
+
+        function getListParams() {
+            return {
+            }
+        }
+
+
+        function add() {
+            clear();
+            $('#dlg').dialog('open').dialog('setTitle', '新增扣押记录');
+            $('#dlg').dialog('options').status = 1;
+        }
+
+
+
+
+        function query() {
+            $('#dataGrid').datagrid('load', getListParams());
+        }
+        function del() {
+            var rows = $('#dataGrid').datagrid('getSelections');
+            if (rows && rows.length > 0) {
+                var ids = new Array(rows.length);
+                for (var i = 0; i < rows.length; i++) {
+                    ids[i] = rows[i].detentionId;
+                }
+                $.messager.confirm('提示', '请确定要删除改记录？', function (r) {
+                    if (r) {
+                        $.ajax({
+                            url: '/api/DetentionApi/DeleteDetention',
+                            method: 'get',
+                            dataType: 'json',
+                            data: { id: ids.join(",") },
+                            success: function (result) {
+                                if (result.success) {
+                                    $.messager.alert("提示", "删除成功");
+                                    reload();
+                                } else {
+                                    $.messager.alert("提示", "删除失败");
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                $.messager.alert("提示", "请先选择至少一条记录");
+            }
+
+        }
+
+
+
+        function reload() {
+            $('#dlg').dialog('close');        // close the dialog
+            $('#dataGrid').datagrid('reload');
+        }
+
+        function clear() {
+            $('#detentionId').val('');
+            $('#totalDetention').textbox('setValue', '');
+            $('#totalDetentionBoy').textbox('setValue', '');
+            $('#totalDetentionGirl').textbox('setValue', '');
+            $('#trafficAccidentDetention').textbox('setValue', '');
+            $('#notCooperateDetention').textbox('setValue', '');
+            $('#devolvePoliceTotal').textbox('setValue', '');
+            $('#devolvePoliceBoy').textbox('setValue', '');
+            $('#devolvePoliceGirl').textbox('setValue', '');
+            $('#devolveProcuratorateTotal').textbox('setValue', '');
+            $('#devolveProcuratorateBoy').textbox('setValue', '');
+            $('#devolveProcuratorateGirl').textbox('setValue', '');
+            $('#nowDetentionTotal').textbox('setValue', '');
+            $('#nowDetentionBoy').textbox('setValue', '');
+            $('#nowDetentionGirl').textbox('setValue', '');
+            $('#alreadyRelease').textbox('setValue', '');
+            $('#remark').textbox('setValue', '');
+        }
+
+        function setData(data) {
+            $('#detentionId').val(data.detentionId);
+            $('#totalDetention').textbox('setValue', data.totalDetention);
+            $('#totalDetentionBoy').textbox('setValue', data.totalDetentionBoy);
+            $('#totalDetentionGirl').textbox('setValue', data.totalDetentionGirl);
+            $('#trafficAccidentDetention').textbox('setValue', data.trafficAccidentDetention);
+            $('#notCooperateDetention').textbox('setValue', data.notCooperateDetention);
+            $('#devolvePoliceTotal').textbox('setValue', data.devolvePoliceTotal);
+            $('#devolvePoliceBoy').textbox('setValue', data.devolvePoliceBoy);
+            $('#devolvePoliceGirl').textbox('setValue', data.devolvePoliceGirl);
+            $('#devolveProcuratorateTotal').textbox('setValue', data.devolveProcuratorateTotal);
+            $('#devolveProcuratorateBoy').textbox('setValue', data.devolveProcuratorateBoy);
+            $('#devolveProcuratorateGirl').textbox('setValue', data.devolveProcuratorateGirl);
+            $('#nowDetentionTotal').textbox('setValue', data.nowDetentionTotal);
+            $('#nowDetentionBoy').textbox('setValue', data.nowDetentionBoy);
+            $('#nowDetentionGirl').textbox('setValue', data.nowDetentionGirl);
+            $('#alreadyRelease').textbox('setValue', data.alreadyRelease);
+            $('#remark').textbox('setValue', data.remark);
+        }
+
+        function getData() {
+            var data = {
+                detentionId: $('#detentionId').val(),
+                totalDetention: $('#totalDetention').val(),
+                totalDetentionBoy: $('#totalDetentionBoy').val(),
+                totalDetentionGirl: $('#totalDetentionGirl').val(),
+                trafficAccidentDetention: $('#trafficAccidentDetention').val(),
+                notCooperateDetention: $('#notCooperateDetention').val(),
+                devolvePoliceTotal: $('#devolvePoliceTotal').val(),
+                devolvePoliceBoy: $('#devolvePoliceBoy').val(),
+                devolvePoliceGirl: $('#devolvePoliceGirl').val(),
+                devolveProcuratorateTotal: $('#devolveProcuratorateTotal').val(),
+                devolveProcuratorateBoy: $('#devolveProcuratorateBoy').val(),
+                devolveProcuratorateGirl: $('#devolveProcuratorateGirl').val(),
+                nowDetentionTotal: $('#nowDetentionTotal').val(),
+                nowDetentionBoy: $('#nowDetentionBoy').val(),
+                nowDetentionGirl: $('#nowDetentionGirl').val(),
+                alreadyRelease: $('#alreadyRelease').val(),
+                remark: $('#remark').val()
+            }
+            return data;
+        }
+
+        function upDate() {
+
+            var selectedRow = $('#dataGrid').datagrid('getSelected');
+            if (selectedRow == null) {
+                $.messager.alert('提示', '请先选中一行需要编辑的数据!', 'info');
+                return;
+            }
+            clear();
+            setData(selectedRow);
+            $('#dlg').dialog('open').dialog('setTitle', '编辑扣押记录');
+            $('#dlg').dialog('options').status = 0;
+        }
+
+
+        function save() {
+            var data = getData();
+            var url = "/api/DetentionApi/AddDetention";
+            var msg = "添加";
+            var status = $('#dlg').dialog('options').status;
+            if (status != '1') {
+                msg = "修改";
+                url = "/api/DetentionApi/upDate";
+            }
+
+            $.post(url, data, function (ret) {
+                if (ret.success) {
+                    reload();
+                    $.messager.alert('提示', msg + '成功!', 'info');
+                } else {
+                    if ($.trim(ret.message) != '') {
+                        $.messager.alert('提示', ret.message, 'info');
+                    } else {
+                        $.messager.alert('提示', msg + '失败!', 'info');
+                    }
+                }
+            });
+
+        }
+    </script>
+}

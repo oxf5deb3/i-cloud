@@ -1,0 +1,434 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    body{
+      font-size:12px;
+    }
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+    .form-horizontal .form-group{
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .form-group{
+     margin-bottom:5px;
+    }
+    .red-star{
+       color:red;
+       font-size:15px;
+    }
+</style>
+}
+<div class="tips" style="padding-left:10px;"><span class="notice" style="color:blue"></span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
+<table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
+    <tr>
+        <td style="width:120px;text-align:right;">驾驶证编号:</td>
+        <td style="width:200px;"><input id="zs_no"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>身份证号码:</td>
+        <td style="width:100%;"><input id="id_card"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
+        <td style="width:100%;"><input id="zs_name"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
+        <td style="width:200px;"><input id="zs_sex"></input></td>
+        
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
+        <td style="width:100%;"><input id="zs_birth_date"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
+        <td style="width:200px;"><input id="zs_region"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
+        <td style="width:200px;"><input id="now_addr"></input></td>
+        <td style="width:120px;text-align:right;">单位:</td>
+        <td style="width:100%;"><input id="work_unit"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
+        <td style="width:200px;"><input id="car_type"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>初次领证日期:</td>
+        <td style="width:100%;"><input id="first_get_license_date"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
+        <td colspan="3" style="width:200px;"><input id="start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="end_date"></input></td>
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>人员信息像:</td>
+        <td><button type="button" class="btn btn-info btn-sm" style="width:78px" id="zs_select_user_info">拍照</button></td>
+        <td><img src="#" id="zs_user_info_photo" style=" height: 80px;width: 100px;display:none" /></td>
+        <td><input type="hidden" id="zs_user_info_input" value="" /></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>填发员:</td>
+        <td style="width:200px;"><input class="easyui-textbox" name="modify_oper_id" id="modify_oper_id" required readonly></td>
+
+    </tr>
+
+    <tr style="height:10px;"></tr>
+    <tr>
+        <td colspan="3"></td>
+        <td style="padding-left:20px;">
+            <button type="button" class="btn btn-info btn-sm" style="width:78px" id="zszj_submit">提交</button>
+        </td>
+    </tr>
+</table>
+
+<div id="zs_photoDialog">
+
+    <table>
+        <tr>
+            <td><video id="zs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zs_userinfo_video', 'zs_userinfo_canvas')">拍照</button></td>
+            <td><button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas('')" type="button">重置</button></td>
+            <td><canvas id="zs_userinfo_canvas" width="300" height="200" /></td>
+        </tr>
+
+    </table>
+
+
+    
+
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    function initUI(){
+      $('#zs_no').textbox({
+          width:180,
+          
+      });
+    $('#id_card').textbox({
+          width:180,
+          
+      });
+    $('#zs_name').textbox({
+          width:180,
+      });
+    $('#zs_sex').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField: 'text',
+         value:0,
+         data:[{id:0,text:'男'},{id:1,text:'女'}]
+    });
+    $('#zs_birth_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          
+      });
+    $('#zs_region').combobox({
+         valueField:'region_no',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'region_name',
+    });
+      var url='../../api/RegionApi/QueryAll';
+       $.post(url,{},'json')
+       .success(function(ret){
+          if(ret.success){
+              $('#zs_region').combobox('loadData', ret.data);
+          }
+       });
+       $('#now_addr').textbox({
+          width:180,
+          
+      });
+       $('#work_unit').textbox({
+          width:180,
+      });
+       $('#car_type').textbox({
+     
+         width:180,
+         
+    });
+      
+      $('#first_get_license_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          
+      });
+     var now = new Date();
+        $('#start_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          
+          value: now.pattern('yyyy-MM-dd'),
+          onSelect:function(date){
+            var endDate = new Date(date.getFullYear(),date.getMonth()+48,date.getDate());
+            $('#end_date').datebox('setValue', endDate.pattern('yyyy-MM-dd'));
+         }
+      });
+      var end = new Date(now.getFullYear(),now.getMonth()+48,now.getDate());
+        $('#end_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          value: end.pattern('yyyy-MM-dd'),
+      });
+    }
+
+
+    function getDataZSJZ() {
+        var data = {};
+
+        data.birthday = $("#zs_birth_date").textbox("getValue");//出生日期
+        data.permitted_card_type_no = $("#car_type").textbox("getValue");//准驾车型
+        data.id_card = $("#id_card").textbox("getValue");//身份证
+
+        data.valid_date_end = $("#end_date").textbox("getValue");
+        data.id_no = $("#zs_no").textbox("getValue");//驾驶证编号
+        data.name = $("#zs_name").textbox("getValue");//姓名
+        data.work_unit = $("#work_unit").textbox("getValue");//单位
+
+        data.addr = $("#now_addr").textbox("getValue");//住址
+        data.region_no = $("#zs_region").combobox("getValue");//地区
+        data.sex = $("#zs_sex").combobox("getValue");//性别
+        data.valid_date_start = $("#start_date").textbox("getValue");//开始日期
+        data.first_get_license_date = $("#first_get_license_date").textbox("getValue");//初次领证日期
+        data.user_photo_base64 = $("#zs_user_info_input").attr("value");
+
+
+        return data;
+
+        
+    }
+
+    function valiedataZSJZ() {
+        //校验 非空
+        var message = {
+            type: true,
+            message:""
+        };
+
+        if (!isNull($("#first_get_license_date").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写初次领证日期!";
+            return message;
+        }
+
+        if (!isNull($("#zs_birth_date").textbox("getValue" ))) {
+            message.type = false;
+            message.message = "必须填写出生日期!";
+            return message;
+        }
+        if (!isNull($("#car_type").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须选择准驾车型!";
+            return message;
+        }
+            
+   
+        //姓名
+        if (!isNull($("#zs_name").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写姓名!";
+            return message;
+        }
+
+       
+
+        //住址
+        if (!isNull($("#now_addr").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写现住址!";
+            return message;
+        }
+        
+
+        if (!isNull($("#id_card").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写身份证号码!";
+            return message;
+        }
+       
+           
+        //地区
+        if (!isNull($("#zs_region").combobox("getValue"))) {
+            message.type = false;
+            message.message = "必须选择地区!";
+            return message;
+        }
+        //性别
+        if (!isNull($("#zs_sex").combobox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写性别!";
+            return message;
+        }
+           
+        if (!isNull($("#zs_user_info_input").attr("value"))) {
+            console.log($("#zs_user_info_photo").attr("src"));
+            message.type = false;
+            message.message = "必须上传人员照片信息!";
+            return message;
+        }
+            
+            
+
+        return message;
+
+    
+    }
+
+    function submit_ZSJS() {
+
+        var message = valiedataZSJZ();
+
+        if (!message.type) {
+            alert(message.message);
+            return;
+        }
+        var data = {};
+
+        data.id_card = $("#id_card").textbox("getValue");//身份证号
+
+        var url = "../../api/DriverLicenseApi/validataByDriverLicense";
+        //校验是否存在
+        var valiMessage = {};
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (!ret.success) {
+                        alert(ret.message);
+                        return;
+                    } else {
+                        validataCallBack_zsjs();//正式提交
+                    }
+                });
+        }
+
+    }
+
+    function validataCallBack_zsjs() {
+        
+
+        var data = getDataZSJZ();
+
+        var url = "../../api/DriverLicenseApi/addZsDriverLicense";
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (ret.success) {
+                        alert("添加成功!");
+                        location.reload();
+                    } else {
+                        alert("添加失败!");
+                    }
+                });
+        }
+        
+    }
+
+    function initModifyUser() {
+        var url = "../../api/DriverLicenseApi/initModifyUser";
+       
+        $.post(url, {}, 'json')
+                .success(function (ret) {
+                    if (ret.success) {
+                        $("#modify_oper_id").textbox("setValue", ret.message);
+                    } else {
+                        alert("初始化填发员失败!请刷新页面!");
+                    }
+                });
+        
+    }
+
+    //初始化人员照片信息采集对话框
+    function initPhotoDialog() {
+        $('#zs_photoDialog').dialog({
+            title: '人员照片信息采集',
+            width: 800,
+            height: 500,
+            closed: true,
+            cache: false,
+            onOpen: function () {
+                initPhoto("zs_userinfo_video");//初始化摄像头组件
+            },
+            onClose: function () {
+                cleanCanvas("zs_userinfo_canvas");//清除缓存
+                closePhoto("zs_userinfo_video");//关闭摄像头
+            },
+            buttons: [{
+                text: '确定',
+                handler: function () {
+                    var data = getCanvasForBase64("zs_userinfo_canvas");//获取照片转为base64
+                    $("#zs_user_info_photo").attr("src", data);//存储为缩略图
+                    $("#zs_user_info_input").attr("value", data)//将base64存储到隐藏域中,做非空校验
+                    $("#zs_user_info_photo").css("display", "");
+                    $("#zs_photoDialog").dialog("close");//关闭dialog
+                    cleanCanvas("zs_userinfo_canvas");//清除缓存
+                    closePhoto("zs_userinfo_video");//关闭摄像头
+
+
+                }
+            }, {
+                text: '取消',
+                handler: function () {
+                    cleanCanvas("zs_userinfo_canvas");//清除缓存
+                    closePhoto("zs_userinfo_video");//关闭摄像头
+                    $("#zs_photoDialog").dialog("close");//关闭dialog
+
+                }
+            }]
+        });
+    }
+
+    function initCarNo() {
+        var url = "../../api/DriverLicenseApi/initCarNo";
+        //0=临时驾照
+        $.post(url, { id_no: 1 }, 'json')
+                    .success(function (ret) {
+                        if (ret.success) {
+                            $("#zs_no").textbox("setValue", ret.message);
+                        } else {
+                            alert("初始化证件编码失败!请刷新页面!");
+                        }
+                    });
+    }
+
+
+    $(function(){
+        initUI();
+        initPhotoDialog();
+        initModifyUser();
+
+
+
+        $("#zs_select_user_info").click(function () {
+
+            $("#zs_photoDialog").dialog("open");
+
+        });
+
+        
+        $("#zszj_submit").click(function () {
+            submit_ZSJS();
+        })
+    })
+</script>
+}
+

@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{02E54659-64B2-4A5C-A3AB-86F748D09812}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VMS</RootNamespace>
+    <AssemblyName>VMS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\VMS.Utils\lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\BaseApiController.cs" />
+    <Compile Include="Api\BreakRulesQueryApiController.cs" />
+    <Compile Include="Api\BreakRulesTypeApiController.cs" />
+    <Compile Include="Api\CarNumberApiController.cs" />
+    <Compile Include="Api\DCShowApiController.cs" />
+    <Compile Include="Api\DetentionApiController.cs" />
+    <Compile Include="Api\DriverLicenseApiController.cs" />
+    <Compile Include="Api\StatisticalApiController.cs" />
+    <Compile Include="Api\StolenApiController.cs" />
+    <Compile Include="Api\TrailerApiController.cs" />
+    <Compile Include="Api\UserApiController.cs" />
+    <Compile Include="Api\FireControlApiController.cs" />
+    <Compile Include="Api\LogApiController.cs" />
+    <Compile Include="Api\RegionApiController.cs" />
+    <Compile Include="Api\RoleApiController.cs" />
+    <Compile Include="Api\SystemApiController.cs" />
+    <Compile Include="Api\TrafficAccidentApiController.cs" />
+    <Compile Include="Api\UserGroupApiController.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Account\AccountAreaRegistration.cs" />
+    <Compile Include="Areas\Account\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Account\Controllers\RoleResController.cs" />
+    <Compile Include="Areas\Account\Controllers\UserController.cs" />
+    <Compile Include="Areas\Account\Controllers\UserGroupController.cs" />
+    <Compile Include="Areas\BaseData\BaseDataAreaRegistration.cs" />
+    <Compile Include="Areas\BaseData\Controllers\PermittedCarTypeController.cs" />
+    <Compile Include="Areas\BaseData\Controllers\RegionController.cs" />
+    <Compile Include="Areas\BreakRules\BreakRulesAreaRegistration.cs" />
+    <Compile Include="Areas\BreakRules\Controllers\BreakRuleQueryController.cs" />
+    <Compile Include="Areas\BreakRules\Controllers\BreakRuleTypeController.cs" />
+    <Compile Include="Areas\CarNumberManagement\Controllers\CarNumberController.cs" />
+    <Compile Include="Areas\CarNumberManagement\Controllers\TempCarNumberController.cs" />
+    <Compile Include="Areas\CarNumberManagement\CarNumberAreaRegistration.cs" />
+    <Compile Include="Areas\DetentionManagement\Controllers\DetentionController.cs" />
+    <Compile Include="Areas\DetentionManagement\DetentionManagementAreaRegistration.cs" />
+    <Compile Include="Areas\DriverLicenseManagement\Controllers\DriverLicenseController.cs" />
+    <Compile Include="Areas\DriverLicenseManagement\Controllers\TempDriverLicenseController.cs" />
+    <Compile Include="Areas\DriverLicenseManagement\DriverLicenseManagementAreaRegistration.cs" />
+    <Compile Include="Areas\DrivingLicenseManagement\Controllers\DrivingLicenseController.cs" />
+    <Compile Include="Areas\DrivingLicenseManagement\Controllers\TempDrivingLicenseController.cs" />
+    <Compile Include="Areas\DrivingLicenseManagement\DrivingLicenseManagementAreaRegistration.cs" />
+    <Compile Include="Areas\FireControlManagement\Controllers\FireControlQueryController.cs" />
+    <Compile Include="Areas\FireControlManagement\Controllers\FireControlRegisterController.cs" />
+    <Compile Include="Areas\FireControlManagement\Controllers\FireEquipmentQueryController.cs" />
+    <Compile Include="Areas\FireControlManagement\Controllers\FireEquipmentRegisterController.cs" />
+    <Compile Include="Areas\FireControlManagement\FireControlManagementAreaRegistration.cs" />
+    <Compile Include="Areas\PlateNumberManagement\Controllers\PlateNumberQueryController.cs" />
+    <Compile Include="Areas\PlateNumberManagement\PlateNumberManagementAreaRegistration.cs" />
+    <Compile Include="Areas\RegisterCenter\Controllers\DriverLicenseRegisterController.cs" />
+    <Compile Include="Areas\RegisterCenter\Controllers\DrivingLicenseRegisterController.cs" />
+    <Compile Include="Areas\RegisterCenter\Controllers\TempDriverLicenseRegisterController.cs" />
+    <Compile Include="Areas\RegisterCenter\Controllers\TempDrivingLicenseRegisterController.cs" />
+    <Compile Include="Areas\RegisterCenter\RegisterCenterAreaRegistration.cs" />
+    <Compile Include="Areas\Statistical\Controllers\DrivingLicenseController.cs" />
+    <Compile Include="Areas\Statistical\Controllers\trendController.cs" />
+    <Compile Include="Areas\Statistical\Controllers\VehicleLicenseSController.cs" />
+    <Compile Include="Areas\Statistical\StatisticalAreaRegistration.cs" />
+    <Compile Include="Areas\StolenManagement\Controllers\StolenController.cs" />
+    <Compile Include="Areas\StolenManagement\StolenManagementAreaRegistration.cs" />
+    <Compile Include="Areas\SystemLog\Controllers\LoginLogController.cs" />
+    <Compile Include="Areas\SystemLog\Controllers\OperateLogController.cs" />
+    <Compile Include="Areas\SystemLog\SystemLogAreaRegistration.cs" />
+    <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
+    <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentRegisterController.cs" />
+    <Compile Include="Areas\TrafficAccidentManagement\TrafficAccidentManagementAreaRegistration.cs" />
+    <Compile Include="Areas\TrailerManagement\Controllers\TrailerQueryController.cs" />
+    <Compile Include="Areas\TrailerManagement\TrailerManagementAreaRegistration.cs" />
+    <Compile Include="Controllers\ErrorHandlerController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CustomControllerFactry.cs" />
+    <Compile Include="Controllers\GlobalVar.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="ESIApi\BaseApiController.cs" />
+    <Compile Include="ESIApi\Models\Response.cs" />
+    <Compile Include="ESIApi\Models\StatusCode.cs" />
+    <Compile Include="ESIApi\QRCodeController.cs" />
+    <Compile Include="ESIApi\Utils\DefaultMemoryCache.cs" />
+    <Compile Include="ESIApi\Utils\EnumUtil.cs" />
+    <Compile Include="ESIApi\Utils\ESIAopFilter.cs" />
+    <Compile Include="ESIApi\Utils\ESIAuthCheck.cs" />
+    <Compile Include="ESIApi\Utils\ESIExceptionTrace.cs" />
+    <Compile Include="ESIApi\Utils\Tools.cs" />
+    <Compile Include="ESIApi\Utils\IMemoryCache.cs" />
+    <Compile Include="Models\MvcExceptionAttribute.cs" />
+    <Compile Include="Models\VMSAuthorizeCore.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\JsonNetModelBinder.cs" />
+    <Compile Include="Models\WebApiExceptionFilterAttribute.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Api\PermittedCarTypeApiController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\EasyUI\angular.css" />
+    <Content Include="Content\EasyUI\bootstrap\accordion.css" />
+    <Content Include="Content\EasyUI\bootstrap\calendar.css" />
+    <Content Include="Content\EasyUI\bootstrap\checkbox.css" />
+    <Content Include="Content\EasyUI\bootstrap\combo.css" />
+    <Content Include="Content\EasyUI\bootstrap\combobox.css" />
+    <Content Include="Content\EasyUI\bootstrap\datagrid.css" />
+    <Content Include="Content\EasyUI\bootstrap\datalist.css" />
+    <Content Include="Content\EasyUI\bootstrap\datebox.css" />
+    <Content Include="Content\EasyUI\bootstrap\dialog.css" />
+    <Content Include="Content\EasyUI\bootstrap\easyui.css" />
+    <Content Include="Content\EasyUI\bootstrap\filebox.css" />
+    <Content Include="Content\EasyUI\bootstrap\images\accordion_arrows.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\blank.gif" />
+    <Content Include="Content\EasyUI\bootstrap\images\calendar_arrows.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\combo_arrow.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\datagrid_icons.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\datebox_arrow.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\layout_arrows.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\loading.gif" />
+    <Content Include="Content\EasyUI\bootstrap\images\menu_arrows.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\messager_icons.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\pagination_icons.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\panel_tools.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\passwordbox_close.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\passwordbox_open.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\searchbox_button.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\slider_handle.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\spinner_arrows.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\tabs_icons.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\tagbox_icons.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\tree_icons.png" />
+    <Content Include="Content\EasyUI\bootstrap\images\validatebox_warning.png" />
+    <Content Include="Content\EasyUI\bootstrap\layout.css" />
+    <Content Include="Content\EasyUI\bootstrap\linkbutton.css" />
+    <Content Include="Content\EasyUI\bootstrap\menu.css" />
+    <Content Include="Content\EasyUI\bootstrap\menubutton.css" />
+    <Content Include="Content\EasyUI\bootstrap\messager.css" />
+    <Content Include="Content\EasyUI\bootstrap\numberbox.css" />
+    <Content Include="Content\EasyUI\bootstrap\pagination.css" />
+    <Content Include="Content\EasyUI\bootstrap\panel.css" />
+    <Content Include="Content\EasyUI\bootstrap\passwordbox.css" />
+    <Content Include="Content\EasyUI\bootstrap\progressbar.css" />
+    <Content Include="Content\EasyUI\bootstrap\propertygrid.css" />
+    <Content Include="Content\EasyUI\bootstrap\radiobutton.css" />
+    <Content Include="Content\EasyUI\bootstrap\searchbox.css" />
+    <Content Include="Content\EasyUI\bootstrap\sidemenu.css" />
+    <Content Include="Content\EasyUI\bootstrap\slider.css" />
+    <Content Include="Content\EasyUI\bootstrap\spinner.css" />
+    <Content Include="Content\EasyUI\bootstrap\splitbutton.css" />
+    <Content Include="Content\EasyUI\bootstrap\switchbutton.css" />
+    <Content Include="Content\EasyUI\bootstrap\tabs.css" />
+    <Content Include="Content\EasyUI\bootstrap\tagbox.css" />
+    <Content Include="Content\EasyUI\bootstrap\textbox.css" />
+    <Content Include="Content\EasyUI\bootstrap\tooltip.css" />
+    <Content Include="Content\EasyUI\bootstrap\tree.css" />
+    <Content Include="Content\EasyUI\bootstrap\validatebox.css" />
+    <Content Include="Content\EasyUI\bootstrap\window.css" />
+    <Content Include="Content\EasyUI\color.css" />
+    <Content Include="Content\EasyUI\icon.css" />
+    <Content Include="Content\EasyUI\icons\back.png" />
+    <Content Include="Content\EasyUI\icons\blank.gif" />
+    <Content Include="Content\EasyUI\icons\cancel.png" />
+    <Content Include="Content\EasyUI\icons\clear.png" />
+    <Content Include="Content\EasyUI\icons\cut.png" />
+    <Content Include="Content\EasyUI\icons\edit_add.png" />
+    <Content Include="Content\EasyUI\icons\edit_remove.png" />
+    <Content Include="Content\EasyUI\icons\filesave.png" />
+    <Content Include="Content\EasyUI\icons\filter.png" />
+    <Content Include="Content\EasyUI\icons\help.png" />
+    <Content Include="Content\EasyUI\icons\large_chart.png" />
+    <Content Include="Content\EasyUI\icons\large_clipart.png" />
+    <Content Include="Content\EasyUI\icons\large_picture.png" />
+    <Content Include="Content\EasyUI\icons\large_shapes.png" />
+    <Content Include="Content\EasyUI\icons\large_smartart.png" />
+    <Content Include="Content\EasyUI\icons\lock.png" />
+    <Content Include="Content\EasyUI\icons\man.png" />
+    <Content Include="Content\EasyUI\icons\mini_add.png" />
+    <Content Include="Content\EasyUI\icons\mini_edit.png" />
+    <Content Include="Content\EasyUI\icons\mini_refresh.png" />
+    <Content Include="Content\EasyUI\icons\more.png" />
+    <Content Include="Content\EasyUI\icons\no.png" />
+    <Content Include="Content\EasyUI\icons\ok.png" />
+    <Content Include="Content\EasyUI\icons\pencil.png" />
+    <Content Include="Content\EasyUI\icons\print.png" />
+    <Content Include="Content\EasyUI\icons\redo.png" />
+    <Content Include="Content\EasyUI\icons\reload.png" />
+    <Content Include="Content\EasyUI\icons\search.png" />
+    <Content Include="Content\EasyUI\icons\sum.png" />
+    <Content Include="Content\EasyUI\icons\tip.png" />
+    <Content Include="Content\EasyUI\icons\undo.png" />
+    <Content Include="Content\EasyUI\images\16\align-bottom.png" />
+    <Content Include="Content\EasyUI\images\16\align-left.png" />
+    <Content Include="Content\EasyUI\images\16\align-right.png" />
+    <Content Include="Content\EasyUI\images\16\align-top.png" />
+    <Content Include="Content\EasyUI\images\16\bold.png" />
+    <Content Include="Content\EasyUI\images\16\bullets.png" />
+    <Content Include="Content\EasyUI\images\16\case-font.png" />
+    <Content Include="Content\EasyUI\images\16\copy.png" />
+    <Content Include="Content\EasyUI\images\16\decrease-font.png" />
+    <Content Include="Content\EasyUI\images\16\find.png" />
+    <Content Include="Content\EasyUI\images\16\format.png" />
+    <Content Include="Content\EasyUI\images\16\go.png" />
+    <Content Include="Content\EasyUI\images\16\grow-font.png" />
+    <Content Include="Content\EasyUI\images\16\increase-font.png" />
+    <Content Include="Content\EasyUI\images\16\italic.png" />
+    <Content Include="Content\EasyUI\images\16\numbers.png" />
+    <Content Include="Content\EasyUI\images\16\paste.png" />
+    <Content Include="Content\EasyUI\images\16\replace.png" />
+    <Content Include="Content\EasyUI\images\16\select.png" />
+    <Content Include="Content\EasyUI\images\16\selectall.png" />
+    <Content Include="Content\EasyUI\images\16\shrink-font.png" />
+    <Content Include="Content\EasyUI\images\16\strikethrough.png" />
+    <Content Include="Content\EasyUI\images\16\subscript.png" />
+    <Content Include="Content\EasyUI\images\16\superscript.png" />
+    <Content Include="Content\EasyUI\images\16\underline.png" />
+    <Content Include="Content\EasyUI\images\32\chart.png" />
+    <Content Include="Content\EasyUI\images\32\clipart.png" />
+    <Content Include="Content\EasyUI\images\32\paste.png" />
+    <Content Include="Content\EasyUI\images\32\picture.png" />
+    <Content Include="Content\EasyUI\images\32\shapes.png" />
+    <Content Include="Content\EasyUI\images\32\smartart.png" />
+    <Content Include="Content\EasyUI\images\32\table.png" />
+    <Content Include="Content\EasyUI\images\backcolor.png" />
+    <Content Include="Content\EasyUI\images\bold.png" />
+    <Content Include="Content\EasyUI\images\forecolor.png" />
+    <Content Include="Content\EasyUI\images\image.png" />
+    <Content Include="Content\EasyUI\images\indent.png" />
+    <Content Include="Content\EasyUI\images\insertorderedlist.png" />
+    <Content Include="Content\EasyUI\images\insertunorderedlist.png" />
+    <Content Include="Content\EasyUI\images\italic.png" />
+    <Content Include="Content\EasyUI\images\justifycenter.png" />
+    <Content Include="Content\EasyUI\images\justifyfull.png" />
+    <Content Include="Content\EasyUI\images\justifyleft.png" />
+    <Content Include="Content\EasyUI\images\justifyright.png" />
+    <Content Include="Content\EasyUI\images\link.png" />
+    <Content Include="Content\EasyUI\images\outdent.png" />
+    <Content Include="Content\EasyUI\images\strikethrough.png" />
+    <Content Include="Content\EasyUI\images\underline.png" />
+    <Content Include="Content\EasyUI\mobile.css" />
+    <Content Include="Content\EasyUI\ribbon-icon.css" />
+    <Content Include="Content\EasyUI\ribbon.css" />
+    <Content Include="Content\EasyUI\texteditor.css" />
+    <Content Include="Content\EasyUI\vue.css" />
+    <Content Include="Content\MainFrame\login.css" />
+    <Content Include="Content\MainFrame\main.css" />
+    <Content Include="fav.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="H5\assets\js\main.js" />
+    <Content Include="H5\assets\vant\vue.js" />
+    <Content Include="H5\assets\vant\vue.min.js" />
+    <Content Include="H5\assets\vant\index.css" />
+    <Content Include="H5\assets\vant\vant.min.js" />
+    <Content Include="H5\dcshow.html" />
+    <Content Include="H5\designPage.html" />
+    <Content Include="H5\image\1.jpg" />
+    <Content Include="images\404.jpg" />
+    <Content Include="images\air-balloon-1.png" />
+    <Content Include="images\air-balloon-2.png" />
+    <Content Include="images\arrow-down.png" />
+    <Content Include="images\car.jpg" />
+    <Content Include="images\default.jpg" />
+    <Content Include="images\exit.png" />
+    <Content Include="images\full-screen.png" />
+    <Content Include="images\head_bg.png" />
+    <Content Include="images\login-bg.jpg" />
+    <Content Include="images\login-foot.jpg" />
+    <Content Include="images\login.png" />
+    <Content Include="images\logo-login.png" />
+    <Content Include="images\logo.gif" />
+    <Content Include="images\ltr.png" />
+    <Content Include="images\notice.png" />
+    <Content Include="images\rtl.png" />
+    <Content Include="images\tab-close.png" />
+    <Content Include="images\tfans.jpg" />
+    <Content Include="PrintTemplate\CarRegisterTemplate.html" />
+    <Content Include="PrintTemplate\DrivingLicenseTemplate.html" />
+    <Content Include="PrintTemplate\FireAccidentTemplate.html" />
+    <Content Include="PrintTemplate\TempCarRegisterTemplate.html" />
+    <Content Include="PrintTemplate\TempDriverLicenseTemplate.html" />
+    <Content Include="PrintTemplate\TempDrivingLicenseTemplate.html" />
+    <Content Include="PrintTemplate\TempLicenseBackTemplate.html" />
+    <Content Include="PrintTemplate\TempLicenseFontTemplate.html" />
+    <Content Include="PrintTemplate\TrafficAccidentTemplate.html" />
+    <Content Include="PrintTemplate\TrailerTemplate.html" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\BaseData\Views\PermittedCarType\Index.cshtml" />
+    <Content Include="Areas\BaseData\Views\Region\Index.cshtml" />
+    <Content Include="Areas\RegisterCenter\Views\TempDriverLicenseRegister\Index.cshtml" />
+    <Content Include="Areas\RegisterCenter\Views\DriverLicenseRegister\Index.cshtml" />
+    <Content Include="Areas\RegisterCenter\Views\DrivingLicenseRegister\Index.cshtml" />
+    <Content Include="Areas\RegisterCenter\Views\TempDrivingLicenseRegister\Index.cshtml" />
+    <Content Include="Areas\DriverLicenseManagement\Views\DriverLicense\Index.cshtml" />
+    <Content Include="Areas\DriverLicenseManagement\Views\TempDriverLicense\Index.cshtml" />
+    <Content Include="Areas\DrivingLicenseManagement\Views\DrivingLicense\Index.cshtml" />
+    <Content Include="Areas\DrivingLicenseManagement\Views\TempDrivingLicense\Index.cshtml" />
+    <Content Include="Areas\TrafficAccidentManagement\Views\TrafficAccidentRegister\Index.cshtml" />
+    <Content Include="Areas\TrafficAccidentManagement\Views\TrafficAccidentQuery\Index.cshtml" />
+    <Content Include="Areas\FireControlManagement\Views\FireControlRegister\Index.cshtml" />
+    <Content Include="Areas\FireControlManagement\Views\FireControlQuery\Index.cshtml" />
+    <Content Include="Areas\FireControlManagement\Views\FireEquipmentRegister\Index.cshtml" />
+    <Content Include="Areas\FireControlManagement\Views\FireEquipmentQuery\Index.cshtml" />
+    <Content Include="Areas\Account\Views\UserGroup\Index.cshtml" />
+    <Content Include="Areas\Account\Views\User\Index.cshtml" />
+    <Content Include="Areas\Account\Views\Role\Index.cshtml" />
+    <Content Include="Areas\Account\Views\RoleRes\Index.cshtml" />
+    <Content Include="Areas\PlateNumberManagement\Views\PlateNumberQuery\Index.cshtml" />
+    <Content Include="Areas\CarNumberManagement\Views\CarNumber\Index.cshtml" />
+    <Content Include="Areas\CarNumberManagement\Views\TempCarNumber\Index.cshtml" />
+    <Content Include="Areas\Statistical\Views\DrivingLicense\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\LoginLog\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\OperateLog\Index.cshtml" />
+    <Content Include="Areas\Statistical\Views\trend\Index.cshtml" />
+    <Content Include="Areas\Statistical\Views\VehicleLicenseS\Index.cshtml" />
+    <Content Include="Areas\TrailerManagement\Views\TrailerQuery\Index.cshtml" />
+    <Content Include="Areas\DetentionManagement\Views\Detention\Index.cshtml" />
+    <Content Include="Areas\StolenManagement\Views\Stolen\Index.cshtml" />
+    <Content Include="Content\EasyUI\images\.DS_Store" />
+    <Content Include="log4net.config" />
+    <Content Include="Areas\BreakRules\Views\BreakRuleType\Index.cshtml" />
+    <Content Include="Areas\BreakRules\Views\BreakRuleQuery\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\TEST.pubxml" />
+    <None Include="Properties\PublishProfiles\vms.pubxml" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\EasyUI\jquery.easyui.min.js" />
+    <Content Include="Scripts\EasyUI\jquery.ribbon.js" />
+    <Content Include="Scripts\EasyUI\jquery.texteditor.js" />
+    <Content Include="Scripts\EasyUI\locale\easyui-lang-en.js" />
+    <Content Include="Scripts\EasyUI\locale\easyui-lang-zh_CN.js" />
+    <Content Include="Scripts\echarts.js" />
+    <Content Include="Scripts\global.js" />
+    <Content Include="Scripts\jquery-1.12.4.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\fun.base.js" />
+    <Content Include="Scripts\MainFrame\main.js" />
+    <Content Include="Scripts\Print\print.js" />
+    <Content Include="Scripts\script.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Sql\InitData.sql" />
+    <Content Include="Sql\InitTable.sql" />
+    <Content Include="PrintTemplate\DriverLicenseTemplate.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutMainFrame.cshtml" />
+    <Content Include="Views\Print\Index.cshtml" />
+    <Content Include="Views\Login\Welcome.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\ErrorHandler\NotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\BreakRules\Models\" />
+    <Folder Include="Log\" />
+    <Folder Include="Views\StatisticalApi\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Project_Readme.html" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VMS.IServices\VMS.IServices.csproj">
+      <Project>{ff161174-f0dd-4ad4-a09e-b20110710ffe}</Project>
+      <Name>VMS.IServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.Model\VMS.Model.csproj">
+      <Project>{9fb35c62-9270-4151-8c6d-c1f56bc09ab9}</Project>
+      <Name>VMS.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.ServiceProvider\VMS.ServiceProvider.csproj">
+      <Project>{fb1fd5b4-ba8f-448b-83ce-9f1a886fe85e}</Project>
+      <Name>VMS.ServiceProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.Services\VMS.Services.csproj">
+      <Project>{430c6f8e-95b0-495a-9b16-5f4d78e48da0}</Project>
+      <Name>VMS.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VMS.Utils\VMS.Utils.csproj">
+      <Project>{908a1b5b-cf21-47f8-8637-a52707511261}</Project>
+      <Name>VMS.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VSM.DTO\VMS.DTO.csproj">
+      <Project>{e63e5e2c-3725-445c-9c4d-fd66d5797b48}</Project>
+      <Name>VMS.DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64008</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64008/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

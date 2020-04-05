@@ -1,0 +1,600 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+    </style>
+}
+
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:60px">查询</a>
+        <a href="#" id="btnAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+        <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:60px">修改</a>
+        <a href="#" id="btnDel" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+    </div>
+    <hr />
+    <table>
+        <tr>
+            <td style="width:250px;display:none"> 驾驶证编号：<input class="easyui-textbox" id="id_no" style="width:150px"></td>
+            <td style="width:250px;">姓名：<input class="easyui-textbox" id="qname" style="width:150px"></td>
+            <td style="width:250px;">身份证号码：<input class="easyui-textbox" style="width:150px" id="qid_card"></td>
+            <td style="width:100%"></td>
+        </tr>
+        <tr style="display:none">
+            <td>准驾车型：<input id="car_type" style="width:150px"></td>
+        </tr>
+    </table>
+</div>
+<hr />
+<div class="q-detail">
+    <table id="dgDetail"></table>
+</div>
+<div id="dlg-edit" class="easyui-dialog" style="width:680px;" data-options="title:'违章信息',closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="break-rules" method="post" novalidate style="margin:0; padding:20px 20px">
+        <input type="hidden" id="id" required />
+        <table style="border-collapse:collapse;table-layout:fixed;margin-left:10px;margin-right:10px;width:98%;">
+            <tr>
+                <td style="width:100px;text-align:right;"><span class="red-star">*</span>姓名:</td>
+                <td style="width:100%;"><input name="name" id="name" required></td>
+                <td style="width:100px;text-align:right;"><span class="red-star">*</span>性别:</td>
+                <td style="width:100%;"><input name="sex" id="sex"></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;">年龄:</td>
+                <td style="width:100%;"><input name="age" id="age" /></td>
+                <td style="width:120px;text-align:right;">联系方式:</td>
+                <td style="width: 100%;"><input name="phone" id="phone" /></td>
+
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>身份证号:</td>
+                <td style="width:100%;"><input name="id_card" id="id_card" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>车牌号:</td>
+                <td style="width:100%;"><input name="car_no" id="car_no" required></td>
+
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>驾驶证号:</td>
+                <td style="width:100%;"><input name="driver_no" id="driver_no" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>行驶证号:</td>
+                <td style="width:200px;"><input name="driving_no" id="driving_no" required></td>
+
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;">车架号:</td>
+                <td style="width:100%;"><input name="carframe_no" id="carframe_no"></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>违章类型:</td>
+                <td style="width:200px;"><input name="breakrule_type_id" id="breakrule_type_id" required></td>
+
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>违章地址:</td>
+                <td style="width:100%;"><input name="breakrule_addr" id="breakrule_addr" required></td>
+                <td style="width:120px;text-align:right;">违章日期:</td>
+                <td style="width:200px;"><input name="breakrule_date" id="breakrule_date" required></td>
+
+            </tr>
+
+            <tr>
+                <td style="width:120px;text-align:right;">备注:</td>
+                <td><input name="memo" id="memo"></td>
+                <td style="width:120px;text-align:right;">备注1</td>
+                <td><input name="memo1" id="memo1"></td>
+
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;">备注2:</td>
+                <td style="width:200px;"><input name="memo2" id="memo2"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-edit').dialog('close')" style="width:90px">取消</a>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function stopPropagetion(evt) {
+            var e = (evt) ? evt : window.event;
+            if (window.event) {
+                e.cancelBubble = true;// ie下阻止冒泡
+            } else {
+                e.stopPropagation();// 其它浏览器下阻止冒泡
+            }
+        }
+        function rollPage(type, tabindex) {
+            var t = $(".tabs-title>ul", top.document)
+                , l = t.children("li")
+                , n = (t.prop("scrollWidth"),
+                    t.outerWidth())
+                , s = parseFloat(t.css("left"));
+            if ("left" === type) {
+                if (!s && s <= 0)
+                    return;
+                var r = -s - n;
+                l.each(function (index, el) {
+                    var l = $(el)
+                        , n = l.position().left;
+                    if (n >= r)
+                        return t.css("left", -n),
+                            !1
+                })
+            } else
+                "auto" === type ? !function () {
+                    var type, r = l.eq(tabindex);
+                    if (r[0]) {
+                        if (type = r.position().left,
+                            type < -s)
+                            return t.css("left", -type);
+                        if (type + r.outerWidth() >= n - s) {
+                            var o = type + r.outerWidth() - (n - s);
+                            l.each(function (index, el) {
+                                var l = $(el)
+                                    , n = l.position().left;
+                                if (n + s > 0 && n - s > o)
+                                    return t.css("left", -n),
+                                        !1
+                            })
+                        }
+                    }
+                }() : l.each(function (index, el) {
+                    var l = $(el)
+                        , r = l.position().left;
+                    if (r + l.outerWidth() >= n - s)
+                        return t.css("left", -r),
+                            !1
+                })
+        }
+        function selectTab(index) {
+            $('.tab-title-item', top.document).removeClass('tab-title-selected');
+            $('.tab-body-item', top.document).removeClass('tab-body-selected');
+            $('.tab-title-item', top.document).eq(index).addClass('tab-title-selected');
+            $('.tab-body-item', top.document).eq(index).addClass('tab-body-selected');
+        }
+        function addTab(title, url) {
+            var li = [];
+            li.push('<li class="tab-title-item">');
+            li.push('<span>' + title + '</span>');
+            li.push('<i class="tab-close"></i>');
+            li.push('</li>');
+            $('.tab-title-item', top.document).removeClass('tab-title-selected');
+            $('.tabs-title>ul', top.document).append(li.join(''));
+            $('.tab-title-item:last', top.document).addClass('tab-title-selected');
+
+            var tabItem = [];
+            tabItem.push('<div class="tab-body-item">');
+            tabItem.push('<iframe src="' + url + '" frameborder="0"></iframe>');
+            tabItem.push('</div>');
+            $('.tab-body-item', top.document).removeClass('tab-body-selected');
+            $('.vmsui-tabs-body', top.document).append(tabItem.join(''));
+            $('.tab-body-item:last', top.document).addClass('tab-body-selected');
+        }
+        function bindLastTabEvent() {
+            $('.tab-title-item:last', top.document).unbind('click').bind('click', function (event) {
+                var index = $(this).index();
+                if (index >= 0) {
+                    selectTab(index);
+                }
+            });
+            $('.tab-title-item>.tab-close:last', top.document).unbind('click').bind('click', function (event) {
+                event.stopPropagation();
+                var index = $(this).parent('li').index();
+                var lastIndex = $('.tab-title-item:last').index();
+                if (index == 0 && index == lastIndex) return;
+                $(this).parent('li').remove();
+                $('.tab-body-item').eq(index).remove();
+                if (lastIndex > index) {
+                    selectTab(index);
+                } else {
+                    selectTab(index - 1);
+                }
+
+            })
+        }
+        function canAddTab() {
+            $('.vmsui-nav-item', top.document).removeClass('vmsui-nav-item-selected');
+            $(this).parents('li:first').addClass('vmsui-nav-item-selected');
+            var title = "模板设计";
+            var titles = $('.tab-title-item>span', top.document);
+            var has = false;
+            var index = 0;
+            $.each(titles, function (idx, el) {
+                if ($(el).text() == title) {
+                    has = true;
+                    index = idx;
+                    return false;
+                }
+            });
+            if (has) {
+                selectTab(index);
+            } else {
+                //type 页面类型:0 行驶证页面，1 驾驶证页面
+                var url = "../H5/designPage.html?type=1&controller=BreakRulesQueryApi";
+                addTab(title, url);
+                bindLastTabEvent();
+                index = $('.tabs-title>ul>li').length - 1;
+            }
+            rollPage('auto', index);
+        }
+
+        function save() {
+            var data = {};
+            data.id = $('#id').val();
+            data.name = $('#name').textbox('getValue');
+            data.sex = $('#sex').combobox('getValue');
+            data.age = $('#age').numberbox('getValue');
+            data.phone = $('#phone').textbox('getValue');
+            data.id_card = $('#id_card').textbox('getValue');
+            data.car_no = $('#car_no').textbox('getValue');
+            data.driver_no = $('#driver_no').textbox('getValue');
+            data.driving_no = $('#driving_no').textbox('getValue');
+            data.carframe_no = $('#carframe_no').textbox('getValue');
+            data.breakrule_type_id = $('#breakrule_type_id').textbox('getValue');
+            data.breakrule_addr = $('#breakrule_addr').textbox('getValue');
+            data.breakrule_date = $('#breakrule_date').datebox('getValue');
+            data.memo = $('#memo').textbox('getValue');
+            data.memo1 = $('#memo1').textbox('getValue');
+            data.memo2 = $('#memo2').textbox('getValue');
+
+            if (data.name == undefined || $.trim(data.name) == '') {
+                $.messager.alert('请输入姓名!');
+                return;
+            }
+            if (data.id_card == undefined || $.trim(data.id_card) == '') {
+                $.messager.alert('请输入身份证号!');
+                return;
+            }
+            if (data.car_no == undefined || $.trim(data.car_no) == '') {
+                $.messager.alert('请输入车牌号!');
+                return;
+            }
+            if (data.driver_no == undefined || $.trim(data.driver_no) == '') {
+                $.messager.alert('请输入驾驶证号!');
+                return;
+            }
+            if (data.driving_no == undefined || $.trim(data.driving_no) == '') {
+                $.messager.alert('请输入行驶证号!');
+                return;
+            }
+            if (data.breakrule_type_id == undefined || $.trim(data.breakrule_type_id) == '') {
+                $.messager.alert('请选择违章类型!');
+                return;
+            }
+            if (data.breakrule_addr == undefined || $.trim(data.breakrule_addr) == '') {
+                $.messager.alert('请输入违章地址!');
+                return;
+            }
+            if (data.breakrule_date == undefined || $.trim(data.breakrule_date) == '') {
+                $.messager.alert('请输入违章日期!');
+                return;
+            }
+            var url = '/api/BreakRulesQueryApi/Add';
+            var add = true;
+            if (data.id != undefined && data.id > 0) {
+                url = '/api/BreakRulesQueryApi/Edit';
+                add = false;
+            }
+            
+            $.ajax({
+                url: url,
+                method: 'post',
+                dataType: 'json',
+                data: data,
+                success: function (result) {
+                    var msg = add ? "添加" : "修改";
+                    if (result.success) {
+                        $.messager.alert("提示", msg+"成功");
+                        $('#dlg-edit').dialog('close');        // close the dialog
+                        $('#dgDetail').datagrid('reload');
+                    } else {
+                        $.messager.alert("提示", msg +"失败");
+                    }
+                }
+            });
+        }
+        function getQueryParams() {
+            var params = {};
+            params.name = $('#qname').textbox('getValue');
+            params.id_card = $('#qid_card').textbox('getValue');
+            return params;
+        }
+
+        function initBtn() {
+            $('#btnQuery').linkbutton({
+                onClick: function () {
+                    $('#dgDetail').datagrid('reload');
+                }
+
+            });
+
+            $('#btnAdd').linkbutton({
+                onClick: function () {
+                    clearInput();
+                    $('#dlg-edit').dialog('open').dialog('center');
+                }
+            });
+            $('#btnEdit').linkbutton({
+                onClick: function () {
+                    clearInput();
+                    var ckRows = $('#dgDetail').datagrid('getSelected');
+                    if (ckRows) {
+                        setData(ckRows);
+                        $('#dlg-edit').dialog('open').dialog('center');
+                    } else {
+                        $.messager.alert('提示', '请先选中一行数据!', 'info');
+                    }
+                }
+            });
+            $('#btnDel').linkbutton({
+                onClick: function () {
+                    var checked = $('#dgDetail').datagrid('getChecked');
+                    if (checked.length <= 0) {
+                        $.messager.alert('提示', '请先勾选需要删除的数据!', 'info');
+                        return;
+                    }
+                    url = "/api/BreakRulesQueryApi/Del";
+                    $.post(url, { deleted: checked }, function (ret) {
+                        if (ret.success) {
+                            $('#dgDetail').datagrid('reload');
+                            $.messager.alert('提示', '删除的数据成功!', 'info');
+                        } else {
+                            if ($.trim(ret.message) != '') {
+                                $.messager.alert('提示', ret.message, 'info');
+                            } else {
+                                $.messager.alert('提示', '删除的数据失败!', 'info');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        function initQueryUI() {
+
+        }
+        function initGrid() {
+            var height = $(document).height() - $('.q-condition').outerHeight(true) - 15;
+            var url = "/api/BreakRulesQueryApi/Query";
+            $('#dgDetail').datagrid({
+                url: url,
+                pagination: true,
+                pageSize: 12,
+                pageList: [12, 24, 36, 48, 60],
+                checkOnSelect: true,
+                striped: true,
+                showHeader: true,
+                checkbox: true,
+                singleSelect: true,
+                rownumbers: true,
+                onBeforeLoad: function (param) {
+                    var otherParams = getQueryParams();
+                    return $.extend(param, otherParams);
+                },
+                onLoadError: function () { },
+                toolbar: '#toolbar',
+                width: '100%',
+                height: height,
+                columns: [[
+                    { field: 'ck', checkbox: true },
+                    {
+                        field: 'name', title: '姓名', width: 70, halign: 'center', align: 'left', sortable: true, formatter: function (value, row, index) {
+                            if (value != undefined) {
+                                var href = '<a style="text-decoration:underline" href="javascript:editOne();" >_txt</a>';
+                                return href.replace(/_txt/g, value);
+                            }
+                            return '';
+                        }
+                    },
+                    {
+                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                            if (value == '0') {
+                                return '男';
+                            }
+                            return '女';
+                        }
+                    },
+                    { field: 'age', title: '年龄', width: 40, halign: 'center', align: 'left', sortable: true },
+                    { field: 'phone', title: '联系电话', width: 80, halign: 'center', align: 'left', sortable: true },
+                    { field: 'id_card', title: '身份证号码', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'car_no', title: '车牌号码', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'driver_no', title: '驾驶证号码', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'driving_no', title: '行驶证号码', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'carframe_no', title: '车架号', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'breakrule_type_name', title: '违章类型', width: 130, halign: 'center', align: 'left', sortable: true },
+                    { field: 'breakrule_addr', title: '违章地址', width: 150, halign: 'center', align: 'left', sortable: true },
+                    {
+                        field: 'breakrule_date', title: '违章时间', width: 100, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                            if (value == undefined) return '';
+                            return value.replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '');
+                        }
+                    },
+                    { field: 'memo', title: '备注', width: 130, halign: 'center', align: 'left', sortable: true },
+                    { field: 'memo1', title: '备注1', width: 130, halign: 'center', align: 'left', sortable: true },
+                    { field: 'memo2', title: '备注2', width: 130, halign: 'center', align: 'left', sortable: true },
+                    { field: 'modify_oper_id', title: '填发员', width: 80, halign: 'center', align: 'left' },
+                    { field: 'id', hidden: true },
+                ]]
+            });
+        }
+        function editOne() {
+            var ckRows = $('#dgDetail').datagrid('getSelected');
+            if (ckRows) {
+                clearInput();
+                setData(ckRows);
+                $('#dlg-edit').dialog('open').dialog('center');
+            } else {
+                $.messager.alert('提示', '请先选中一行数据!', 'info');
+            }
+        }
+        function initUI() {
+            initBtn();
+            initQueryUI();
+            initGrid();
+            initEditUI();
+        }
+        function setData(data) {
+            $('#id').val(data.id);
+            $('#name').textbox('setValue', data.name);
+            $('#sex').combobox('setValue', data.sex);
+            $('#age').numberbox('setValue', data.age);
+            $('#id_card').textbox('setValue', data.id_card);
+            $('#phone').textbox('setValue', data.phone);
+            $('#car_no').textbox('setValue', data.car_no);
+            $('#driver_no').textbox('setValue', data.driver_no);
+            $('#driving_no').textbox('setValue', data.driving_no);
+            $('#carframe_no').textbox('setValue', data.carframe_no);
+            $('#breakrule_type_id').textbox('setValue', data.breakrule_type_id);
+            $('#breakrule_addr').textbox('setValue', data.breakrule_addr);
+            $('#breakrule_date').datebox('setValue', data.breakrule_date);
+            $('#memo').textbox('setValue', data.memo);
+            $('#memo1').textbox('setValue', data.memo1);
+            $('#memo2').textbox('setValue', data.memo2);
+        }
+        function clearInput() {
+            $('#name').textbox('setValue', '');
+            $('#sex').combobox('setValue', '0');
+            $('#age').numberbox('setValue', '');
+            $('#id_card').textbox('setValue', '');
+            $('#phone').textbox('setValue', '');
+            $('#car_no').textbox('setValue', '');
+            $('#driver_no').textbox('setValue', '');
+            $('#driving_no').textbox('setValue', '');
+            $('#carframe_no').textbox('setValue', '');
+            $('#breakrule_type_id').textbox('setValue', '');
+            $('#breakrule_addr').textbox('setValue', '');
+            $('#breakrule_date').datebox('setValue', '');
+            $('#memo').textbox('setValue', '');
+            $('#memo1').textbox('setValue', '');
+            $('#memo2').textbox('setValue', '');
+        }
+        function initEditUI() {
+            $('#name').textbox({
+                height: 25,
+                width: 150,
+            });
+
+            $('#sex').combobox({
+                valueField: 'id',
+                width: 158,
+                panelHeight: 70,
+                editable: false,
+                textField: 'text',
+                valueField:'id',
+                value: 0,
+                height: 25,
+                width: 150,
+                data: [{ id: 0, text: '男' }, { id: 1, text: '女' }]
+            });
+            $('#age').numberbox({
+                mix: 0,
+                max: 100,
+                precision: 0,
+                height: 25,
+                width: 150,
+            });
+            $('#id_card').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#phone').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#car_no').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#driver_no').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#driving_no').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#carframe_no').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#breakrule_type_id').combobox({
+                height: 25,
+                width: 150,
+                editable:false,
+                valueField: 'id',
+                textField: 'text',
+                panelHeight: 120,
+            });
+            $('#breakrule_addr').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#breakrule_date').datebox({
+                height: 25,
+                width: 150,
+            });
+            $('#memo').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#memo1').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#memo2').textbox({
+                height: 25,
+                width: 150,
+            });
+
+
+        }
+        $(function () {
+            initUI();
+            var url = '/api/BreakRulesTypeApi/QueryAll';
+            $.post(url, {}, function (ret) {
+                if (ret.success) {
+                    $('#breakrule_type_id').combobox('loadData',ret.data);
+                }
+            });
+            //$('#zs_region').combobox({
+            //    valueField: 'region_no',
+            //    width: 158,
+            //    panelHeight: 70,
+            //    editable: false,
+            //    textField: 'region_name',
+            //});
+            //var url = '/api/RegionApi/QueryAll';
+            //$.post(url, {}, 'json')
+            //    .success(function (ret) {
+            //        if (ret.success) {
+            //            $('#zs_region').combobox('loadData', ret.data);
+            //        }
+            //    });
+        })
+    </script>
+}

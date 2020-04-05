@@ -1,0 +1,193 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <style type="text/css">
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+    </style>
+}
+    <div class="q-condition">
+        <div class="btn-container">
+            <a href="#" class="easyui-linkbutton" onclick="add()" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+            <a href="#" class="easyui-linkbutton" onclick="edit()" data-options="iconCls:'icon-edit'" style="width:60px">编辑</a>
+            <a href="#" class="easyui-linkbutton" onclick="del()" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+        </div>
+        <hr />
+    </div>
+<table id="dg"></table>
+<div id="dlg" class="easyui-dialog" style="display:none;width:400px;height:280px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <table style="width:100%;height:130px;table-layout:fixed;border-collapse: collapse;">
+        <tr>
+            <td style="width:80px;text-align:right;"><label>违章名称：</label></td>
+            <td style="width:100%;"><input id="name" type="text" />
+            <input id="hidId"  type="text" style="display:none;"/>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:50px;text-align:right;"><label>处&nbsp;&nbsp;&nbsp;&nbsp;罚：</label></td>
+            <td><input id="punishDesc" type="text" /></td>
+        </tr>
+        <tr>
+            <td style="width:50px;text-align:right;"><label>备&nbsp;&nbsp;&nbsp;&nbsp;注：</label></td>
+            <td><input id="memo" type="text" /></td>
+        </tr>
+    </table>
+</div>
+<div id="dlg-buttons" style="display:none;">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" onclick="save()" style="width:90px"><i class="glyphicon glyphicon-ok"></i>确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')" style="width:90px"><i class="glyphicon glyphicon-remove"></i>取消</a>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        function getData() {
+            var name = $('#name').textbox('getValue');
+            var punish_desc = $('#punishDesc').textbox('getValue');
+            var memo = $('#memo').textbox('getValue');
+            var id = $('#hidId').val();
+            return {id:id, name: name, punish_desc: punish_desc, memo: memo };
+        }
+        function setData(data) {
+            $('#hidId').val(data.id);
+            $('#name').textbox('setValue', data.name);
+            $('#punishDesc').textbox('setValue', data.punish_desc);
+            $('#memo').textbox('setValue', data.memo);
+        }
+        function clear() {
+            $('#name').textbox('setValue', '');
+            $('#punishDesc').textbox('setValue', '');
+            $('#memo').textbox('setValue', '');
+        }
+        function add() {
+            clear();
+            $('#dlg').dialog('open').dialog('setTitle', '新增违章类型');
+            $('#dlg').dialog('options').status = 1;
+        }
+        function edit() {
+            var selectedRow = $('#dg').datagrid('getSelected');
+            if (selectedRow == null) {
+                $.messager.alert('提示', '请先选中一行需要编辑的数据!', 'info');
+                return;
+            }
+            clear();
+            setData(selectedRow);
+            $('#dlg').dialog('open').dialog('setTitle', '编辑违章类型');
+            $('#dlg').dialog('options').status = 0;
+        }
+        function del() {
+            var checked = $('#dg').datagrid('getChecked');
+            if (checked.length <= 0) {
+                $.messager.alert('提示', '请先勾选需要删除的数据!', 'info');
+                return;
+            }
+            url = "/api/BreakRulesTypeApi/Del";
+            $.post(url, { deleted: checked }, function (ret) {
+                if (ret.success) {
+                    reload();
+                    $.messager.alert('提示', '删除的数据成功!', 'info');
+                } else {
+                    if ($.trim(ret.message) != '') {
+                        $.messager.alert('提示', ret.message, 'info');
+                    } else {
+                        $.messager.alert('提示', '删除的数据失败!', 'info');
+                    }
+                }
+            });
+        }
+        function save() {
+            var data = getData();
+            var url = "/api/BreakRulesTypeApi/Add";
+            var msg = "添加";
+            var status = $('#dlg').dialog('options').status;
+            if (status != '1') {
+                msg = "修改";
+                url = "/api/BreakRulesTypeApi/Edit";
+            }
+
+            $.post(url, data, function (ret) {
+                if (ret.success) {
+                    reload();
+                    $.messager.alert('提示', msg + '成功!', 'info');
+                } else {
+                    if ($.trim(ret.message) != '') {
+                        $.messager.alert('提示', ret.message, 'info');
+                    } else {
+                        $.messager.alert('提示', msg + '失败!', 'info');
+                    }
+                }
+            });
+
+        }
+        function reload() {
+            $('#dg').datagrid('reload');
+        }
+        var resizeTimer = null;
+        function resize() {
+            $(window).bind('resize', function () {
+                if (resizeTimer) clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+
+                    $('#dg').datagrid('resize', { width: '100%' });
+                }, 500);
+            });
+        }
+        $(function () {
+            function initDialog() {
+                $('#name').textbox({
+                    width: '100%',
+                    required: true,
+                });
+                $('#punishDesc').textbox({
+                    width: '100%',
+                    required: true,
+                });
+                $('#memo').textbox({
+                    width: '100%',
+                    multiline: true,
+                    height: '50px'
+                });
+            }
+            function initGrid() {
+                var height = $(window).height() - $('.q-condition').outerHeight() - 15;
+                var url = "/api/BreakRulesTypeApi/Query";
+                $('#dg').datagrid({
+                    url: url,
+                    pagination: true,
+                    pageSize: 15,
+                    pageList: [15, 20, 30, 40, 50],
+                    checkOnSelect: true,
+                    striped: true,
+                    showHeader: true,
+                    checkbox: true,
+                    //singleSelect:true,
+                    rownumbers: true,
+                    onLoadError: function () { },
+                    //toolbar: '#toolbar',
+                    width: '100%',
+                    height: height,
+                    columns: [[
+                        { field: 'ck', checkbox: true },
+                        { field: 'name', title: '违章名称', width: 80, halign: 'center', align: 'left' },
+                        { field: 'punish_desc', title: '处罚', width: 200, halign: 'center', align: 'left' },
+                        { field: 'memo', title: '备注', width: 100, halign: 'center', align: 'left' }
+                    ]]
+                });
+            }
+            initGrid();
+            initDialog();
+            resize();
+        });
+
+    </script>
+
+
+
+}
+

@@ -1,0 +1,228 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    .layout-split-west{
+     border-right:0px;
+    }
+    .list-group-item:first-child,.list-group-item:last-child {
+    border-radius: 0px;
+    }
+    .check-inline span{
+     cursor:pointer; 
+    }
+    .list-group-item{
+      padding-top:5px;
+      padding-bottom:5px;
+    }
+    .btn{
+       font-size:13px;
+       width:80px;
+       padding:0px 6px!important;
+       
+       margin-left: 10px;
+       margin-top: 0px;
+    }
+    .btn-group{
+     margin-bottom:5px;
+    }
+</style>
+    }
+<div id="cc" class="easyui-layout" style="width:100%;height:600px;background-color:#fff;">
+    <div data-options="region:'west',title:'系统角色',split:false" style="width:180px;">
+        <ul id="tt" class="easyui-tree" data-options="lines:true,onClick:clickNode"></ul>
+    </div>
+    <div data-options="region:'center'">
+        <div id="p" class="easyui-panel" title="系统应用" style="width:100%;height:100%;padding:5px;background:#fafafa;"
+             data-options="closable:false,border:false">
+            <!-- <div style="position:fixed;top:0px;width:100%;height:32px;z-index:1;line-height:32px;font-weight: bold;background-color: #eaeaea;padding-left: 6px;">系统应用</div>
+           <ul class="list-group">
+            <li class="list-group-item list-group-item-info" style="border-bottom-color:red;"><label class="check-inline"><input type="checkbox" style="vertical-align:middle;" /><span style="vertical-align:middle;">全选 </span></label><span style="margin-left:10px;vertical-align:middle;color:blue;font-size:13px;">基础资料</span> <input type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></li>
+            <li class="list-group-item" style="padding-left:90px"><span style="vertical-align:middle;">准驾车型</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">可见</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">新增</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">修改</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">删除</span></li>
+            <li class="list-group-item" style="padding-left:90px"><span style="vertical-align:middle;">区域信息</span><input type="checkbox" style="vertical-align:middle;margin-left:10px" /><span style="vertical-align:middle;">可见</span></li>
+
+            <li class="list-group-item" style="border-bottom-color:red;"><input type="checkbox" />全选 &nbsp; &nbsp; &nbsp;登记中心<label class="check-inline"> <input type="checkbox" />可见</label></li>
+            <li class="list-group-item" style="padding-left:60px">临时驾驶证登记<input type="checkbox" />可见</li>
+            <li class="list-group-item" style="padding-left:60px">驾驶证登记<input type="checkbox" />可见</li>
+        </ul>-->
+
+        </div>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    function getData(){
+       var selectedNode = $('#tt').tree('getSelected');
+       var cks = $('.list-group input[type="checkbox"][data-id]');
+        var rows=[];
+        $.each(cks,function(inx,el){
+               if($(el).is(':checked')){
+                rows.push({role_id:selectedNode.id,res_id:$(el).attr('data-id'),grant_id:$(el).attr('data-grantid')});
+              }
+         });
+      return rows;
+    }
+    function initRoleTree(){
+      var url='../../api/RoleApi/QueryTreeAll';
+      $.post(url,{},'json')
+      .success(function(ret){
+         $('#tt').tree('loadData',ret.data);
+      })
+    }
+    function bindData(data){
+           $.each(data,function(inx,el){
+                var dataid=el.res_id;
+                var grantid=el.grant_id;
+                $('.list-group input[data-id="'+dataid+'"][data-grantid="'+grantid+'"]').prop('checked',true);
+           })
+    }
+    function clickNode(node){
+      var role_id = node.id;
+       $('.list-group input[type="checkbox"]').prop('checked',false);
+       $.post('../../api/RoleApi/QueryRoleRightByRoleId',{role_id:role_id},'json')
+       .success(function(ret){
+            if(ret.success && ret.data.length>0)
+            {
+               bindData(ret.data);
+            }
+         });
+    }
+    function upck(dataid){
+       var $el = $('input[type="checkbox"][data-id="'+dataid+'"]');
+       var pid = $el.attr('data-pid');
+       var $pel =$('input[type="checkbox"][data-id="'+pid+'"]');
+       if($pel.length>0){
+         $pel.prop('checked',true);
+         upck($el.attr('data-pid'));
+       }
+    }
+    function bindCKEvent(){
+     $('.list-group input[type="checkbox"]').bind('click',function(){
+           var checked = $(this).is(':checked');
+           if($(this).hasClass('check-all')){
+              $(this).parents('li').find('input[data-id]').prop("checked",checked);
+              var lis = $(this).parents('li').nextAll();
+              $.each(lis,function(inx,el){
+                   if($(el).find('input[type="checkbox"][class="check-all"]').length>0) return false;
+                  $(el).find('input[type="checkbox"][data-id]').prop("checked",checked);
+              });
+             return;
+           }
+          if(checked){
+            var id = $(this).attr('data-id');
+            upck(id);
+          }
+
+      });
+     $('#ckall').bind('click',function(){
+          var checked = $(this).is(':checked');
+          $('.list-group input[type="checkbox"]').prop('checked',checked);
+      });
+      $('#btnSave').bind('click',function(){
+         var selectedNode = $('#tt').tree('getSelected');
+         if(selectedNode==undefined){
+             $.messager.alert('提示','请选中左侧需要设置权限的角色!','info');
+              return;
+          }
+           var rows = getData();
+           if(rows.length<=0){
+              $.messager.alert('提示','请为选中角色设置相应权限!','info');
+              return;
+            }
+           var url='../../api/RoleApi/SaveRoleRight';
+           $.post(url,{rows:rows},'json')
+           .success(function(ret){
+             if(ret.success){
+               $.messager.alert('提示','保存成功!','info');
+              }else{
+                   if($.trim(ret.message)!=''){
+                      $.messager.alert('提示',ret.message,'info');
+                   }else{
+                      $.messager.alert('提示','保存失败','info');
+                     }
+               }
+            });
+        });
+    }
+    function renderRes(data,pid,domArray){
+       var ds=[];
+       ds= $.map(data,function(el,inx){
+              if(el.pid==pid) return el;
+          });
+       if(ds.length==0) return;
+       if(pid==''){
+          $.each(ds,function(inx,el){
+              domArray[inx]=[];
+              //domArray[inx].push("<ul class=\"list-group\">");
+              domArray[inx].push('<li class="list-group-item"><label class="check-inline"><input type="checkbox" class="check-all" style="vertical-align:middle;" /><span style="vertical-align:middle;">全选 </span></label>');
+              domArray[inx].push(' <span style="margin-left:10px;vertical-align:middle;color:#000;font-size:13px;">'+el.res_desc+'</span> <label class="check-inline"><input type="checkbox" data-pid="'+el.pid+'"  data-id="'+el.id+'" data-grantid="'+el.res_type_oper_id+'" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></label></li>');
+              renderRes(data,el.id,domArray[inx]);
+              //domArray[inx].push("</ul>");
+
+          })
+       }else{
+          var len = ds.length;
+          var isbtn = false;
+          $.each(ds,function(inx,el){
+               if(el.res_type_id=="0000"){
+                 domArray.push('<li class="list-group-item" style="padding-left:'+parseFloat(el.level)*90+'px">');
+                 domArray.push('<span style="margin-left:10px;vertical-align:middle;color:#000;font-size:13px;">'+el.res_desc+'</span>');
+                 domArray.push('<label class="check-inline"><input  data-pid="'+el.pid+'" data-id="'+el.id+'"  data-grantid="'+el.res_type_oper_id+'" type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">可见</span></label>');
+                 domArray.push('</li>');
+                 renderRes(data,el.id,domArray);
+               }else if(el.res_type_id=='0001')
+               {
+                   if(inx==0){
+                      isbtn=true;
+                      domArray.pop();
+                      //domArray.push('<li class="list-group-item" style="padding-left:'+parseFloat(el.level)*90+'px">');
+                   }
+                   domArray.push('<label class="check-inline"><input  data-pid="'+el.pid+'" data-id="'+el.id+'"  data-grantid="'+el.res_type_oper_id+'" type="checkbox" style="vertical-align:middle;margin-left:10px;" /><span style="vertical-align:middle;">'+el.res_desc+'</span></label>');
+                   if(inx==len-1){
+                     domArray.push('</li>');
+                   }
+                }
+          });
+         if(isbtn){
+             $.each(ds,function(inx,el){
+               renderRes(data,el.id,domArray);
+             });
+         }
+       }
+    }
+    function initbtn(){
+       var btns=[];
+       btns.push('<label class="check-inline"><input id="ckall" type="checkbox" style="vertical-align:middle;margin-left:10px;"/><span style="vertical-align:middle;">全选</span></label>');
+       btns.push('<button id="btnSave" type="button" class="btn btn-default">保存</button>');
+       return btns.join('');
+    }
+    function initRes(){
+      var url='../../api/RoleApi/QueryAllRes';
+       $.post(url,{},'json')
+      .success(function(ret){
+        if(ret.success){
+            var dom=[];
+            renderRes(ret.data,'',dom);
+            //var center = $('#cc').layout('panel','center');
+            var strdom ='';
+            $.each(dom,function(inx,el){
+                strdom+=el.join('');
+            })
+            var panel = $('#p').panel('panel');
+            var header = $('#p').panel('header');
+
+            var btns = initbtn();
+            header.find('.panel-title').append(btns);
+            panel.find('.panel-body').append($("<ul class=\"list-group\">"+strdom+"</ul>"));
+            bindCKEvent();
+         }
+      })
+    }
+    $(function(){
+      initRoleTree();
+      initRes();
+    });
+</script>
+}

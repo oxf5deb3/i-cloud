@@ -1,0 +1,580 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    body{
+      font-size:12px;
+    }
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+    .form-horizontal .form-group{
+      margin-left:0px;
+      margin-right:0px;
+    }
+    .form-group{
+     margin-bottom:5px;
+    }
+    .red-star{
+       color:red;
+       font-size:15px;
+    }
+</style>
+}
+<div class="tips" style="padding-left:10px;"><span  class="notice" style="color:blue"></span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
+<table style="table-layout:fixed;margin-left:10px;margin-right:10px;margin-top:20px;width:98%;height:350px;">
+    <tr>
+        <td style="width:120px;text-align:right;display:none"><span class="red-star">*</span>驾驶证编号:</td>
+        <td style="width:200px;display:none"><input id="lsxs_no"></input></td>
+
+        <td style="width:120px;text-align:right;">联系方式:</td>
+        <td style="width:200px;"><input id="lsxs_phone"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>身份证号码:</td>
+        <td style="width:100%;"><input id="lsxs_id_card"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>姓名:</td>
+        <td style="width:100%;"><input id="lsxs_name"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
+        <td style="width:200px;"><input id="lsxs_sex"></input></td>
+
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
+        <td style="width:100%;"><input id="lsxs_birth_date"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
+        <td style="width:200px;"><input id="lsxs_region"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>住址:</td>
+        <td style="width:200px;"><input id="lsxs_now_addr"></input></td>
+        <td style="width:120px;text-align:right;">单位:</td>
+        <td style="width:100%;"><input id="lsxs_work_unit"></input></td>
+    </tr>
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车型:</td>
+        <td style="width:100%;"><input id="lsxs_car_type"></input></td>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>临时车牌号:</td>
+        <td style="width:200px;"><input id="lsxs_temp_number"></input></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;">发动机号:</td>
+        <td style="width:100%;"><input id="lsxs_engine_no"></input></td>
+        <td style="width:120px;text-align:right;">车架号:</td>
+        <td style="width:200px;"><input id="lsxs_vin"></input></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;">核定载客(人):</td>
+        <td style="width:100%;"><input id="lsxs_passenger"></input></td>
+        <td style="width:120px;text-align:right;">核定载货(千克):</td>
+        <td style="width:200px;"><input id="lsxs_cargo"></input></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>车辆颜色:</td>
+        <td style="width:200px;"><input id="lsxs_car_color"></input></td>
+        
+    </tr>
+        
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
+        <td colspan="3" style="width:200px;"><input id="lsxs_start_date"></input>&nbsp;&nbsp;至&nbsp;&nbsp;<input id="lsxs_end_date"></input></td>
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>人员信息像:</td>
+        <td><button type="button" class="btn btn-info btn-sm" style="width:78px" id="lsxs_select_user_info">拍照</button></td>
+        <td><img src="#" id="lsxs_user_info_photo" style=" height: 80px;width: 100px;display:none" /></td>
+        <td><input type="hidden" id="lsxs_user_info_input" value="" /></td>
+
+    </tr>
+    
+    <tr >
+        <td style="width:120px;text-align:right;">车辆照1:</td>
+        <td><input id="car_1_input" name="name" class="easyui-filebox"
+       data-options="buttonText:'选择照片',accept: 'image/*'" /></td>
+        <td><img src="" id="car_1_img" style=" height :80px;width :100px;display:none"></td>
+         <td><input type="hidden" id="car_1_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;">车辆照2:</td>
+        <td>
+            <input id="car_2_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="car_2_img" style=" height :80px;width :100px;display:none"></td>
+        <td><input type="hidden" id="car_2_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;">发动机号码:</td>
+        <td>
+            <input id="engine_no_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="engine_no_img" style=" height :80px;width :100px;display:none"></td>
+        <td><input type="hidden" id="engine_no_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;">车架号码:</td>
+        <td>
+            <input id="vin_no_input" name="name" class="easyui-filebox"
+                   data-options="buttonText:'选择照片',accept: 'image/*'" />
+        </td>
+        <td><img src="" id="vin_no_img" style=" height:80px;width:100px;display:none"></td>
+        <td><input type="hidden"  id="vin_no_value" value=""></td>
+
+    </tr>
+
+    <tr>
+        <td style="width:120px;text-align:right;"><span class="red-star">*</span>填发员:</td>
+        <td style="width:200px;"><input class="easyui-textbox" name="modify_oper_id" id="modify_oper_id" required readonly></td>
+
+    </tr>
+   
+
+    <tr style="height:10px;"></tr>
+    <tr>
+        <td colspan="3"></td>
+        <td style="padding-left:20px;">
+            <button type="button" class="btn btn-info btn-sm" style="width:78px" id="lsxs_submit">提交</button>
+        </td>
+    </tr>
+</table>
+
+<div id="lsxs_photoDialog">
+
+    <table>
+
+        <tr>
+
+            <td><video id="lsxs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('lsxs_userinfo_video', 'lsxs_userinfo_canvas')">拍照</button></td>
+            <td><button id="lsxs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="lsxs_userinfo_canvas" width="300" height="200" /></td>
+
+        </tr>
+
+    </table>
+
+
+
+
+</div>
+
+@section scripts{
+<script type="text/javascript">
+    function initUI(){
+        $('#lsxs_cargo').textbox({
+          width:180,
+          
+        });
+        
+        $('#lsxs_phone').textbox({
+            width: 180,
+
+        });
+
+        $('#lsxs_passenger').textbox({
+          width: 180,
+
+      });
+
+        $('#lsxs_temp_number').textbox({
+          width: 180,
+
+      });
+
+        $('#lsxs_car_type').textbox({
+          width: 180,
+
+      });
+
+        $('#lsxs_engine_no').textbox({
+          width: 180,
+
+      });
+
+        $('#lsxs_vin').textbox({
+          width: 180,
+
+      });
+
+        $('#lsxs_label_type').textbox({
+          width: 180,
+
+      });
+
+
+      $('#lsxs_no').textbox({
+          width: 180,
+
+      });
+
+
+
+    $('#lsxs_id_card').textbox({
+          width:180,
+          
+      });
+    $('#lsxs_name').textbox({
+          width:180,
+    });
+    $('#lsxs_car_color').textbox({
+        width: 180,
+    });
+    $('#lsxs_sex').combobox({
+         valueField:'id',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField: 'text',
+         value:0,
+         data:[{id:0,text:'男'},{id:1,text:'女'}]
+    });
+     $('#lsxs_birth_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          
+      });
+     $('#lsxs_region').combobox({
+         valueField:'region_no',
+         width:180,
+         panelHeight:70,
+         editable:false,
+         textField:'region_name',
+    });
+      var url='../../api/RegionApi/QueryAll';
+       $.post(url,{},'json')
+       .success(function(ret){
+          if(ret.success){
+            $('#lsxs_region').combobox('loadData',ret.data);
+          }
+       });
+       $('#lsxs_now_addr').textbox({
+          width:180,
+          
+      });
+       $('#lsxs_work_unit').textbox({
+          width:180,
+      });
+       $('#lsxs_permitted_card_type_no').textbox({
+     
+         width:180,
+         
+    });
+      
+     
+     var now = new Date();
+        $('#lsxs_start_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          value: now.pattern('yyyy-MM-dd'),
+          onSelect:function(date){
+            var endDate = new Date(date.getFullYear(),date.getMonth()+3,date.getDate());
+            $('#lsxs_end_date').datebox('setValue', endDate.pattern('yyyy-MM-dd'));
+         }
+      });
+      var end = new Date(now.getFullYear(),now.getMonth()+3,now.getDate());
+        $('#lsxs_end_date').datebox({
+          width:180,
+          panelWidth:180,
+          panelHeight:180,
+          editable:false,
+          value: end.pattern('yyyy-MM-dd'),
+      });
+    }
+
+    function initCarNo_lsxs() {
+        var url = "../../api/DriverLicenseApi/initCarNo";
+        //0=临时驾照
+        $.post(url, { id_no: 2 }, 'json')
+                    .success(function (ret) {
+                        if (ret.success) {
+                            $("#lsxs_no").textbox("setValue", ret.message);
+                        } else {
+                            alert("初始化证件编码失败!请刷新页面!");
+                        }
+                    });
+    }
+
+    //初始化人员照片信息采集对话框
+    function initPhotoDialog_lsxs() {
+        $('#lsxs_photoDialog').dialog({
+            title: '人员照片信息采集',
+            width: 800,
+            height: 500,
+            closed: true,
+            cache: false,
+            onOpen: function () {
+                initPhoto("lsxs_userinfo_video");//初始化摄像头组件
+            },
+            onClose: function () {
+                cleanCanvas("lsxs_userinfo_canvas");//清除缓存
+                closePhoto("lsxs_userinfo_video");//关闭摄像头
+            },
+            buttons: [{
+                text: '确定',
+                handler: function () {
+                    var data = getCanvasForBase64("lsxs_userinfo_canvas");//获取照片转为base64
+
+                    
+
+                    $("#lsxs_user_info_photo").attr("src", data);//存储为缩略图
+                    $("#lsxs_user_info_input").attr("value", data)//将base64存储到隐藏域中,做非空校验
+                    $("#lsxs_user_info_photo").css("display", "");
+                    $("#lsxs_photoDialog").dialog("close");//关闭dialog
+                    cleanCanvas("lsxs_userinfo_canvas");//清除缓存
+                    closePhoto("lsxs_userinfo_video");//关闭摄像头
+
+
+                }
+            }, {
+                text: '取消',
+                handler: function () {
+                    cleanCanvas("lsxs_userinfo_canvas");//清除缓存
+                    closePhoto("lsxs_userinfo_video");//关闭摄像头
+                    $("#lsxs_photoDialog").dialog("close");//关闭dialog
+
+                }
+            }]
+        });
+    }
+
+    function validate_lsxs() {
+        //校验 非空
+        var message = {
+            type: true,
+            message: ""
+        };
+
+        if (!isNull($("#lsxs_birth_date").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写出生日期!";
+            return message;
+        }
+      
+
+
+        //姓名
+        if (!isNull($("#lsxs_name").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写姓名!";
+            return message;
+        }
+
+
+        if (!isNull($("#lsxs_id_card").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写身份证号码!";
+            return message;
+        }
+
+
+        //地区
+        if (!isNull($("#lsxs_region").combobox("getValue"))) {
+            message.type = false;
+            message.message = "必须选择地区!";
+            return message;
+        }
+        //性别
+        if (!isNull($("#lsxs_sex").combobox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写性别!";
+            return message;
+        }
+
+        if (!isNull($("#lsxs_user_info_input").attr("value"))) {
+            message.type = false;
+            message.message = "必须上传人员照片信息!";
+            return message;
+        }
+        //住址
+        if (!isNull($("#lsxs_now_addr").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写住址!";
+            return message;
+        }
+
+       
+
+        //车身颜色
+        if (!isNull($("#lsxs_car_color").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车辆颜色!";
+            return message;
+        }
+
+        //车型
+        if (!isNull($("#lsxs_car_type").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写车型!";
+            return message;
+        }
+
+        //临时车牌号
+        if (!isNull($("#lsxs_temp_number").textbox("getValue"))) {
+            message.type = false;
+            message.message = "必须填写临时车牌号!";
+            return message;
+        }
+
+      
+       
+
+        return message;
+    }
+
+    function getDataLSXS() {
+        var data = {};
+        data.birthday = $("#lsxs_birth_date").textbox("getValue");//出生日期
+        data.id_card = $("#lsxs_id_card").textbox("getValue");//身份证
+
+        data.end_date = $("#lsxs_end_date").textbox("getValue");
+        data.phone = $("#lsxs_phone").textbox("getValue");
+        data.id_no = $("#lsxs_no").textbox("getValue");//驾驶证编号
+        data.name = $("#lsxs_name").textbox("getValue");//姓名
+        data.work_unit = $("#lsxs_work_unit").textbox("getValue");//单位
+
+        data.addr = $("#lsxs_now_addr").textbox("getValue");//住址
+        data.region_no = $("#lsxs_region").combobox("getValue");//地区
+        data.sex = $("#lsxs_sex").combobox("getValue");//性别
+        data.start_date = $("#lsxs_start_date").textbox("getValue");//开始日期
+        data.user_photo_base64 = $("#lsxs_user_info_input").attr("value");//人员信息照片
+
+        data.car_type = $("#lsxs_car_type").textbox("getValue");//车型
+        data.car_color = $("#lsxs_car_color").textbox("getValue");//颜色
+
+
+        data.cargo = $("#lsxs_cargo").textbox("getValue");//载货千克
+        data.passenger = $("#lsxs_passenger").textbox("getValue");//载客人数
+
+        data.vin = $("#lsxs_vin").textbox("getValue");//车架
+        data.engine_no = $("#lsxs_engine_no").textbox("getValue");//发动机号
+        data.temp_number = $("#lsxs_temp_number").textbox("getValue");//临时车牌
+        data.car_1_value = $("#car_1_value").attr("value");
+        data.car_2_value = $("#car_2_value").attr("value");
+
+        data.engine_no_value = $("#engine_no_value").attr("value");
+
+        data.vin_no_value = $("#vin_no_value").attr("value");
+       
+
+
+        return data;
+
+
+    }
+
+   
+    function submit() {
+
+        var message = validate_lsxs();
+
+        if (!message.type) {
+            alert(message.message);
+            return;
+        }
+        var data = {};
+
+        data.vin = $("#lsxs_vin").textbox("getValue");//车架
+        data.engine_no = $("#lsxs_engine_no").textbox("getValue");//发动机号
+        data.temp_number = $("#lsxs_temp_number").textbox("getValue");//临时车牌
+
+        var url = "../../api/DriverLicenseApi/validataTemp";
+        //校验是否存在
+        var valiMessage = {};
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (!ret.success) {
+                        alert(ret.message);
+                        return;
+                    } else {
+                        validataCallBack();//正式提交
+                    }
+                });
+        }
+
+    }
+
+    function validataCallBack() {
+
+        var data = getDataLSXS();
+
+        var url = "../../api/DriverLicenseApi/addLSXSDriverLicense";
+
+        if (data != undefined) {
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (ret.success) {
+                        alert("添加成功!");
+                        location.reload();
+                    } else {
+                        alert("添加失败!");
+                    }
+                });
+        }
+    }
+
+    function initModifyUser() {
+        var url = "../../api/DriverLicenseApi/initModifyUser";
+
+        $.post(url, {}, 'json')
+                .success(function (ret) {
+                    if (ret.success) {
+                        $("#modify_oper_id").textbox("setValue",ret.message);
+                    } else {
+                        alert("初始化填发员失败!请刷新页面!");
+                    }
+                });
+
+    }
+
+
+    $(function(){
+        initUI();
+        initCarNo_lsxs();
+        initPhotoDialog_lsxs();
+        initModifyUser();
+        selectFileAndDisplay("car_1_input", "car_1_img", "car_1_value");
+        selectFileAndDisplay("car_2_input", "car_2_img", "car_2_value");
+
+        selectFileAndDisplay("engine_no_input", "engine_no_img", "engine_no_value");
+        selectFileAndDisplay("vin_no_input", "vin_no_img", "vin_no_value");
+
+
+
+        $("#lsxs_select_user_info").click(function () {
+
+            $("#lsxs_photoDialog").dialog("open");
+
+        });
+
+        $("#lsxs_submit").click(function () {
+            submit();
+        })
+    })
+</script>
+}
+

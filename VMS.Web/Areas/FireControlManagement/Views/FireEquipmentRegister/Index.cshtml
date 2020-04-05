@@ -1,0 +1,256 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@section HeaderStyle{
+    <style type="text/css">
+        html, body {
+            height: 85%;
+            font-size: 12px;
+        }
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+
+        .item {
+            margin-bottom: 20px;
+        }
+
+        #content {
+            width: 600px;
+            margin: 30px 30px;
+            height: 100%;
+        }
+
+        textarea, input {
+            width: 400px;
+        }
+
+        #div-imgs {
+            height: 200px;
+            width: 400px;
+            overflow: scroll;
+        }
+
+        .imgs {
+            display: inline-block;
+            width: 300px;
+            height: 300px;
+            margin: 0 10px;
+        }
+
+        label {
+            width: 100px;
+        }
+
+        #div-imgs {
+            display: inline-block;
+        }
+    </style>
+}
+
+
+<div style="padding-left:10px;"><span style="color:blue">提示:</span>带<span class="red-star">*</span>号为必填项</div>
+<hr style="margin-top:0px;" />
+<div id="content">
+    <form action="javascript:submit()" id="equipment">
+        <div class="item" id="item-info">
+            <label>
+                <span class="red-star">*</span>设备信息：
+            </label>
+            <input class="easyui-textbox" name="name" required>
+            <a href="javascript:addItem()" class="easyui-linkbutton" plain="true" iconcls="icon-add"></a>
+        </div>
+        
+        <div class="item">
+            <label><span class="red-star">*</span>负责人：</label>
+
+            <input class="easyui-textbox" id="liable" name="liable" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>安装地址：
+            </label>
+            <textarea class="easyui-textbox" rows="3" name="address" id="address" required></textarea>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>安装时间：
+            </label>
+            <input class="easyui-datetimebox" id="datetime" name="datetime" required>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>用途描述：
+            </label>
+            <textarea class="easyui-textbox" rows="3" name="desc" id="desc" required></textarea>
+        </div>
+        <div class="item">
+            <label>
+                <span class="red-star">*</span>上传图片：
+            </label>
+            <a href="javascript:$('#dlg-img').dialog('open').dialog('center');" id="btn-select" class="easyui-linkbutton">选择</a>
+            <input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple/>
+        </div>
+        <div style="text-align:center;">
+            <button type="reset" id="btn-rest" class="btn btn-primary btn-sm">重置</button>
+            <button id="btn-submit" type="submit" class="btn btn-info btn-sm">提交</button>
+        </div>
+    </form>
+</div>
+
+<div id="dlg-img" class="easyui-dialog" title="图片" style="width:89%; height:100%; padding:10px; text-align:center;"
+     data-options="
+                closed:true,
+                modal:true,
+				iconCls: 'icon-save',
+				toolbar: [{
+					text:'选择图片',
+					iconCls:'icon-add',
+					handler:function(){
+						$('#imgs').trigger('click');
+					}
+				},'-',{
+					text:'清空图片',
+					iconCls:'icon-remove',
+					handler:function(){
+                        $('#img-show').prop('src', '');
+					    imgBase = null;
+                        imgIndex = 0;
+                        cimgs = [];
+                        resetImgs();
+                    }
+				},'-',{
+					text:'上一张',
+					handler:function(){
+						if (imgIndex > 0 && imgBase && imgBase.length > 1) {
+                            imgIndex--;
+                             $('#img-show').prop('src', imgBase[imgIndex]);
+                        }
+					}
+				},'-',{
+					text:'下一张',
+					handler:function(){
+						if (imgIndex >= 0 && imgBase && imgBase.length > imgIndex + 1 && imgBase[imgIndex + 1] != '') {
+                            imgIndex++;
+                            $('#img-show').prop('src', imgBase[imgIndex]);
+                        }
+					}
+				}],
+				buttons: [{
+					text:'确定',
+					iconCls:'icon-ok',
+					handler:function(){
+                         $('#dlg-img').dialog('close');
+                    }
+               }]
+     ">
+    <img id="img-show" />
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        var imgBase;
+        var imgIndex = -1;
+        let count = 0;
+        var cimgs = [];
+        function resetImgs() {
+            $("#imgs").remove();
+            $('#btn-select').after('<input type="file" id="imgs" accept="image/png, image/jpeg, image/jpg" style="display:none;" multiple />');
+            $('#imgs').on('change', change);
+        }
+        $('#imgs').on('change', change);
+        function change() {
+            var objThis = $('#imgs')[0];
+            var imgs = objThis.files;
+            if (imgs && imgs.length > 0) {
+                // 原始FileList对象不可更改，所以将其赋予cimgs提供接下来的修改
+                Array.prototype.push.apply(cimgs, imgs);
+                var fileIndex = 0;
+                var reader = new FileReader();
+                imgBase = new Array(imgs.length);
+                reader.readAsDataURL(imgs[fileIndex]);
+                reader.onabort = function (e) {
+                    console.log("文件读取异常" + imgs[fileIndex].name);
+                };
+
+                reader.onerror = function (e) {
+                    console.log("文件读取出现错误" + imgs[fileIndex].name);
+                };
+                reader.onload = function (e) {
+                    if (e.target.result) {
+                        imgBase[fileIndex] = e.target.result;
+                        fileIndex++;
+                        if (fileIndex < imgs.length) {
+                            reader.readAsDataURL(imgs[fileIndex]);
+                        } else {
+                            imgIndex = 0;
+                            $('#img-show').prop('src', imgBase[0]);
+                        }
+                    }
+                };
+            }
+
+        }
+
+        function submit() {
+            if (!cimgs || cimgs.length == 0) {
+                $.messager.alert('提示', '请先选择图片');
+                return false;
+            }
+            var formData = new FormData(document.getElementById("equipment"));
+            formData.delete('name');
+            var names = document.getElementsByName('name');
+            var name = '';
+            for (var j = 0; j < names.length; j++) {
+                name += names[j].value;
+                if (j < names.length - 1) {
+                    name += '=>';
+                }
+            }
+            formData.append('name', name);
+            for (var i = 0; i < cimgs.length; i++) {
+                formData.append('imgs[]', cimgs[i]);
+            }
+            $.ajax({
+                url: "../../api/FireControlApi/addFireEquipMent",
+                type: "POST",
+                data: formData,
+                async: false,
+                contentType: false,
+                processData: false,
+                success: function (ret) {
+                    if (ret.success) {
+                        $.messager.alert('提示', '添加成功', 'info', function (r) {
+                            location.reload();
+                        });
+                    } else {
+                        $.messager.alert('提示', '添加失败');
+                    }
+                }
+            });
+        }
+
+        function addItem() {
+            $('#item-info').after("<div class='item'><label><span class='red-star'></span></label><input class='easyui-textbox' name='name' required></div>");
+            $.parser.parse($('#content'));
+        }
+    </script>
+}

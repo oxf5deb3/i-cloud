@@ -1,0 +1,391 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+
+</style>
+}<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" class="easyui-linkbutton" onclick="add()" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+        <a href="#" class="easyui-linkbutton" onclick="edit()" data-options="iconCls:'icon-edit'" style="width:60px">编辑</a>
+        <a href="#" class="easyui-linkbutton" onclick="del()" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+    </div>
+    <hr />
+</div>
+<table id="dg"></table>
+<div id="dlg" class="easyui-dialog" style="display:none;width:600px;height:400px;padding:0px"
+     closed="true" buttons="#dlg-buttons">
+    <div id="tt" class="easyui-tabs" style="width:100%;height:310px;">
+        <div title="基本信息" style="padding:10px;display:none;">
+            <table style="width:100%;height:130px;table-layout:fixed;border-collapse: collapse;">
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</label></td>
+                    <td style="width:100%;"><input id="user_id" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</label></td>
+                    <td style="width:100%;"><input id="user_pwd" type="text" /></td>
+                </tr>
+
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>用&nbsp;户&nbsp;名：</label></td>
+                    <td style="width:100%;"><input id="user_name" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</label></td>
+                    <td style="width:100%;"><input id="sex" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</label></td>
+                    <td style="width:100%;"><input id="age" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</label></td>
+                    <td style="width:100%;"><input id="tel" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label></td>
+                    <td style="width:100%;"><input id="email" type="text" /></td>
+                </tr>
+                <tr>
+                    <td style="width:80px;text-align:right;"><label>状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</label></td>
+                    <td>
+                        <label>
+                            <input type="radio" name="status" id="ck_active" value="0" checked>
+                            正常
+                        </label>
+                        <label>
+                            <input type="radio" name="status" id="ck_stop" value="1">
+                            停用
+                        </label>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+        <div title="所属角色" data-options="closable:false" style="overflow:auto;display:none;">
+            <table style="table-layout:fixed;width:100%;height:100%;">
+                <tr style="height: 20px;border-bottom:2px solid #c7c7c7"><td colspan="2"><span style="color:red;">提示：</span><span style="color:blue;">双击选中</span>左侧表格当前行角色到右侧表格作为该用户所属角色,同时双击右侧表格数据可进行删除操作.</td></tr>
+                <tr>
+                    <td style="width:50%">
+                        <table id="dgAllRole" style="height:100%;width:100%;"></table>
+                    </td>
+                    <td style="width:50%">
+                        <table id="dgSelectedRole" style="height:100%;width:100%;"></table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div id="dlg-buttons" style="display:none;">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" onclick="save()" style="width:90px"><i class="glyphicon glyphicon-ok"></i>确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')" style="width:90px"><i class="glyphicon glyphicon-remove"></i>取消</a>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+     function initTabGrid(){
+       var gridall=$('#dgAllRole');
+       var gridselected = $('#dgSelectedRole');
+       var url="../../api/RoleApi/QueryAll";
+       var gridOpts = {
+           url:url,
+           pagination:false,
+           pageSize:15,
+           pageList:[15,20,30,40,50],
+           checkOnSelect:true,
+           striped:true,
+           showHeader:true,
+           singleSelect:true,
+           rownumbers:true,
+           onDblClickRow:function(index,row){
+                var rightRow = {id:row.id,role_name:row.role_name};
+                var rightAllRow = gridselected.datagrid('getRows');
+                var index=-1;
+                $.each(rightAllRow,function(inx,el){
+                       if(rightRow.id==el.id){index=inx;return false;}
+                });
+                if(index>=0){
+                  gridselected.datagrid('selectRow',index);
+                }else{
+                  gridselected.datagrid('appendRow',rightRow);
+                }
+
+           },
+           onLoadError:function(){},
+           columns:[[
+               {field:'role_name',title:'角色名称',width:120,halign:'center',align:'left'},
+               {field:'status',title:'状态',width:60,halign:'center',align:'left',formatter:function(value,row,index){
+                       if(value=='0') return '<span style="color:blue">正常</span>';
+                       return '<span style="color:red">停用</span>';
+                 }}
+           ]]
+       };
+       gridall.datagrid(gridOpts);
+       gridOpts = {
+           pagination:false,
+           checkOnSelect:true,
+           striped:true,
+           showHeader:true,
+           checkbox:true,
+           singleSelect:true,
+           rownumbers:true,
+           onDblClickRow:function(index,row){
+             $(this).datagrid('deleteRow',index);
+           },
+           onLoadError:function(){},
+           width:'100%',
+           height:'100%',
+           columns:[[
+               {field:'role_name',title:'角色名称',width:100,halign:'center',align:'left'}
+           ]]
+       };
+      gridselected.datagrid(gridOpts);
+    }
+     function initDialog(){
+         $('#user_id').textbox({
+               width:'50%',
+               required:true,
+               validType:['length[0,10]']
+               });
+         $('#user_pwd').passwordbox({
+              showEye: true,
+              width:'50%',
+              required:true,
+          });
+         $('#user_name').textbox({
+               width:'50%',
+                required:true,
+               });
+         $('#sex').combobox({
+             panelHeight:80,
+             editable:false,
+             width:70,
+             data:[{id:0,text:'男'},{id:1,text:'女'}],
+             valueField:'id',
+             textField:'text'
+          });
+          $('#age').numberbox({
+             min:0,
+             width:70,
+             precision:0
+            });
+         $('#tel').textbox({
+               width:150,
+               required:true,
+               });
+         $('#email').textbox({
+               width:150,
+               required:true,
+               validType:['email','length[0,20]']
+               });
+          $('#dlg').dialog({
+           onClose:function(){ reload();}
+         });
+        }
+    function getData(){
+        var user_id = $('#user_id').textbox('getValue');
+        var user_pwd = $('#user_pwd').passwordbox('getValue');
+        var user_name = $('#user_name').textbox('getValue');
+        var sex = $('#sex').combobox('getValue');
+        var age = $('#age').numberbox('getValue');
+        var tel = $('#tel').textbox('getValue');
+        var email = $('#email').textbox('getValue');
+        var status = $('#ck_active').is(':checked')==true?'0':'1';
+        var roles = $('#dgSelectedRole').datagrid('getRows');
+        return {status:status,user_id:user_id,user_pwd:user_pwd,user_name:user_name,sex:sex,age:age,tel:tel,email:email,roles:roles};
+    }
+    function setData(data){
+        $('#user_id').textbox('setValue',data.user_id);
+        $('#user_pwd').passwordbox('setValue',data.user_pwd);
+        $('#user_name').textbox('setValue',data.user_name);
+        $('#sex').combobox('setValue',data.sex);
+        $('#age').numberbox('setValue',data.age);
+        $('#tel').textbox('setValue',data.tel);
+        $('#email').textbox('setValue',data.email);
+        $('#ck_active').attr("checked",true);
+        if('0'!=data.status){
+          $('#ck_stop').attr("checked",true);
+        }
+    }
+    function setEnable(enable){
+        if(enable){
+           $('#user_id').textbox('enable');
+        }else{
+           $('#user_id').textbox('disable');
+        }
+
+    }
+    function clear(){
+        $('#user_id').textbox('setValue','');
+        $('#user_pwd').passwordbox('setValue','');
+        $('#user_name').textbox('setValue','');
+        $('#sex').combobox('setValue','0');
+        $('#age').numberbox('setValue','');
+        $('#tel').textbox('setValue','');
+        $('#email').textbox('setValue','');
+        $('#dgSelectedRole').datagrid('loadData',[]);
+    }
+    function add(){
+        clear();
+        setEnable(true);
+        $('#dlg').dialog('open').dialog('setTitle','新增用户');
+        $('#dlg').dialog('options').status=1;
+    }
+    function edit(){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if(selectedRow==null) {
+          $.messager.alert('提示','请先选中一行需要编辑的数据!','info');
+          return ;
+        }
+        clear();
+        $.post('/api/UserApi/FindUserById',{user_id:selectedRow.user_id},'json')
+        .success(function(ret){
+           if(ret.success){
+              setData(ret.data);
+           }
+        })
+         $.post('/api/UserApi/FindOperRoleById',{user_id:selectedRow.user_id},'json')
+        .success(function(ret){
+           if(ret.success){
+              $('#dgSelectedRole').datagrid('loadData',ret.data);
+           }
+        })
+        setEnable(false);
+        $('#dlg').dialog('open').dialog('setTitle','编辑用户');
+        $('#dlg').dialog('options').status=0;
+    }
+    function del(){
+        var checked = $('#dg').datagrid('getChecked');
+        if(checked.length<=0)
+        {
+           $.messager.alert('提示','请先勾选需要删除的数据!','info');
+           return ;
+        }
+     url = "/api/UserApi/Del";
+     $.messager.confirm({
+      title:'提示',
+      msg:'确认删除？',
+      fn:function(r){
+        if(r){
+                 $.post(url,{deleted:checked},function(ret){
+              if(ret.success)
+             {
+                reload();
+                $.messager.alert('提示','删除的数据成功!','info');
+              }else{
+                  if($.trim(ret.message)!='')
+                 {
+                      $.messager.alert('提示',ret.message,'info');
+                  }else{
+                      $.messager.alert('提示','删除的数据失败!','info');
+                  }
+            }
+         });
+         }
+        }})
+
+    }
+   function save(){
+       var data = getData();
+       var url = "/api/UserApi/Add";
+       var msg = "添加";
+       var status = $('#dlg').dialog('options').status;
+       if(status!='1')
+      {
+         msg = "修改";
+         url="/api/UserApi/Edit";
+        data.id = $('#dg').datagrid('getSelected').id;
+       }
+
+        $.post(url,data,function(ret){
+           if(ret.success){
+
+            $.messager.alert('提示',msg+'成功!','info');
+           }else{
+             if($.trim(ret.message)!=''){
+                 $.messager.alert('提示',ret.message,'info');
+              }else{
+                 $.messager.alert('提示',msg+'失败!','info');
+              }
+           }
+        });
+
+    }
+    function reload(){
+       $('#dg').datagrid('reload');
+    }
+    var resizeTimer = null;
+    function resize(){
+     $(window).bind('resize', function (){
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function(){
+                $('#dg').datagrid('resize',{width:'100%'});
+        } , 500);
+      });
+    }
+
+
+     function initGrid(){
+         var height = $(window).height() - $('.q-condition').outerHeight() - 15;
+     var url = "/api/UserApi/Query";
+     $('#dg').datagrid({
+           url:url,
+           pagination:true,
+           pageSize:15,
+           pageList:[15,20,30,40,50],
+           checkOnSelect:true,
+           striped:true,
+           showHeader:true,
+           checkbox:true,
+           //singleSelect:true,
+           rownumbers:true,
+           onLoadError:function(){},
+           //toolbar: '#toolbar',
+           width:'100%',
+           height:height,
+           columns:[[
+               {field:'ck',checkbox:true},
+               {field:'user_id',title:'账号',width:80,halign:'center',align:'left'},
+               {field:'user_name',title:'名称',width:100,halign:'center',align:'left'},
+               {field:'sex',title:'性别',width:50,halign:'center',align:'left',
+                formatter:function(value,row,index){
+                      if('0'==value) return '男';
+                      return '女';
+                }},
+               {field:'age',title:'年龄',width:50,halign:'center',align:'left'},
+               {field:'tel',title:'联系电话',width:100,halign:'center',align:'left'},
+               {field:'email',title:'邮箱',width:130,halign:'center',align:'left'},
+               {field:'status',title:'状态',width:50,halign:'center',align:'left',formatter:function(value,row,index){
+                       if('0'==value) return '正常';
+                        return '停用';
+                }},
+               {field:'last_login_time',title:'最后登录时间',width:150,halign:'center',align:'left'},
+               {field:'create_date',title:'创建时间',width:150,halign:'center',align:'left'},
+           ]]
+     });
+    }
+
+
+     $(function(){
+     initGrid();
+     initDialog();
+     initTabGrid();
+     resize();
+     });
+
+</script>
+
+
+
+}

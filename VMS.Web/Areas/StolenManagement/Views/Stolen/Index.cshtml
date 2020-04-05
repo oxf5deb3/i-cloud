@@ -1,0 +1,360 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <style type="text/css">
+        html, body {
+            font-size: 12px;
+            height: 85%;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        #query-params {
+            width: 100%;
+            margin: 10px 0px 10px 0px;
+        }
+
+        label {
+            width: 105px;
+        }
+
+        form input {
+            width: 500px;
+        }
+
+        .red-star {
+            color: red;
+        }
+        .td-trailer {
+            width: 300px;
+        }
+        .div-tabs {
+            width: 100%;
+            padding: 10px;
+        }
+        .div-tabs-div {
+            width: 50%;
+            float: left;
+            padding: 5px;
+        }
+    </style>
+}
+
+    @*<div id="query-params">
+        <span>工作情况(起)：</span><input class="easyui-datetimebox" id="startTime" />
+        <span>工作情况(止)：</span><input class="easyui-datetimebox" id="endTime" />
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a>
+    </div>*@
+    <div class="q-condition">
+        <div class="btn-container">
+            <a href="#" class="easyui-linkbutton" onclick="add()" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+            <a href="#" class="easyui-linkbutton" onclick="upDate()" data-options="iconCls:'icon-edit'" style="width:60px">编辑</a>
+            <a href="#" class="easyui-linkbutton" onclick="del()" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+        </div>
+        <hr />
+    </div>
+<table id="dataGrid"></table>
+<div id="print" style="display:none;">
+</div>
+<div id="bb" style="display:none;">
+    <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
+    <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
+</div>
+
+
+<div id="dlg" class="easyui-dialog" style="width:800px; padding: 10px 20px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="accident" method="post" novalidate style="margin:0; padding:0px 0px">
+        <input type="hidden" name="stolenId" id="stolenId" />
+        <div style="padding:20px;">
+            <div class="div-tabs-div">
+                <label>
+                    <span class="red-star">*</span>受理案件：
+                </label>
+                <input class="easyui-textbox" name="acceptingCases" id="acceptingCases" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    <span class="red-star">*</span>被盗大车：
+                </label>
+                <input class="easyui-textbox" name="totalStolenCarBig" id="totalStolenCarBig" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    <span class="red-star">*</span>被盗小车：
+                </label>
+                <input class="easyui-textbox" name="totalStolenCarSmall" id="totalStolenCarSmall" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    <span class="red-star">*</span>被盗摩托车：
+                </label>
+                <input class="easyui-textbox" name="totalStolenCarMotorcycle" id="totalStolenCarMotorcycle" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    追回大车：
+                </label>
+                <input class="easyui-textbox" name="recoverBigCar" id="recoverBigCar" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    追回小车：
+                </label>
+                <input class="easyui-textbox" name="recoverSmallCar" id="recoverSmallCar" style="width:160px">
+            </div>
+
+            <div class="div-tabs-div">
+                <label>
+                    追回摩托车：
+                </label>
+                <input class="easyui-textbox" name="recoverMotorcyle" id="recoverMotorcyle" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    <span class="red-star">*</span>未查获车辆：
+                </label>
+                <input class="easyui-textbox" name="undetected" id="undetected" style="width:160px">
+            </div>
+            <div class="div-tabs-div">
+                <label>
+                    <span class="red-star">*</span>备注：
+                </label>
+                <input class="easyui-textbox" name="remark" id="remark" style="width:160px">
+            </div>
+        </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        function print() {
+            var body = $('#print').dialog('body');
+            var oWin = window.open("", "_blank");
+            oWin.document.write(body.html());
+            oWin.focus();
+            oWin.document.close();
+            oWin.print();
+            oWin.close();
+            return false;
+        }
+        function cancelPrint() {
+            $('#print').dialog('close');
+        }
+        function initPrint() {
+            ////var rows = $('#dataGrid').datagrid('getSelections');
+            ////var ids = new Array(rows.length);
+            ////for (var i = 0; i < rows.length; i++) {
+            ////    ids[i] = rows[i].trailerNo;
+            ////}
+            $('#print').dialog({
+                width: 800,
+                height: 470,
+                noheader: true,
+                border: false,
+                modal: true,
+                href: '/PrintTemplate/TrailerTemplate.html',
+                queryParams: { startTime: $("#startTime").val(), endTime: $("#endTime").val()},
+                buttons: '#bb'
+            });
+            $('#print').dialog('open');
+        }
+        function showPrint() {
+            //var ckRows = $('#dataGrid').datagrid('getChecked');
+            //if (ckRows.length <= 0) {
+            //    $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+            //    return;
+            //}
+            //$('#dataPrint').datagrid('load', getListParams());
+            initPrint();
+        }
+
+        $('#dataGrid').datagrid({
+            columns: [[
+                { field: 'ck', checkbox: true, width: 60},
+                { field: 'stolenId', title: '编号', halign: 'center', align: 'center', width: 70 ,hidden: true },
+                { field: 'acceptingCases', title: '受理案件', halign: 'center', align: 'center', width: 60 },
+                { field: 'totalStolenCarBig', title: '被盗大车', halign: 'center', align: 'center', width: 60 },
+                { field: 'totalStolenCarSmall', title: '被盗小车', halign: 'center', align: 'center', width: 60 },
+                { field: 'totalStolenCarMotorcycle', title: '被盗摩托车', halign: 'center', align: 'center', width: 60 },
+                { field: 'recoverBigCar', title: '追回大车', halign: 'center', align: 'center', width: 60 },
+                { field: 'recoverSmallCar', title: '追回小车', halign: 'center', align: 'center', width: 60 },
+                { field: 'recoverMotorcyle', title: '追回摩托车', halign: 'center', align: 'center' ,width: 60},
+                { field: 'undetected', title: '未追回', halign: 'center', align: 'center' ,width: 60},
+                { field: 'remark', title: '备注', halign: 'center', align: 'center', width: 60 },
+            ]],
+            url: '/api/StolenApi/QueryStolen',
+            //toolbar: '#toolbar',
+            height: $(window).height() * 0.85,
+            pagination: true,
+            pageList: [10, 20, 50],
+            fitColumns: true,
+            checkOnSelect: true,
+            checkbox: true,
+            striped: true,
+            rownumbers: true,
+            showHeader: true,
+            queryParams: getListParams()
+        });
+        function getListParams() {
+            return {
+            }
+        }
+
+
+        function add() {
+            clear();
+            $('#dlg').dialog('open').dialog('setTitle', '新增工作记录');
+            $('#dlg').dialog('options').status = 1;
+        }
+
+
+
+
+        function query() {
+            $('#dataGrid').datagrid('load', getListParams());
+        }
+        function del() {
+            var rows = $('#dataGrid').datagrid('getSelections');
+            if (rows && rows.length > 0) {
+                var ids = new Array(rows.length);
+                for (var i = 0; i < rows.length; i++) {
+                    ids[i] = rows[i].stolenId;
+                }
+                $.messager.confirm('提示', '请确定要删除该记录？', function (r) {
+                    if (r) {
+                        $.ajax({
+                            url: '/api/StolenApi/DeleteStolen',
+                            method: 'get',
+                            dataType: 'json',
+                            data: { id: ids.join(",") },
+                            success: function (result) {
+                                if (result.success) {
+                                    $.messager.alert("提示", "删除成功");
+                                    $('#dataGrid').datagrid('reload');
+                                } else {
+                                    $.messager.alert("提示", "删除失败");
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                $.messager.alert("提示", "请先选择至少一条记录");
+            }
+
+        }
+
+        function reload() {
+            $('#dlg').dialog('close');        // close the dialog
+            $('#dataGrid').datagrid('reload');
+        }
+
+        function clear() {
+            $('#stolenId').val('');
+            $('#acceptingCases').textbox('setValue', "");
+            $('#totalStolenCarBig').textbox('setValue', "");
+            $('#totalStolenCarSmall').textbox('setValue', "");
+            $('#totalStolenCarMotorcycle').textbox('setValue', "");
+            $('#recoverBigCar').textbox('setValue', "");
+            $('#recoverSmallCar').textbox('setValue', "");
+            $('#recoverMotorcyle').textbox('setValue', "");
+            $('#undetected').textbox('setValue', "");
+            $('#remark').textbox('setValue', "");
+            
+        }
+
+        function setData(data) {
+            $('#stolenId').val(data.stolenId);
+            $('#acceptingCases').textbox('setValue', data.acceptingCases);
+            $('#totalStolenCarBig').textbox('setValue', data.totalStolenCarBig);
+            $('#totalStolenCarSmall').textbox('setValue', data.totalStolenCarSmall);
+            $('#totalStolenCarMotorcycle').textbox('setValue', data.totalStolenCarMotorcycle);
+            $('#recoverBigCar').textbox('setValue', data.recoverBigCar);
+            $('#recoverSmallCar').textbox('setValue', data.recoverSmallCar);
+            $('#recoverMotorcyle').textbox('setValue', data.recoverMotorcyle);
+            $('#undetected').textbox('setValue', data.undetected);
+            $('#remark').textbox('setValue', data.remark);
+        }
+
+        function getData() {
+            var data = {
+                stolenId: $('#stolenId').val(),
+                acceptingCases: $('#acceptingCases').val(),
+                totalStolenCarBig: $('#totalStolenCarBig').val(),
+                totalStolenCarSmall: $('#totalStolenCarSmall').val(),
+                totalStolenCarMotorcycle: $('#totalStolenCarMotorcycle').val(),
+                recoverBigCar: $('#recoverBigCar').val(),
+                recoverSmallCar: $('#recoverSmallCar').val(),
+                recoverMotorcyle: $('#recoverMotorcyle').val(),
+                undetected: $('#undetected').val(),
+                remark: $('#remark').val(),
+            }
+            return data;
+        }
+
+        function upDate() {
+            var selectedRow = $('#dataGrid').datagrid('getSelected');
+            if (selectedRow == null) {
+                $.messager.alert('提示', '请先选中一行需要编辑的数据!', 'info');
+                return;
+            }
+            clear();
+            setData(selectedRow);
+            $('#dlg').dialog('open').dialog('setTitle', '编辑拖车记录');
+            $('#dlg').dialog('options').status = 0;
+        }
+
+
+        function save() {
+            var data = getData();
+            var url = "/api/StolenApi/AddStolen";
+            var msg = "添加";
+            var status = $('#dlg').dialog('options').status;
+            if (status != '1') {
+                msg = "修改";
+                url = "/api/StolenApi/upDate";
+            }
+
+            $.post(url, data, function (ret) {
+                if (ret.success) {
+                    reload();
+                    $.messager.alert('提示', msg + '成功!', 'info');
+                } else {
+                    if ($.trim(ret.message) != '') {
+                        $.messager.alert('提示', ret.message, 'info');
+                    } else {
+                        $.messager.alert('提示', msg + '失败!', 'info');
+                    }
+                }
+            });
+
+        }
+        var now = new Date();
+        $('#timeBegin').datebox({
+            width: 180,
+            panelWidth: 180,
+            panelHeight: 180,
+            editable: false,
+        });
+        $('#timeEnd').datebox({
+            width: 180,
+            panelWidth: 180,
+            panelHeight: 180,
+            editable: false,
+            value: now.pattern('yyyy-MM-dd'),
+        });
+    </script>
+}

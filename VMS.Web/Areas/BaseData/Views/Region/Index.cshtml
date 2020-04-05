@@ -1,0 +1,206 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout="~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+<style type="text/css">
+    .textbox,.textbox-text
+    {
+      -moz-border-radius: 2px 2px 2px 2px;
+     -webkit-border-radius: 2px 2px 2px 2px;
+      border-radius: 2px 2px 2px 2px;
+    }
+
+</style>
+}
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#"  class="easyui-linkbutton" onclick="add()" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+        <a href="#"  class="easyui-linkbutton" onclick="edit()" data-options="iconCls:'icon-edit'" style="width:60px">编辑</a>
+        <a href="#"  class="easyui-linkbutton" onclick="del()" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+    </div>
+    <hr />
+</div>
+<table id="dg"></table>
+<div id="dlg" class="easyui-dialog" style="display:none;width:400px;height:280px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons">
+    <table style="width:100%;height:130px;table-layout:fixed;border-collapse: collapse;">
+        <tr>
+            <td style="width:80px;text-align:right;"><label>区域编码：</label></td>
+            <td style="width:100%;"><input id="regionno" type="text" /></td>
+        </tr>
+        <tr>
+            <td style="width:80px;text-align:right;"><label>区域名称：</label></td>
+            <td><input id="regionname" type="text" /></td>
+        </tr>
+        <tr>
+            <td style="width:80px;text-align:right;"><label>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</label></td>
+            <td><input id="memo" type="text" /></td>
+        </tr>
+    </table>
+</div>
+<div id="dlg-buttons" style="display:none;">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" onclick="save()" style="width:90px"><i class="glyphicon glyphicon-ok"></i>确定</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')" style="width:90px"><i class="glyphicon glyphicon-remove"></i>取消</a>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+
+    function getData(){
+        var region_no = $('#regionno').textbox('getValue');
+        var region_name = $('#regionname').textbox('getValue');
+        var memo = $('#memo').textbox('getValue');
+        return {region_no:region_no,region_name:region_name,memo:memo};
+    }
+    function setData(data){
+        $('#regionno').textbox('setValue',data.region_no);
+        $('#regionname').textbox('setValue',data.region_name);
+        $('#memo').textbox('setValue',data.memo);
+    }
+    function setEnable(enable){
+        if(enable){
+           $('#regionno').textbox('enable');
+        }else{
+           $('#regionno').textbox('disable');
+        }
+
+    }
+    function clear(){
+        $('#regionno').textbox('setValue','');
+        $('#regionname').textbox('setValue','');
+        $('#memo').textbox('setValue','');
+    }
+    function add(){
+        clear();
+        setEnable(true);
+        $('#dlg').dialog('open').dialog('setTitle','新增区域');
+        $('#dlg').dialog('options').status=1;
+    }
+    function edit(){
+        var selectedRow = $('#dg').datagrid('getSelected');
+        if(selectedRow==null) {
+          $.messager.alert('提示','请先选中一行需要编辑的数据!','info');
+          return ;
+        }
+        clear();
+        setData(selectedRow);
+        setEnable(false);
+        $('#dlg').dialog('open').dialog('setTitle','编辑区域');
+        $('#dlg').dialog('options').status=0;
+    }
+    function del(){
+        var checked = $('#dg').datagrid('getChecked');
+        if(checked.length<=0)
+        {
+           $.messager.alert('提示','请先勾选需要删除的数据!','info');
+           return ;
+        }
+         url = "/api/RegionApi/Del";
+        $.post(url,{deleted:checked},function(ret){
+              if(ret.success)
+             {
+                reload();
+                $.messager.alert('提示','删除的数据成功!','info');
+              }else{
+                  if($.trim(ret.message)!='')
+                 {
+                      $.messager.alert('提示',ret.message,'info');
+                  }else{
+                      $.messager.alert('提示','删除的数据失败!','info');
+                  }
+            }
+         });
+    }
+   function save(){
+       var data = getData();
+       var url = "/api/RegionApi/Add";
+       var msg = "添加";
+       var status = $('#dlg').dialog('options').status;
+       if(status!='1')
+      {
+         msg = "修改";
+         url="/api/RegionApi/Edit";
+       }
+
+        $.post(url,data,function(ret){
+           if(ret.success){
+            reload();
+            $.messager.alert('提示',msg+'成功!','info');
+           }else{
+             if($.trim(ret.message)!=''){
+                 $.messager.alert('提示',ret.message,'info');
+              }else{
+                 $.messager.alert('提示',msg+'失败!','info');
+              }
+           }
+        });
+
+    }
+    function reload(){
+       $('#dg').datagrid('reload');
+    }
+    var resizeTimer = null;
+    function resize(){
+     $(window).bind('resize', function (){
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function(){
+             
+                $('#dg').datagrid('resize',{width:'100%'});
+        } , 500);
+      });
+    }
+
+
+     $(function(){
+        function initDialog(){
+         $('#regionno').textbox({
+               width:'100%',
+               required:true,
+               });
+         $('#regionname').textbox({
+               width:'100%',
+               required:true,
+               });
+         $('#memo').textbox({
+               width:'100%',
+              multiline:true,
+              height:'50px'
+               });
+        }
+     function initGrid(){
+         var height = $(window).height() - $('.q-condition').outerHeight() - 15;
+     var url = "/api/RegionApi/Query";
+     $('#dg').datagrid({
+           url:url,
+           pagination:true,
+           pageSize:15,
+           pageList:[15,20,30,40,50],
+           checkOnSelect:true,
+           striped:true,
+           showHeader:true,
+           checkbox:true,
+           //singleSelect:true,
+           rownumbers:true,
+           onLoadError:function(){},
+           //toolbar: '#toolbar',
+           width:'100%',
+           height:height,
+           columns:[[
+               {field:'ck',checkbox:true},
+               {field:'region_no',title:'区域编码',width:80,halign:'center',align:'left'},
+               {field:'region_name',title:'区域名称',width:150,halign:'center',align:'left'},
+               {field:'memo',title:'备注',width:100,halign:'center',align:'left'}
+           ]]
+     });
+    }
+     initGrid();
+     initDialog();
+     resize();
+     });
+
+</script>
+
+
+
+}

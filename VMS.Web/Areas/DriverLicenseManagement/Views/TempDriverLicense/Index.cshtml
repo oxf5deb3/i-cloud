@@ -1,0 +1,415 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+    </style>
+}
+
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" id="btnQuery" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:60px">查询</a>
+        <a href="#" id="btnPrint" class="easyui-linkbutton" data-options="iconCls:'icon-print'" style="width:60px">打印</a>
+        <a href="#" id="btnEdit" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" style="width:60px">修改</a>
+    </div>
+    <hr />
+    <table>
+        <tr>
+            <td style="width:250px;display:none"> 驾驶证编号：<input class="easyui-textbox" id="id_no" style="width:150px"></td>
+            <td style="width:250px;">姓名：<input class="easyui-textbox" id="name" style="width:150px"></td>
+            <td style="width:100%"></td>
+        </tr>
+        <tr style="display:none">
+            <td>准驾车型：<input id="car_type" style="width:150px"></td>
+        </tr>
+    </table>
+</div>
+<hr />
+    <table id="dgDetail"></table>
+
+<div id="print" style="display:none;"></div>
+<div id="bb" style="display:none;">
+    <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="print()" data-options="plain:true">打印</a>
+    <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancelPrint()" data-options="plain:true">取消</a>
+</div>
+<div id="dlg-edit" class="easyui-dialog" style="width:630px;" data-options="title:'临时驾驶证',closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+    <form id="license" method="post" novalidate style="margin:0; padding:10px 10px">
+        <input type="hidden" name="id" id="id" required />
+        <table style="border-collapse:collapse;table-layout:fixed;margin-left:10px;margin-right:10px;width:98%;height:350px;">
+            <tr>
+                <td style="width:100px;text-align:right;"><span class="red-star">*</span>临时驾驶证编号:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="id_no" id="ls_no" readonly required></td>
+                <td style="width:100px;text-align:right;"><span class="red-star">*</span>姓名:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="name" id="name" required></td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>性别:</td>
+                <td style="width:200px;"><input name="sex" id="sex" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>出生日期:</td>
+                <td style="width:100%;"><input class="easyui-datebox" name="birthday" id="birth_date" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>地区:</td>
+                <td style="width:200px;"><input name="region_no" id="region" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>国籍:</td>
+                <td style="width:100%;"><input name="nation_no" id="nation" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>现住址:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="now_addr" id="now_addr" required></td>
+                <td style="width:120px;text-align:right;">原住址:</td>
+                <td style="width:100%;"><input class="easyui-textbox" name="old_addr" id="old_addr"></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>准驾车型:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="permitted_card_type_no" id="car_type_1" required></td>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>民族:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="folk" id="folk" required></td>
+            </tr>
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>有效期:</td>
+                <td colspan="3" style="width:200px;"><input class="easyui-datebox" name="start_date" id="start_date" required>&nbsp;&nbsp;至&nbsp;&nbsp;<input class="easyui-datebox" name="end_date" id="end_date" required></td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>人员信息像:</td>
+                <td><button type="button" class="btn btn-info btn-sm" style="width:78px" id="zs_select_user_info">拍照</button></td>
+                <td><img src="#" id="zs_user_info_photo" style=" height: 80px;width: 100px;display:none" /></td>
+                <td><input type="hidden" class="easyui-textbox" name="user_photo_base64" id="zs_user_info_input" value="" required /></td>
+            </tr>
+
+            <tr>
+                <td style="width:120px;text-align:right;"><span class="red-star">*</span>填发员:</td>
+                <td style="width:200px;"><input class="easyui-textbox" name="modify_oper_id" id="modify_oper_id" required readonly></td>
+                
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg-edit').dialog('close')" style="width:90px">取消</a>
+</div>
+
+<div id="zs_photoDialog">
+    <table>
+        <tr>
+            <td><video id="zs_userinfo_video" width="300" height="200" autoplay="autoplay"></video></td>
+            <td><button type="button" class="btn btn-primary btn-sm" style="width:78px" onclick="takePhoto('zs_userinfo_video', 'zs_userinfo_canvas')">拍照</button></td>
+            <td><button id="zs_userinfo_clean" class="btn btn-primary btn-sm" onclick="cleanCanvas(this.id)" type="button">重置</button></td>
+            <td><canvas id="zs_userinfo_canvas" width="300" height="200" /></td>
+        </tr>
+    </table>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $("#zs_select_user_info").click(function () {
+            $("#zs_photoDialog").dialog("open");
+        });
+        function save() {
+            if ($('#license').form('validate')) {
+                $.ajax({
+                    url: '/api/DriverLicenseApi/ModifyLsDriverLicense',
+                    method: 'post',
+                    dataType: 'json',
+                    data: $('#license').serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            $.messager.alert("提示", "修改成功");
+                            $('#dlg-edit').dialog('close');        // close the dialog
+                            $('#dgDetail').datagrid('reload');
+                        } else {
+                            $.messager.alert("提示", "修改失败");
+                        }
+                    }
+                });
+            }
+        }
+
+        $(function () {
+            initPhotoDialog();
+        });
+        var oldBase64 = null;
+        //初始化人员照片信息采集对话框
+        function initPhotoDialog() {
+            $('#zs_photoDialog').dialog({
+                title: '人员照片信息采集',
+                width: 800,
+                height: 500,
+                closed: true,
+                cache: false,
+                onOpen: function () {
+                    initPhoto("zs_userinfo_video");//初始化摄像头组件
+                },
+                onClose: function () {
+                    cleanCanvas("zs_userinfo_canvas");//清除缓存
+                    closePhoto("zs_userinfo_video");//关闭摄像头
+                },
+                buttons: [{
+                    text: '确定',
+                    handler: function () {
+                        var data = getCanvasForBase64("zs_userinfo_canvas");//获取照片转为base64
+                        $("#zs_user_info_photo").attr("src", data);//存储为缩略图
+                        if (oldBase64 == null) {
+                            oldBase64 = $('#zs_user_info_input').val();
+                        }
+                        $("#zs_user_info_input").attr("value", data.substring(data.indexOf(',') + 1));//将base64存储到隐藏域中,做非空校验
+                        $("#zs_user_info_photo").css("display", "");
+                        $("#zs_photoDialog").dialog("close");//关闭dialog
+                        cleanCanvas("zs_userinfo_canvas");//清除缓存
+                        closePhoto("zs_userinfo_video");//关闭摄像头
+                    }
+                }, {
+                    text: '取消',
+                    handler: function () {
+                        cleanCanvas("zs_userinfo_canvas");//清除缓存
+                        closePhoto("zs_userinfo_video");//关闭摄像头
+                        if (oldBase64 != null) {
+                            $("#zs_user_info_input").attr("value", oldBase64)// 还原数据
+                        }
+                        $("#zs_photoDialog").dialog("close");//关闭dialog
+
+                    }
+                }]
+            });
+        }
+        function print() {
+            var body = $('#print').dialog('body');
+            var oWin = window.open("", "_blank");
+            oWin.document.write(body.find("#content").html());
+            oWin.focus();
+            oWin.document.close();
+            oWin.print();
+            oWin.close();
+            return false;
+        }
+        function cancelPrint() {
+            $('#print').dialog('close');
+        }
+        function getQueryParams() {
+            var params = {};
+            var id_no = $('#id_no').textbox('getValue');
+            var name = $('#name').textbox('getValue');
+            var permitted_card_type = $('#car_type').combobox('getValue');
+            params.id_no = id_no;
+            params.name = name;
+            params.permitted_car_type_no = permitted_card_type;
+
+
+            return params;
+        }
+        function initPrint() {
+            $('#print').dialog({
+                    width:470,
+                    height:300,
+                    noheader:true,
+                    border:false,
+                    modal:true,
+                    onLoad:function(){
+                         var ckRows = $('#dgDetail').datagrid('getChecked');
+                         var data = ckRows[0];
+                         var birthday = new Date(data.birthday);
+                         var validdatestart = new Date(data.start_date);
+                         var validdateend = new Date(data.end_date);
+                         //var first_get_license_date = new Date(data.first_get_license_date);
+                         var body = $('#print').dialog('body');
+                         var html = body.html().replace(/_user_name/g,data.name).
+                         replace(/_sex/g,data.sex=='0'?'男':'女').
+                         replace(/_birthday_year/g,birthday.getFullYear()).
+                         replace(/_birthday_month/g,birthday.getMonth() + 1).
+                         replace(/_nation/g,data.nation_no).
+                         replace(/_car_type/g,data.permitted_card_type_no).
+                         replace(/_region_name/g,data.region_name).
+                         replace(/_valid_date_start_year/g,validdatestart.getFullYear()).
+                         replace(/_valid_date_start_month/g,validdatestart.getMonth() + 1).
+                         replace(/_valid_date_start_day/g,validdatestart.getDate()).
+                         replace(/_valid_date_end_year/g,validdateend.getFullYear()).
+                         replace(/_valid_date_end_month/g,validdateend.getMonth() + 1).
+                         replace(/_valid_date_end_day/g,validdateend.getDate()).
+                         replace(/\/images\/default.jpg/g,data.user_photo_path==null?'/images/default.jpg':'data:image/jpg;base64,'+data.user_photo_base64+'');
+                    body.html(html);
+                },
+                href: '/PrintTemplate/TempDriverLicenseTemplate.html',
+                buttons: '#bb'
+            });
+            $('#print').dialog('open');
+        }
+        function initBtn() {
+            $('#btnQuery').linkbutton({
+                onClick: function () {
+                    $('#dgDetail').datagrid('reload');
+                }
+
+            });
+            $('#btnPrint').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getChecked');
+                    if (ckRows.length <= 0) {
+                        $.messager.alert('提示', '请先选中一行需要打印的数据!', 'info');
+                        return;
+                    }
+                    initPrint();
+                }
+
+            });
+            $('#btnEdit').linkbutton({
+                onClick: function () {
+                    var ckRows = $('#dgDetail').datagrid('getSelected');
+                    if (ckRows) {
+                        ckRows.end_date = dateUtil(ckRows.end_date);
+                        ckRows.start_date = dateUtil(ckRows.start_date);
+                        ckRows.birthday = dateUtil(ckRows.birthday);
+                        $('#license').form('load', ckRows);
+                        $('#zs_user_info_photo').prop('src', 'data:image/jpeg;base64,' + ckRows.user_photo_base64).show();
+                        $('#dlg-edit').dialog('open').dialog('center');
+                    } else {
+                        $.messager.alert('提示', '请先选中一行数据!', 'info');
+                    }
+                }
+            });
+        }
+        function initQueryUI() {
+            $('#car_type').combobox({
+                valueField: 'type_no',
+                textField: 'type_name',
+            });
+            var url = '../../api/PermittedCarTypeApi/QueryAll';
+            $.post(url, {}, 'json')
+           .success(function (ret) {
+               if (ret.success) {
+                   $('#car_type').combobox('loadData', ret.data);
+               }
+           });
+
+        }
+        function editOne() {
+            var ckRows = $('#dgDetail').datagrid('getSelected');
+            if (ckRows) {
+                ckRows.end_date = dateUtil(ckRows.end_date);
+                ckRows.start_date = dateUtil(ckRows.start_date);
+                ckRows.birthday = dateUtil(ckRows.birthday);
+                $('#license').form('load', ckRows);
+                $('#zs_user_info_photo').prop('src', 'data:image/jpeg;base64,' + ckRows.user_photo_base64).show();
+                $('#dlg-edit').dialog('open').dialog('center');
+            } else {
+                $.messager.alert('提示', '请先选中一行数据!', 'info');
+            }
+        }
+        function initGrid() {
+            var height = $(document).height() - $('.q-condition').outerHeight(true) - 15;
+            var url = "/api/DriverLicenseApi/queryTemporaryDrivingLicense";
+            $('#dgDetail').datagrid({
+                url: url,
+                pagination: true,
+                pageSize: 12,
+                pageList: [12, 24, 36, 48, 60],
+                checkOnSelect: true,
+                striped: true,
+                showHeader: true,
+                checkbox: true,
+                singleSelect: true,
+                rownumbers: true,
+                onBeforeLoad: function (param) {
+                    var otherParams = getQueryParams();
+                    return $.extend(param, otherParams);
+                },
+                onLoadError: function () { },
+                toolbar: '#toolbar',
+                width: '100%',
+                height: height,
+                columns: [[
+                    { field: 'ck', checkbox: true },
+                    {
+                        field: 'id_no', title: '临时驾驶证编号', width: 120, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                            if (value != undefined) {
+                                var href = '<a style="text-decoration:underline" href="javascript:editOne();" >_txt</a>';
+                                return href.replace(/_txt/g, value);
+                            }
+                            return '';
+                        }  },
+                    { field: 'name', title: '姓名', width: 80, halign: 'center', align: 'left' },
+                    {
+                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                            if (value == '0') {
+                                return '男';
+                            }
+                            return '女';
+                        }
+                    },
+                    { field: 'nation_no', title: '国籍', width: 60, halign: 'center', align: 'left' }, 
+                    { field: 'now_addr', title: '现住址', width: 80, halign: 'center', align: 'left' },
+                    { field: 'permitted_card_type_no', title: '准驾车型', width: 60, halign: 'center', align: 'left' },
+                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' },
+                    { field: 'folk', title: '民族', width: 50, halign: 'center', align: 'left' },
+                    { field: 'start_date', title: '有效期起', width: 120, halign: 'center', align: 'left' },
+                    { field: 'end_date', title: '有效期止', width: 120, halign: 'center', align: 'left' },
+                    { field: 'modify_oper_id', title: '填发员', width: 80, halign: 'center', align: 'left' }
+                ]]
+            });
+        }
+        function initUI() {
+            initBtn();
+            initQueryUI();
+            initGrid();
+
+        }
+
+        $(function () {
+            initUI();
+            $('#sex').combobox({
+                valueField: 'id',
+                width: 158,
+                panelHeight: 70,
+                editable: false,
+                textField: 'text',
+                value: 0,
+                data: [{ id: 0, text: '男' }, { id: 1, text: '女' }]
+            });
+            $('#region').combobox({
+                valueField: 'region_no',
+                width: 158,
+                panelHeight: 50,
+                editable: false,
+                textField: 'region_name',
+            });
+            var url = '../../api/RegionApi/QueryAll';
+            $.post(url, {}, 'json')
+            .success(function (ret) {
+                if (ret.success) {
+                    $('#region').combobox('loadData', ret.data);
+                }
+            });
+            $('#nation').textbox({
+                width: 160,
+                
+            });
+
+           
+        })
+    </script>
+}
