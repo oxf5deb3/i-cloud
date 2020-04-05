@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>设计</title>
+    <link rel="stylesheet" href="../Content/EasyUI/bootstrap/easyui.css" />
+    <link rel="stylesheet" href="../Content/EasyUI/icon.css" />
+    <link rel="stylesheet" href="../Content/EasyUI/color.css" />
+    <!--<link rel="stylesheet" href="../Content/EasyUI/texteditor.css" />-->
+    <link rel="stylesheet" href="../Content/EasyUI/ribbon.css" />
+    <link rel="stylesheet" href="../Content/EasyUI/ribbon-icon.css" />
+    <style>
+        .tabs-header {
+            border: none;
+        }
+
+        .tabs-panels {
+            border-top: 1px solid #eee;
+        }
+
+        .ribbon-tab {
+            padding: 2px;
+        }
+
+        .ribbon-group-title {
+            height: 0px;
+            line-height: 0px;
+        }
+
+        .ribbon-group {
+            height: 21px;
+        }
+
+        .ribbon-group-sep {
+            height: 23px;
+            margin-top: 4px;
+        }
+
+        .textbox {
+            border-radius: 0px;
+        }
+
+        .l-btn:hover, .l-btn-plain:hover {
+            background: transparent;
+            /*border:none;*/
+            border-color: transparent;
+            text-decoration: none;
+            /*border-width:0px;
+            border-radius:0px;*/
+        }
+
+        .l-btn-focus {
+            outline: none;
+        }
+
+        #printContainer {
+            height: 600px;
+            background-color: #fff6d5;
+            margin: 0px 1px;
+            position: relative;
+        }
+
+        .easyui-draggable {
+            border: 1px solid black;
+            font-size: 12px;
+        }
+
+        .selected {
+            border: 1px dotted black;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .italic {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="dd" style="display:none">
+        <table style="table-layout:fixed;border-collapse:collapse;width:100%;margin-top:10px;">
+            <tr>
+                <td style="width:112px;text-align:right">模板名称:</td>
+                <td><input id="tb" type="text"></td>
+            </tr>
+        </table>
+
+    </div>
+    <div id="cc" style="display:none;">
+        <a href="#" class="easyui-linkbutton c5" style="width:60px" onclick="ok()" data-options="plain:true">确定</a>
+        <a href="#" class="easyui-linkbutton c2" style="width:60px" onclick="cancel()" data-options="plain:true">取消</a>
+    </div>
+    <div id="rr"></div>
+    <div id="printContainer">
+        <span class="easyui-draggable" style="position: absolute; left: 153px; top: 215px;">
+            车牌号码
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 2px; top: 13px;">
+            车辆类型
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 8.3px; top: 215px;">
+            车主
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 45.55px; top: 13px;">
+            住址
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 112.1px; top: 13px;">
+            发动机号
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 171.1px; top: 13px;">
+            车辆颜色
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 30.1px; top: 47px;">
+            车架号
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 51.65px; top: 83px;">
+            发证日期-年
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 87.65px; top: 83px;">
+            发证日期-月
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 139.65px; top: 83px;">
+            发证日期-日
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 8.3px; top: 267px;">
+            车牌号码
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 25.3875px; top: 119px;">
+            车辆类型
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 19.1px; top: 149px;">
+            核定载客
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 36.1px; top: 149px;">
+            备注
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 25.3875px; top: 119px;">
+            检验记录
+        </span>
+        <span class="easyui-draggable" style="position: absolute; left: 64.1px; top: 149px;">
+            二维码
+        </span>
+    </div>
+    <script src="../Scripts/jquery-1.12.4.js"></script>
+    <script src="../Scripts/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script src="../Scripts/EasyUI/jquery.easyui.min.js"></script>
+    <!--<script src="../Scripts/EasyUI/jquery.texteditor.js"></script>-->
+    <script src="../Scripts/EasyUI/jquery.ribbon.js"></script>
+    <script src="../Scripts/common.js"></script>
+    <script type="text/javascript">
+        var selected = [];
+        var isCtrl = false;
+        var type = '';
+        var controller = '';
+        function ok() {
+            var url = "/api/" + controller + "/AddPrintTemplate";
+            var name = $('#tb').textbox('getText');
+            if ($.trim(name) == '') {
+                $.messager.alert('提示', '请输入模板名称!', 'info');
+                return;
+            }
+            var data = { name: name, status: 1, type: type, html: '' };
+            data.html = $('#printContainer').html();
+            $.post({
+                url: url,
+                dataType: 'json',
+                data: data,
+                success: function (ret) {
+                    if (ret.success) {
+                        window.location.reload();
+                        $.messager.alert("提示", "添加成功！");
+
+                    } else {
+                        $.messager.alert("提示", "添加失败！");
+                    }
+
+                }
+            })
+        }
+        function cancel() {
+            $('#dd').dialog('close');
+        }
+        $(function () {
+            var data = {
+                selected: 0,
+                tabs: [{
+                    groups: [{
+                        tools: [{
+                            name: 'cut',
+                            text: '模板:',
+                            height: 22
+                        },
+                        {
+                            type: 'toolbar',
+                            tools: []
+
+                        },
+                        {
+                            name: 'new',
+                            text: '新建',
+                            height: 22
+                        }, {
+                            name: 'delete',
+                            text: '删除',
+                            height: 22
+                        }, {
+                            name: 'save',
+                            text: '保存',
+                            height: 22
+                        }]
+                    },
+                    {
+                        type: 'toolbar',
+                        tools: [
+                            {
+                                name: 'bold',
+                                iconCls: 'icon-bold',
+                                height: 22
+                            }, {
+                                name: 'italic',
+                                iconCls: 'icon-italic',
+                                height: 22
+                            }, {
+                                type: 'combobox',
+                                valueField: 'text',
+                                textField: 'text',
+                                data: [{ text: '8' }, { text: '12', selected: true }, { text: '14' }],
+                                width: 60,
+                                panelHeight: 'auto',
+                                editable: false,
+                                height: 22,
+                                onSelect: onSelectFontSize
+
+                            }
+                        ]
+                    },
+                    {
+                        type: 'toolbar',
+                        tools: [
+                            {
+                                name: 'align-left',
+                                iconCls: 'icon-align-left',
+                                group: 'p1',
+                                height: 22
+                            }, {
+                                name: 'align-right',
+                                iconCls: 'icon-align-right',
+                                group: 'p1',
+                                height: 22
+                            }, {
+                                name: 'align-top',
+                                iconCls: 'icon-align-top',
+                                group: 'p1',
+                                height: 22
+                            }, {
+                                name: 'align-bottom',
+                                iconCls: 'icon-align-bottom',
+                                group: 'p1',
+                                height: 22
+                            }]
+                    }
+                    ]
+                }]
+            };
+            function onSelectTemplate(item) {
+                $('#printContainer').html(item.html);
+                selected = [];
+                $('.easyui-draggable').draggable({});
+            }
+            function saveTemplate() {
+                var url = "/api/DriverLicenseApi/UpdatePrintTemplate";
+                var selected = $('.template').prev().combobox('getValue');
+                var select = undefined;
+                var data = $('.template').prev().combobox('options').data;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id == selected) {
+                        select = data[i];
+                        break;
+                    }
+                }
+                $('.easyui-draggable').removeClass('selected');
+                var html = $('#printContainer').html();
+                select.html = html;
+                $.post({
+                    url: url,
+                    dataType: 'json',
+                    data: select,
+                    success: function (ret) {
+                        if (ret.success) {
+                            $.messager.alert("提示", "保存成功！");
+                        } else {
+                            $.messager.alert("提示", "保存失败！");
+                        }
+
+                    }
+                })
+            }
+            function deleteTemplate() {
+                var url = "/api/DriverLicenseApi/RemovePrintTemplate";
+                var selected = $('.template').prev().combobox('getValue');
+                var select = undefined;
+                var data = $('.template').prev().combobox('options').data;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id == selected) {
+                        select = data[i];
+                        break;
+                    }
+                }
+                if (select == undefined) return;
+                if (select.status == 0) {
+                    $.messager.alert("提示", "默认模板不能删除！");
+                    return;
+                }
+                data = { id: selected };
+                $.post({
+                    url: url,
+                    dataType: 'json',
+                    data: data,
+                    success: function (ret) {
+                        if (ret.success) {
+                            window.location.reload();
+                            $.messager.alert("提示", "删除成功！");
+                        } else {
+                            $.messager.alert("提示", "删除失败！");
+                        }
+                    }
+                })
+            }
+            function newTemplate() {
+                $('#dd').dialog({
+                    title: '新建模板',
+                    width: 400,
+                    height: 140,
+                    closed: false,
+                    cache: false,
+                    modal: true,
+                    buttons: '#cc',
+                });
+                $('#tb').textbox({ width: 200 });
+                $('#dd').dialog('open');
+            }
+            function onClickItem(name) {
+                if (name == 'align-left') {
+                    if (selected.length <= 0) return;
+                    var first = selected[0];
+                    var left = $(first).css('left');
+                    selected.forEach(function (target, index) {
+                        if (index != 0) {
+                            $(target).css('left', left);
+                        }
+                    })
+                } else if (name == 'align-right') {
+                    if (selected.length <= 0) return;
+                    var first = selected[0];
+
+                    var right = parseFloat($(first).css('left').replace(/px/g, '')) + parseFloat($(first).outerWidth(true));
+                    selected.forEach(function (target, index) {
+                        if (index != 0) {
+                            var w = $(target).outerWidth(true);
+                            $(target).css('left', right - parseFloat(w));
+                        }
+                    })
+                } else if (name == 'align-top') {
+                    if (selected.length <= 0) return;
+                    var first = selected[0];
+                    var top = parseFloat($(first).css('top').replace(/px/g, ''));
+                    selected.forEach(function (target, index) {
+                        if (index != 0) {
+                            $(target).css('top', top);
+                        }
+                    })
+                } else if (name == 'align-bottom') {
+                    if (selected.length <= 0) return;
+                    var first = selected[0];
+                    var top = parseFloat($(first).css('top').replace(/px/g, '')) + parseFloat($(first).outerHeight(true));
+                    selected.forEach(function (target, index) {
+                        if (index != 0) {
+                            var h = $(target).outerHeight(true);
+                            $(target).css('top', top - parseFloat(h));
+                        }
+                    })
+                } else if (name == "bold") {
+                    selected.forEach(function (target, index) {
+                        $(target).toggleClass('bold');
+                    })
+
+                } else if (name == "italic") {
+                    selected.forEach(function (target, index) {
+                        $(target).toggleClass('italic');
+                    })
+                } else if (name == 'save') {
+                    saveTemplate();
+                } else if (name == 'delete') {
+                    deleteTemplate();
+                } else if (name == 'new') {
+                    newTemplate();
+                }
+            }
+            function onSelectFontSize(item) {
+                var size = item.text;
+                selected.forEach(function (target, index) {
+                    $(target).css('font-size', size + 'px');
+                })
+            }
+            function stopPropagetion(evt) {
+                var e = (evt) ? evt : window.event;
+                if (window.event) {
+                    e.cancelBubble = true;// ie下阻止冒泡
+                } else {
+                    e.stopPropagation();// 其它浏览器下阻止冒泡
+                }
+            }
+            function move1px(direction) {
+                var w = $('#printContainer').width().replace(/px/g, '');
+                var h = $('#printContaier').height().replace(/px/g, '');
+                var selected = selected[0];
+                if (selected == undefined) return;
+                var elW = $(selected).outerWidth(true).replace(/px/g, '');
+                var elH = $(selected).outerHeight(true).replace(/px/g, '');
+                var elLeft = $(selected).css('left').replace(/px/g, '');
+                var elTop = $(selected).css('top').replace(/px/g, '');
+                if (direction == 'r') {
+                    if (paseFloat(elLeft) + paseFloat(elW) + 1 <= paseFloat(w)) {
+                        $(selected).css('left', paseFloat(elLeft) + 1);
+                    }
+                } else if (direction == 'l') {
+                    if (paseFloat(elLeft) - 1 >= 0) {
+                        $(selected).css('left', paseFloat(elLeft) - 1);
+                    }
+                } else if (direction == 'u') {
+                    if (paseFloat(elTop) - 1 >= 0) {
+                        $(selected).css('top', paseFloat(elTop) - 1);
+                    }
+                } else if (direction == 'd') {
+                    if (paseFloat(elTop) + paseFloat(elH) + 1 <= paseFloat(h)) {
+                        $(selected).css('top', paseFloat(elTop) + 1);
+                    }
+                }
+            }
+            function bindEvents() {
+                $(window.document).unbind('keydown').bind('keydown', function (evt) {
+                    stopPropagetion(evt);
+                    if (evt.keyCode == 17) {
+                        isCtrl = true;
+                    }
+                    else if (evt.keyCode == 39)//r
+                    {
+                        move1px('r')
+                    }
+                }).unbind('keyup').bind('keyup', function (evt) {
+                    stopPropagetion(evt);
+                    isCtrl = false;
+                    console.dir(evt);
+                });
+                $('#printContainer').unbind('click').bind('click', function (evt) {
+                    stopPropagetion(evt);
+                    var target = evt.target;
+                    if (target.id == "printContainer") {
+                        selected.forEach(function (item, index) {
+                            $(item).removeClass('selected');
+                        });
+                        selected = [];
+                        return;
+                    }
+                    if (!isCtrl) {
+                        var inx = $.inArray(target, selected);
+                        selected.forEach(function (item, index) {
+                            if (index != inx)
+                                $(item).removeClass('selected');
+                        });
+                        selected = [];
+                        selected.push(target);
+                    }
+
+                    if (!$(target).hasClass('selected')) {
+                        $(target).addClass('selected');
+                        if (isCtrl)
+                            selected.push(target);
+                    }
+                    else {
+                        if (!isCtrl) {
+                            $(target).removeClass('selected');
+                        } else {
+                            var inx = $.inArray(target, selected);
+                            if (inx > -1) {
+                                $(target).removeClass('selected');
+                                selected.splice(inx, 1);
+                            } else {
+                                selected.push(target);
+                            }
+                        }
+                    }
+
+                    console.dir(selected);
+                })
+            }
+            function loadTemplates() {
+                var url = "/api/" + controller + "/LoadTemplate";
+                $.post({
+                    url: url,
+                    dataType: 'json',
+                    data: { type: type },
+                    success: function (ret) {
+                        if (ret.success) {
+                            var templates = {
+                                type: 'combobox',
+                                valueField: 'id',
+                                textField: 'name',
+                                data: ret.data,
+                                width: 100,
+                                panelHeight: 'auto',
+                                editable: false,
+                                height: 22,
+                                onSelect: onSelectTemplate,
+                                cls: 'template'
+                            };
+                            data.tabs[0].groups[0].tools[1].tools.push(templates);
+                            initRibbon();
+                        }
+                    }
+                })
+            }
+            function initRibbon() {
+                $('#rr').ribbon({
+                    showHeader: false,
+                    data: data,
+                    onClick: onClickItem
+                });
+            }
+            var req = getRequest();
+            type = req.type ? req.type : '';
+            controller = req.controller ? req.controller : '';
+            if (type == '' || controller == '') {
+                $.messager.alert('提示', '获取参数失败，请重新打开该页面!', 'info');
+                return;
+            }
+            loadTemplates();
+            bindEvents();
+        });
+    </script>
+</body>
+</html>

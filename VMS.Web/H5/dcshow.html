@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <title>二维码结果</title>
+
+    <link rel="stylesheet" href="../Content/bootstrap.min.css">
+    <style type="text/css">
+        .panel {
+            margin-bottom: 4px;
+        }
+
+        a:hover, a:focus {
+            text-decoration: none;
+        }
+
+        .panel-heading {
+            cursor: pointer;
+        }
+
+        .panel-body {
+            padding: 5px;
+        }
+
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .table {
+            margin-bottom: 0px;
+        }
+
+        .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .title {
+            border-left: 1px solid rgb(221, 221, 221);
+            border-right: 1px solid rgb(221, 221, 221);
+        }
+
+        .half {
+            width: 50%;
+        }
+
+        * {
+            padding: 0px;
+            font-size: small;
+            font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体";
+        }
+
+        .panel {
+            border-bottom: 0px;
+            border-left: 0px;
+            border-right: 0px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+            box-shadow: none;
+        }
+
+        .panel-body {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+        #collapseTwo, #collapseOne{
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <button type="button" id="qrcode" class="btn btn-warning">生成二维码</button>
+    <img id="base64" style="display:none" width="80" height="80"/>
+    <!--<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">-->
+    <div class="panel panel-primary xsz">
+        <div class="panel-heading" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button">
+                    行驶证信息
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body container-fluid">
+                <table class="table table-condensed table-bordered" style="table-layout:fixed;border-collapse:collapse;">
+                    <tr>
+                        <td class="active text-right">发动机号码:</td>
+                        <td>
+                            <div id="motor_no">
+                            </div>
+                        </td>
+                        <td class="active text-right">车架号码:</td>
+                        <td>
+                            <div id="carframe_no">
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="active text-right">车主姓名:</td>
+                        <td>
+                            <div id="car_owner">
+                            </div>
+                        </td>
+
+                        <td class="active text-right">车主电话:</td>
+                        <td>
+                            <div id="car_tel">
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="active text-right">车主住址:</td>
+                        <td colspan="3">
+                            <div id="car_addr">
+                            </div>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-primary jsz">
+        <div class="panel-heading" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" role="tab" id="headingTwo">
+            <h4 class="panel-title">
+                <a role="button">
+                    驾驶证信息
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body  container-fluid">
+                <table class="table table-condensed table-bordered" style="table-layout:fixed;border-collapse:collapse;">
+                    <tr>
+                        <td class="active text-right">车主姓名:</td>
+                        <td>
+                            <div id="name">
+                            </div>
+                        </td>
+                        <td class="active text-right">准驾车型:</td>
+                        <td>
+                            <div id="permitted_card_type">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="active text-right">电话:</td>
+                        <td>
+                            <span id="tel_no">暂无
+                            </span>
+                        </td>
+                        <td class="active text-right">住址:</td>
+                        <td>
+                            <div id="addr">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-primary pic">
+        <div class="panel-heading" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" role="tab" id="headingThree">
+            <h4 class="panel-title">
+                <a role="button">
+                    图片相关
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                <!--<img src="../H5/image/1.jpg" width="500" height="500" alt="..." class="img-thumbnail img-responsive center-block">-->
+                <div class="row">
+                    <!--<div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            <img src="../H5/image/1.jpg" alt="...">
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--</div>-->
+    <!--<van-button type="default">默认按钮</van-button>-->
+    <script src="../Scripts/jquery-1.12.4.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/respond.js"></script>
+    <script src="assets/js/main.js"></script>
+
+</body>
+</html>

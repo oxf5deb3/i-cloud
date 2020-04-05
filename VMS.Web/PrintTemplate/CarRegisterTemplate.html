@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>机动车辆登记表</title>
+    <link href="/Content/Site.css" rel="stylesheet" />
+    <style type="text/css">
+        td {
+            padding: 0px;
+        }
+
+        tr {
+            line-height: 22px;
+        }
+        #content{
+            font-size:10px;
+        }
+        body{
+            margin:0px;
+
+        }
+    </style>
+</head>
+<body>
+     <div id="content">
+         <style type="text/css">
+             @media print {
+                 .noprint {
+                     visibility: hidden;
+                 }
+                 .noborder {
+                     border: none !important;
+                 }
+				 #content{
+                    font-size:10px;
+                }
+               }
+         </style>
+         <div style="font-family:'宋体'; background:#fff;position:relative;font-size:14px;margin-top:45px;">
+         <p style="text-align: center;font-size: 24px;letter-spacing:12px;font-weight: bold;">缅甸佤邦交通警察大队</p>
+             <p style="letter-spacing:8px;text-align: center;font-size: 20px;font-family: '宋体'">机动车辆登记表</p>
+             <div style="border: 1px solid #000;margin:0px 10px;">
+                 <table  style="width:100%;table-layout: fixed;border-collapse: collapse;border-bottom: 1px solid #000;">
+                 <tr>
+                 <td style="letter-spacing:8px;text-align:center;width:70px;border-right:1px solid #000;">车主</td>
+                 <td style="width:20%;border-right:1px solid #000;">_car_owner</td>
+                 <td style="width:80%;border-right:1px solid #000;">
+                     <table style="width:100%;table-layout: fixed;border-collapse: collapse;">
+                         <tr style="border-bottom:1px solid #000;">
+                         <td style="letter-spacing:8px;text-align:center;width:70px;border-right:1px solid #000;">原籍</td>
+                         <td style="width:50%;">_owner_org_nation</td>
+						 <td style="letter-spacing:8px;width:70px;text-align:center;border-left:1px solid #000;border-right:1px solid #000;">电话</td>
+						 <td style="width:50%;">_tel</td>
+                         </tr>
+                         <tr style="">
+                         <td style="letter-spacing:8px;text-align:center;border-right:1px solid #000;">现住</td>
+                         <td colspan="3">_owner_now_addr</td>
+						 
+                         </tr>
+                     </table>
+                 </td>
+                 <td style="width:100px;text-align: center;vertical-align: bottom;border-bottom:1px solid #000" rowspan="2">_img3</td>
+                 </tr>
+               <tr style="border-bottom: 1px solid #000;">
+               <td style="text-align:center;border-right:1px solid #000;border-top:1px solid #000;">驾驶员</td>
+               <td style="border-top:1px solid #000;border-right:1px solid #000;"></td>
+               <td style="border-right:1px solid #000;">
+                   <table style="width:100%;table-layout: fixed;border-collapse: collapse;">
+                     <tr style="border-bottom:1px solid #000;">
+					 <td style="letter-spacing:8px;border-top:1px solid #000;width:71px;text-align:center;border-bottom:1px solid #000;border-right:1px solid #000;">原籍</td>
+					 <td style="border-top:1px solid #000;width:100%;"></td>
+					 </tr>
+                     <tr >
+					 <td style="letter-spacing:8px;text-align:center;border-right:1px solid #000;">现住</td>
+					 <td ></td>
+					 </tr>
+                   </table>
+               </td>
+               <!--<td style="text-align: center;vertical-align: top;">照片</td>-->
+               </tr>
+               <tr style="height:40px;">
+                 <td style="border-bottom: 1px solid #000;letter-spacing:8px;text-align:center;border-right:1px solid #000;">车型</td>
+                 <td style="border-bottom: 1px solid #000;border-right:1px solid #000;">_car_type</td>
+                 <td style="border-bottom: 1px solid #000;border-right:1px solid #000;">
+                   <table style="width:100%;border-spacing:0px;height:100%;table-layout: fixed;border-collapse: collapse;">
+                   <tr style="height:40px;">
+                   <td style="text-align:center;width:50px;border-right:1px solid #000;">颜色</td>
+                   <td style="width:50px;border-right:1px solid #000;">_car_color</td>
+                   <td style="text-align:center;width:40px;border-right:1px solid #000;">车牌号码</td>
+                   <td >_car_num</td>
+                   </tr>
+                   </table>
+                 </td>
+                 <td style="vertical-align: bottom;text-align:center;border-left: 1px solid #000;">驾驶员</td>
+               </tr>
+               <tr style="height:40px;">
+                 <td style="text-align:center;border-bottom:1px solid #000;border-right:1px solid #000;letter-spacing:6px;">发动机号码</td>
+                 <td>_engine_no</td>
+                 <td  style="">
+                   <table style="width:100%;table-layout: fixed;border-collapse: collapse;">
+                   <tr style="height:40px;">
+                   <td style="width:51px;border-right:1px solid #000;"></td>
+                   <td style="text-align:center;border-right:1px solid #000;letter-spacing:4px;width:50px;">底盘号码</td>
+                   <td>_frame_no</td>
+                   </tr>
+                   </table>
+                 </td>
+                 <td style="vertical-align: top;text-align:center;border-left: 1px solid #000;">照片</td>
+               </tr>
+               <tr style="height:30px;">
+			     <td style="text-align:center;border-right:1px solid #000;">填发员</td>
+				 <td style="width:100px;border-right:1px solid #000;border-top:1px solid #000;">_modify_oper_id</td>
+				 <td colspan="2" style="border-top:1px solid #000;">发证日期
+                 <span style="float:right;"><span style="text-align:center;display:inline-block;width:40px;">_send_date_year</span>年<span style="text-align:center;display:inline-block;width:30px;">_send_date_month</span>月<span style="text-align:center;display:inline-block;width:30px;">_send_date_day</span>日</span></td>
+				
+			   </tr>
+             </table>
+
+                <div style="height:600px;">
+                    <div style="height:300px;width:200px;float: left;">_img1</div>
+                    <div style="height:300px;width:200px;float: left;">_img2</div>
+                </div>
+                <div style="height:30px;line-height: 30px;">
+                   <span style="float:right;">检审员<span style="display:inline-block;width:270px;"></span></span>
+               </div>
+               <div  style="height:30px;line-height: 30px;">
+  <span style="float:right;"><span style="text-align:center;display:inline-block;width:40px;"></span>年<span style="text-align:center;display:inline-block;width:30px;"></span>月<span style="text-align:center;display:inline-block;width:30px;"></span>日</span> 
+                </div>
+               
+             </div>
+            
+         </div>
+     </div>
+    

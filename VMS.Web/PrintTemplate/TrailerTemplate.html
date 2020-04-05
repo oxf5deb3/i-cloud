@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>打印订单窗口</title>
+    <link type="text/css" rel="styleSheet" href="~/Content/EasyUI/bootstrap/easyui.css" />
+    <link type="text/css" rel="styleSheet" href="~/Content/EasyUI/color.css" />
+    <link type="text/css" rel="styleSheet" href="~/Content/EasyUI/icon.css" />
+
+    <script type="text/javascript" src="~/Scripts/EasyUI/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/EasyUI/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="~/Scripts/echarts.js"></script>
+</head>
+<body style="margin: 0;">
+    <div id="content_info" style="page-break-after: always">
+        <table width="1000" border="0" align="center" cellpadding="3" cellspacing="0" style="font-size: 12px; font-family: '微软雅黑'; background: #fff; page-break-after: always">
+            <tr>
+                <td align="center" colspan="5" height="30" style="text-align: center;  border: 0px; font-weight: 900; font-size: 20px;">拖车单&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="5" style="text-align: center; padding: 5px 8px; border-bottom: 1px solid #000; font-weight: 900; font-size: 28px;"></td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px;"></td>
+            </tr>
+            <tr>
+                <td colspan="5" style="padding: 10px 0; ">
+                    <table  class="aa" border="0" cellspacing="0" cellpadding="5" style="text-align: center; font-size: 12px; font-family: '微软雅黑';   border-collapse:collapse; background: #fff; width: 100%">
+                        <thead>
+                            <tr>
+                                <td style="font-weight: 900;">共出勤人数</td>
+                                <td style="font-weight: 900;">违章摩托车</td>
+                                <td style="font-weight: 900;">三轮摩托</td>
+                                <td style="font-weight: 900;">违章电瓶车</td>
+                                <td style="font-weight: 900;">违章大车</td>
+                                <td style="font-weight: 900;">违章小车</td>
+                                <td style="font-weight: 900;">违章拖拉机</td>
+                                <td style="font-weight: 900;">共查处违章车辆</td>
+                                <td style="font-weight: 900;">拖车总数</td>
+                            </tr>
+                        </thead>
+                        <tbody id="print_list"></tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <style type="text/css">
+        /*tr {
+            border: 1px solid #000;
+        }*/
+        .aa {
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+        }
+
+            .aa td {
+                border-left: 1px solid #000;
+                border-top: 1px solid #000;
+            } 
+    </style>
+    <script type="text/javascript">
+        debugger;
+        function getQueryParam() {
+            var obj = $('#print').dialog('options');
+            var queryParams = obj["queryParams"];
+            var date = {
+                startTime: queryParams["startTime"],
+                endTime: queryParams["endTime"]
+            }
+            return date;
+        }
+
+        $(function () {
+            var date = getQueryParam();
+            getstonelist(date);
+        });
+        ////窗口API
+        //var api = frameElement.api, W = api.opener;
+        //api.button({
+        //    name: '确认打印',
+        //    focus: true,
+        //    callback: function () {
+        //        printWin();
+        //    }
+        //}, {
+        //        name: '取消'
+        //    });
+        ////打印方法
+        //function printWin() {
+        //    //if (!doSavePrint()) {
+        //    //    jsprint('打印失败');
+        //    //    return;
+        //    //}
+        //    $("#content_info").show();
+        //    var oWin = window.open("", "_blank");
+        //    //oWin.document.write(document.getElementById("content").innerHTML);
+        //    var content = '';
+        //    var str = document.getElementById('content_info').innerHTML;
+        //    content = content + str;
+
+        //    oWin.document.write(content);
+        //    oWin.focus();
+        //    oWin.document.close();
+        //    oWin.onload = function () {
+        //        oWin.print();
+        //        oWin.document.getElementById('txtFlag').value = '1';
+        //    }
+        //}
+
+
+        function getstonelist(date) {
+            $.ajax({
+                type: "post",
+                url: "/api/TrailerApi/QueryInfo?" ,
+                dataType: "json",
+                timeout: 200000,
+                data: date,
+                success: function (data, textStatus) {
+                    if (data.success) {
+                        if (data.rows == null) {
+                            return;
+                        }
+                        getSaleListView(data.rows);
+                    } else {
+                        if ($.trim(data.message) != '') {
+                            $.messager.alert('提示', data.message, 'info');
+                        } else {
+                            $.messager.alert('提示', "查询" + '失败!', 'info');
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    $.messager.alert('提示', "查询" + '失败!', 'info');
+                }
+            })
+        }
+
+
+        function getSaleListView(jadelist) {
+            var tbodyStr = "";
+            for (var i = 0; i < jadelist.length; i++) {
+                var trStr = "<tr>" +
+                    "<td>" + jadelist[i].trailerDate + "</td>" +
+                    "<td>" + jadelist[i].number + "</td>" +
+                    "<td>" + jadelist[i].totalMotorcycle + "</td>" +
+                    "<td>" + jadelist[i].tricycle + "</td>" +
+                    "<td>" + jadelist[i].tractor + "</td>" +
+                    "<td>" + jadelist[i].totalVehicle + "</td>" +
+                    "<td>" + jadelist[i].bigCar + "</td>" +
+                    "<td>" + jadelist[i].smallCar + "</td>" +
+                    "<td>" + jadelist[i].tractor + "</td>" +
+                    "<td>" + jadelist[i].totalTrailer + "</td>" +
+                    "</tr>";
+                tbodyStr += trStr;
+            }
+            $("#print_list").html(tbodyStr);
+        }
+
+    </script>
+</body>
+</html>

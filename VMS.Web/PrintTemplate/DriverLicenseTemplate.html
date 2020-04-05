@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>打印驾驶证</title>
+    <link href="/Content/Site.css" rel="stylesheet" />
+    <style type="text/css">
+        td {
+            padding: 0px;
+        }
+
+        tr {
+            line-height: 22px;
+        }
+        #content{
+            font-size:10px;
+        }
+    </style>
+</head>
+<body>
+     <div id="content">
+         <style type="text/css">
+             @media print {
+                 .noprint {
+                     visibility: hidden;
+                 }
+                 .noborder {
+                     border: none !important;
+                 }
+				 #content{
+                    font-size:10px;
+                }
+               }
+         </style>
+         <div style="width:420px; font-family:'微软雅黑'; background:#fff;position:relative;font-size:12px;">
+            <div style="margin-top:10px;">
+                <span class="noprint" style="margin-left:90px;">缅甸第二特区（佤邦）机动车驾驶证正证</span>
+            </div>
+             <div style="margin-top:10px;">
+                 <span class="noprint" style="margin-left:80px">W证号</span><span>_id_no</span>
+             </div>    
+             <div style="margin-top:13px;">
+                 <span class="noprint">姓名</span>
+                 <span class="noborder" style="padding-left:-5px;border-bottom:1px dotted #000;text-align:left;display:inline-block;width:40px;">_user_name</span> <span class="noprint">男女</span><span class="noborder" style="padding-left:-5px;border-bottom: 1px dotted #000; text-align: left; display: inline-block; width: 50px;">_birthday_year</span><span class="noprint"> 年</span><span class="noborder" style="padding-left:-12px;border-bottom: 1px dotted #000; text-align: left; display: inline-block; width: 50px;">_birthday_month</span> <span class="noprint">月生</span>
+
+             </div>
+             <div style="margin-top:10px;">
+                 <span class="noprint">单位或住址</span>
+                 <span class="noborder" style="padding-left:20px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; min-width: 200px;">_addr</span>
+
+
+             </div>   
+             <div style="margin-top:12px;">
+                 <span class="noprint">发证机关章</span><span class="noprint">初次领证日期</span><span class="noborder" style="margin-left: -10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 40px;">_first_get_license_date_year</span><span class="noprint">年</span><span class="noborder" style="position:relative;left:-10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 20px;">_first_get_license_date_month</span><span class="noprint">月</span><span class="noborder" style="position:relative;left:-19px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 20px;">_first_get_license_date_day</span><span class="noprint">日</span>
+             </div>
+             <div style="margin-top:8px;">
+                 <span class="noprint">准驾车型</span><span class="noborder" style="padding-left:60px;border-bottom: 1px dotted #000;margin-left: 5px; text-align: left; display: inline-block; width: 150px;">_permitted_car_type_name</span>
+
+             </div>
+             <div style="margin-top:20px;">
+                 <span class="noprint">有效期</span><span class="noborder" style="margin-left:-5px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 30px;">_valid_date_start_year</span><span class="noborder" style="position:relative;left:10px;border-bottom: 1px dotted #000;text-align: left; display: inline-block; width: 15px;">_valid_date_start_month</span><span class="noborder" style="position:relative;left:18px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 10px;">_valid_date_start_day</span><span class="noprint" style="position:relative;left:10px;">至</span><span class="noborder" style="position:relative;left:25px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 35px;">_valid_date_end_year</span><span class="noborder" style="position:relative;left:32px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 20px;">_valid_date_end_month</span><span class="noborder" style="position:relative;left:34px;border-bottom: 1px dotted #000;text-align:left; display: inline-block; width: 10px;">_valid_date_end_day</span></td>
+             </div>
+                                                 
+                                                
+                                                
+                                                
+                                             <div class="noborder" style="display:none;position:absolute;left:269px;top:103px;width:80px;height:80px;border:1px dotted #000;margin-right:4px;">
+                                                 <img src="/images/default.jpg" style="width:100%;height:100%;" />
+                                             </div>
+                         </div>   
+         <table style="width:420px;font-family:'宋体'; background:#fff;margin-top:45px;">
+             <tr>
+                 <td>
+                     <table style="width:100%;height:160px;table-layout:fixed;border-collapse: collapse;">
+                         <tr style="height: 30px;">
+                             <td colspan="2" style="text-align:center;width:100px">
+                                 <span class="noprint">缅甸第二特区（佤邦）机动车驾驶证副证</span>
+                             </td>
+                         </tr>
+                         <tr style="height:5px;"></tr>
+                         <tr style="height: 40px;font-size:10px;position:relative; ">
+                             <td colspan="2"><span class="noprint">姓名</span><span class="noborder" style="padding-left:20px;border-bottom: 1px dotted #000;text-align: center; display: inline-block; min-width: 70px;">_user_name</span><span class="noprint"> W证号</span><span class="noborder" style="padding-left:45px;border-bottom: 1px dotted #000;text-align: left;min-width:200px;display:inline-block;">_id_no</span> </td>
+                         </tr>
+                         <tr style="font-size:10px">
+                             <td colspan="2">
+                                 <div style="word-break: break-all; line-height: 30px; height: 100%; font-size: 14px;">
+                                     <span class="noprint">审验</span>
+                                     <span class="noborder" style="display:inline-block;width:200px;border-bottom: 1px dotted #000;text-align: center;"></span>
+                                 </div>
+                             </td>
+                         </tr>
+
+                     </table>
+                 </td>
+             </tr>
+         </table>
+     </div>
+    
