@@ -41,7 +41,7 @@
     <hr />
     <table>
         <tr>
-            <td style="width:250px;display:none"> 驾驶证编号：<input class="easyui-textbox" id="id_no" style="width:150px"></td>
+            <td style="width:250px;"> 驾驶证编号：<input class="easyui-textbox" id="id_no" style="width:150px"></td>
             <td style="width:250px;">姓名：<input class="easyui-textbox" id="name" style="width:150px"></td>
             <td style="width:250px;">身份证号码：<input class="easyui-textbox" style="width:150px" id="id_card"></td>
             <td style="width:100%"></td>
@@ -588,7 +588,7 @@
                 columns: [[
                     { field: 'ck', checkbox: true },
                     {
-                        field: 'id_no', title: '驾驶证编号', width: 70, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'id_no', title: '驾驶证编号', width: 70, halign: 'center', align: 'left', sortable: true, formatter: function (value, row, index) {
                             if (value != undefined) {
                                 var href = '<a style="text-decoration:underline" href="javascript:editOne();" >_txt</a>';
                                 return href.replace(/_txt/g,value);
@@ -596,10 +596,10 @@
                             return '';
                         }
                     },
-                    { field: 'name', title: '姓名', width: 60, halign: 'center', align: 'left' }, 
-                    { field: 'id_card', title: '身份证号码', width: 130, halign: 'center', align: 'left' },
+                    { field: 'name', title: '姓名', width: 60, halign: 'center', align: 'left',sortable:true }, 
+                    { field: 'id_card', title: '身份证号码', width: 130, halign: 'center', align: 'left', sortable: true },
                     {
-                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', sortable: true, formatter: function (value, row, index) {
                             if (value == '0') {
                                 return '男';
                             }
@@ -611,9 +611,9 @@
                     {
                         field: 'permitted_card_type_no', title: '准驾车型', width: 60, halign: 'center', align: 'left'
                     },
-                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' },
+                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left', sortable: true },
                     { field: 'work_unit', title: '工作单位', width: 100, halign: 'center', align: 'left' },
-                    { field: 'first_get_license_date', title: '首次领证日期', width: 120, halign: 'center', align: 'left' },
+                    { field: 'first_get_license_date', title: '首次领证日期', sortable: true, width: 120, halign: 'center', align: 'left' },
                     { field: 'valid_date_start', title: '有效期起', width: 120, halign: 'center', align: 'left' },
                     { field: 'valid_date_end', title: '有效期止', width: 120, halign: 'center', align: 'left' },
                     { field: 'modify_oper_id', title: '填发员', width: 80, halign: 'center', align: 'left' },

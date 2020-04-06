@@ -10,4 +10,9 @@ namespace VMS.DTO
     {
         public object rows { get; set; }
     }
+
+    public class BaseDTO
+    {
+
+    }
 }

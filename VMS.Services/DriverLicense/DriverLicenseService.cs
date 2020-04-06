@@ -9,6 +9,9 @@ using VMS.Model;
 using VMS.Utils;
 using System.Data;
 using System.IO;
+using System.Linq.Expressions;
+using SqlSugar;
+using VMS.DAL;
 
 namespace VMS.Services
 {
@@ -50,10 +53,11 @@ namespace VMS.Services
             {
                 sql.Append(" and a.name like @name ");
             }
-            if(qcondition["id_card"]!=null&&!string.IsNullOrEmpty(qcondition["id_card"])){
+            if (qcondition["id_card"] != null && !string.IsNullOrEmpty(qcondition["id_card"]))
+            {
                 sql.Append(" and a.id_card like @id_card");
             }
-            
+
             return sql.ToString();
         }
         public override IList<SqlParam> GetParameters(IDictionary<string, dynamic> qcondition)
@@ -82,7 +86,7 @@ namespace VMS.Services
             bool flag = false;
             findSql.AppendFormat("select * from t_temp_driver_license where 1=1");
             findSql.AppendFormat("and name like '%{0}%'", name);
-        
+
             var lst = DbContext.GetDataListBySQL<DriverLicenseDTO>(findSql);
             if (lst.Count > 0)
             {
@@ -96,7 +100,7 @@ namespace VMS.Services
 
             String photoBase64 = driverLicenseDTO.user_photo_base64.Substring(driverLicenseDTO.user_photo_base64.IndexOf(",") + 1);
             DateTime date = DateTime.Now;
-            String path = BASE_PATH + driverLicenseDTO.name + "_" + date.ToString("yyyyMMddHHmmss") + "_" + driverLicenseDTO.id_no + "lsxs" +".jpg";
+            String path = BASE_PATH + driverLicenseDTO.name + "_" + date.ToString("yyyyMMddHHmmss") + "_" + driverLicenseDTO.id_no + "lsxs" + ".jpg";
             FileUtils.Base64ToFileAndSave(photoBase64, path);
             var insertSql = new StringBuilder();
             insertSql.Append("insert into t_temp_driver_license(name,sex,birthday,nation_no,folk,now_addr,old_addr,permitted_card_type_no,check_man,check_date,start_date,end_date,region_no,oper_id,oper_date,id_no,user_photo_path,modify_oper_id)"
@@ -972,6 +976,70 @@ namespace VMS.Services
             var pkVal = id_card;
             return DbContext.IsExist(tableName, pkName, pkVal) > 0;
         }
+
+        #region sqlsugar
+        #region 增删改查
+        public List<DriverLicenseDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        {
+            List<Expression<Func<DriverLicenseDTO, bool>>> wheres = new List<Expression<Func<DriverLicenseDTO, bool>>>();
+            wheres.AddRange(CreateWhere(conditions));
+
+            Expression<Func<DriverLicenseDTO, object>> orderbys = CreateOrderby(orderby);
+
+            var q = SqlSugarDbContext.Db.Queryable<t_normal_driver_license, t_bd_region>((driver, region) => new object[] {
+                JoinType.Left,driver.region_no==region.region_no
+            });
+
+            var lst = SqlSugarDbContext.GetPageList<t_normal_driver_license,DriverLicenseDTO>(q,wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
+
+            var dtos = Convert2DTO(lst);
+
+            return dtos;
+
+        }
+        public virtual List<Expression<Func<DriverLicenseDTO, bool>>> CreateWhere(IDictionary<string, dynamic> conditions)
+        {
+            var where = new List<Expression<Func<DriverLicenseDTO, bool>>>();
+            var name = conditions["name"] != null ? (string)conditions["name"]:"";
+            var id_card = conditions["id_card"] != null ? (string)conditions["id_card"] : "";
+            var id_no = conditions["id_no"] != null ? (string)conditions["id_no"] : "";
+            if (!string.IsNullOrEmpty(name))
+            {
+                where.Add(e =>e.name.StartsWith(name));
+            }
+            if (!string.IsNullOrEmpty(id_card))
+            {
+                where.Add(e => e.id_card.Contains(id_card));
+            }
+            if (!string.IsNullOrEmpty(id_no))
+            {
+                where.Add(e => e.id_no.Contains(id_no));
+            }
+            return where;
+        }
+        public virtual Expression<Func<DriverLicenseDTO, object>> CreateOrderby(string orderby)
+        {
+            Expression<Func<DriverLicenseDTO, object>> by = null;
+            switch (orderby)
+            {
+                case "name":by = o => o.name;break;
+                case "id_card":by = o => o.id_card;break;
+                case "id_no": by = o => o.id_no; break;
+                case "sex": by = o => o.sex; break;
+                case "first_get_license_date": by = o => new { o.first_get_license_date }; break;
+                case "region_name": by = o => o.region_name; break;
+                default:by = o => o.id;break;
+            }
+            return by;
+        }
+        public virtual List<DriverLicenseDTO> Convert2DTO(ISugarQueryable<DriverLicenseDTO> q)
+        {
+            var dtos = q.ToList();
+            return dtos;
+        }
+        #endregion
+
+        #endregion
 
     }
 }

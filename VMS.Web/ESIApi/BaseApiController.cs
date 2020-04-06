@@ -8,7 +8,7 @@ using VMS.ESIApi.Utils;
 
 namespace VMS.ESIApi
 {
-    [ESIAuthCheck]
+    //[ESIAuthCheck]
     [ESIAopFilter]
     [ESIExceptionTrace]
     public class BaseApiController : ApiController

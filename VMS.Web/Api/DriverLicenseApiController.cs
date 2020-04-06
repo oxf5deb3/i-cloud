@@ -16,6 +16,56 @@ namespace VMS.Api
 {
     public class DriverLicenseApiController : BaseApiController
     {
+        //[System.Web.Mvc.HttpPost]
+        //[System.Web.Mvc.HttpGet]
+        //public GridResponseDTO<DriverLicenseDTO> Query([FromBody]JObject data)
+        //{
+        //    var ret = new GridResponseDTO<DriverLicenseDTO>();
+        //    try
+        //    {
+               
+        //        #region 参数检验
+
+        //        #endregion
+        //        var sb = new StringBuilder();
+        //        var condition = data.ToDictionary();
+        //        var paramlst = new List<SqlParam>();
+        //        int total = 0;
+        //        var pageindex = CommonHelper.GetInt(condition["page"],0);
+        //        var pagesize = CommonHelper.GetInt(condition["rows"]);
+        //        string err = string.Empty;
+        //        var obj = Instance<IDriverLicenseService>.Create;
+        //        List<DriverLicenseDTO> lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
+
+        //        // 读取图片base64内容
+        //        lst.ForEach(p =>
+        //        {
+        //            p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+        //        });
+
+        //        ret.total = total;
+        //        ret.rows.AddRange(lst);
+        //        try
+        //        {
+        //             var logService = Instance<ILogService>.Create;
+        //             logService.WriteOperateLog(new OperateLogDTO() { oper_desc = "驾驶证查询", memo = "", region_no = "", oper_id = operInfo.user_id, oper_date = DateTime.Now });
+        //        }
+        //        catch (Exception E)
+        //        {
+                    
+        //        }
+        //        return ret;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //        //Log4NetHelper.Error(this.GetType().FullName + ".Query", ex);
+        //        //ret.message = ex.Message;
+        //        //ret.success = false;
+        //        //return ret;
+        //    }
+        //}
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.HttpGet]
         public GridResponseDTO<DriverLicenseDTO> Query([FromBody]JObject data)
@@ -23,7 +73,7 @@ namespace VMS.Api
             var ret = new GridResponseDTO<DriverLicenseDTO>();
             try
             {
-               
+
                 #region 参数检验
 
                 #endregion
@@ -31,12 +81,14 @@ namespace VMS.Api
                 var condition = data.ToDictionary();
                 var paramlst = new List<SqlParam>();
                 int total = 0;
-                var pageindex = CommonHelper.GetInt(condition["page"],0);
+                var pageindex = CommonHelper.GetInt(condition["page"], 0);
                 var pagesize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort")?CommonHelper.GetString(condition["sort"]):"";
+                var order = condition.ContainsKey("order")?(CommonHelper.GetString(condition["order"])=="asc"?true:false):true;
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
-                List<DriverLicenseDTO> lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
-
+                List<DriverLicenseDTO> lst = obj.QueryPage(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                //List<DriverLicenseDTO> lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
                 // 读取图片base64内容
                 lst.ForEach(p =>
                 {
@@ -47,12 +99,12 @@ namespace VMS.Api
                 ret.rows.AddRange(lst);
                 try
                 {
-                     var logService = Instance<ILogService>.Create;
-                     logService.WriteOperateLog(new OperateLogDTO() { oper_desc = "驾驶证查询", memo = "", region_no = "", oper_id = operInfo.user_id, oper_date = DateTime.Now });
+                    var logService = Instance<ILogService>.Create;
+                    logService.WriteOperateLog(new OperateLogDTO() { oper_desc = "驾驶证查询", memo = "", region_no = "", oper_id = operInfo.user_id, oper_date = DateTime.Now });
                 }
                 catch (Exception E)
                 {
-                    
+
                 }
                 return ret;
 
@@ -66,7 +118,6 @@ namespace VMS.Api
                 //return ret;
             }
         }
-
         // 修改正式驾照
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyZsDriverLicense([FromBody]JObject data)
@@ -359,8 +410,6 @@ namespace VMS.Api
         }
 
         [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.HttpGet]
-
 
         public BaseResponseDTO queryTemporaryDrivingLicense([FromBody]JObject data)
         {

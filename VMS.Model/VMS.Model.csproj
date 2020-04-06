@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SqlSugar, Version=5.0.0.13, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\sqlSugar.5.0.0.13\lib\SqlSugar.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="t_bd_breakrules.cs" />
     <Compile Include="t_bd_breakrules_type.cs" />
     <Compile Include="t_detention.cs" />
@@ -49,6 +53,7 @@
     <Compile Include="t_bd_region.cs" />
     <Compile Include="t_fire_accident_records.cs" />
     <Compile Include="t_fire_equipment_register.cs" />
+    <Compile Include="t_normal_driver_license.cs" />
     <Compile Include="t_stolen.cs" />
     <Compile Include="t_sys_group.cs" />
     <Compile Include="t_sys_group_role.cs" />
@@ -60,6 +65,9 @@
     <Compile Include="t_sys_user.cs" />
     <Compile Include="t_sys_user_group.cs" />
     <Compile Include="t_trailer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

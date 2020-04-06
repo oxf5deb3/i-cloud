@@ -11,6 +11,7 @@ using VMS.Models;
 namespace VMS.Api
 {
     [WebApiExceptionFilterAttribute]
+    [SwaggerIgnore]
     public class BaseApiController : ApiController
     {
         protected LoginDTO operInfo = GlobalVar.get();

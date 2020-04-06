@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,7 @@ using VMS.DAL;
 using VMS.DTO;
 using VMS.Model;
 using VMS.Utils;
+using DbType = System.Data.DbType;
 
 namespace VMS.Services
 {
@@ -29,7 +32,28 @@ namespace VMS.Services
                 return dbHelper;
             }
         }
+        protected SqlSugarDbContext SqlSugarDbContext
+        {
+            get
+            {
+                var name = string.Format("CallSqlSugarContextName:{0}", this.GetHashCode());
+                var dbHelper = CallContext.GetData(name) as SqlSugarDbContext;
+                if (dbHelper == null)
+                {
+                    dbHelper = new SqlSugarDbContext();
+                    CallContext.SetData(name, dbHelper);
+                }
+                return dbHelper;
+            }
+        }
+
         #endregion
+        #region
+      
+
+        #endregion
+
+
 
         #region 打印模板
         public virtual bool AddPrintTemplate(PrintTemplateDTO dto)
@@ -88,6 +112,7 @@ namespace VMS.Services
         public void Dispose()
         {
             DbContext.Dispose();
+            SqlSugarDbContext.Db.Dispose();
         }
     }
 }

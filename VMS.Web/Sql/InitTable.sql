@@ -443,3 +443,8 @@ create table t_bd_breakrules
   oper_date datetime not null default(getdate())
 )
 go
+--用户表增加字段 用户类型 0:内部用户 1:外部用户
+if not exists(select 1 from syscolumns where name='user_type' and OBJECT_NAME(id)='t_sys_user')
+begin
+   alter table t_sys_user add user_type char(1) not null default('0') with values
+end

@@ -30,7 +30,9 @@ namespace VMS.ESIApi
         [Description("内存溢出")]
         out_of_memory,              //内存溢出
         [Description("接口废弃")]
-        appid_lost                  //接口废弃
+        appid_lost,                 //接口废弃
+        [Description("捕获异常")]
+        CATCH_EXCEPTION=999
         
     }
 

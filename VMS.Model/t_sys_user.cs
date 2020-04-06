@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace VMS.Model
 {
     public class t_sys_user
     {
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)] //是主键, 还是标识列
         public decimal id { get; set; }
 
         public string user_id { get; set; }
@@ -24,6 +26,8 @@ namespace VMS.Model
         public string email { get; set; }
 
         public string status { get; set; }
+
+        public string user_type { get; set; }
 
         public DateTime last_login_time { get; set; }
 

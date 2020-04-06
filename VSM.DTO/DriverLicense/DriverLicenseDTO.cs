@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VMS.DTO
 {
-    public  class DriverLicenseDTO
+    public  class DriverLicenseDTO: BaseDTO
     {
         public decimal id { get; set; }
 
@@ -18,7 +18,7 @@ namespace VMS.DTO
 
         public string sex { get; set; }
 
-        public string birthday { get; set; }
+        public DateTime? birthday { get; set; }
 
         public string region_no { get; set; }
 

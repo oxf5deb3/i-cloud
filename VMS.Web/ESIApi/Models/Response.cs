@@ -15,17 +15,17 @@ namespace VMS.ESIApi.Models
         public T data { get; set; }
     }
 
-    public class DefaultResponse<T>
+    public class DefaultResponse
     {
-        public static Response<T> SuccessWithoutData()
+        public static Response<string> SuccessWithoutData()
         {
-            var resp = new Response<T>();
+            var resp = new Response<string>();
             resp.code = StatusCode.SUCCESS;
             resp.message = StatusCode.SUCCESS.FetchDescription();
             return resp;
         }
 
-        public static Response<T> SuccessWithData(T data)
+        public static Response<T> SuccessWithData<T>(T data) where T : class, new()
         {
             var resp = new Response<T>();
             resp.code = StatusCode.SUCCESS;
@@ -34,7 +34,7 @@ namespace VMS.ESIApi.Models
             return resp;
         }
 
-        public static Response<T> Fail(StatusCode code)
+        public static Response<T> Fail<T>(StatusCode code) where T : class, new()
         {
             var resp = new Response<T>();
             resp.code = code;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using VMS.DTO;
@@ -90,6 +91,7 @@ namespace VMS.IServices
 
         BaseResponseDTO validataByDriverLicense(String id_card);
 
+        List<DriverLicenseDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
 
-    }
+        }
 }

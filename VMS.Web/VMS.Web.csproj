@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\VMS.WebApi.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -49,8 +50,11 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\VMS.Utils\lib\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -116,6 +120,9 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -147,6 +154,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Account\AccountAreaRegistration.cs" />
     <Compile Include="Areas\Account\Controllers\RoleController.cs" />
@@ -204,9 +212,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="ESIApi\BaseApiController.cs" />
+    <Compile Include="ESIApi\Models\BaseESIReponseDTO.cs" />
     <Compile Include="ESIApi\Models\Response.cs" />
     <Compile Include="ESIApi\Models\StatusCode.cs" />
     <Compile Include="ESIApi\QRCodeController.cs" />
+    <Compile Include="ESIApi\RegisterController.cs" />
     <Compile Include="ESIApi\Utils\DefaultMemoryCache.cs" />
     <Compile Include="ESIApi\Utils\EnumUtil.cs" />
     <Compile Include="ESIApi\Utils\ESIAopFilter.cs" />
@@ -215,6 +225,8 @@
     <Compile Include="ESIApi\Utils\Tools.cs" />
     <Compile Include="ESIApi\Utils\IMemoryCache.cs" />
     <Compile Include="Models\MvcExceptionAttribute.cs" />
+    <Compile Include="Models\SwaggerIgnoreAttribute.cs" />
+    <Compile Include="Models\SwaggerIgnoreFilter.cs" />
     <Compile Include="Models\VMSAuthorizeCore.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -477,6 +489,7 @@
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <EmbeddedResource Include="Scripts\swagger.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Sql\InitData.sql" />
     <Content Include="Sql\InitTable.sql" />
@@ -503,9 +516,7 @@
     <Content Include="Views\ErrorHandler\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\BreakRules\Models\" />
     <Folder Include="Log\" />
-    <Folder Include="Views\StatisticalApi\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

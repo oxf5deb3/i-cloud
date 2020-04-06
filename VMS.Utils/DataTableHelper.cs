@@ -117,7 +117,6 @@ namespace VMS.Utils
                 IL_B2:
                     i++;
                     continue;
-                    goto IL_B2;
                 }
                 list.Add(obj);
             }
