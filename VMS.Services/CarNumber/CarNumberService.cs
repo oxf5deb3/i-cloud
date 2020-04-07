@@ -12,7 +12,7 @@ namespace VMS.Services
 {
     public class CarNumberService : BaseReportService, ICarNumberService
     {
-        public bool ModifyCarNumber(DrivingPermitDTO dto) {
+        public bool ModifyCarNumber(CarLicenseDTO dto) {
             var sql = new StringBuilder("update t_normal_car_license set car_number = @car_number, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
             SqlParam[] sqlParams = new SqlParam[] {
                 new SqlParam("@car_number", dto.car_number),
@@ -37,7 +37,7 @@ namespace VMS.Services
             return DbContext.ExecuteBySql(sql, sqlParams) > 0;
         }
 
-        public List<DTO.DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DTO.DrivingPermitDTO data)
+        public List<DTO.CarLicenseDTO> queryDrivingPermitByPage(int index, int pageSize, DTO.CarLicenseDTO data)
         {
             String param = "";
 
@@ -68,7 +68,7 @@ namespace VMS.Services
 
 
 
-            return (List<DrivingPermitDTO>)DbContext.GetDataListBySQL<DrivingPermitDTO>(querySql);
+            return (List<CarLicenseDTO>)DbContext.GetDataListBySQL<CarLicenseDTO>(querySql);
         }
 
 

@@ -211,7 +211,9 @@
     <Compile Include="Controllers\GlobalVar.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
+    <Compile Include="ESIApi\AccountController.cs" />
     <Compile Include="ESIApi\BaseApiController.cs" />
+    <Compile Include="ESIApi\LicenseQueryController.cs" />
     <Compile Include="ESIApi\Models\BaseESIReponseDTO.cs" />
     <Compile Include="ESIApi\Models\Response.cs" />
     <Compile Include="ESIApi\Models\StatusCode.cs" />

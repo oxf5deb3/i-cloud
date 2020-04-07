@@ -9,11 +9,11 @@ namespace VMS.IServices
 {
     public interface ICarNumberService : IService
     {
-        List<DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DrivingPermitDTO data);
+        List<CarLicenseDTO> queryDrivingPermitByPage(int index, int pageSize, CarLicenseDTO data);
 
         List<TemporaryDrivingPermitDTO> queryTemporaryDrivingByPage(int index, int pageSize, TemporaryDrivingPermitDTO data);
 
-        bool ModifyCarNumber(DrivingPermitDTO dto);
+        bool ModifyCarNumber(CarLicenseDTO dto);
 
         bool ModifyTempCarNumber(TemporaryDrivingPermitDTO dto);
 

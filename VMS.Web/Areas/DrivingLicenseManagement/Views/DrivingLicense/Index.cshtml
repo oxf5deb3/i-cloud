@@ -668,7 +668,7 @@
         }
         function initGrid() {
             var height = $(document).height() - $('.q-condition').outerHeight(true) - 15;
-            var url = "/api/DriverLicenseApi/queryDrivingPermitByPage";
+            var url = "/api/DriverLicenseApi/CarLicenseByPage";
             $('#dgDetail').datagrid({
                 url: url,
                 pagination: true,
@@ -691,39 +691,39 @@
                 columns: [[
                     { field: 'ck', checkbox: true },
                     {
-                        field: 'id_no', title: '驾驶证编号', width: 130, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'id_no', title: '驾驶证编号', width: 130, halign: 'center',sortable:true, align: 'left', formatter: function (value, row, index) {
                             if (value != undefined) {
                                 var href = '<a style="text-decoration:underline" href="javascript:editOne();" >_txt</a>';
                                 return href.replace(/_txt/g, value);
                             }
                             return '';
                         } },
-                    { field: 'name', title: '姓名', width: 60, halign: 'center', align: 'left' },
+                    { field: 'name', title: '姓名', width: 60, halign: 'center', align: 'left', sortable: true },
                     {
-                        field: 'sex', title: '性别', width: 40, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', sortable: true, formatter: function (value, row, index) {
                             if (value == '0') {
                                 return '男';
                             }
                             return '女';
                         }
                     },
-                    { field: 'phone', title: '联系方式', width: 90, halign: 'center', align: 'left' },
-                    { field: 'nation', title: '国籍', width: 60, halign: 'center', align: 'left' }, 
+                    { field: 'phone', title: '联系方式', width: 90, halign: 'center', align: 'left', sortable: true },
+                    { field: 'nation', title: '国籍', width: 60, halign: 'center', align: 'left', sortable: true }, 
                     { field: 'issue_license_date', title: '发证日期', width: 120, halign: 'center', align: 'left' },
                     { field: 'car_type', title: '车型', width: 80, halign: 'center', align: 'left' },
-                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' }, 
-                    { field: 'car_number', title: '车牌号码', width: 100, halign: 'center', align: 'left' }, 
-                    { field: 'motor_no', title: '发动机号码', width: 100, halign: 'center', align: 'left' },
-                    { field: 'carframe_no', title: '车架号码', width: 140, halign: 'center', align: 'left' }, 
+                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'car_number', title: '车牌号码', width: 100, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'motor_no', title: '发动机号码', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'carframe_no', title: '车架号码', width: 140, halign: 'center', align: 'left', sortable: true }, 
                     {
-                        field: 'passenger', title: '核定载客', width: 60, halign: 'center', align: 'center', formatter: function (value, row, index) {
+                        field: 'passenger', title: '核定载客', width: 70, halign: 'center', align: 'center', sortable: true, formatter: function (value, row, index) {
                             if (value != undefined)
                                 return '<span style="color:red;font-weight:bold;">' + value + '</span>';
                             return '';
                         }
                     },
-                    { field: 'car_color', title: '车辆颜色', width: 60, halign: 'center', align: 'left' }, 
-                    { field: 'modify_oper_id', title: '填发员', width: 90, halign: 'center', align: 'left' }
+                    { field: 'car_color', title: '车辆颜色', width: 70, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'modify_oper_id', title: '填发员', width: 90, halign: 'center', align: 'left', sortable: true }
                 ]]
             });
         }

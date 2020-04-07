@@ -47,7 +47,7 @@ namespace VMS.IServices
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        bool ModifyZsDrivingPermit(DrivingPermitDTO dto);
+        bool ModifyZsDrivingPermit(CarLicenseDTO dto);
 
         /// <summary>
         /// 修改临时行驶证
@@ -66,7 +66,7 @@ namespace VMS.IServices
         /**
          * 正式行驶证分页查询
          * */
-        List<DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DrivingPermitDTO data);
+        List<CarLicenseDTO> queryDrivingPermitByPage(int index, int pageSize, CarLicenseDTO data);
 
         /// <summary>
         /// 添加临时行驶证
@@ -82,7 +82,7 @@ namespace VMS.IServices
         /// </summary>
         /// <param name="drivingPermitDTO"></param>
         /// <returns></returns>
-        bool AddDrivingPermit(DrivingPermitDTO drivingPermitDTO);
+        bool AddDrivingPermit(CarLicenseDTO drivingPermitDTO);
 
 
         BaseResponseDTO validataTemp(String temp_car_number, String engine_no, String car_frame_no,String id_card);
@@ -92,6 +92,6 @@ namespace VMS.IServices
         BaseResponseDTO validataByDriverLicense(String id_card);
 
         List<DriverLicenseDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
-
-        }
+        List<CarLicenseDTO> CarLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
+    }
 }

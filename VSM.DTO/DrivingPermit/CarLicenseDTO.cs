@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VMS.DTO
 {
-    public class DrivingPermitDTO
+    public class CarLicenseDTO
     {
         public decimal id { get; set; }
         public string car_owner { get; set; }

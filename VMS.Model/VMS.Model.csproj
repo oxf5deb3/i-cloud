@@ -53,6 +53,7 @@
     <Compile Include="t_bd_region.cs" />
     <Compile Include="t_fire_accident_records.cs" />
     <Compile Include="t_fire_equipment_register.cs" />
+    <Compile Include="t_normal_car_license.cs" />
     <Compile Include="t_normal_driver_license.cs" />
     <Compile Include="t_stolen.cs" />
     <Compile Include="t_sys_group.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="SqlParam.cs" />
     <Compile Include="t_sys_user.cs" />
     <Compile Include="t_sys_user_group.cs" />
+    <Compile Include="t_temp_car_license.cs" />
     <Compile Include="t_trailer.cs" />
   </ItemGroup>
   <ItemGroup>

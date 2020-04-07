@@ -14,9 +14,9 @@ namespace VMS.ESIApi
         ///5xx:服务端错误
         ///
         [Description("参数为空")]
-        param_is_null=100,          //参数为空
+        PARAM_NULL=100,          //参数为空
         [Description("参数无效")]
-        param_is_invalid = 101,     //参数无效
+        PARAM_INVALID = 101,     //参数无效
         [Description("参数类型错误")]
         param_Type_invalid =103,     //参数类型错误
         [Description("参数丢失")]
@@ -28,7 +28,7 @@ namespace VMS.ESIApi
         FAIL =201,                   //响应失败
 
         [Description("内存溢出")]
-        out_of_memory,              //内存溢出
+        OUT_OF_MEMORY,              //内存溢出
         [Description("接口废弃")]
         appid_lost,                 //接口废弃
         [Description("捕获异常")]

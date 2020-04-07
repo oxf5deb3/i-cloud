@@ -53,7 +53,7 @@ namespace VMS.Api
             var ret = new BaseResponseDTO();
             try
             {
-                var dto = data.ToObject<DrivingPermitDTO>();
+                var dto = data.ToObject<CarLicenseDTO>();
                 var service = Instance<ICarNumberService>.Create;
                 dto.userInfo = operInfo;
                 bool res = service.ModifyCarNumber(dto);
@@ -79,9 +79,9 @@ namespace VMS.Api
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.HttpGet]
-        public GridResponseDTO<DrivingPermitDTO> queryDrivingPermit([FromBody]JObject data)
+        public GridResponseDTO<CarLicenseDTO> queryDrivingPermit([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<DrivingPermitDTO>();
+            var ret = new GridResponseDTO<CarLicenseDTO>();
             try
             {
                 #region 参数检验
@@ -92,10 +92,10 @@ namespace VMS.Api
                 var paramlst = new List<SqlParam>();
                 var pageindex = CommonHelper.GetInt(condition["page"], 0);
                 var pagesize = CommonHelper.GetInt(condition["rows"]);
-                var dtoData = data.ToObject<DrivingPermitDTO>();
+                var dtoData = data.ToObject<CarLicenseDTO>();
                 string err = string.Empty;
                 var obj = Instance<ICarNumberService>.Create;
-                List<DrivingPermitDTO> lst = obj.queryDrivingPermitByPage(pageindex, pagesize, dtoData);
+                List<CarLicenseDTO> lst = obj.queryDrivingPermitByPage(pageindex, pagesize, dtoData);
                 ret.total = Int16.Parse(lst[0].TotalCount);
                 ret.rows.AddRange(lst);
                 return ret;

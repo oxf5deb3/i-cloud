@@ -10,7 +10,7 @@ namespace VMS.DTO
     {
         public DriverLicenseDTO dl { get; set; }
 
-        public DrivingPermitDTO dp { get; set; }
+        public CarLicenseDTO dp { get; set; }
 
         public TemporaryDriverLicenseDTO tdl { get; set; }
 

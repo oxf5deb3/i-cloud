@@ -16,56 +16,11 @@ namespace VMS.Api
 {
     public class DriverLicenseApiController : BaseApiController
     {
-        //[System.Web.Mvc.HttpPost]
-        //[System.Web.Mvc.HttpGet]
-        //public GridResponseDTO<DriverLicenseDTO> Query([FromBody]JObject data)
-        //{
-        //    var ret = new GridResponseDTO<DriverLicenseDTO>();
-        //    try
-        //    {
-               
-        //        #region 参数检验
-
-        //        #endregion
-        //        var sb = new StringBuilder();
-        //        var condition = data.ToDictionary();
-        //        var paramlst = new List<SqlParam>();
-        //        int total = 0;
-        //        var pageindex = CommonHelper.GetInt(condition["page"],0);
-        //        var pagesize = CommonHelper.GetInt(condition["rows"]);
-        //        string err = string.Empty;
-        //        var obj = Instance<IDriverLicenseService>.Create;
-        //        List<DriverLicenseDTO> lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
-
-        //        // 读取图片base64内容
-        //        lst.ForEach(p =>
-        //        {
-        //            p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
-        //        });
-
-        //        ret.total = total;
-        //        ret.rows.AddRange(lst);
-        //        try
-        //        {
-        //             var logService = Instance<ILogService>.Create;
-        //             logService.WriteOperateLog(new OperateLogDTO() { oper_desc = "驾驶证查询", memo = "", region_no = "", oper_id = operInfo.user_id, oper_date = DateTime.Now });
-        //        }
-        //        catch (Exception E)
-        //        {
-                    
-        //        }
-        //        return ret;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //        //Log4NetHelper.Error(this.GetType().FullName + ".Query", ex);
-        //        //ret.message = ex.Message;
-        //        //ret.success = false;
-        //        //return ret;
-        //    }
-        //}
+        /// <summary>
+        /// 正式驾驶证查询
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.HttpGet]
         public GridResponseDTO<DriverLicenseDTO> Query([FromBody]JObject data)
@@ -111,13 +66,59 @@ namespace VMS.Api
             }
             catch (Exception ex)
             {
-                throw ex;
-                //Log4NetHelper.Error(this.GetType().FullName + ".Query", ex);
-                //ret.message = ex.Message;
-                //ret.success = false;
-                //return ret;
+                Log4NetHelper.Error(this.GetType().FullName + ".Query", ex);
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
             }
         }
+
+        /// <summary>
+        /// 查询正式行驶证(分页)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO CarLicenseByPage([FromBody]JObject data)
+        {
+            var ret = new GridResponseDTO<CarLicenseDTO>();
+            try
+            {
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                var condition = data.ToDictionary();
+                var pageindex = CommonHelper.GetInt(condition["page"], 0);
+                var pagesize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
+                var dtoData = data.ToObject<CarLicenseDTO>();
+                string err = string.Empty;
+                int total = 0;
+                var obj = Instance<IDriverLicenseService>.Create;
+                List<CarLicenseDTO> lst = obj.CarLicenseQueryPageList(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                lst.ForEach(p =>
+                {
+                    p.car_1_value = p.car_1_img_path == null ? "" : FileUtils.fileToBase64(p.car_1_img_path);
+                    p.car_2_value = p.car_2_img_path == null ? "" : FileUtils.fileToBase64(p.car_2_img_path);
+                    p.vin_no_value = p.vin_no_img_path == null ? "" : FileUtils.fileToBase64(p.vin_no_img_path);
+                    p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
+                    p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
+                });
+                ret.total = total;
+                ret.rows.AddRange(lst);
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+
         // 修改正式驾照
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyZsDriverLicense([FromBody]JObject data)
@@ -189,7 +190,7 @@ namespace VMS.Api
             var ret = new BaseResponseDTO();
             try
             {
-                var dto = data.ToObject<DrivingPermitDTO>();
+                var dto = data.ToObject<CarLicenseDTO>();
                 var service = Instance<IDriverLicenseService>.Create;
                 dto.userInfo = operInfo;
                 bool res = service.ModifyZsDrivingPermit(dto);
@@ -379,7 +380,7 @@ namespace VMS.Api
             try
             {
 
-                var dtoData = data.ToObject<DrivingPermitDTO>();
+                var dtoData = data.ToObject<CarLicenseDTO>();
 
                 dtoData.userInfo = operInfo;
 
@@ -409,6 +410,11 @@ namespace VMS.Api
 
         }
 
+        /// <summary>
+        /// 临时行驶证
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
 
         public BaseResponseDTO queryTemporaryDrivingLicense([FromBody]JObject data)
@@ -445,47 +451,7 @@ namespace VMS.Api
                 return ret;
             }
         }
-
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.HttpGet]
-        public BaseResponseDTO queryDrivingPermitByPage([FromBody]JObject data)
-        {
-            var ret = new GridResponseDTO<DrivingPermitDTO>();
-            try
-            {
-                #region 参数检验
-
-                #endregion
-                var sb = new StringBuilder();
-                var condition = data.ToDictionary();
-                var paramlst = new List<SqlParam>();
-                var pageindex = CommonHelper.GetInt(condition["page"], 0);
-                var pagesize = CommonHelper.GetInt(condition["rows"]);
-                var dtoData = data.ToObject<DrivingPermitDTO>();
-                string err = string.Empty;
-                var obj = Instance<IDriverLicenseService>.Create;
-                List<DrivingPermitDTO> lst = obj.queryDrivingPermitByPage(pageindex, pagesize, dtoData);
-                lst.ForEach(p =>
-                {
-                    p.car_1_value = p.car_1_img_path == null ? "" : FileUtils.fileToBase64(p.car_1_img_path);
-                    p.car_2_value = p.car_2_img_path == null ? "" : FileUtils.fileToBase64(p.car_2_img_path);
-                    p.vin_no_value = p.vin_no_img_path == null ? "" : FileUtils.fileToBase64(p.vin_no_img_path);
-                    p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
-                    p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
-                });
-                ret.total = Int16.Parse(lst[0].TotalCount);
-                ret.rows.AddRange(lst);
-                return ret;
-
-            }
-            catch (Exception ex)
-            {
-                ret.message = ex.Message;
-                ret.success = false;
-                return ret;
-            }
-        }
-
+       
 
 
         [System.Web.Mvc.HttpPost]
@@ -548,7 +514,7 @@ namespace VMS.Api
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO validata([FromBody]JObject data)
         {
-            var dataDTO=data.ToObject<DrivingPermitDTO>();
+            var dataDTO=data.ToObject<CarLicenseDTO>();
 
            var obj = Instance<IDriverLicenseService>.Create;
 

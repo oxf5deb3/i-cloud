@@ -64,7 +64,7 @@
     <Compile Include="Common\ComboDTO.cs" />
     <Compile Include="DriverLicense\DriverLicenseDTO.cs" />
     <Compile Include="DriverLicense\TemporaryDriverLicenseDTO.cs" />
-    <Compile Include="DrivingPermit\DrivingPermitDTO.cs" />
+    <Compile Include="DrivingPermit\CarLicenseDTO.cs" />
     <Compile Include="DrivingPermit\TemporaryDrivingPermitDTO.cs" />
     <Compile Include="FireControl\FireAccidentDTO.cs" />
     <Compile Include="FireControl\FireEquipmentDTO.cs" />

@@ -26,7 +26,7 @@ namespace VMS.DAL
         }
         //注意：不能写成静态的
         public SqlSugarClient Db;//用来处理事务多表查询和复杂的操作
-
+        public SimpleClient<t_sys_user> t_sys_user { get { return new SimpleClient<t_sys_user>(Db); } }
         public SqlSugarDbContext()
         {
             Db = new SqlSugarClient(new ConnectionConfig()

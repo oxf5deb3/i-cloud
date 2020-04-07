@@ -28,14 +28,7 @@ namespace VMS.Services
             }
             return null;
         }
-
-        public bool IsExist(string user_id)
-        {
-            var tableName = "t_sys_user";
-            var pkName = "user_id";
-            var pkVal = user_id;
-            return DbContext.IsExist(tableName, pkName, pkVal)>0;
-        }
+        
         public List<t_sys_oper_role> FindOperRoleByUserId(string user_id)
         {
             var findSql = new StringBuilder();
@@ -214,7 +207,38 @@ namespace VMS.Services
             var dt = DbContext.GetPageList(sql.ToString(), IList_param.ToArray(), "id", "desc", pageIndex, pageSize, ref count);
             return DataTableHelper.DataTableToIList<t_sys_user>(dt) as List<t_sys_user>;
         }
+        #region sqlsugar
 
+        /// <summary>
+        /// 是否存在此用户id
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <param name="isInnerUser"></param>
+        /// <returns></returns>
+        public bool IsExist(string user_id, bool isInnerUser = true)
+        {
+            var has = SqlSugarDbContext.t_sys_user.IsAny(e => e.user_id == user_id && ((isInnerUser==false && e.user_type == "1") || (isInnerUser==true && e.user_type == "0")));
+            return has;
+        }
 
+        /// <summary>
+        /// 添加外部用户人员
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool AddOuterUser(UserRoleDTO user)
+        {
+            t_sys_user u = new t_sys_user();
+            u.user_id = user.user_id;
+            u.user_name = user.user_name;
+            u.user_pwd = user.user_pwd;
+            u.age = user.age;
+            u.sex = user.sex;
+            u.tel = user.tel;
+            u.user_type = "1";
+            u.email = user.email;
+            return SqlSugarDbContext.t_sys_user.Insert(u);
+        }
+        #endregion
     }
 }

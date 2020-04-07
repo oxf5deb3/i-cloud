@@ -35,7 +35,7 @@ namespace VMS.Services
             sql.Append("select * from t_normal_car_license where id =@cid ");
             lstParams.Clear();
             lstParams.Add(new SqlParam("@cid", cid));
-            var clist = DbContext.GetDataListBySQL<DrivingPermitDTO>(sql, lstParams.ToArray());
+            var clist = DbContext.GetDataListBySQL<CarLicenseDTO>(sql, lstParams.ToArray());
 
             if (dlist.Count > 0)
             {
@@ -44,7 +44,7 @@ namespace VMS.Services
 
             if (clist.Count > 0)
             {
-                dto.dp = clist[0] as DrivingPermitDTO;
+                dto.dp = clist[0] as CarLicenseDTO;
                 if (!string.IsNullOrEmpty(dto.dp.user_photo_path))
                 {
                     dto.dp.car_1_value = dto.dp.car_1_img_path == null ? "" : FileUtils.fileToBase64(dto.dp.car_1_img_path);

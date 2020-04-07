@@ -217,7 +217,7 @@ namespace VMS.Services
         }
 
 
-        public bool ModifyZsDrivingPermit(DrivingPermitDTO drivingPermitDTO)
+        public bool ModifyZsDrivingPermit(CarLicenseDTO drivingPermitDTO)
         {
             //人员信息照base64
             String userInfoPhotoBase64 = drivingPermitDTO.user_photo_base64.
@@ -586,7 +586,7 @@ namespace VMS.Services
             return DbContext.ExecuteBySql(insertSql, paramlst.ToArray()) > 0;
         }
 
-        public bool AddDrivingPermit(DrivingPermitDTO drivingPermitDTO)
+        public bool AddDrivingPermit(CarLicenseDTO drivingPermitDTO)
         {
 
             //人员信息照base64
@@ -764,7 +764,7 @@ namespace VMS.Services
         }
 
 
-        public List<DrivingPermitDTO> queryDrivingPermitByPage(int index, int pageSize, DrivingPermitDTO data)
+        public List<CarLicenseDTO> queryDrivingPermitByPage(int index, int pageSize, CarLicenseDTO data)
         {
 
             String param = "";
@@ -799,7 +799,7 @@ namespace VMS.Services
 
 
 
-            return (List<DrivingPermitDTO>)DbContext.GetDataListBySQL<DrivingPermitDTO>(querySql);
+            return (List<CarLicenseDTO>)DbContext.GetDataListBySQL<CarLicenseDTO>(querySql);
         }
 
 
@@ -978,7 +978,7 @@ namespace VMS.Services
         }
 
         #region sqlsugar
-        #region 增删改查
+        #region 正式驾驶证查询
         public List<DriverLicenseDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
         {
             List<Expression<Func<DriverLicenseDTO, bool>>> wheres = new List<Expression<Func<DriverLicenseDTO, bool>>>();
@@ -1033,6 +1033,73 @@ namespace VMS.Services
             return by;
         }
         public virtual List<DriverLicenseDTO> Convert2DTO(ISugarQueryable<DriverLicenseDTO> q)
+        {
+            var dtos = q.ToList();
+            return dtos;
+        }
+        #endregion
+
+        #region 正式行驶证查询
+        public List<CarLicenseDTO> CarLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        {
+            List<Expression<Func<CarLicenseDTO, bool>>> wheres = new List<Expression<Func<CarLicenseDTO, bool>>>();
+            wheres.AddRange(CarLicenseCreateWhere(conditions));
+
+            Expression<Func<CarLicenseDTO, object>> orderbys = CarLicenseCreateOrderby(orderby);
+
+            var q = SqlSugarDbContext.Db.Queryable<t_normal_car_license, t_bd_region>((driver, region) => new object[] {
+                JoinType.Left,driver.region_no==region.region_no
+            });
+
+            var lst = SqlSugarDbContext.GetPageList<t_normal_car_license, CarLicenseDTO>(q, wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
+
+            var dtos = CarLicenseConvert2DTO(lst);
+
+            return dtos;
+
+        }
+        public virtual List<Expression<Func<CarLicenseDTO, bool>>> CarLicenseCreateWhere(IDictionary<string, dynamic> conditions)
+        {
+            var where = new List<Expression<Func<CarLicenseDTO, bool>>>();
+            var name = conditions["name"] != null ? (string)conditions["name"] : "";
+            var car_number = conditions["car_number"] != null ? (string)conditions["car_number"] : "";
+            var id_no = conditions["id_no"] != null ? (string)conditions["id_no"] : "";
+            if (!string.IsNullOrEmpty(name))
+            {
+                where.Add(e => e.name.StartsWith(name));
+            }
+            if (!string.IsNullOrEmpty(id_no))
+            {
+                where.Add(e => e.id_no.Contains(id_no));
+            }
+            if (!string.IsNullOrEmpty(car_number))
+            {
+                where.Add(e => e.car_number.Contains(car_number));
+            }
+            return where;
+        }
+        public virtual Expression<Func<CarLicenseDTO, object>> CarLicenseCreateOrderby(string orderby)
+        {
+            Expression<Func<CarLicenseDTO, object>> by = null;
+            switch (orderby)
+            {
+                case "name": by = o => o.name; break;
+                case "id_no": by = o => o.id_no; break;
+                case "sex": by = o => o.sex; break;
+                case "region_name": by = o => o.region_name; break;
+                case "phone":by = o => o.phone;break;
+                case "nation": by = o => o.nation; break;
+                case "car_number": by = o => o.car_number; break;
+                case "motor_no": by = o => o.motor_no; break;
+                case "carframe_no": by = o => o.carframe_no; break;
+                case "passenger": by = o => o.passenger; break;
+                case "car_color": by = o => o.car_color; break;
+                case "modify_oper_id": by = o => o.modify_oper_id; break;
+                default: by = o => o.id; break;
+            }
+            return by;
+        }
+        public virtual List<CarLicenseDTO> CarLicenseConvert2DTO(ISugarQueryable<CarLicenseDTO> q)
         {
             var dtos = q.ToList();
             return dtos;

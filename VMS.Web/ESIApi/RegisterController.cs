@@ -100,7 +100,7 @@ namespace VMS.ESIApi
             try
             {
 
-                var dtoData = data.ToObject<DrivingPermitDTO>();
+                var dtoData = data.ToObject<CarLicenseDTO>();
 
                 dtoData.userInfo = new LoginDTO();
 
