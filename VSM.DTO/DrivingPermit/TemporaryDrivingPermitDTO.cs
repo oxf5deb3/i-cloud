@@ -18,7 +18,7 @@ namespace VMS.DTO
         public string nation_no { get; set; }
         public string birthday { get; set; }
         public string sex { get; set; }
-        public string permitted_card_type_no { get; set; }
+        public string permitted_car_type_no { get; set; }
         public string name { get; set; }
         public string check_date { get; set; }
 

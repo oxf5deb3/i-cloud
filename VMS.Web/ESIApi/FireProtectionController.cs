@@ -1,121 +1,31 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using VMS.DTO;
 using VMS.DTO.FireControl;
-using Newtonsoft.Json.Linq;
 using VMS.IServices;
-using VMS.ServiceProvider;
-using System.Text;
 using VMS.Model;
+using VMS.ServiceProvider;
 using VMS.Utils;
-using System.Text.RegularExpressions;
-using System.IO;
 
-namespace VMS.Api
+namespace VMS.ESIApi
 {
     /// <summary>
-    /// 消防接口
+    /// 消防管理
     /// </summary>
-    public class FireControlApiController : BaseApiController
+    public class FireProtectionController : BaseApiController
     {
-        public GridResponseDTO<FireAccidentDTO> ListAccident()
-        {
-            var ret = new GridResponseDTO<FireAccidentDTO>();
-            try
-            {
-                var httpRequest = HttpContext.Current.Request;
-                var sb = new StringBuilder();
-                var paramlst = new List<SqlParam>();
-                int total = 0;
-                var pageIndex = CommonHelper.GetInt(httpRequest.Form["page"], 1);
-                var pageSize = CommonHelper.GetInt(httpRequest.Form["rows"], 10);
-
-                if (httpRequest["id"] != null && !string.IsNullOrEmpty(httpRequest["id"]))
-                {
-                    sb.Append(" and id = @id");
-                    paramlst.Add(new SqlParam("@id", Decimal.Parse(httpRequest["id"])));
-                }
-
-                if (httpRequest["address"] != null && !string.IsNullOrEmpty(httpRequest["address"]))
-                {
-                    sb.Append(" and happen_addr like @address");
-                    paramlst.Add(new SqlParam("@address", "%" + httpRequest["address"] + "%"));
-                }
-                if (httpRequest["timeBegin"] != null && !string.IsNullOrEmpty(httpRequest["timeBegin"]))
-                {
-                    sb.Append(" and happen_date >  @timeBegin");
-                    paramlst.Add(new SqlParam("@timeBegin", httpRequest["timeBegin"]));
-                }
-                if (httpRequest["timeEnd"] != null && !string.IsNullOrEmpty(httpRequest["timeEnd"]))
-                {
-                    sb.Append(" and happen_date < @timeEnd");
-                    paramlst.Add(new SqlParam("@timeEnd", httpRequest["timeEnd"]));
-                }
-                if (httpRequest["cars"] != null && !string.IsNullOrEmpty(httpRequest["cars"]))
-                {
-                    sb.Append(" and out_police_cars like @cars");
-                    paramlst.Add(new SqlParam("@cars", "%" + httpRequest["cars"] + "%"));
-                }
-                if (httpRequest["men"] != null && !string.IsNullOrEmpty(httpRequest["men"]))
-                {
-                    sb.Append(" and out_police_mans like @men");
-                    paramlst.Add(new SqlParam("@men", "%" + httpRequest["men"] + "%"));
-                }
-                if (httpRequest["name"] != null && !string.IsNullOrEmpty(httpRequest["name"]))
-                {
-                    sb.Append(" and name = @name");
-                    paramlst.Add(new SqlParam("@name", httpRequest["cars"]));
-                }
-                if (httpRequest["phone"] != null && !string.IsNullOrEmpty(httpRequest["phone"]))
-                {
-                    sb.Append(" and phone = @phone");
-                    paramlst.Add(new SqlParam("@phone", httpRequest["phone"]));
-                }
-                string err = string.Empty;
-                var obj = Instance<IFireControlService>.Create;
-                var lst = obj.ListAccident(sb, paramlst, pageIndex, pageSize, ref total);
-                ret.total = total;
-                ret.rows.AddRange(lst.Select(e => new FireAccidentDTO()
-                {
-                    id = e.id,
-                    address = e.happen_addr,
-                    datetime = e.happen_date.ToString(),
-                    desc = e.accident_desc,
-                    cars = e.out_police_cars,
-                    names = e.out_police_mans,
-                    result = e.process_results,
-                    imgs = e.img_url,
-                    operId = e.oper_id,
-                    operDate = e.oper_date.ToString(),
-                    modifyOperId = e.modify_oper_id,
-                    modifyDate = e.modify_date.ToString(),
-                    name = e.name,
-                    sex = e.sex,
-                    age = e.age,
-                    addr = e.addr,
-                    folk = e.folk,
-                    loss = e.loss,
-                    casualties = e.casualties,
-                    finance_loss = e.finance_loss,
-                    phone = e.phone
-
-                }));
-                return ret;
-
-            }
-            catch (Exception ex)
-            {
-                ret.message = ex.Message;
-                ret.success = false;
-                return ret;
-            }
-        }
-
+        /// <summary>
+        /// 消防列表(分页)
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
         public GridResponseDTO<FireEquipmentDTO> ListEquipment()
         {
             var ret = new GridResponseDTO<FireEquipmentDTO>();
@@ -189,7 +99,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 附加图片
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AppendEquipmentImg()
         {
@@ -218,7 +131,7 @@ namespace VMS.Api
                     }
                     var dto = new FireEquipmentDTO();
                     dto.id = Decimal.Parse(httpRequest.Form["id"]);
-                    dto.modifyOperId = operInfo.user_id;
+                    dto.modifyOperId = "";
                     dto.imgs = imgs.ToString();
 
                     var service = Instance<IFireControlService>.Create;
@@ -251,71 +164,13 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        
+        /// <summary>
+        /// 添加消防事故
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AppendAccidentImg()
-        {
-            var ret = new BaseResponseDTO();
-
-            try
-            {
-                var httpRequest = HttpContext.Current.Request;
-                HttpFileCollection filelist = httpRequest.Files;
-                if (filelist != null && filelist.Count > 0)
-                {
-                    Random random = new Random();
-                    StringBuilder imgs = new StringBuilder();
-                    HttpPostedFile tempFile = null;
-                    for (int i = 0; i < filelist.Count; i++)
-                    {
-                        tempFile = filelist[i];
-                        if (tempFile.ContentLength > 0)
-                        {
-                            string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
-                            string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
-                            tempFile.SaveAs(StringContants.IMG_ACCIDENT_PATH + imgName);
-                            imgs.Append(imgName).Append(",");
-                        }
-                    }
-                    var dto = new FireAccidentDTO();
-                    dto.id = Decimal.Parse(httpRequest.Form["id"]);
-                    dto.modifyOperId = operInfo.user_id;
-                    dto.imgs = imgs.ToString();
-
-                    var service = Instance<IFireControlService>.Create;
-
-                    bool res = service.AppendImgs(dto);
-
-                    if (res)
-                    {
-                        return ret;
-                    }
-                    else
-                    {
-                        ret.message = "添加失败";
-                        ret.success = false;
-                        return ret;
-                    }
-                }
-                else
-                {
-                    ret.message = "缺少图片";
-                    ret.success = false;
-                    return ret;
-                }
-            }
-            catch (Exception ex)
-            {
-
-                ret.success = false;
-                ret.message = ex.Message;
-                return ret;
-            }
-        }
-
-        [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO addFireAccident()
+        public BaseResponseDTO AddFireAccident()
         {
             var ret = new BaseResponseDTO();
 
@@ -347,7 +202,7 @@ namespace VMS.Api
                     dto.cars = httpRequest.Form["cars"];
                     dto.names = httpRequest.Form["names"];
                     dto.result = httpRequest.Form["result"];
-                    dto.operId = operInfo.user_id;
+                    dto.operId = "";
                     dto.imgs = imgs.ToString();
                     dto.name = httpRequest.Form["name"];
                     dto.sex = httpRequest.Form["sex"];
@@ -390,7 +245,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 删除消防设备
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO DelEquipment()
         {
@@ -420,7 +278,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 删除消防事故
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO DelAccident()
         {
@@ -450,7 +311,11 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 修改消防设备图片
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyEquipmentImgs([FromBody]JObject data)
         {
@@ -459,7 +324,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<FireEquipmentDTO>();
                 var service = Instance<IFireControlService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 bool res = service.ModifyImgs(dto);
 
                 if (res)
@@ -480,7 +345,11 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 修改消防事故图片
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyImgs([FromBody]JObject data)
         {
@@ -489,7 +358,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<FireAccidentDTO>();
                 var service = Instance<IFireControlService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 bool res = service.ModifyImgs(dto);
 
                 if (res)
@@ -510,7 +379,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 修改消防设备
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyEquipment()
         {
@@ -526,9 +398,9 @@ namespace VMS.Api
                 dto.desc = httpRequest.Form["desc"];
                 dto.name = httpRequest.Form["name"];
                 dto.liable = httpRequest.Form["liable"];
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 var service = Instance<IFireControlService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 bool res = service.ModifyEquipment(dto);
 
                 if (res)
@@ -550,7 +422,11 @@ namespace VMS.Api
             }
 
         }
-
+        /// <summary>
+        /// 修改消防事故
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyAccident([FromBody]JObject data)
         {
@@ -559,7 +435,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<FireAccidentDTO>();
                 var service = Instance<IFireControlService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 bool res = service.ModifyAccident(dto);
 
                 if (res)
@@ -618,9 +494,12 @@ namespace VMS.Api
                 throw;
             }
         }
-
+        /// <summary>
+        /// 添加消防设备
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO addFireEquipment()
+        public BaseResponseDTO AddFireEquipment()
         {
             var ret = new BaseResponseDTO();
 
@@ -651,7 +530,7 @@ namespace VMS.Api
                     dto.desc = httpRequest.Form["desc"];
                     dto.name = httpRequest.Form["name"];
                     dto.liable = httpRequest.Form["liable"];
-                    dto.operId = operInfo.user_id;
+                    dto.operId = "";
                     dto.imgs = imgs.ToString();
 
                     var service = Instance<IFireControlService>.Create;

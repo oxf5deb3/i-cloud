@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -14,14 +13,18 @@ using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
 using VMS.Utils;
-using System.IO;
 
-namespace VMS.Api
+namespace VMS.ESIApi
 {
-    //事故
-    public class TrafficAccidentApiController : BaseApiController
+    /// <summary>
+    /// 交通事故管理
+    /// </summary>
+    public class TrafficTroubleController: BaseApiController
     {
-
+        /// <summary>
+        /// 添加事故信息
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddAccident()
         {
@@ -67,8 +70,8 @@ namespace VMS.Api
                     dto.dingPartyMan = httpRequest.Form["dingPartyMan"];
                     dto.duty = httpRequest.Form["duty"];
 
-                    dto.operId = operInfo.user_id;
-                    dto.imgUrl  = imgs.ToString();
+                    dto.operId = "";
+                    dto.imgUrl = imgs.ToString();
 
                     var service = Instance<ITrafficAccidentService>.Create;
 
@@ -100,7 +103,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 查询事故信息(分页)
+        /// </summary>
+        /// <returns></returns>
         public GridResponseDTO<TrafficAccidentDTO> ListAccident()
         {
             var ret = new GridResponseDTO<TrafficAccidentDTO>();
@@ -184,7 +190,7 @@ namespace VMS.Api
                     operDate = e.oper_date.ToString(),
                     modifyOperId = e.modify_oper_id,
                     modifyDate = e.modify_date.ToString(),
-                    bingPartyAddr=e.bingPartyAddr,
+                    bingPartyAddr = e.bingPartyAddr,
                     bingPartyMan = e.bingPartyMan,
                     dingPartyMan = e.dingPartyMan,
                     dingPartyAddr = e.dingPartyAddr,
@@ -200,7 +206,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 删除事故信息
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO DelAccident()
         {
@@ -230,7 +239,11 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 修改事故信息
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyAccident([FromBody]JObject data)
         {
@@ -239,7 +252,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
                 var service = Instance<ITrafficAccidentService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 bool res = service.ModifyAccident(dto);
 
                 if (res)
@@ -287,7 +300,11 @@ namespace VMS.Api
                 throw;
             }
         }
-
+        /// <summary>
+        /// 修改图片
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyImgs([FromBody]JObject data)
         {
@@ -296,7 +313,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
                 var service = Instance<ITrafficAccidentService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modifyOperId = "";
                 bool res = service.ModifyImgs(dto);
 
                 if (res)
@@ -317,7 +334,10 @@ namespace VMS.Api
                 return ret;
             }
         }
-
+        /// <summary>
+        /// 附加图片
+        /// </summary>
+        /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AppendAccidentImg()
         {
@@ -346,7 +366,7 @@ namespace VMS.Api
                     }
                     var dto = new TrafficAccidentDTO();
                     dto.id = Decimal.Parse(httpRequest.Form["id"]);
-                    dto.modifyOperId = operInfo.user_id;
+                    dto.modifyOperId = "";
                     dto.imgUrl = imgs.ToString();
 
                     var service = Instance<ITrafficAccidentService>.Create;

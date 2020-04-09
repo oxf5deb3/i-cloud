@@ -92,6 +92,12 @@ namespace VMS.IServices
         BaseResponseDTO validataByDriverLicense(String id_card);
 
         List<DriverLicenseDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
+
+        List<TemporaryDriverLicenseDTO> TempDriverLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
+
         List<CarLicenseDTO> CarLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
-    }
+
+        List<TemporaryDrivingPermitDTO> TempCarLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
+        
+        }
 }

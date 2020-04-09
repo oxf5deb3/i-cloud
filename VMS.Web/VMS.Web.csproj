@@ -213,12 +213,16 @@
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="ESIApi\AccountController.cs" />
     <Compile Include="ESIApi\BaseApiController.cs" />
+    <Compile Include="ESIApi\BreakRulesController.cs" />
+    <Compile Include="ESIApi\FireProtectionController.cs" />
     <Compile Include="ESIApi\LicenseQueryController.cs" />
     <Compile Include="ESIApi\Models\BaseESIReponseDTO.cs" />
     <Compile Include="ESIApi\Models\Response.cs" />
     <Compile Include="ESIApi\Models\StatusCode.cs" />
     <Compile Include="ESIApi\QRCodeController.cs" />
-    <Compile Include="ESIApi\RegisterController.cs" />
+    <Compile Include="ESIApi\LicenseRegisterController.cs" />
+    <Compile Include="ESIApi\SquadronController.cs" />
+    <Compile Include="ESIApi\TrafficTroubleController.cs" />
     <Compile Include="ESIApi\Utils\DefaultMemoryCache.cs" />
     <Compile Include="ESIApi\Utils\EnumUtil.cs" />
     <Compile Include="ESIApi\Utils\ESIAopFilter.cs" />

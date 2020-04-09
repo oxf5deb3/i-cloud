@@ -66,6 +66,7 @@
     <Compile Include="t_sys_user.cs" />
     <Compile Include="t_sys_user_group.cs" />
     <Compile Include="t_temp_car_license.cs" />
+    <Compile Include="t_temp_driver_license.cs" />
     <Compile Include="t_trailer.cs" />
   </ItemGroup>
   <ItemGroup>

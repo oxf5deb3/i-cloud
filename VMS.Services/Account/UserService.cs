@@ -1,7 +1,9 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using VMS.DTO;
@@ -13,20 +15,14 @@ namespace VMS.Services
 {
     public class UserService : ServiceBase, IUserService
     {
-        public t_sys_user FindByUserId(string user_id)
+        public t_sys_user FindByUserId(string user_id,string user_type="0")
         {
-            var findSql = new StringBuilder();
-            findSql.Append("select id,user_id,user_pwd,user_name,sex,age,tel,email,status from t_sys_user where user_id=@user_id");
-            SqlParam[] paramlst = new SqlParam[] { 
-               new SqlParam("@user_id",user_id)
-            };
-            var lst = DbContext.GetDataListBySQL<t_sys_user>(findSql, paramlst) as List<t_sys_user>;
-            if (lst.Count > 0)
+            var user = SqlSugarDbContext.t_sys_user.GetSingle(e => e.user_id == user_id.Trim() && e.user_type==user_type);
+            if (user != null)
             {
-                lst[0].user_pwd = DESEncrypt.Decrypt(lst[0].user_pwd);
-                return lst[0] as t_sys_user;
+                user.user_pwd = DESEncrypt.Decrypt(user.user_pwd);
             }
-            return null;
+            return user;
         }
         
         public List<t_sys_oper_role> FindOperRoleByUserId(string user_id)
@@ -238,6 +234,55 @@ namespace VMS.Services
             u.user_type = "1";
             u.email = user.email;
             return SqlSugarDbContext.t_sys_user.Insert(u);
+        }
+
+        public List<t_sys_user> GetUserPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        {
+            List<Expression<Func<t_sys_user, bool>>> wheres = new List<Expression<Func<t_sys_user, bool>>>();
+            wheres.AddRange(UserCreateWhere(conditions));
+
+            Expression<Func<t_sys_user, object>> orderbys = UserCreateOrderby(orderby);
+
+            var q = SqlSugarDbContext.Db.Queryable<t_sys_user>();
+
+            var lst = SqlSugarDbContext.GetPageList<t_sys_user, t_sys_user>(q, wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
+
+            var dtos = UserConvert2DTO(lst);
+
+            return dtos;
+        }
+        public virtual List<Expression<Func<t_sys_user, bool>>> UserCreateWhere(IDictionary<string, dynamic> conditions)
+        {
+            var where = new List<Expression<Func<t_sys_user, bool>>>();
+            //var name = conditions["name"] != null ? (string)conditions["name"] : "";
+            //if (!string.IsNullOrEmpty(name))
+            //{
+            //    where.Add(e => e.name.StartsWith(name));
+            //}
+            return where;
+        }
+        public virtual Expression<Func<t_sys_user, object>> UserCreateOrderby(string orderby)
+        {
+            Expression<Func<t_sys_user, object>> by = null;
+            switch (orderby)
+            {
+                case "user_id": by = o => o.user_id; break;
+                case "user_name": by = o => o.user_name; break;
+                case "sex": by = o => o.sex; break;
+                case "age": by = o => o.age; break;
+                case "tel": by = o => o.tel; break;
+                case "email": by = o => o.email; break;
+                case "status": by = o => o.status; break;
+                case "last_login_time": by = o => new { o.last_login_time }; break;
+                case "create_date": by = o => new { o.create_date }; break;
+                default: by = o => o.id; break;
+            }
+            return by;
+        }
+        public virtual List<t_sys_user> UserConvert2DTO(ISugarQueryable<t_sys_user> q)
+        {
+            var dtos = q.ToList();
+            return dtos;
         }
         #endregion
     }

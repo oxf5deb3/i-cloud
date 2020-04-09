@@ -322,7 +322,7 @@
         }
         function initGrid() {
             var height = $(document).height() - $('.q-condition').outerHeight(true) - 15;
-            var url = "/api/DriverLicenseApi/queryTemporaryDrivingLicense";
+            var url = "/api/DriverLicenseApi/QueryTempDriverLicense";
             $('#dgDetail').datagrid({
                 url: url,
                 pagination: true,
@@ -345,30 +345,30 @@
                 columns: [[
                     { field: 'ck', checkbox: true },
                     {
-                        field: 'id_no', title: '临时驾驶证编号', width: 120, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'id_no', title: '临时驾驶证编号', width: 120, halign: 'center', align: 'left',sortable:true, formatter: function (value, row, index) {
                             if (value != undefined) {
                                 var href = '<a style="text-decoration:underline" href="javascript:editOne();" >_txt</a>';
                                 return href.replace(/_txt/g, value);
                             }
                             return '';
                         }  },
-                    { field: 'name', title: '姓名', width: 80, halign: 'center', align: 'left' },
+                    { field: 'name', title: '姓名', width: 80, halign: 'center', align: 'left', sortable: true },
                     {
-                        field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'sex', title: '性别', width: 60, halign: 'center', align: 'left', sortable: true, formatter: function (value, row, index) {
                             if (value == '0') {
                                 return '男';
                             }
                             return '女';
                         }
                     },
-                    { field: 'nation_no', title: '国籍', width: 60, halign: 'center', align: 'left' }, 
-                    { field: 'now_addr', title: '现住址', width: 80, halign: 'center', align: 'left' },
-                    { field: 'permitted_card_type_no', title: '准驾车型', width: 60, halign: 'center', align: 'left' },
-                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left' },
-                    { field: 'folk', title: '民族', width: 50, halign: 'center', align: 'left' },
-                    { field: 'start_date', title: '有效期起', width: 120, halign: 'center', align: 'left' },
-                    { field: 'end_date', title: '有效期止', width: 120, halign: 'center', align: 'left' },
-                    { field: 'modify_oper_id', title: '填发员', width: 80, halign: 'center', align: 'left' }
+                    { field: 'nation_no', title: '国籍', width: 60, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'now_addr', title: '现住址', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'permitted_card_type_no', title: '准驾车型', width: 70, halign: 'center', align: 'left', sortable: true },
+                    { field: 'region_name', title: '区域', width: 80, halign: 'center', align: 'left', sortable: true },
+                    { field: 'folk', title: '民族', width: 50, halign: 'center', align: 'left', sortable: true },
+                    { field: 'start_date', title: '有效期起', width: 120, halign: 'center', align: 'left', sortable: true },
+                    { field: 'end_date', title: '有效期止', width: 120, halign: 'center', align: 'left', sortable: true },
+                    { field: 'modify_oper_id', title: '填发员', width: 80, halign: 'center', align: 'left', sortable: true }
                 ]]
             });
         }

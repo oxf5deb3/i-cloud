@@ -10,6 +10,7 @@ using VMS.DTO;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
+using VMS.Utils;
 
 namespace VMS.Api
 {
@@ -180,13 +181,18 @@ namespace VMS.Api
                     ret.message = "无法获取到请求参数!";
                 }
                 #endregion
+                var condition = data.ToDictionary();
                 var pageIndex = data["page"] == null ? 1 : data["page"].ToObject<int>();
                 var pageSize = data["rows"] == null ? 20 : data["rows"].ToObject<int>();
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
                 var sb = new StringBuilder();
                 var paramlst = new List<SqlParam>();
                 int total = 0;
+                string err = string.Empty;
                 var obj = Instance<IUserService>.Create;
-                var lst = obj.GetPageList(sb, paramlst, pageIndex, pageSize, ref total);
+                List<t_sys_user> lst = obj.GetUserPageList(condition, sort, order, pageIndex, pageSize, ref total, ref err);
+                //var lst = obj.GetPageList(sb, paramlst, pageIndex, pageSize, ref total);
                 ret.rows.AddRange(lst.Select(e => new UserDTO() { id = e.id.ToString(), user_id = e.user_id, user_pwd = e.user_pwd, user_name = e.user_name, sex = e.sex, age = e.age, tel = e.tel, email = e.email, status = e.status, last_login_time = e.last_login_time, create_date = e.create_date }));
                 ret.total = total;
                 return ret;

@@ -43,7 +43,6 @@ namespace VMS.Api
                 string err = string.Empty;
                 var obj = Instance<IDriverLicenseService>.Create;
                 List<DriverLicenseDTO> lst = obj.QueryPage(condition, sort, order, pageindex, pagesize, ref total, ref err);
-                //List<DriverLicenseDTO> lst = obj.Query<DriverLicenseDTO>(condition, false, pagesize, pageindex, true, "id_no", ref total, ref err);
                 // 读取图片base64内容
                 lst.ForEach(p =>
                 {
@@ -74,6 +73,51 @@ namespace VMS.Api
         }
 
         /// <summary>
+        /// 临时驾驶证
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpPost]
+
+        public BaseResponseDTO QueryTempDriverLicense([FromBody]JObject data)
+        {
+            var ret = new GridResponseDTO<TemporaryDriverLicenseDTO>();
+            try
+            {
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                var condition = data.ToDictionary();
+                var paramlst = new List<SqlParam>();
+                var pageindex = CommonHelper.GetInt(condition["page"], 0);
+                var pagesize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
+                string err = string.Empty;
+                int total = 0;
+                var obj = Instance<IDriverLicenseService>.Create;
+                //List<TemporaryDriverLicenseDTO> lst = obj.queryTemporaryDrivingLicense(pageindex, pagesize, dtoData);
+                List<TemporaryDriverLicenseDTO> lst = obj.TempDriverLicenseQueryPageList(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                // 读取图片base64内容
+                lst.ForEach(p =>
+                {
+                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
+                });
+                ret.total = total;
+                ret.rows.AddRange(lst);
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+
+        /// <summary>
         /// 查询正式行驶证(分页)
         /// </summary>
         /// <param name="data"></param>
@@ -93,11 +137,55 @@ namespace VMS.Api
                 var pagesize = CommonHelper.GetInt(condition["rows"]);
                 var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
                 var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
-                var dtoData = data.ToObject<CarLicenseDTO>();
                 string err = string.Empty;
                 int total = 0;
                 var obj = Instance<IDriverLicenseService>.Create;
                 List<CarLicenseDTO> lst = obj.CarLicenseQueryPageList(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                lst.ForEach(p =>
+                {
+                    p.car_1_value = p.car_1_img_path == null ? "" : FileUtils.fileToBase64(p.car_1_img_path);
+                    p.car_2_value = p.car_2_img_path == null ? "" : FileUtils.fileToBase64(p.car_2_img_path);
+                    p.vin_no_value = p.vin_no_img_path == null ? "" : FileUtils.fileToBase64(p.vin_no_img_path);
+                    p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
+                    p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
+                });
+                ret.total = total;
+                ret.rows.AddRange(lst);
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+        /// <summary>
+        /// 临时行驶证
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [System.Web.Mvc.HttpPost]
+        public BaseResponseDTO TempCarLicenseByPage([FromBody]JObject data)
+        {
+            var ret = new GridResponseDTO<TemporaryDrivingPermitDTO>();
+            try
+            {
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                var condition = data.ToDictionary();
+                var paramlst = new List<SqlParam>();
+                var pageindex = CommonHelper.GetInt(condition["page"], 0);
+                var pagesize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
+                int total = 0;
+                string err = string.Empty;
+                var obj = Instance<IDriverLicenseService>.Create;
+                List<TemporaryDrivingPermitDTO> lst = obj.TempCarLicenseQueryPageList(condition, sort, order, pageindex, pagesize, ref total, ref err);
                 lst.ForEach(p =>
                 {
                     p.car_1_value = p.car_1_img_path == null ? "" : FileUtils.fileToBase64(p.car_1_img_path);
@@ -410,89 +498,9 @@ namespace VMS.Api
 
         }
 
-        /// <summary>
-        /// 临时行驶证
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        [System.Web.Mvc.HttpPost]
-
-        public BaseResponseDTO queryTemporaryDrivingLicense([FromBody]JObject data)
-        {
-            var ret = new GridResponseDTO<TemporaryDriverLicenseDTO>();
-            try
-            {
-                #region 参数检验
-
-                #endregion
-                var sb = new StringBuilder();
-                var condition = data.ToDictionary();
-                var paramlst = new List<SqlParam>();
-                var pageindex = CommonHelper.GetInt(condition["page"], 0);
-                var pagesize = CommonHelper.GetInt(condition["rows"]);
-                var dtoData = data.ToObject<TemporaryDriverLicenseDTO>();
-                string err = string.Empty;
-                var obj = Instance<IDriverLicenseService>.Create;
-                List<TemporaryDriverLicenseDTO> lst = obj.queryTemporaryDrivingLicense(pageindex, pagesize, dtoData);
-                // 读取图片base64内容
-                lst.ForEach(p =>
-                {
-                    p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
-                });
-                ret.total = Int16.Parse(lst[0].TotalCount);
-                ret.rows.AddRange(lst);
-                return ret;
-
-            }
-            catch (Exception ex)
-            {
-                ret.message = ex.Message;
-                ret.success = false;
-                return ret;
-            }
-        }
+     
        
 
-
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.HttpGet]
-        public BaseResponseDTO queryTemporaryDrivingByPage([FromBody]JObject data)
-        {
-            var ret = new GridResponseDTO<TemporaryDrivingPermitDTO>();
-            try
-            {
-                #region 参数检验
-
-                #endregion
-                var sb = new StringBuilder();
-                var condition = data.ToDictionary();
-                var paramlst = new List<SqlParam>();
-                var pageindex = CommonHelper.GetInt(condition["page"], 0);
-                var pagesize = CommonHelper.GetInt(condition["rows"]);
-                var dtoData = data.ToObject<TemporaryDrivingPermitDTO>();
-                string err = string.Empty;
-                var obj = Instance<IDriverLicenseService>.Create;
-                List<TemporaryDrivingPermitDTO> lst = obj.queryTemporaryDrivingByPage(pageindex, pagesize, dtoData);
-                lst.ForEach(p =>
-                {
-                    p.car_1_value = p.car_1_img_path==null?"":FileUtils.fileToBase64(p.car_1_img_path);
-                    p.car_2_value = p.car_2_img_path == null ? "" : FileUtils.fileToBase64(p.car_2_img_path);
-                    p.vin_no_value = p.vin_no_img_path == null ? "" : FileUtils.fileToBase64(p.vin_no_img_path);
-                    p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
-                    p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
-                });
-                ret.total = Int16.Parse(lst[0].TotalCount);
-                ret.rows.AddRange(lst);
-                return ret;
-
-            }
-            catch (Exception ex)
-            {
-                ret.message = ex.Message;
-                ret.success = false;
-                return ret;
-            }
-        }
 
 
         [System.Web.Mvc.HttpPost]

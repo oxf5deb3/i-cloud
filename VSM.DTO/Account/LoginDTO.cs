@@ -14,5 +14,7 @@ namespace VMS.DTO
         public string user_pwd { get; set; }
 
         public string login_ip { get; set; }
+
+        public string user_type { get; set; }
     }
 }

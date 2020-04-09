@@ -356,22 +356,24 @@
            height:height,
            columns:[[
                {field:'ck',checkbox:true},
-               {field:'user_id',title:'账号',width:80,halign:'center',align:'left'},
-               {field:'user_name',title:'名称',width:100,halign:'center',align:'left'},
-               {field:'sex',title:'性别',width:50,halign:'center',align:'left',
+               {field:'user_id',title:'账号',width:80,halign:'center',align:'left',sortable:true},
+               { field: 'user_name', title: '名称', width: 100, halign: 'center', align: 'left', sortable: true},
+               {
+                   field: 'sex', title: '性别', width: 50, halign: 'center', align: 'left', sortable: true,
                 formatter:function(value,row,index){
                       if('0'==value) return '男';
                       return '女';
                 }},
-               {field:'age',title:'年龄',width:50,halign:'center',align:'left'},
-               {field:'tel',title:'联系电话',width:100,halign:'center',align:'left'},
-               {field:'email',title:'邮箱',width:130,halign:'center',align:'left'},
-               {field:'status',title:'状态',width:50,halign:'center',align:'left',formatter:function(value,row,index){
+               { field: 'age', title: '年龄', width: 50, halign: 'center', align: 'left', sortable: true},
+               { field: 'tel', title: '联系电话', width: 100, halign: 'center', align: 'left', sortable: true},
+               { field: 'email', title: '邮箱', width: 130, halign: 'center', align: 'left', sortable: true},
+               {
+                   field: 'status', title: '状态', width: 50, halign: 'center', align: 'left', sortable: true,formatter:function(value,row,index){
                        if('0'==value) return '正常';
                         return '停用';
                 }},
-               {field:'last_login_time',title:'最后登录时间',width:150,halign:'center',align:'left'},
-               {field:'create_date',title:'创建时间',width:150,halign:'center',align:'left'},
+               { field: 'last_login_time', title: '最后登录时间', width: 150, halign: 'center', align: 'left', sortable: true},
+               { field: 'create_date', title: '创建时间', width: 150, halign: 'center', align: 'left', sortable: true},
            ]]
      });
     }

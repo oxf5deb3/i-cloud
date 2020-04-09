@@ -453,7 +453,7 @@
         }
         function initGrid() {
             var height = $(document).height() - $('.q-condition').outerHeight(true) - 15;
-            var url = "/api/DriverLicenseApi/queryTemporaryDrivingByPage";
+            var url = "/api/DriverLicenseApi/TempCarLicenseByPage";
             $('#dgDetail').datagrid({
                 url: url,
                 pagination: true,
@@ -476,34 +476,34 @@
                 columns: [[
                     { field: 'ck', checkbox: true },
                     {
-                        field: 'id_no', title: '临时驾驶证编号', width: 120, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'id_no', title: '临时行驶证编号', width: 120, halign: 'center', align: 'left',sortable:true, formatter: function (value, row, index) {
                             if (value != undefined) {
                                 var href = '<a style="text-decoration:underline" href="javascript:editOne();" >_txt</a>';
                                 return href.replace(/_txt/g, value);
                             }
                             return '';
                         }  },
-                    { field: 'name', title: '姓名', width: 60, halign: 'center', align: 'left' }, 
+                    { field: 'name', title: '姓名', width: 60, halign: 'center', align: 'left', sortable: true }, 
                     {
-                        field: 'sex', title: '性别', width: 30, halign: 'center', align: 'left', formatter: function (value, row, index) {
+                        field: 'sex', title: '性别', width: 60, halign: 'center', align: 'left', sortable: true, formatter: function (value, row, index) {
                             if (value == '0') {
                                 return '男';
                             }
                             return '女';
                         }
                     },
-                    { field: 'region_name', title: '区域', width: 60, halign: 'center', align: 'left' },
-                    { field: 'addr', title: '住址', width: 60, halign: 'center', align: 'left' }, 
-                    { field: 'phone', title: '联系方式', width: 80, halign: 'center', align: 'left' }, 
-                    { field: 'id_card', title: '身份证号码', width: 130, halign: 'center', align: 'left' }, 
-                    { field: 'temp_number', title: '临时车牌号', width: 80, halign: 'center', align: 'left' }, 
-                    { field: 'car_type', title: '车型', width: 80, halign: 'center', align: 'left' }, 
-                    { field: 'car_color', title: '车辆颜色', width: 70, halign: 'center', align: 'left' },
-                    { field: 'engine_no', title: '发动机号', width: 80, halign: 'center', align: 'left' }, 
-                    { field: 'vin', title: '车架号', width: 120, halign: 'center', align: 'left' },
-                    { field: 'start_date', title: '有效期起', width: 110, halign: 'center', align: 'left' },
-                    { field: 'end_date', title: '有效期止', width: 110, halign: 'center', align: 'left' },
-                    { field: 'modify_oper_id', title: '填发员', width: 70, halign: 'center', align: 'left' },
+                    { field: 'region_name', title: '区域', width: 60, halign: 'center', align: 'left', sortable: true},
+                    { field: 'addr', title: '住址', width: 60, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'phone', title: '联系方式', width: 80, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'id_card', title: '身份证号码', width: 130, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'temp_number', title: '临时车牌号', width: 80, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'car_type', title: '车型', width: 80, halign: 'center', align: 'left', sortable: true}, 
+                    { field: 'car_color', title: '车辆颜色', width: 70, halign: 'center', align: 'left', sortable: true },
+                    { field: 'engine_no', title: '发动机号', width: 80, halign: 'center', align: 'left', sortable: true }, 
+                    { field: 'vin', title: '车架号', width: 120, halign: 'center', align: 'left', sortable: true },
+                    { field: 'start_date', title: '有效期起', width: 100, halign: 'center', align: 'left', sortable: true},
+                    { field: 'end_date', title: '有效期止', width: 110, halign: 'center', align: 'left', sortable: true },
+                    { field: 'modify_oper_id', title: '填发员', width: 70, halign: 'center', align: 'left', sortable: true },
 
 
                 ]]

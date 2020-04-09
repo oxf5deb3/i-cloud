@@ -403,7 +403,7 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@birthday", drivingPermitDTO.birthday));
 
             paramlst.Add(new SqlParam("@sex", drivingPermitDTO.sex));
-            paramlst.Add(new SqlParam("@permitted_car_type_no", drivingPermitDTO.permitted_card_type_no));
+            paramlst.Add(new SqlParam("@permitted_car_type_no", drivingPermitDTO.permitted_car_type_no));
             paramlst.Add(new SqlParam("@name", drivingPermitDTO.name));
             paramlst.Add(new SqlParam("@check_date", drivingPermitDTO.check_date));
             paramlst.Add(new SqlParam("@car_type", drivingPermitDTO.car_type));
@@ -545,7 +545,7 @@ namespace VMS.Services
             paramlst.Add(new SqlParam("@folk", temporaryDrivingPermitDTO.folk));
             paramlst.Add(new SqlParam("@nation_no", temporaryDrivingPermitDTO.nation_no));
             paramlst.Add(new SqlParam("@addr", temporaryDrivingPermitDTO.addr));
-            paramlst.Add(new SqlParam("@permitted_card_type_no", temporaryDrivingPermitDTO.permitted_card_type_no));
+            paramlst.Add(new SqlParam("@permitted_card_type_no", temporaryDrivingPermitDTO.permitted_car_type_no));
             paramlst.Add(new SqlParam("@name", temporaryDrivingPermitDTO.name));
             paramlst.Add(new SqlParam("@check_date", temporaryDrivingPermitDTO.check_date));
 
@@ -1104,6 +1104,136 @@ namespace VMS.Services
             var dtos = q.ToList();
             return dtos;
         }
+
+
+        #endregion
+
+        #region 临时驾驶证
+        public List<TemporaryDriverLicenseDTO> TempDriverLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        {
+            List<Expression<Func<TemporaryDriverLicenseDTO, bool>>> wheres = new List<Expression<Func<TemporaryDriverLicenseDTO, bool>>>();
+            wheres.AddRange(TempDriverLicenseCreateWhere(conditions));
+
+            Expression<Func<TemporaryDriverLicenseDTO, object>> orderbys = TempDriverLicenseCreateOrderby(orderby);
+
+            var q = SqlSugarDbContext.Db.Queryable<t_temp_driver_license, t_bd_region>((driver, region) => new object[] {
+                JoinType.Left,driver.region_no==region.region_no
+            });
+
+            var lst = SqlSugarDbContext.GetPageList<t_temp_driver_license, TemporaryDriverLicenseDTO>(q, wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
+
+            var dtos = TempDriverLicenseConvert2DTO(lst);
+
+            return dtos;
+
+        }
+        public virtual List<Expression<Func<TemporaryDriverLicenseDTO, bool>>> TempDriverLicenseCreateWhere(IDictionary<string, dynamic> conditions)
+        {
+            var where = new List<Expression<Func<TemporaryDriverLicenseDTO, bool>>>();
+            var name = conditions["name"] != null ? (string)conditions["name"] : "";
+            var id_no = conditions["id_no"] != null ? (string)conditions["id_no"] : "";
+            if (!string.IsNullOrEmpty(name))
+            {
+                where.Add(e => e.name.StartsWith(name));
+            }
+            if (!string.IsNullOrEmpty(id_no))
+            {
+                where.Add(e => e.id_no.Contains(id_no));
+            }
+           
+            return where;
+        }
+        public virtual Expression<Func<TemporaryDriverLicenseDTO, object>> TempDriverLicenseCreateOrderby(string orderby)
+        {
+            Expression<Func<TemporaryDriverLicenseDTO, object>> by = null;
+            switch (orderby)
+            {
+                case "name": by = o => o.name; break;
+                case "id_no": by = o => o.id_no; break;
+                case "sex": by = o => o.sex; break;
+                case "region_name": by = o => o.region_name; break;
+                case "now_addr": by = o => o.now_addr; break;
+                case "nation_no": by = o => o.nation_no; break;
+                case "permitted_card_type_no": by = o => o.permitted_card_type_no; break;
+                case "start_date": by = o => new { o.start_date }; break;
+                case "folk": by = o => o.folk; break;
+                case "end_date": by = o => new { o.end_date }; break;
+                case "modify_oper_id": by = o => o.modify_oper_id; break;
+                default: by = o => o.id; break;
+            }
+            return by;
+        }
+        public virtual List<TemporaryDriverLicenseDTO> TempDriverLicenseConvert2DTO(ISugarQueryable<TemporaryDriverLicenseDTO> q)
+        {
+            var dtos = q.ToList();
+            return dtos;
+        }
+        #endregion
+
+        #region 临时行驶证
+        public List<TemporaryDrivingPermitDTO> TempCarLicenseQueryPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        {
+            List<Expression<Func<TemporaryDrivingPermitDTO, bool>>> wheres = new List<Expression<Func<TemporaryDrivingPermitDTO, bool>>>();
+            wheres.AddRange(TempCarLicenseCreateWhere(conditions));
+
+            Expression<Func<TemporaryDrivingPermitDTO, object>> orderbys = TempCarLicenseCreateOrderby(orderby);
+
+            var q = SqlSugarDbContext.Db.Queryable<t_temp_car_license, t_bd_region>((driver, region) => new object[] {
+                JoinType.Left,driver.region_no==region.region_no
+            });
+
+            var lst = SqlSugarDbContext.GetPageList<t_temp_car_license, TemporaryDrivingPermitDTO>(q, wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
+
+            var dtos = TempCarLicenseConvert2DTO(lst);
+
+            return dtos;
+
+        }
+        public virtual List<Expression<Func<TemporaryDrivingPermitDTO, bool>>> TempCarLicenseCreateWhere(IDictionary<string, dynamic> conditions)
+        {
+            var where = new List<Expression<Func<TemporaryDrivingPermitDTO, bool>>>();
+            var name = conditions["name"] != null ? (string)conditions["name"] : "";
+            var id_no = conditions["id_no"] != null ? (string)conditions["id_no"] : "";
+            if (!string.IsNullOrEmpty(name))
+            {
+                where.Add(e => e.name.StartsWith(name));
+            }
+            if (!string.IsNullOrEmpty(id_no))
+            {
+                where.Add(e => e.id_no.Contains(id_no));
+            }
+           
+            return where;
+        }
+        public virtual Expression<Func<TemporaryDrivingPermitDTO, object>> TempCarLicenseCreateOrderby(string orderby)
+        {
+            Expression<Func<TemporaryDrivingPermitDTO, object>> by = null;
+            switch (orderby)
+            {
+                case "name": by = o => o.name; break;
+                case "id_no": by = o => o.id_no; break;
+                case "sex": by = o => o.sex; break;
+                case "region_name": by = o => o.region_name; break;
+                case "phone": by = o => o.phone; break;
+                case "id_card": by = o => o.id_card; break;
+                case "temp_number": by = o => o.temp_number; break;
+                case "car_type": by = o => o.car_type; break;
+                case "car_color": by = o => o.car_color; break;
+                case "engine_no": by = o => o.engine_no; break;
+                case "vin": by = o => o.vin; break;
+                case "start_date": by = o => new { o.start_date }; break;
+                case "end_date": by = o => new { o.end_date }; break;
+                case "modify_oper_id": by = o => o.modify_oper_id; break;
+                default: by = o => o.id; break;
+            }
+            return by;
+        }
+        public virtual List<TemporaryDrivingPermitDTO> TempCarLicenseConvert2DTO(ISugarQueryable<TemporaryDrivingPermitDTO> q)
+        {
+            var dtos = q.ToList();
+            return dtos;
+        }
+
         #endregion
 
         #endregion
