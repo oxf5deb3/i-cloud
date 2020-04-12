@@ -94,6 +94,8 @@
                     !1
             })
     }
+
+    var allMenus = [];
     function bindEvents() {
        //退出
         $('#btnOut').bind('click', function () {
@@ -122,12 +124,60 @@
             }
         });
         //搜索
-        $('.vmsui-header-item .vmsui-header-search input').off('keypress').on('keypress', function (e) {
-            if (this.value.replace(/\s/g, "") && 13 === e.keyCode) {
-
-
+        $('.vmsui-header-search-list').unbind('click').bind('click', function (el) {
+            var target = el.target;
+            if (target != undefined) {
+                var val = $(target).html();
+                var findOne = $(allMenus).filter(function (inx, el) {
+                    var cite = $(el).find('cite').html();
+                    if (cite.indexOf(val) != -1) {
+                        return true;
+                    }
+                    return false;
+                });
+                if (findOne != undefined) {
+                    $(findOne).find('cite').click();
+                    $('.vmsui-header-search input').val('');
+                    $(this).hide();
+                }
             }
-
+        })
+        $('.vmsui-header-item .vmsui-header-search input').off('keydown').on('keydown', function (e) {
+            if (allMenus.length<=0) {
+                var items = $('.vmsui-side-menu .vmsui-nav-item>a').filter(function (inx, el) {
+                    var url = $(el).attr('data-url');
+                    if (url != undefined && $.trim(url) != '') {
+                        return true;
+                    }
+                    return false;
+                });
+                allMenus = items;
+            }
+            $('.vmsui-header-search-list>li').remove();
+            var val = $(this).val();
+            if (val != undefined && val.replace(/\s/g, "") && 13 === e.keyCode) {
+                console.log(val);
+                var filters = $(allMenus).filter(function (inx, el) {
+                    var cite = $(el).find('cite').html();
+                    if (cite.indexOf(val) != -1) {
+                        return true;
+                    }
+                    return false;
+                });
+                var li = [];
+                console.dir(filters);
+                $.each(filters, function (inx, el) {
+                    var cite = $(el).find('cite').html();
+                    li.push('<li>'+cite+'</li>');
+                })
+                if (li.length > 0)
+                    $('.vmsui-header-search-list').append(li.join('')).show();
+                else {
+                    $('.vmsui-header-search-list>li').remove();
+                    $('.vmsui-header-search-list').hide();
+                }
+                    
+            }
         });
         //全屏
         function fullscreen(e) {
@@ -199,6 +249,32 @@
 
 
             
+        });
+
+        //关闭页签
+        $('.tabs-control').bind('click', function (event) {
+            event.stopPropagation();
+            var block = $(this).find('.tabs-block');
+            var display = block.css('display');
+            if (display == 'block') {
+                block.slideUp('fast');
+            } else {
+                block.slideDown('fast');
+            }
+        });
+        $('.tabs-block>li').bind('click', function (event) {
+            event.stopPropagation();
+            var id = $(this).attr('id');
+            if (id == 'close-all') {
+                $('.tabs-title>ul>li,.vmsui-tabs-body>div').remove();
+            } else if (id == 'close-left') {
+                $('.tab-title-selected').prevAll().remove();
+                $('.tab-body-selected').prevAll().remove();
+            } else if (id == 'close-right') {
+                $('.tab-title-selected').nextAll().remove();
+                $('.tab-body-selected').nextAll().remove();
+            }
+            $('.tabs-control').trigger('click');
         });
 
     }

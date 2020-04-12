@@ -1,0 +1,155 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <link rel="stylesheet" href="../Content/bootstrap.min.css">
+    <style type="text/css">
+
+        body {
+            font-size: 12px;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .red-star {
+            color: red;
+            font-size: 15px;
+        }
+
+        .form-control {
+            height: 30px;
+        }
+
+        td {
+            vertical-align: middle !important;
+            border-top: none !important;
+        }
+
+        tr {
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+        .panel-body {
+            border: none;
+        }
+
+        .btnContainer {
+            height: 36px;
+            padding-right: 5px;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+
+            .btnContainer:after {
+                overflow: hidden;
+            }
+        .panel-heading {
+            padding: 5px 10px;
+        }
+    </style>
+}
+<div class="btnContainer">
+    <button type="button" class="pull-right btn btn-info btn-sm">保存设置</button>
+</div>
+<div style="overflow-y:auto;min-height:500px;">
+    <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button">
+                    1.SMTP邮箱服务器设置
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body container-fluid">
+                <table class="table table-condensed" style="table-layout:fixed;border-collapse:collapse;">
+                    <tr>
+                        <td class="text-right" style="width:120px;"><span class="red-star">*</span>服务器名称:</td>
+                        <td>
+                            <input type="text" id="email_server_addr" class="form-control" placeholder="例如:smtp.163.com" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red-star">*</span>邮箱账号:</td>
+                        <td>
+                            <input type="text" id="email_account" class="form-control" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red-star">*</span>邮箱密码:</td>
+                        <td>
+                            <input type="password" id="email_pwd" class="form-control" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        function Save() {
+            var email_server_addr = $('#email_server_addr').val();
+            var email_account = $('#email_account').val();
+            var email_pwd = $('#email_pwd').val();
+            var data = {};
+            data.email_server_addr = email_server_addr;
+            data.email_account = email_account;
+            data.email_pwd = email_pwd;
+
+            var url = "/api/SystemApi/SaveSetting";
+            $.post(url, data, 'json')
+                .success(function (ret) {
+                    if (ret.success) {
+                        alert("保存成功！");
+                    } else {
+                        if ($.trim(ret.message)) {
+                            alert(ret.message);
+                        }
+                    }
+                });
+        }
+        function BindEvent() {
+            $('#btnSave').unbind('click').bind('click', function () {
+                Save();
+            });
+        }
+        function initData(data) {
+            $('#email_server_addr').val(data.email_server_addr);
+            $('#email_account').val(data.email_account);
+            $('#email_pwd').val(data.email_pwd);
+        }
+        function refreshUI() {
+            var url = "/api/SystemApi/QuerySetting";
+            $.post(url, {}, 'json').success(function (ret) {
+                if (ret.success) {
+                    initData(ret.data);
+                }
+            });
+        }
+        function initUI() {
+            BindEvent();
+            refreshUI();
+        }
+        initUI();
+    </script>
+}

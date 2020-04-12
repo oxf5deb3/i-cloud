@@ -448,3 +448,33 @@ if not exists(select 1 from syscolumns where name='user_type' and OBJECT_NAME(id
 begin
    alter table t_sys_user add user_type char(1) not null default('0') with values
 end
+--密码找回
+if not exists(select * from sysobjects where xtype='U' and id=OBJECT_ID('t_sys_pwd_lostfind'))
+begin
+   create table t_sys_pwd_lostfind(
+      id int identity(1,1) not null  primary key,
+	  user_id varchar(10) not null,
+	  email varchar(50) null,
+	  guid varchar(50) not null,
+	  create_date datetime not null default(getdate()),--有效期24小时内
+	  valid_date datetime null,--有效期
+	  modify_date datetime null,
+	  status char(1) not null default('0'),--0:请求找回 1:已发送邮件 2:确认找回成功
+	  memo varchar(200) null
+   )
+end
+--系统设置
+if not exists(select * from sysobjects where xtype='U' and id=OBJECT_ID('t_sys_setting'))
+begin
+   create table t_sys_setting(
+      id int identity(1,1) not null primary key,
+	  sys_var_id varchar(10) not null,
+	  sys_var_val varchar(50) null,
+	  create_date datetime not null default(getdate()),
+	  modify_date datetime null,
+	  status char(1) not null default('0'),--0:正常 1:禁用
+	  memo varchar(200) null
+   )
+end
+--系统管理
+update t_sys_resource set res_desc='系统管理' where id='9000' and res_desc='系统日志'

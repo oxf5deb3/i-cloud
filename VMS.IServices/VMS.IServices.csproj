@@ -44,6 +44,7 @@
     <Compile Include="Account\ILoginLogService.cs" />
     <Compile Include="Account\IOperateLogService.cs" />
     <Compile Include="Account\IRoleService.cs" />
+    <Compile Include="Account\ISystemService.cs" />
     <Compile Include="Account\IUserGroupService.cs" />
     <Compile Include="Account\IUserService.cs" />
     <Compile Include="BaseData\IPermittedCarTypeService.cs" />

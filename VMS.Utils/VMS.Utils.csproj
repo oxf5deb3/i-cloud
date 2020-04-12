@@ -59,6 +59,7 @@
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="DESEncrypt.cs" />
     <Compile Include="DrivingLicenseEnum.cs" />
+    <Compile Include="EmailHelper.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="IDUtils.cs" />
     <Compile Include="JObjectExtensions.cs" />

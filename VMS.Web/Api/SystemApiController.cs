@@ -146,5 +146,48 @@ namespace VMS.Api
                 return ret;
             }
         }
+
+        #region sqlsugar
+        [HttpPost]
+        public BaseTResponseDTO<List<t_sys_setting>> QuerySetting([FromBody]JObject data)
+        {
+            var ret = new BaseTResponseDTO<List<t_sys_setting>>();
+            try
+            {
+                var dic = data.ToDictionary();
+                var key = dic.ContainsKey("key") ? dic["key"] : "";
+                var obj = Instance<ISystemService>.Create;
+                var lst = obj.QuerySetting(key);
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+
+        [HttpPost]
+        public BaseResponseDTO SaveSetting([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var obj = Instance<ISystemService>.Create;
+                var list = new List<t_sys_setting>();
+                var success = obj.SaveSetting(list);
+                ret.success = success;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+
+        #endregion
     }
 }

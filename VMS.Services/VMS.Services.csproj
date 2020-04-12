@@ -59,6 +59,7 @@
     <Compile Include="Account\LogService.cs" />
     <Compile Include="Account\OperateLogService.cs" />
     <Compile Include="Account\RoleService.cs" />
+    <Compile Include="Account\SystemService.cs" />
     <Compile Include="Account\UserGroupService.cs" />
     <Compile Include="Account\UserService.cs" />
     <Compile Include="BaseData\PermittedCarTypeService.cs" />

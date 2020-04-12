@@ -198,6 +198,7 @@
     <Compile Include="Areas\StolenManagement\StolenManagementAreaRegistration.cs" />
     <Compile Include="Areas\SystemLog\Controllers\LoginLogController.cs" />
     <Compile Include="Areas\SystemLog\Controllers\OperateLogController.cs" />
+    <Compile Include="Areas\SystemLog\Controllers\SystemSettingController.cs" />
     <Compile Include="Areas\SystemLog\SystemLogAreaRegistration.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentRegisterController.cs" />
@@ -473,6 +474,7 @@
     <Content Include="log4net.config" />
     <Content Include="Areas\BreakRules\Views\BreakRuleType\Index.cshtml" />
     <Content Include="Areas\BreakRules\Views\BreakRuleQuery\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\SystemSetting\Index.cshtml" />
     <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <None Include="Properties\PublishProfiles\vms.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

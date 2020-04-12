@@ -55,7 +55,7 @@ a {
     left: 0px;
     top: 0px;
     background-color: #fff;
-    background-size:100% 100%;
+    background-size: 100% 100%;
     z-index: 1000;
 }
 
@@ -85,7 +85,7 @@ a {
 
     .vmsui-header-item a {
         display: block;
-        color:#000;
+        color: #000;
         padding-left: 20px;
         padding-right: 10px;
         line-height: 49px;
@@ -101,7 +101,7 @@ a {
 }
 
     .vmsui-header-search input {
-        border:none;
+        border: none;
         padding-top: 0px;
         padding-bottom: 0px;
         padding-left: 10px;
@@ -156,9 +156,10 @@ a {
     overflow-y: scroll;
     height: 100%;
 }
-.vmsui-nav-tree>:first-child{
-    margin-top:50px;
-}
+
+    .vmsui-nav-tree > :first-child {
+        margin-top: 50px;
+    }
 
 .vmsui-logo {
     background-color: #03A9F4;
@@ -176,27 +177,30 @@ a {
     //overflow: hidden;
     font-weight: 200;
 }
-.vmsui-logo>i{
-    width:50px;
-    height:50px;
-    line-height:50px;
-    display:inline-block;
-}
-.vmsui-logo>span{
-    width:140px;
-    height:50px;
-    margin-left:6px;
-    padding-top:6px;
-    padding-right:12px;
-    vertical-align:middle;
-    display:inline-block;
-}
-.vmsui-logo>i>img{
-    width:100%;
-    height:30px;
-    vertical-align:central;
-    margin-left:4px;
-}
+
+    .vmsui-logo > i {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        display: inline-block;
+    }
+
+    .vmsui-logo > span {
+        width: 140px;
+        height: 50px;
+        margin-left: 6px;
+        padding-top: 6px;
+        padding-right: 12px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    .vmsui-logo > i > img {
+        width: 100%;
+        height: 30px;
+        vertical-align: central;
+        margin-left: 4px;
+    }
 
 .vmsui-nav-item {
     width: 100%;
@@ -205,41 +209,43 @@ a {
     position: relative;
     vertical-align: middle;
 }
-.vmsui-nav-item-selected{
-    background-color:#009688;
-}
-.vmsui-space{
-    margin-left:18px;
-}
-    .vmsui-nav-item a {
-        display: block;
-        position: relative;
-        height: 40px;
-        line-height: 40px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        padding-left: 20px;
-        padding-right: 30px;
-    }
 
-        .vmsui-nav-item a i {
-            margin-right: 2px;
-            line-height: 40px;
-            //margin-top: -19px;
-        }
+.vmsui-nav-item-selected {
+    background-color: #009688;
+}
+
+.vmsui-space {
+    margin-left: 18px;
+}
+
+.vmsui-nav-item a {
+    display: block;
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-left: 20px;
+    padding-right: 30px;
+}
+
+    .vmsui-nav-item a i {
+        margin-right: 2px;
+        line-height: 40px;
+        //margin-top: -19px;
+    }
 
 .vmsui-nav-more {
     cursor: pointer;
     position: absolute;
     right: 15px;
     top: 14px;
-    display:inline-block;
-    border-bottom:6px solid transparent;
-    border-right:6px solid transparent;
-    border-left:6px solid transparent;
-    border-top:6px solid #fff;
-   
+    display: inline-block;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-top: 6px solid #fff;
 }
 
 dl {
@@ -248,7 +254,7 @@ dl {
 
 .vmsui-nav .vmsui-nav-child {
     //margin-left: 18px;
-    display:none;
+    display: none;
 }
 
 .vmsui-tabs-title {
@@ -263,7 +269,7 @@ dl {
     right: 0px;
     left: 0px;
     z-index: 999;
-    white-space: nowrap; 
+    white-space: nowrap;
 }
 
     .vmsui-tabs-title .left-page {
@@ -272,54 +278,53 @@ dl {
         position: absolute;
         left: 0;
         top: 0;
-        
         background: url(../../images/ltr.png) no-repeat scroll 54% 54%;
     }
-   .right-page,.left-page:hover {
+
+.right-page, .left-page:hover {
     cursor: pointer
-    }
+}
 
-        .vmsui-tabs-title .right-page {
-            width: 30px;
-            height: 100%;
-            position: absolute;
-            right: 30px;
-            top: 0;
-            border-right: 1px solid rgb(246,246,246);
-            background: url(../../images/rtl.png) no-repeat scroll 54% 54%;
-        }
+.vmsui-tabs-title .right-page {
+    width: 30px;
+    height: 100%;
+    position: absolute;
+    right: 30px;
+    top: 0;
+    border-right: 1px solid rgb(246,246,246);
+    background: url(../../images/rtl.png) no-repeat scroll 54% 54%;
+}
 
-    .vmsui-tabs-title .tabs-title {
-        overflow: hidden;
+.vmsui-tabs-title .tabs-title {
+    overflow: hidden;
+    height: 30px;
+    position: relative;
+}
+
+    .vmsui-tabs-title .tabs-title > ul {
         height: 30px;
-        position:relative;
+        position: relative;
+        //border-top:2px solid rgb(246,246,246);
     }
 
-        .vmsui-tabs-title .tabs-title > ul {
+        .vmsui-tabs-title .tabs-title > ul > li {
+            color: #000;
+            background-color: rgb(246,246,246);
+            text-overflow: ellipsis;
+            border-right: 1px solid rgb(232, 228, 228);
             height: 30px;
+            border-top: 2px solid transparent;
+            min-width: 0;
+            max-width: 160px;
+            display: inline-block;
+            padding-left: 15px;
+            padding-right: 30px;
             position: relative;
-         
-            //border-top:2px solid rgb(246,246,246);
+            cursor: pointer;
+            transition: all .0s;
+            -webkit-transition: all .0s;
+            font-size: 11px;
         }
-
-            .vmsui-tabs-title .tabs-title > ul > li {
-                color: #000;
-                background-color: rgb(246,246,246);
-                text-overflow: ellipsis;
-                border-right: 1px solid rgb(232, 228, 228);
-                height: 30px;
-                border-top: 2px solid transparent;
-                min-width: 0;
-                max-width: 160px;
-                display: inline-block;
-                padding-left: 15px;
-                padding-right: 30px;
-                position: relative;
-                cursor: pointer;
-                transition: all .0s;
-                -webkit-transition: all .0s;
-                font-size:11px;
-            }
 
 .tab-title-selected {
     border-top: 2px solid #000 !important;
@@ -415,3 +420,64 @@ dl {
     -webkit-transform: translate3d(-200px,0,0);
     width: 200px;
 }
+
+.tabs-control > ul {
+    cursor: pointer;
+    position: relative;
+}
+
+.tabs-control > ul > li:first-child {
+    position: absolute;
+    top: 32px;
+    right: 0px;
+    background-color: white;
+}
+
+.tabs-block {
+    display: none;
+}
+
+.tabs-block li {
+    display: block;
+    width: 80px;
+    height: 25px;
+    line-height:25px;
+    text-align: center;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+}
+
+.tabs-control .tabs-block {
+    list-style: none;
+}
+
+.tabs-block li:last-child {
+    border-bottom: none;
+}
+
+.tabs-block li:hover {
+    background-color: black;
+    color:white;
+}
+.vmsui-header-search {
+    position: relative;
+}
+.vmsui-header-search-list {
+    position:absolute;
+    top:29px;
+    left:0px;
+    list-style-type:none;
+    border:1px solid #ded7d7;
+}
+.vmsui-header-search-list li {
+    display: inline-block;
+    padding-left: 5px;
+    width: 200px;
+    background-color: white;
+    border-bottom:1px solid #f2f2f2;
+}
+    .vmsui-header-search-list li:hover {
+        //background-color:aquamarine;
+        background-color: black;
+        color:white;
+    }

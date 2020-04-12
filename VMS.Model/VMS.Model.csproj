@@ -59,10 +59,12 @@
     <Compile Include="t_sys_group.cs" />
     <Compile Include="t_sys_group_role.cs" />
     <Compile Include="t_sys_oper_role.cs" />
+    <Compile Include="t_sys_pwd_lostfind.cs" />
     <Compile Include="t_sys_resource.cs" />
     <Compile Include="t_sys_resource_type.cs" />
     <Compile Include="t_sys_role.cs" />
     <Compile Include="SqlParam.cs" />
+    <Compile Include="t_sys_setting.cs" />
     <Compile Include="t_sys_user.cs" />
     <Compile Include="t_sys_user_group.cs" />
     <Compile Include="t_temp_car_license.cs" />
