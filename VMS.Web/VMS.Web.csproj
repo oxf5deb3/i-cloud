@@ -157,6 +157,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Account\AccountAreaRegistration.cs" />
+    <Compile Include="Areas\Account\Controllers\OutterUserController.cs" />
     <Compile Include="Areas\Account\Controllers\RoleController.cs" />
     <Compile Include="Areas\Account\Controllers\RoleResController.cs" />
     <Compile Include="Areas\Account\Controllers\UserController.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Areas\StolenManagement\StolenManagementAreaRegistration.cs" />
     <Compile Include="Areas\SystemLog\Controllers\LoginLogController.cs" />
     <Compile Include="Areas\SystemLog\Controllers\OperateLogController.cs" />
+    <Compile Include="Areas\SystemLog\Controllers\SysNewsController.cs" />
     <Compile Include="Areas\SystemLog\Controllers\SystemSettingController.cs" />
     <Compile Include="Areas\SystemLog\SystemLogAreaRegistration.cs" />
     <Compile Include="Areas\TrafficAccidentManagement\Controllers\TrafficAccidentQueryController.cs" />
@@ -218,8 +220,10 @@
     <Compile Include="ESIApi\FireProtectionController.cs" />
     <Compile Include="ESIApi\LicenseQueryController.cs" />
     <Compile Include="ESIApi\Models\BaseESIReponseDTO.cs" />
+    <Compile Include="ESIApi\Models\NewsDTO.cs" />
     <Compile Include="ESIApi\Models\Response.cs" />
     <Compile Include="ESIApi\Models\StatusCode.cs" />
+    <Compile Include="ESIApi\NewsController.cs" />
     <Compile Include="ESIApi\QRCodeController.cs" />
     <Compile Include="ESIApi\LicenseRegisterController.cs" />
     <Compile Include="ESIApi\SquadronController.cs" />
@@ -407,7 +411,10 @@
     <Content Include="H5\assets\vant\vant.min.js" />
     <Content Include="H5\dcshow.html" />
     <Content Include="H5\designPage.html" />
+    <Content Include="H5\forget.html" />
     <Content Include="H5\image\1.jpg" />
+    <Content Include="H5\News.html" />
+    <Content Include="H5\pwdReset.html" />
     <Content Include="images\404.jpg" />
     <Content Include="images\air-balloon-1.png" />
     <Content Include="images\air-balloon-2.png" />
@@ -475,6 +482,9 @@
     <Content Include="Areas\BreakRules\Views\BreakRuleType\Index.cshtml" />
     <Content Include="Areas\BreakRules\Views\BreakRuleQuery\Index.cshtml" />
     <Content Include="Areas\SystemLog\Views\SystemSetting\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\SysNews\Index.cshtml" />
+    <Content Include="Areas\Account\Views\OutterUser\Index.cshtml" />
+    <Content Include="Areas\SystemLog\Views\SysNews\EditNews.cshtml" />
     <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <None Include="Properties\PublishProfiles\vms.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -498,6 +508,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <EmbeddedResource Include="Scripts\swagger.js" />
+    <Content Include="Scripts\wangEditor.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Sql\InitData.sql" />
     <Content Include="Sql\InitTable.sql" />

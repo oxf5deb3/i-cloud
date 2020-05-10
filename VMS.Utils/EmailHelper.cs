@@ -21,7 +21,7 @@ namespace VMS.Utils
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public bool Send(string from,string fromName,string to,string mailServerName,string mailAccount,string mailPwd,string subject,string body)
+        public static bool Send(string from,string fromName,string to,string mailServerName,string mailAccount,string mailPwd,string subject,string body)
         {
             try
             {
@@ -33,12 +33,12 @@ namespace VMS.Utils
                 mail.BodyEncoding = Encoding.Default; //内容编码
                 mail.Priority = MailPriority.Normal;//发送优先级
                 mail.Body = body;//邮件内容
-                mail.IsBodyHtml = false;//是否HTML形式发送
+                mail.IsBodyHtml = true;//是否HTML形式发送
 
                 SmtpClient smtp = new SmtpClient(mailServerName, 25);//邮件服务器和端口
                 smtp.UseDefaultCredentials = false;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network; //指定发送方式
-                smtp.Credentials = new System.Net.NetworkCredential(mailAccount, mailPwd);//指定登录名和密码
+                smtp.Credentials = new System.Net.NetworkCredential(mailAccount, mailPwd);//指定登录名和授权码 uhpveokkuwhebeeb
                 smtp.Timeout = 10000;//超时时间
                 //smtp.EnableSsl = true;//经过ssl加密
                 smtp.Send(mail);

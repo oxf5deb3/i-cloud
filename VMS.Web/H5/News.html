@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>资讯展示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <link rel="stylesheet" href="../Content/bootstrap.min.css">
+</head>
+<body>
+
+    <script src="../Scripts/jquery-1.12.4.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/respond.js"></script>
+    <script type="text/javascript">
+        function getRequest() {
+            var url = window.location.search;
+            var jsonList = {};
+            if (url.indexOf("?") > -1) {
+                var str = url.slice(url.indexOf("?") + 1);
+                var strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    jsonList[strs[i].split("=")[0]] = strs[i].split("=")[1];//如果出现乱码的话，可以用decodeURI()进行解码
+                }
+            }
+            return jsonList;
+        }
+        $(function () {
+            var url = "/esi-api/News/GetContentById";
+            var params = getRequest();
+            var id = params.id == undefined ? 2 : params.id;
+            $.ajax({
+                url: url,
+                data: { id: id },
+                dataType:'html',
+                success: function (ret) {
+                    $('body').html(eval(ret));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

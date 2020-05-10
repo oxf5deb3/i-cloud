@@ -29,6 +29,7 @@ namespace VMS.DAL
         public SimpleClient<t_sys_user> t_sys_user { get { return new SimpleClient<t_sys_user>(Db); } }
         public SimpleClient<t_sys_setting> t_sys_setting { get { return new SimpleClient<t_sys_setting>(Db); } }
         public SimpleClient<t_sys_pwd_lostfind> t_sys_pwd_lostfind { get { return new SimpleClient<t_sys_pwd_lostfind>(Db); } }
+        public SimpleClient<t_sys_news> t_sys_news { get { return new SimpleClient<t_sys_news>(Db); } }
         public SqlSugarDbContext()
         {
             Db = new SqlSugarClient(new ConnectionConfig()

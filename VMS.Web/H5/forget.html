@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>密码找回</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <link rel="stylesheet" href="../Content/bootstrap.min.css">
+    <link rel="stylesheet" href="../Content/bootstrap-theme.min.css">
+    <style type="text/css">
+        body {
+            padding: 0px;
+            margin: 0px;
+            font-size: 14px;
+            //background-color:cornflowerblue;
+        }
+
+        h4 {
+            margin: 0px;
+            padding-top: 15px;
+        }
+
+        hr {
+            margin: 5px 0px;
+        }
+        .modal-header {
+            padding:5px;
+        }
+    </style>
+</head>
+<body>
+    <h4 class="text-center">密码找回</h4>
+    <hr />
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="userId" class="col-sm-2 control-label">账号:</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="userId" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="emailAddr" class="col-sm-2 control-label">邮箱:</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="emailAddr" placeholder="email@example.com">
+                <small class="text-muted">如果注册时填写过邮箱，这里可不用填写</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="btnreq" type="button" class="btn btn-success btn-block">提交</button>
+        </div>
+    </form>
+    <div class="text-danger">
+        <small class="bg-success center-block">&nbsp;&nbsp;1.如果忘记账号，请联系车管局进行找回</small>
+        <small class="bg-success center-block">&nbsp;&nbsp;2.联系电话:15219463568</small>
+    </div>
+    <!-- Small modal -->
+    <button type="button" id="show" style="display:none;" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Small modal</button>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="myModalLabel">温馨提示</h5>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/jquery-1.12.4.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/respond.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            function alert(msg) {
+                $('.modal-body').text(msg);
+                $('#show').click();
+            }
+
+            function bindEvent() {
+                $('#btnreq').bind('click', function () {
+                    startPost();
+                })
+            }
+
+            function getData() {
+                var userId = $('#userId').val();
+                var email = $('#emailAddr').val();
+                return { user_id: userId, email: email };
+            }
+            function startPost() {
+                var url = "/esi-api/Account/ForgetPwd";
+                var data = getData();
+                if ($.trim(data.user_id)=='') {
+                    alert('请输入要找回密码的账号!');
+                    return;
+                }
+                var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                if ($.trim(data.email) != '' && !reg.test(data.email)) {
+                    alert('邮箱格式不正确!');
+                    return;
+                }
+
+                $.post(url, data, function (ret) {
+                    if (ret.success) {
+                        alert('提交成功，您的邮箱将收到一封密码重置邮件，请在24小时内进行密码重置，过期就无效！');
+                    } else {
+                        if ($.trim(ret.message) != '') {
+                            alert(ret.message);
+                        } else {
+                            alert('未知错误!');
+                        }
+                    }
+                });
+            }
+            bindEvent();
+
+        })
+    </script>
+</body>
+</html>

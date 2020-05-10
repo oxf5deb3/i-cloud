@@ -58,6 +58,7 @@
     <Compile Include="t_stolen.cs" />
     <Compile Include="t_sys_group.cs" />
     <Compile Include="t_sys_group_role.cs" />
+    <Compile Include="t_sys_news.cs" />
     <Compile Include="t_sys_oper_role.cs" />
     <Compile Include="t_sys_pwd_lostfind.cs" />
     <Compile Include="t_sys_resource.cs" />

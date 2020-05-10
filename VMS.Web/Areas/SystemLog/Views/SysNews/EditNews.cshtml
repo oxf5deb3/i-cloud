@@ -1,0 +1,47 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>资讯编辑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <style>
+        body {
+            font-size: 12px;
+        }
+
+        .title {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p class="title">内容简介:<span style="color:blue">(不要超过200个汉字)</span></p>
+        <div><textarea style="resize:none;width:100%;height:40px;"></textarea></div>
+    </div>
+    <br />
+    <p class="title">资讯内容编辑:</p>
+    <div id="editor">
+
+    </div>
+    <script src="~/Scripts/jquery-1.12.4.js"></script>
+    <script src="~/Scripts/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var E = window.wangEditor
+            var editor = new E('#editor')
+            // 或者 var editor = new E( document.getElementById('editor') )
+            editor.create()
+
+
+
+        });
+
+
+    </script>
+</body>
+</html>

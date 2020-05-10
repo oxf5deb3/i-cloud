@@ -1,31 +1,33 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section HeaderStyle{
-<style type="text/css">
-        body{
-          font-size:12px;
+    <style type="text/css">
+        body {
+            font-size: 12px;
         }
-        .textbox,.textbox-text
-        {
-          -moz-border-radius: 2px 2px 2px 2px;
-         -webkit-border-radius: 2px 2px 2px 2px;
-          border-radius: 2px 2px 2px 2px;
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
         }
-        .form-horizontal .form-group{
-          margin-left:0px;
-          margin-right:0px;
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
         }
-        .form-group{
-         margin-bottom:5px;
+
+        .form-group {
+            margin-bottom: 5px;
         }
-        .red-star{
-           color:red;
-           font-size:15px;
+
+        .red-star {
+            color: red;
+            font-size: 15px;
         }
-     
-</style>
+    </style>
 }
 
 
@@ -33,63 +35,64 @@
 
 </div>
 @section scripts{
-<script type="text/javascript">
+    <script type="text/javascript" src="~/Scripts/echarts.js"></script>
+    <script type="text/javascript">
 
-    let data = "";
-    var myDate = new Date();
-    var year = myDate.getFullYear()
-    function loadData() {
-        
-        var url = "../../api/StatisticalApi/queryDriverLicenseStatistical";
+        let data = "";
+        var myDate = new Date();
+        var year = myDate.getFullYear()
+        function loadData() {
 
-        if (data != undefined) {
-            $.post(url, { year: year }, 'json')
-                .success(function (ret) {
-                    init(ret.rows[0]);
-                });
+            var url = "../../api/StatisticalApi/queryDriverLicenseStatistical";
+
+            if (data != undefined) {
+                $.post(url, { year: year }, 'json')
+                    .success(function (ret) {
+                        init(ret.rows[0]);
+                    });
+            }
         }
-    }
 
 
-    function init(data) {
-       
+        function init(data) {
 
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('DrivingLicenseStatistical'));
 
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: year+'年驾驶证统计情况'
-            },
-            tooltip: {},
-            legend: {
-                data: ['登记数']
-            },
-            xAxis: {
-                data: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"]
-            },
-            yAxis: {},
-            series: [{
-                name: '登记数',
-                type: 'bar',
-                data: [data.Jan, data.Feb, data.Mar, data.Apr, data.May, data.June,
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('DrivingLicenseStatistical'));
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: year + '年驾驶证统计情况'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['登记数']
+                },
+                xAxis: {
+                    data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '登记数',
+                    type: 'bar',
+                    data: [data.Jan, data.Feb, data.Mar, data.Apr, data.May, data.June,
                     data.July, data.Aug, data.Sept, data.Oct, data.Nov, data.Dec]
-            }]
-        };
+                }]
+            };
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
 
-        
 
-        
-    }
 
-    $(function () {
 
-        loadData();
-        
-    })
-</script>
+        }
+
+        $(function () {
+
+            loadData();
+
+        })
+    </script>
 }

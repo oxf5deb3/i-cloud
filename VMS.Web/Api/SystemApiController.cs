@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Security;
 using VMS.Controllers;
 using VMS.DTO;
+using VMS.DTO.Account;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
@@ -79,6 +80,7 @@ namespace VMS.Api
                 var dto = data.ToObject<LoginDTO>();
                 string userData = "";
                 var service = Instance<IUserService>.Create;
+              
                 var user = service.FindByUserId(dto.user_id);
                 if (user == null || !(user.user_pwd).Equals(dto.user_pwd))
                 {
@@ -158,6 +160,7 @@ namespace VMS.Api
                 var key = dic.ContainsKey("key") ? dic["key"] : "";
                 var obj = Instance<ISystemService>.Create;
                 var lst = obj.QuerySetting(key);
+                ret.data.AddRange(lst);
                 return ret;
             }
             catch (Exception ex)
@@ -175,8 +178,10 @@ namespace VMS.Api
             try
             {
                 var obj = Instance<ISystemService>.Create;
-                var list = new List<t_sys_setting>();
-                var success = obj.SaveSetting(list);
+                var add = data["add"]!=null?data["add"].ToObject<List<t_sys_setting>>():new List<t_sys_setting>();
+                var update = data["update"]!=null? data["update"].ToObject<List<t_sys_setting>>():new List<t_sys_setting>();
+
+                var success = obj.SaveSetting(add,update);
                 ret.success = success;
                 return ret;
             }
@@ -187,7 +192,126 @@ namespace VMS.Api
                 return ret;
             }
         }
+        [HttpPost]
+        public BaseResponseDTO AddNews([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var obj = Instance<ISystemService>.Create;
+                var title = data["title"] != null ? data["title"].ToObject<string>() : "";
+                var content = data["content"] != null ? data["content"].ToObject<string>() : "";
 
+                var success = obj.AddNews(title, content, operInfo.user_id);
+                ret.success = success;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+        [HttpPost]
+        public BaseTResponseDTO<t_sys_news> GetNewsById([FromBody]JObject data)
+        {
+            var ret = new BaseTResponseDTO<t_sys_news>();
+            try
+            {
+                var obj = Instance<ISystemService>.Create;
+                var id = data["id"] != null ? data["id"].ToObject<string>() : "";
+                var title = data["title"] != null ? data["title"].ToObject<string>() : "";
+                var content = data["content"] != null ? data["content"].ToObject<string>() : "";
+
+                var dto = obj.GetNewsById(id);
+                ret.data = dto;
+                ret.success = true;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+        [HttpPost]
+        public BaseResponseDTO UpdateNews([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var obj = Instance<ISystemService>.Create;
+                var id = data["id"] != null ? data["id"].ToObject<string>() : "";
+                var title = data["title"] != null ? data["title"].ToObject<string>() : "";
+                var content = data["content"] != null ? data["content"].ToObject<string>() : "";
+
+                var success = obj.UpdateNewsById(id,title, content, operInfo.user_id);
+                ret.success = success;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
+        [HttpPost]
+        public GridResponseDTO<SysNewsDTO> QueryNews([FromBody]JObject data)
+        {
+            var ret = new GridResponseDTO<SysNewsDTO>();
+            try
+            {
+
+                #region 参数检验
+
+                #endregion
+                var sb = new StringBuilder();
+                var condition = data.ToDictionary();
+                var paramlst = new List<SqlParam>();
+                int total = 0;
+                var pageindex = CommonHelper.GetInt(condition["page"], 0);
+                var pagesize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
+                string err = string.Empty;
+                var obj = Instance<ISystemService>.Create;
+                List<SysNewsDTO> lst = obj.QueryPageNews(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                ret.total = total;
+                ret.rows.AddRange(lst);
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                Log4NetHelper.Error(this.GetType().FullName + ".Query", ex);
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+        [HttpPost]
+        public BaseResponseDTO DelNewsById([FromBody]JObject data)
+        {
+            var ret = new BaseResponseDTO();
+            try
+            {
+                var obj = Instance<ISystemService>.Create;
+                var id = data["id"] != null ? data["id"].ToObject<string>() : "";
+
+                var flag = obj.DelNewsById(id);
+                ret.success = flag;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.success = false;
+                ret.message = ex.Message;
+                return ret;
+            }
+        }
         #endregion
     }
 }

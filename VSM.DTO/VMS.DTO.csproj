@@ -50,6 +50,7 @@
     <Compile Include="Account\RoleDTO.cs" />
     <Compile Include="Account\RoleRightDTO.cs" />
     <Compile Include="Account\RoleUserGroupDTO.cs" />
+    <Compile Include="Account\SysNewsDTO.cs" />
     <Compile Include="Account\UserDTO.cs" />
     <Compile Include="Account\UserGroupDTO.cs" />
     <Compile Include="Account\UserRoleDTO.cs" />

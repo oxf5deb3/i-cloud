@@ -1,31 +1,33 @@
 ﻿@inherits System.Web.Mvc.WebViewPage
 @{
-    Layout="~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section HeaderStyle{
-<style type="text/css">
-        body{
-          font-size:12px;
+    <style type="text/css">
+        body {
+            font-size: 12px;
         }
-        .textbox,.textbox-text
-        {
-          -moz-border-radius: 2px 2px 2px 2px;
-         -webkit-border-radius: 2px 2px 2px 2px;
-          border-radius: 2px 2px 2px 2px;
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
         }
-        .form-horizontal .form-group{
-          margin-left:0px;
-          margin-right:0px;
+
+        .form-horizontal .form-group {
+            margin-left: 0px;
+            margin-right: 0px;
         }
-        .form-group{
-         margin-bottom:5px;
+
+        .form-group {
+            margin-bottom: 5px;
         }
-        .red-star{
-           color:red;
-           font-size:15px;
+
+        .red-star {
+            color: red;
+            font-size: 15px;
         }
-     
-</style>
+    </style>
 }
 
 
@@ -33,99 +35,100 @@
 
 </div>
 @section scripts{
-<script type="text/javascript">
+    <script type="text/javascript" src="~/Scripts/echarts.js"></script>
+    <script type="text/javascript">
 
-    let data = "";
-    var myDate = new Date();
-    var year = myDate.getFullYear()
+        let data = "";
+        var myDate = new Date();
+        var year = myDate.getFullYear()
 
 
-    function formatterMap(map) {
-        var objs = [];
-        var keys = [];
-        if(map!=null){
-            for (var key in map) {
-                keys.push(key);
-                var obj = {};
-                obj.value = map[key];
-                obj.name = key;
-                objs.push(obj);
+        function formatterMap(map) {
+            var objs = [];
+            var keys = [];
+            if (map != null) {
+                for (var key in map) {
+                    keys.push(key);
+                    var obj = {};
+                    obj.value = map[key];
+                    obj.name = key;
+                    objs.push(obj);
+                }
+            }
+
+            var data = {};
+
+            data.keys = keys;
+            data.options = objs;
+
+            return data;
+        }
+
+        function loadData() {
+
+            var url = "../../api/StatisticalApi/queryByCarTypeForOrderBy";
+
+            if (data != undefined) {
+                $.post(url, null, 'json')
+                    .success(function (ret) {
+                        var data = formatterMap(ret.maps)
+                        init(data);
+                    });
             }
         }
 
-        var data = {};
 
-        data.keys = keys;
-        data.options = objs;
-
-        return data;
-    }
-
-    function loadData() {
-        
-        var url = "../../api/StatisticalApi/queryByCarTypeForOrderBy";
-
-        if (data != undefined) {
-            $.post(url, null, 'json')
-                .success(function (ret) {
-                    var data = formatterMap(ret.maps)
-                    init(data);
-                });
-        }
-    }
+        function init(data) {
 
 
-    function init(data) {
-       
-
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('DrivingLicenseStatistical'));
-        // 指定图表的配置项和数据
-        option = {
-            title: {
-                text: '驾驶证发展趋势',
-                subtext: '纯属虚构',
-                x: 'center'
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-                data:["WE","WB"]
-            },
-            series: [
-                {
-                    name: '车型',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    data: data.options,
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('DrivingLicenseStatistical'));
+            // 指定图表的配置项和数据
+            option = {
+                title: {
+                    text: '驾驶证发展趋势',
+                    subtext: '纯属虚构',
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ["WE", "WB"]
+                },
+                series: [
+                    {
+                        name: '车型',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: data.options,
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
                         }
                     }
-                }
-            ]
-        };
+                ]
+            };
 
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
 
-        
 
-        
-    }
 
-    $(function () {
 
-        loadData();
-        
-    })
-</script>
+        }
+
+        $(function () {
+
+            loadData();
+
+        })
+    </script>
 }

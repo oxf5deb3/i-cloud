@@ -459,7 +459,7 @@ begin
 	  create_date datetime not null default(getdate()),--有效期24小时内
 	  valid_date datetime null,--有效期
 	  modify_date datetime null,
-	  status char(1) not null default('0'),--0:请求找回 1:已发送邮件 2:确认找回成功
+	  status char(1) not null default('0'),--0:请求找回 1:确认找回成功
 	  memo varchar(200) null
    )
 end
@@ -468,7 +468,7 @@ if not exists(select * from sysobjects where xtype='U' and id=OBJECT_ID('t_sys_s
 begin
    create table t_sys_setting(
       id int identity(1,1) not null primary key,
-	  sys_var_id varchar(10) not null,
+	  sys_var_id varchar(50) not null,
 	  sys_var_val varchar(50) null,
 	  create_date datetime not null default(getdate()),
 	  modify_date datetime null,
@@ -478,3 +478,15 @@ begin
 end
 --系统管理
 update t_sys_resource set res_desc='系统管理' where id='9000' and res_desc='系统日志'
+--资讯
+if not exists(select * from sysobjects where xtype='U' and id=OBJECT_ID('t_sys_news'))
+begin
+   create table t_sys_news(
+    id decimal(16,0) identity(1,1),
+	title nvarchar(200) not null,
+	content text not null,
+	create_date datetime not null default(getdate()),
+    create_id varchar(10) null,
+    constraint pk_t_sys_news  primary key(id)
+   )
+end

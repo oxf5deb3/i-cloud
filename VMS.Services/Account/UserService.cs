@@ -15,21 +15,21 @@ namespace VMS.Services
 {
     public class UserService : ServiceBase, IUserService
     {
-        public t_sys_user FindByUserId(string user_id,string user_type="0")
+        public t_sys_user FindByUserId(string user_id, string user_type = "0")
         {
-            var user = SqlSugarDbContext.t_sys_user.GetSingle(e => e.user_id == user_id.Trim() && e.user_type==user_type);
+            var user = SqlSugarDbContext.t_sys_user.GetSingle(e => e.user_id == user_id.Trim() && e.user_type == user_type);
             if (user != null)
             {
                 user.user_pwd = DESEncrypt.Decrypt(user.user_pwd);
             }
             return user;
         }
-        
+
         public List<t_sys_oper_role> FindOperRoleByUserId(string user_id)
         {
             var findSql = new StringBuilder();
             findSql.Append("select a.id,a.user_id,a.role_id,isnull(b.role_name,'') as role_name from t_sys_oper_role a left join t_sys_role b on a.role_id=b.id  where a.user_id=@user_id");
-            SqlParam[] paramlst = new SqlParam[] { 
+            SqlParam[] paramlst = new SqlParam[] {
                new SqlParam("@user_id",user_id)
             };
             var lst = DbContext.GetDataListBySQL<t_sys_oper_role>(findSql, paramlst);
@@ -81,16 +81,17 @@ namespace VMS.Services
             allSql.Add(delSql);
             lstParams.Add(params1);
 
-            for(var i=0;i<user.roles.Count;i++){
+            for (var i = 0; i < user.roles.Count; i++)
+            {
                 var sb = new StringBuilder();
-                var userid = "@user_id_"+i;
-                var roleid = "@role_id_"+i;
+                var userid = "@user_id_" + i;
+                var roleid = "@role_id_" + i;
                 sb.Append("insert into t_sys_oper_role(user_id,role_id) values(" + userid + "," + roleid + ")");
                 allSql.Add(sb);
-                lstParams.Add(new SqlParam[]{new SqlParam(userid,user.user_id),new SqlParam(roleid,user.roles[i].id)});
+                lstParams.Add(new SqlParam[] { new SqlParam(userid, user.user_id), new SqlParam(roleid, user.roles[i].id) });
             }
 
-           return DbContext.BatchExecuteBySql(allSql.ToArray(),lstParams.ToArray())>0;
+            return DbContext.BatchExecuteBySql(allSql.ToArray(), lstParams.ToArray()) > 0;
         }
         public bool AddUser(UserRoleDTO user)
         {
@@ -213,7 +214,7 @@ namespace VMS.Services
         /// <returns></returns>
         public bool IsExist(string user_id, bool isInnerUser = true)
         {
-            var has = SqlSugarDbContext.t_sys_user.IsAny(e => e.user_id == user_id && ((isInnerUser==false && e.user_type == "1") || (isInnerUser==true && e.user_type == "0")));
+            var has = SqlSugarDbContext.t_sys_user.IsAny(e => e.user_id == user_id && ((isInnerUser == false && e.user_type == "1") || (isInnerUser == true && e.user_type == "0")));
             return has;
         }
 
@@ -235,7 +236,27 @@ namespace VMS.Services
             u.email = user.email;
             return SqlSugarDbContext.t_sys_user.Insert(u);
         }
+        public bool EditOuterUser(UserRoleDTO user)
+        {
+            var allSql = new List<StringBuilder>();
+            var lstParams = new List<SqlParam[]>();
 
+            var updateSql = new StringBuilder();
+            updateSql.Append("update t_sys_user set user_pwd=@user_pwd,user_name=@user_name,sex=@sex,age=@age,tel=@tel,email=@email,status=@status where id=@id ");
+            SqlParam[] params0 = new SqlParam[]{
+               new SqlParam("@id",user.id),
+               new SqlParam("@user_pwd",DESEncrypt.Encrypt(user.user_pwd)),
+               new SqlParam("@user_name",user.user_name),
+               new SqlParam("@sex",user.sex),
+               new SqlParam("@age",user.age),
+               new SqlParam("@tel",user.tel),
+               new SqlParam("@email",user.email),
+               new SqlParam("@status",user.status)
+            };
+            allSql.Add(updateSql);
+            lstParams.Add(params0);
+            return DbContext.BatchExecuteBySql(allSql.ToArray(), lstParams.ToArray()) > 0;
+        }
         public List<t_sys_user> GetUserPageList(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
         {
             List<Expression<Func<t_sys_user, bool>>> wheres = new List<Expression<Func<t_sys_user, bool>>>();
@@ -254,11 +275,11 @@ namespace VMS.Services
         public virtual List<Expression<Func<t_sys_user, bool>>> UserCreateWhere(IDictionary<string, dynamic> conditions)
         {
             var where = new List<Expression<Func<t_sys_user, bool>>>();
-            //var name = conditions["name"] != null ? (string)conditions["name"] : "";
-            //if (!string.IsNullOrEmpty(name))
-            //{
-            //    where.Add(e => e.name.StartsWith(name));
-            //}
+            var user_type = conditions["user_type"] != null ? (string)conditions["user_type"] : "";
+            if (!string.IsNullOrEmpty(user_type))
+            {
+                where.Add(e => e.user_type == user_type);
+            }
             return where;
         }
         public virtual Expression<Func<t_sys_user, object>> UserCreateOrderby(string orderby)
@@ -284,6 +305,107 @@ namespace VMS.Services
             var dtos = q.ToList();
             return dtos;
         }
+
+        //忘记密码
+        public bool AddLostPwdRecord(string user_id, string email, string httpaddr)
+        {
+            var r = new t_sys_pwd_lostfind();
+            r.user_id = user_id.Trim();
+            if (string.IsNullOrEmpty(email))
+            {
+                var u = SqlSugarDbContext.t_sys_user.AsQueryable().Where(e => e.user_type == "1" && e.user_id == r.user_id).First();
+                if (u != null && !string.IsNullOrEmpty(u.email))
+                {
+                    r.email = u.email;
+                }
+            }
+            else
+            {
+                r.email = email;
+            }
+            r.guid = Guid.NewGuid().ToString().Replace("-", "");
+            r.create_date = DateTime.Now;
+            r.valid_date = r.create_date.AddHours(24);
+            r.status = "0";
+
+            var set = SqlSugarDbContext.t_sys_setting.AsQueryable().Where(e => e.sys_var_id == "email_server_addr" || e.sys_var_id == "email_account" || e.sys_var_id == "email_pwd").ToList();
+            if (set.Count > 2)
+            {
+                var server = set.First(e => e.sys_var_id == "email_server_addr").sys_var_val;
+                var account = set.First(e => e.sys_var_id == "email_account").sys_var_val;
+                var pwd = set.First(e => e.sys_var_id == "email_pwd").sys_var_val;
+                //var admin = SqlSugarDbContext.t_sys_user.AsQueryable().First(e => e.user_id == "1001");
+                //r.email = "oxf5deb3@163.com";
+                var subject = "佤邦司法委车管所-密码重置";
+                var fromName = "系统管理员";
+                var from = account;
+                var body = "密码找回请点击此链接进行密码重置，地址: <a href=\"" + httpaddr+"/H5/pwdReset.html?id=" + r.guid + "\">密码重置</a>";
+
+                var success = Utils.EmailHelper.Send(from, fromName, r.email, server, account, Utils.DESEncrypt.Decrypt(pwd), subject, body);
+                if (success)
+                {
+                    SqlSugarDbContext.t_sys_pwd_lostfind.Insert(r);
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+        public bool ResetPwd(string newPwd,string guid ,ref string err)
+        {
+           var findOne = SqlSugarDbContext.t_sys_pwd_lostfind.AsQueryable().First(e => e.guid == guid &&e.status=="0" && e.valid_date >= DateTime.Now);
+            if (findOne != null)
+            {
+                var userId = findOne.user_id;
+                var user = SqlSugarDbContext.t_sys_user.AsQueryable().First(e => e.user_id == userId && e.user_type == "1" && e.status == "0");
+                if (user != null)
+                {
+                    user.user_pwd = DESEncrypt.Encrypt(newPwd);
+                    var count = SqlSugarDbContext.t_sys_user.AsUpdateable(user).ExecuteCommand();
+                    if (count > 0)
+                    {
+                        findOne.status = "1";
+                        findOne.modify_date = DateTime.Now;
+                        var c = SqlSugarDbContext.t_sys_pwd_lostfind.AsUpdateable(findOne).ExecuteCommand();
+                        if (c > 0)
+                            return true;
+                        else
+                        {
+                            err = "密码重置失败";
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        err = "密码重置失败";
+                        return false;
+                    }
+                }
+                else
+                {
+                    err = "系统无法查询到此用户！";
+                    return false;
+                }
+            }
+            else
+            {
+                err = "未找到有效的重置记录，请尝试重新发起忘记密码动作";
+                return false;
+            }
+        }
+        public bool BatchDeleteOuterUser(List<string> pkValues)
+        {
+            List<StringBuilder> sqls = new List<StringBuilder>();
+            List<SqlParam[]> lstParams = new List<SqlParam[]>();
+            var delUserSql = new StringBuilder();
+            delUserSql.Append("delete from t_sys_user where id in (@user_id)");
+            lstParams.Add(new SqlParam[] { new SqlParam("@user_id", string.Join("','", pkValues.ToArray())) });
+            sqls.Add(delUserSql);
+            var count = DbContext.BatchExecuteBySql(sqls.ToArray(), lstParams.ToArray());
+            return count >= 0;
+        }
+
+       
         #endregion
     }
 }

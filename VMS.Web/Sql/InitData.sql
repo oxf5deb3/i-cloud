@@ -319,4 +319,13 @@ if not exists(select 1 from t_sys_resource where id='6102')
 begin
  insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)values('6102','6100','1','../BreakRules/BreakRuleQuery/Index','','违章信息','0000','0000','1001',GETDATE(),38)
 end
-
+if not exists(select 1 from t_sys_resource where id='9003')
+begin
+ insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+ values('9003','9000','1','../SystemLog/SysNews/Index','','资讯管理','0000','0000','1001',GETDATE(),39)
+end
+if not exists(select 1 from t_sys_resource where id='8005')
+begin
+ insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
+ values('8005','8000','1','../Account/OutterUser/Index','','外部人员','0000','0000','1001',GETDATE(),40)
+end

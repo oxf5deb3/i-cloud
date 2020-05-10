@@ -457,7 +457,7 @@ namespace VMS.Services
             sql.Append(" left join t_sys_resource_type j on i.res_type_id=j.id ");
             sql.Append(" where f.user_id=@oper_id and j.type_name='Menu' ");
             sql.Append(" union ");
-            sql.Append(" select '9003' as id,'9000' as pid,'1' as level,'../SystemLog/SystemSetting/Index' as res_uri,'' as res_img,'系统设置' as res_desc,99 as sort_code");
+            sql.Append(" select '9009' as id,'9000' as pid,'1' as level,'../SystemLog/SystemSetting/Index' as res_uri,'' as res_img,'系统设置' as res_desc,99 as sort_code");
             sql.Append(" where '1001' = @oper_id ");
             sql.Append(" ) as t order by id,level,sort_code ");
             var lstParams = new List<SqlParam>();

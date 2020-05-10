@@ -64,7 +64,7 @@
     </style>
 }
 <div class="btnContainer">
-    <button type="button" class="pull-right btn btn-info btn-sm">保存设置</button>
+    <button type="button" id="btnSave" class="pull-right btn btn-info btn-sm">保存设置</button>
 </div>
 <div style="overflow-y:auto;min-height:500px;">
     <div class="panel panel-info">
@@ -91,7 +91,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="text-right"><span class="red-star">*</span>邮箱密码:</td>
+                        <td class="text-right"><span class="red-star">*</span>邮箱密码/授权码:</td>
                         <td>
                             <input type="password" id="email_pwd" class="form-control" />
                         </td>
@@ -108,19 +108,47 @@
 @section scripts{
     <script type="text/javascript">
         function Save() {
+            var data = { add: [], update: [] };
             var email_server_addr = $('#email_server_addr').val();
+            var email_server_addr_id = $('#email_server_addr').data('id');
+            var email_server_addr_old = $('#email_server_addr').data('oldVal');
+            if (email_server_addr_id == undefined) {
+                data.add.push({ sys_var_id: 'email_server_addr', sys_var_val: email_server_addr })
+            } else {
+                if (email_server_addr_old != email_server_addr) {
+                    data.update.push({ id: email_server_addr_id, sys_var_id: 'email_server_addr', sys_var_val: email_server_addr})
+                }
+            }
+            
+
             var email_account = $('#email_account').val();
+            var email_account_id = $('#email_account').data('id');
+            var email_account_old = $('#email_account').data('oldVal');
+            if (email_account_id == undefined) {
+                data.add.push({ sys_var_id: 'email_account', sys_var_val: email_account })
+            } else {
+                if (email_account_old != email_account) {
+                    data.update.push({ id: email_account_id, sys_var_id: 'email_account', sys_var_val: email_account })
+                }
+            }
+
             var email_pwd = $('#email_pwd').val();
-            var data = {};
-            data.email_server_addr = email_server_addr;
-            data.email_account = email_account;
-            data.email_pwd = email_pwd;
+            var email_pwd_id = $('#email_pwd').data('id');
+            var email_pwd_old = $('#email_pwd').data('oldVal');
+            if (email_pwd_id == undefined) {
+                data.add.push({ sys_var_id: 'email_pwd', sys_var_val: email_pwd })
+            } else {
+                if (email_pwd_old != email_account) {
+                    data.update.push({ id: email_pwd_id, sys_var_id: 'email_pwd', sys_var_val: email_pwd })
+                }
+            }
 
             var url = "/api/SystemApi/SaveSetting";
             $.post(url, data, 'json')
                 .success(function (ret) {
                     if (ret.success) {
                         alert("保存成功！");
+                        refreshUI();
                     } else {
                         if ($.trim(ret.message)) {
                             alert(ret.message);
@@ -134,13 +162,23 @@
             });
         }
         function initData(data) {
-            $('#email_server_addr').val(data.email_server_addr);
-            $('#email_account').val(data.email_account);
-            $('#email_pwd').val(data.email_pwd);
+            $.each(data, function (inx, item) {
+                var key = item.sys_var_id;
+                var val = item.sys_var_val;
+                var id = item.id;
+                var el = $('#' + $.trim(key));
+                if (el.length > 0) {
+                    el.val(val);
+                    $.data(el[0], "id", id);
+                    $.data(el[0], 'oldVal', val);
+                }
+
+            })
+          
         }
         function refreshUI() {
             var url = "/api/SystemApi/QuerySetting";
-            $.post(url, {}, 'json').success(function (ret) {
+            $.post(url, {key:''}, 'json').success(function (ret) {
                 if (ret.success) {
                     initData(ret.data);
                 }

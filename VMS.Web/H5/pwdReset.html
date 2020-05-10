@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>密码重置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=0" />
+    <link rel="stylesheet" href="../Content/bootstrap.min.css">
+    <link rel="stylesheet" href="../Content/bootstrap-theme.min.css">
+    <style type="text/css">
+        body {
+            padding: 0px;
+            margin: 0px;
+            font-size: 14px;
+            //background-color:cornflowerblue;
+        }
+
+        h4 {
+            margin: 0px;
+            padding-top: 15px;
+        }
+
+        hr {
+            margin: 5px 0px;
+        }
+
+        .modal-header {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h4 class="text-center">密码重置</h4>
+    <hr />
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="pwd" class="col-sm-2 control-label">请输入新密码:</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="pwd">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="againpwd" class="col-sm-2 control-label">再次输入新密码:</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="againpwd">
+            </div>
+        </div>
+        <div class="form-group">
+            <button id="btnreq" type="button" class="btn btn-success btn-block">提交</button>
+        </div>
+    </form>
+    <div class="text-danger">
+        <small class="bg-success center-block">&nbsp;&nbsp;1.如果忘记账号，请联系车管局进行找回</small>
+        <small class="bg-success center-block">&nbsp;&nbsp;2.联系电话:15219463568</small>
+    </div>
+    <!-- Small modal -->
+    <button type="button" id="show" style="display:none;" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Small modal</button>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title" id="myModalLabel">温馨提示</h5>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/jquery-1.12.4.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <script src="../Scripts/respond.js"></script>
+    <script type="text/javascript">
+        function getRequest() {
+            var url = window.location.search;
+            var jsonList = {};
+            if (url.indexOf("?") > -1) {
+                var str = url.slice(url.indexOf("?") + 1);
+                var strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    jsonList[strs[i].split("=")[0]] = strs[i].split("=")[1];//如果出现乱码的话，可以用decodeURI()进行解码
+                }
+            }
+            return jsonList;
+        }
+        $(function () {
+            function alert(msg) {
+                $('.modal-body').text(msg);
+                $('#show').click();
+            }
+
+            function bindEvent() {
+                $('#btnreq').bind('click', function () {
+                    startPost();
+                })
+            }
+
+            function getData() {
+                var user_pwd = $('#pwd').val();
+                var againpwd = $('#againpwd').val();
+                return { user_pwd: user_pwd, againpwd: againpwd };
+            }
+            function startPost() {
+                var params = getRequest();
+                if (params.id == undefined || $.trim(params.id) == "") {
+                    alert('该重置连接无效，请尝试重新发起忘记密码动作!');
+                    return;
+                }
+                var url = "/esi-api/Account/ResetPwd";
+                var data = getData();
+                if ($.trim(data.user_pwd)=='') {
+                    alert('请输入新密码!');
+                    return;
+                }
+                if ($.trim(data.againpwd) == '') {
+                    alert('请再次输入新密码!');
+                    return;
+                }
+                if ($.trim(data.user_pwd) != $.trim(data.againpwd)) {
+                    alert("两次输入的密码不一致，请重新输入！");
+                    return;
+                }
+                data.guid = params.id;
+                $.post(url, data, function (ret) {
+                    if (ret.success) {
+                        alert('密码重置成功！');
+                    } else {
+                        if ($.trim(ret.message) != '') {
+                            alert(ret.message);
+                        } else {
+                            alert('未知错误，请重新发起忘记密码动作!');
+                        }
+                    }
+                });
+            }
+            bindEvent();
+
+        })
+    </script>
+</body>
+</html>

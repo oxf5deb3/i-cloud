@@ -1,0 +1,290 @@
+﻿@inherits System.Web.Mvc.WebViewPage
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section HeaderStyle{
+    <style type="text/css">
+        html, body {
+            font-size: 12px;
+            height: 85%;
+        }
+
+        .textbox, .textbox-text {
+            -moz-border-radius: 2px 2px 2px 2px;
+            -webkit-border-radius: 2px 2px 2px 2px;
+            border-radius: 2px 2px 2px 2px;
+        }
+
+        #query-params {
+            width: 100%;
+            margin: 10px 0px 10px 0px;
+        }
+
+        label {
+            width: 105px;
+        }
+
+        form input {
+            width: 500px;
+        }
+
+        .red-star {
+            color: red;
+        }
+
+        .td-trailer {
+            width: 300px;
+        }
+
+        .div-tabs {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .div-tabs-div {
+            width: 50%;
+            float: left;
+            padding: 5px;
+        }
+        .title{
+            font-size:14px;
+        }
+    </style>
+}
+<div class="q-condition">
+    <div class="btn-container">
+        <a href="#" class="easyui-linkbutton" onclick="add()" data-options="iconCls:'icon-add'" style="width:60px">新增</a>
+        <a href="#" class="easyui-linkbutton" onclick="upDate()" data-options="iconCls:'icon-edit'" style="width:60px">编辑</a>
+        <a href="#" class="easyui-linkbutton" onclick="del()" data-options="iconCls:'icon-remove'" style="width:60px">删除</a>
+    </div>
+    <hr />
+    <div id="query-params">
+        <span>资讯简介：</span><input class="easyui-textbox" name="news_title" id="news_title">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="query()" style="width:80px">查询</a>
+    </div>
+</div>
+
+<table id="dataGrid"></table>
+<div id="dlg" style="display:none">
+    <div>
+        <p class="title">1.  内容简介:<span style="color:blue">(不要超过200个汉字)</span></p>
+        <div><textarea id="txtTitle" style="resize:none;width:100%;height:40px;"></textarea></div>
+    </div>
+    <br />
+    <p class="title">2.  资讯内容编辑:</p>
+    <div id="editor">
+
+    </div>
+</div>
+<div id="dlg-buttons" style="display:none">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconcls="icon-ok" onclick="save()" style="width:90px">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+</div>
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        function initGrid() {
+            $('#dataGrid').datagrid({
+                columns: [[
+                    { field: 'ck', checkbox: true, width: 60 },
+                    { field: 'title', title: '简介', halign: 'center', align: 'center', width: 200,sortable:true },
+                    { field: 'create_date', title: '创建日期', halign: 'center', align: 'center', width: 120, sortable: true },
+                    { field: 'user_name', title: '创建人', halign: 'center', align: 'center', width: 120 },
+                ]],
+                url: '/api/SystemApi/QueryNews',
+                //toolbar: '#toolbar',
+                height: $(window).height() * 0.85,
+                idField: 'id',
+                singleSelect:true,
+                rownumbers: true,
+                pagination: true,
+                pageList: [10, 20, 50],
+                fitColumns: false,
+                striped: true,
+                showHeader: true,
+                queryParams: getListParams()
+            });
+        }
+       
+
+        function getListParams() {
+            return {
+                title: $("#news_title").textbox('getText'),
+            }
+        }
+        var E = window.wangEditor
+        var editor = new E('#editor');
+        editor.customConfig.showLinkImg = false;
+        editor.customConfig.uploadImgShowBase64 = true;
+        editor.customConfig.uploadImgMaxSize = 3 * 1024 * 1024;
+        editor.customConfig.uploadImgMaxLength = 5;
+        editor.create();
+        function add() {
+            clear();
+            //$('#dlg').dialog('clear');
+            $('#dlg').dialog({
+                buttons: '#dlg-buttons',
+                width: 700,
+                height: 400,
+                title: '新增资讯',
+                status: 1,
+                modal: true,
+                cache: false,
+                onBeforeOpen: function () {
+                   
+                    return true;
+                },
+                onClose: function () {
+                    editor.txt.clear();
+
+                    //console.dir(this);
+                    //$(this).dialog('destroy');
+                }
+            });
+            //dlg.dialog('open');
+            //$('#dlg').dialog('open');
+            //$('#dlg').dialog('options').status = 1;
+        }
+
+
+
+
+        function query() {
+            $('#dataGrid').datagrid('load', getListParams());
+        }
+        function del() {
+            var row = $('#dataGrid').datagrid('getSelected');
+            if (row) {
+                var data = { id: row.id }
+                $.messager.confirm('提示', '请确定要删除此资讯记录？', function (r) {
+                    if (r) {
+                        $.ajax({
+                            url: '/api/SystemApi/DelNewsById',
+                            method: 'post',
+                            dataType: 'json',
+                            data: data,
+                            success: function (result) {
+                                if (result.success) {
+                                    $.messager.alert("提示", "删除成功");
+                                    $('#dataGrid').datagrid('reload');
+                                } else {
+                                    $.messager.alert("提示", "删除失败");
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                $.messager.alert("提示", "请先选择至少一条记录");
+            }
+
+        }
+
+        function reload() {
+            $('#dlg').dialog('close');        // close the dialog
+            $('#dataGrid').datagrid('reload');
+        }
+
+        function clear() {
+            $('#txtTitle').val('');
+        }
+
+        function setData(data) {
+            $('#txtTitle').val(data.title);
+            editor.txt.html(data.content);
+
+            $('#dlg').dialog({
+                buttons: '#dlg-buttons',
+                width: 700,
+                height: 400,
+                title: '修改资讯',
+                status: 0,
+                modal: true,
+                cache: false,
+                onClose: function () {
+                    editor.txt.clear();
+                }
+            });
+
+        }
+
+        function getData() {
+            var data = {
+                title: '',
+                content:''
+            }
+            data.title = $('#txtTitle').val();
+            data.content = editor.txt.html();
+            return data;
+        }
+
+        function upDate() {
+            var selectedRow = $('#dataGrid').datagrid('getSelected');
+            if (selectedRow == null) {
+                $.messager.alert('提示', '请先选中一行需要编辑的数据!', 'info');
+                return;
+            }
+            clear();
+            var url = "/api/SystemApi/GetNewsById";
+            var data = { id: selectedRow.id };
+            $.post(url, data, function (ret) {
+                if (ret.success) {
+                    setData(ret.data);
+                } else {
+                    if (ret.message != '') {
+                        $.messager.alert("提示", ret.message, 'info');
+                    } else {
+                        $.messager.alert('提示','无法获取该资讯，请刷新重试!','info');
+                    }
+                    return;
+                }
+            })
+        }
+        function save() {
+            var data = getData();
+            if ($.trim(data.title) == '') {
+                $.messager.alert('提示', '资讯简介不能为空', 'info');
+                return;
+            }
+            if ($.trim(data.content) == '') {
+                $.messager.alert('提示', '资讯内容不能为空', 'info');
+                return;
+            }
+
+            var url = "/api/SystemApi/AddNews";
+            var msg = "添加";
+            var status = $('#dlg').dialog('options').status;
+            if (status != '1') {
+                msg = "修改";
+                url = "/api/SystemApi/UpdateNews";
+                var selectedRow = $('#dataGrid').datagrid('getSelected');
+                data.id = selectedRow.id;
+            }
+
+            $.post(url, data, function (ret) {
+                if (ret.success) {
+                    reload();
+                    $.messager.alert('提示', msg + '成功!', 'info');
+                } else {
+                    if ($.trim(ret.message) != '') {
+                        $.messager.alert('提示', ret.message, 'info');
+                    } else {
+                        $.messager.alert('提示', msg + '失败!', 'info');
+                    }
+                }
+            });
+
+        }
+
+        $('#news_title').textbox({
+            width: 180,
+        });
+        initGrid();
+    </script>
+}

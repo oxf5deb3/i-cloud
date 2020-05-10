@@ -107,5 +107,66 @@ namespace VMS.ESIApi
                 return ret;
             }
         }
+
+        /// <summary>
+        /// 忘记密码
+        /// {user_id:'',email:''}
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public BaseESIReponseDTO ForgetPwd([FromBody]JObject data)
+        {
+            var ret = new BaseESIReponseDTO();
+            try
+            {
+                var dto = data.ToObject<UserRoleDTO>(); 
+                var service = Instance<IUserService>.Create;
+                var user_id = dto.user_id;
+                var email = dto.email;
+                var httpaddr = HttpContext.Current.Request.Url.Authority;
+                var success = service.AddLostPwdRecord(user_id, email, httpaddr);
+                ret.success = success;
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.code = ESIApi.StatusCode.FAIL;
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+        /// <summary>
+        /// 密码重置
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public BaseESIReponseDTO ResetPwd([FromBody]JObject data)
+        {
+            var ret = new BaseESIReponseDTO();
+            try
+            {
+                var dto = data.ToObject<UserRoleDTO>();
+                var service = Instance<IUserService>.Create;
+                var user_pwd = dto.user_pwd;
+                var guid = data["guid"] != null ? data["guid"].ToObject<string>() : "";
+                var err = "";
+                var success = service.ResetPwd(user_pwd, guid, ref err);
+                ret.success = success;
+                if (!success && !string.IsNullOrEmpty(err))
+                {
+                    ret.code = ESIApi.StatusCode.FAIL;
+                    ret.message = err;
+                }
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.code = ESIApi.StatusCode.FAIL;
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
     }
 }
