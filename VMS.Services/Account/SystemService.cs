@@ -111,7 +111,7 @@ namespace VMS.Services
             }
             catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
 
         }

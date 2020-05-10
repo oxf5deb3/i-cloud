@@ -339,8 +339,9 @@ namespace VMS.Services
                 var subject = "佤邦司法委车管所-密码重置";
                 var fromName = "系统管理员";
                 var from = account;
+                if (!httpaddr.ToUpper().StartsWith("HTTP"))
+                httpaddr = "http://"+ httpaddr;
                 var body = "密码找回请点击此链接进行密码重置，地址: <a href=\"" + httpaddr+"/H5/pwdReset.html?id=" + r.guid + "\">密码重置</a>";
-
                 var success = Utils.EmailHelper.Send(from, fromName, r.email, server, account, Utils.DESEncrypt.Decrypt(pwd), subject, body);
                 if (success)
                 {

@@ -35,7 +35,7 @@ namespace VMS.Utils
                 mail.Body = body;//邮件内容
                 mail.IsBodyHtml = true;//是否HTML形式发送
 
-                SmtpClient smtp = new SmtpClient(mailServerName, 25);//邮件服务器和端口
+                SmtpClient smtp = new SmtpClient(mailServerName, 587);//邮件服务器和端口587/25
                 smtp.UseDefaultCredentials = false;
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network; //指定发送方式
                 smtp.Credentials = new System.Net.NetworkCredential(mailAccount, mailPwd);//指定登录名和授权码 uhpveokkuwhebeeb
