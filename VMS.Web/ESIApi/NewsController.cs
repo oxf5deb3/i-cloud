@@ -22,6 +22,7 @@ namespace VMS.ESIApi
       /// </summary>
       /// <param name="data"></param>
       /// <returns></returns>
+        [AllowAnonymous]
         [System.Web.Mvc.HttpGet]
         public string GetContentById(decimal id)
         {

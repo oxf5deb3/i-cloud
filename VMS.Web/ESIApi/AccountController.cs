@@ -9,6 +9,7 @@ using System.Web.Http;
 using VMS.DTO;
 using VMS.ESIApi.Models;
 using VMS.IServices;
+using VMS.Model;
 using VMS.ServiceProvider;
 
 namespace VMS.ESIApi
@@ -16,6 +17,7 @@ namespace VMS.ESIApi
     /// <summary>
     /// 账号注册
     /// </summary>
+    
     public class AccountController : BaseApiController
     {
         /// <summary>
@@ -24,6 +26,7 @@ namespace VMS.ESIApi
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         public BaseESIReponseDTO Register([FromBody]JObject data)
         {
             var ret = new BaseESIReponseDTO();
@@ -65,9 +68,10 @@ namespace VMS.ESIApi
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public BaseESIReponseDTO Login([FromBody]JObject data)
+        [AllowAnonymous]
+        public Response<ESIUserLoginDTO> Login([FromBody]JObject data)
         {
-            var ret = new BaseESIReponseDTO();
+            var ret = new Response<ESIUserLoginDTO>();
             try
             {
                 #region 参数检验
@@ -88,6 +92,17 @@ namespace VMS.ESIApi
                     ret.message = string.Format("账号或密码错误,请重试!");
                     return ret;
                 }
+                var guid = Guid.NewGuid().ToString().Replace("-", "");
+                ret.data = new ESIUserLoginDTO() {
+                    user_id = user.user_id,
+                    user_name = user.user_name,
+                    token = guid,
+                    create_date = user.create_date,
+                    user_type = user.user_type,
+                    email = user.email,
+                    menu_right = "1111111111111111111111"
+                };
+                Utils.ESIAuthCheck._cache.AddOrGet(guid, user.user_id, TimeSpan.FromHours(1));
                 var ip = HttpContext.Current.Request.UserHostAddress;
                 try
                 {

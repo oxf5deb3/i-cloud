@@ -32,7 +32,10 @@ namespace VMS.ESIApi
         [Description("接口废弃")]
         appid_lost,                 //接口废弃
         [Description("捕获异常")]
-        CATCH_EXCEPTION=999
+        CATCH_EXCEPTION=999,
+        [Description("授权失败")]
+        UNAUTHORIZED = 886
+        
         
     }
 

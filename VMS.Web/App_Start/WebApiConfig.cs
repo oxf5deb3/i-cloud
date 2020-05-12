@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,6 +26,10 @@ namespace VMS.App_Start
                 defaults:new { namespaceName= "VMS.ESIApi"}
                 );
             config.Filters.Add(new WebApiExceptionFilterAttribute());
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter
+            {
+                DateTimeFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss"
+            });
         }
     }
 }

@@ -329,3 +329,19 @@ begin
  insert into t_sys_resource(id,pid,level,res_uri,res_img,res_desc,res_type_id,res_type_oper_id,create_id,create_date,sort_code)
  values('8005','8000','1','../Account/OutterUser/Index','','外部人员','0000','0000','1001',GETDATE(),40)
 end
+--字段修改
+if exists(select 1 from syscolumns where name='tel' and id=OBJECT_ID('t_sys_user'))
+begin
+   alter table t_sys_user alter column tel varchar(20) null
+end
+go
+if not exists(select 1 from sysobjects where xtype='D' and OBJECT_NAME(parent_obj)='t_sys_user' and name='df_sex')
+begin
+   alter table t_sys_user add constraint df_sex default('0') for sex with values 
+end
+go
+if not exists(select 1 from sysobjects where xtype='D' and OBJECT_NAME(parent_obj)='t_sys_user' and name='df_age')
+begin
+   alter table t_sys_user add constraint df_age default('0') for age with values 
+end
+go

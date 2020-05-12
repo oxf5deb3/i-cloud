@@ -8,7 +8,16 @@ namespace VMS.ESIApi.Models
 {
     public class Response<T>
     {
+        public Response()
+        {
+            success = true;
+            data = default(T);
+            code = StatusCode.SUCCESS;
+            message = "";
+        }
         public StatusCode code { get; set; }
+
+        public bool success { get; set; }
 
         public string message { get; set; }
 
@@ -34,7 +43,7 @@ namespace VMS.ESIApi.Models
             return resp;
         }
 
-        public static Response<T> Fail<T>(StatusCode code) where T : class, new()
+        public static Response<T> Fail<T>(StatusCode code)
         {
             var resp = new Response<T>();
             resp.code = code;

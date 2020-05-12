@@ -227,11 +227,12 @@ namespace VMS.Services
         {
             t_sys_user u = new t_sys_user();
             u.user_id = user.user_id;
-            u.user_name = user.user_name;
-            u.user_pwd = user.user_pwd;
-            u.age = user.age;
-            u.sex = user.sex;
-            u.tel = user.tel;
+            u.user_name = user.user_id;
+            u.user_pwd = DESEncrypt.Encrypt(user.user_pwd);
+            u.age = 20;
+            u.sex = "0";
+            u.status = "0";
+            u.tel = "15219463259";
             u.user_type = "1";
             u.email = user.email;
             return SqlSugarDbContext.t_sys_user.Insert(u);

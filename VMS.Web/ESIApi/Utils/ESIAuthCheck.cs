@@ -1,13 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
 namespace VMS.ESIApi.Utils
 {
-    public class ESIAuthCheck: AuthorizeAttribute
+    public class ESIAuthCheck : AuthorizeAttribute
     {
         public static DefaultMemoryCache _cache = new DefaultMemoryCache();
         /// <summary>
@@ -23,14 +28,44 @@ namespace VMS.ESIApi.Utils
             //base.OnAuthorization(actionContext);
             //SortedDictionary
             //url获取token 
-            var content = actionContext.Request.Properties["MS_HttpContext"] as HttpContextBase;
-            HttpRequestBase request = content.Request;
-            string access_key = request.Form["access_key"];//获取请求参数对应的值
-            string sign = request.Form["sign"];
-            if (!string.IsNullOrEmpty(access_key) && !string.IsNullOrEmpty(sign))
+            //var content = actionContext.Request.Properties["MS_HttpContext"] as HttpContextBase;
+            //HttpRequestBase request = content.Request;
+            //string access_key = request.Form["access_key"];//获取请求参数对应的值
+            //string sign = request.Form["sign"];
+            //if (!string.IsNullOrEmpty(access_key) && !string.IsNullOrEmpty(sign))
+            //var json = "";
+            //using (Stream st = request.InputStream)
+            //{
+            //    StreamReader sr = new StreamReader(st, Encoding.UTF8);
+            //    json = sr.ReadToEnd();
+            //}
+            //var token = "";
+            //if (!string.IsNullOrEmpty(json))
+            //{
+            //    var jobj = JObject.Parse(json);
+            //    if(jobj!=null && jobj["token"] != null)
+            //    {
+            //        token = jobj["token"].ToString();
+            //    }
+            //}
+            var requestContent = actionContext.Request.Content.ReadAsStringAsync();
+            requestContent.Wait();
+            var json = "";
+            json = requestContent.Result;
+            var token = "";
+            if (!string.IsNullOrEmpty(json))
+            {
+                var jobj = JObject.Parse(json);
+                if (jobj != null && jobj["token"] != null)
+                {
+                    token = jobj["token"].ToString();
+                }
+            }
+            if (!string.IsNullOrEmpty(token))
             {
                 //解密用户ticket,并校验用户名密码是否匹配 
-                if (ValidateTicket(access_key, sign))
+                //if (ValidateTicket(access_key, sign))
+                if (ValidateTicket(token, ""))
                 {
                     base.IsAuthorized(actionContext);
                 }
@@ -48,6 +83,17 @@ namespace VMS.ESIApi.Utils
                 else HandleUnauthorizedRequest(actionContext);
             }
         }
+
+        protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
+        {
+            base.HandleUnauthorizedRequest(actionContext);
+            var response = actionContext.Response = actionContext.Response ?? new HttpResponseMessage();
+            response.StatusCode = HttpStatusCode.Forbidden;
+            var content = Models.DefaultResponse.Fail<string>(StatusCode.UNAUTHORIZED);
+            content.data = "";
+            var json = JObject.FromObject(content).ToString();
+            response.Content = new StringContent(json, Encoding.UTF8, "application/json");
+        }
         //校验sign（数据库数据匹配） 
         private bool ValidateTicket(string key, string sign)
         {
@@ -61,7 +107,12 @@ namespace VMS.ESIApi.Utils
             //    }
             //    return false;
             //}
-            return false;
+            var entry = _cache.AddOrGet(key, null, TimeSpan.FromMinutes(30));
+            if (entry == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
