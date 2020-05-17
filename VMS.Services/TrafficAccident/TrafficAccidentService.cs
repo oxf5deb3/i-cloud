@@ -24,9 +24,9 @@ namespace VMS.Services
             {
                 StringBuilder sql = new StringBuilder();
                 sql.Append("insert into t_accident_records(happen_date, happen_addr, first_party_man, first_party_addr, second_party_man, second_party_addr, accident_desc, mediation_unit,");
-                sql.Append(" mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan)");
+                sql.Append(" mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan,firstPartyCarNo,secondPartyCarNo)");
                 sql.Append(" values(@happen_date, @happen_addr, @first_party_man, @first_party_addr, @second_party_man, @second_party_addr, @accident_desc, @mediation_unit,");
-                sql.Append(" @mediation_date, @draw_recorder, @accident_mediator, @oper_id, @oper_date, @img_url,@duty,@dingPartyAddr,@dingPartyMan,@bingPartyAddr,@bingPartyMan)");
+                sql.Append(" @mediation_date, @draw_recorder, @accident_mediator, @oper_id, @oper_date, @img_url,@duty,@dingPartyAddr,@dingPartyMan,@bingPartyAddr,@bingPartyMan,@firstPartyCarNo,@secondPartyCarNo)");
                 SqlParam[] sqlParams = new SqlParam[] { 
                     new SqlParam("@happen_date", dto.happenDate),
                     new SqlParam("@happen_addr", dto.happenAddr),
@@ -51,7 +51,8 @@ namespace VMS.Services
                     new SqlParam("@dingPartyMan", dto.dingPartyMan),
                     new SqlParam("@bingPartyAddr", dto.bingPartyAddr),
                     new SqlParam("@bingPartyMan", dto.bingPartyMan),
-
+                    new SqlParam("@firstPartyCarNo", dto.firstPartyCarNo),
+                    new SqlParam("@secondPartyCarNo", dto.secondPartyCarNo),
 
                 };
                 return DbContext.ExecuteBySql(sql, sqlParams.ToArray()) > 0;
@@ -74,7 +75,7 @@ namespace VMS.Services
         public List<t_accident_records> ListAccident(StringBuilder sqlWhere, IList<SqlParam> sqlParams, int pageIndex, int pageSize, ref int count)
         {
             StringBuilder sb = new StringBuilder("select id, happen_date, happen_addr, first_party_man, first_party_addr, second_party_man, second_party_addr, accident_desc, mediation_unit, ");
-            sb.Append("mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, modify_oper_id, modify_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan from t_accident_records where 1 = 1");
+            sb.Append("mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, modify_oper_id, modify_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan,firstPartyCarNo,secondPartyCarNo from t_accident_records where 1 = 1");
             var dt = DbContext.GetPageList(sb.Append(sqlWhere.ToString()).ToString(), sqlParams.ToArray(), "id", "desc", pageIndex, pageSize, ref count);
             return DataTableHelper.DataTableToIList<t_accident_records>(dt) as List<t_accident_records>;
         }
@@ -90,7 +91,7 @@ namespace VMS.Services
             {
                 StringBuilder sql = new StringBuilder();
                 sql.Append("update t_accident_records set happen_date = @happen_date, happen_addr = @happen_addr, first_party_man = @first_party_man, first_party_addr = @first_party_addr, second_party_man = @second_party_man, second_party_addr = @second_party_addr, accident_desc = @accident_desc, mediation_unit = @mediation_unit,");
-                sql.Append(" mediation_date = @mediation_date, draw_recorder = @draw_recorder, accident_mediator = @accident_mediator, modify_oper_id = @modify_oper_id, modify_date = @modify_date,duty=@duty,dingPartyAddr=@dingPartyAddr,dingPartyMan=@dingPartyMan,bingPartyAddr=@bingPartyAddr,bingPartyMan=@bingPartyMan where id = @id");
+                sql.Append(" mediation_date = @mediation_date, draw_recorder = @draw_recorder, accident_mediator = @accident_mediator, modify_oper_id = @modify_oper_id, modify_date = @modify_date,duty=@duty,dingPartyAddr=@dingPartyAddr,dingPartyMan=@dingPartyMan,bingPartyAddr=@bingPartyAddr,bingPartyMan=@bingPartyMan,firstPartyCarNo=@firstPartyCarNo,secondPartyCarNo=@secondPartyCarNo where id = @id");
 
                 SqlParam[] sqlParams = new SqlParam[] { 
                     new SqlParam("@happen_date", dto.happenDate),
@@ -113,6 +114,8 @@ namespace VMS.Services
                     new SqlParam("@dingPartyMan", dto.dingPartyMan),
                     new SqlParam("@bingPartyAddr", dto.bingPartyAddr),
                     new SqlParam("@bingPartyMan", dto.bingPartyMan),
+                     new SqlParam("@firstPartyCarNo", dto.firstPartyCarNo),
+                    new SqlParam("@secondPartyCarNo", dto.secondPartyCarNo),
                     new SqlParam("@id", dto.id)
                 };
                 return DbContext.ExecuteBySql(sql, sqlParams.ToArray()) > 0;

@@ -345,3 +345,56 @@ begin
    alter table t_sys_user add constraint df_age default('0') for age with values 
 end
 go
+if not exists(select 1 from syscolumns where name='engine_no' and OBJECT_NAME(id)='t_bd_breakrules')
+begin
+   alter table t_bd_breakrules add engine_no varchar(50) null
+end
+if  exists(select 1 from syscolumns where name='accident_desc' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column accident_desc varchar(1000) null
+end
+if not exists(select 1 from syscolumns where name='first_party_car_no' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records add first_party_car_no varchar(50) null
+end
+if not exists(select 1 from syscolumns where name='second_party_car_no' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records add second_party_car_no varchar(50) null
+end
+
+if  exists(select 1 from syscolumns where name='happen_date' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column happen_date datetime null
+end
+if  exists(select 1 from syscolumns where name='first_party_man' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column first_party_man varchar(50) null
+end
+if  exists(select 1 from syscolumns where name='first_party_addr' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column first_party_addr varchar(200) null
+end
+if  exists(select 1 from syscolumns where name='second_party_man' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column second_party_man varchar(50) null
+end
+if  exists(select 1 from syscolumns where name='second_party_addr' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column second_party_addr varchar(200) null
+end
+if  exists(select 1 from syscolumns where name='mediation_unit' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column mediation_unit varchar(200) null
+end
+if  exists(select 1 from syscolumns where name='mediation_date' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column mediation_date datetime null
+end
+if  exists(select 1 from syscolumns where name='draw_recorder' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column draw_recorder varchar(50) null
+end
+if  exists(select 1 from syscolumns where name='accident_mediator' and OBJECT_NAME(id)='t_accident_records')
+begin
+   alter table t_accident_records alter column accident_mediator varchar(50) null
+end

@@ -24,55 +24,33 @@ namespace VMS.ESIApi
         /// <summary>
         /// 消防列表(分页)
         /// </summary>
+        /// <param name="page">第几页</param>
+        /// <param name="rows">页大小</param>
+        /// <param name="sort">排序字段</param>
+        /// <param name="order">asc/desc</param>
+        /// <param name="id">查询条件-编号</param>
+        /// <param name="name">查询条件-设备信息</param>
+        /// <param name="address">查询条件-安装地址</param>
+        /// <param name="timeBegin">查询条件-安装时间</param>
+        /// <param name="timeEnd">查询条件-安装时间</param>
+        /// <param name="liable">查询条件-负责人</param>
         /// <returns></returns>
         [HttpPost]
-        public GridResponseDTO<FireEquipmentDTO> ListEquipment()
+        public GridResponseDTO<FireEquipmentDTO> ListEquipment([FromBody]JObject data)
         {
             var ret = new GridResponseDTO<FireEquipmentDTO>();
             try
             {
-                var httpRequest = HttpContext.Current.Request;
-                var sb = new StringBuilder();
-                var paramlst = new List<SqlParam>();
+                var condition = data.ToDictionary();
                 int total = 0;
-                var pageIndex = CommonHelper.GetInt(httpRequest.Form["page"], 1);
-                var pageSize = CommonHelper.GetInt(httpRequest.Form["rows"], 10);
-
-                if (httpRequest["id"] != null && !string.IsNullOrEmpty(httpRequest["id"]))
-                {
-                    sb.Append(" and id = @id");
-                    paramlst.Add(new SqlParam("@id", Decimal.Parse(httpRequest["id"])));
-                }
-
-                if (httpRequest["name"] != null && !string.IsNullOrEmpty(httpRequest["name"]))
-                {
-                    sb.Append(" and eq_name like @eq_name");
-                    paramlst.Add(new SqlParam("@eq_name", "%" + httpRequest["name"] + "%"));
-                }
-                if (httpRequest["address"] != null && !string.IsNullOrEmpty(httpRequest["address"]))
-                {
-                    sb.Append(" and install_addr like @install_addr");
-                    paramlst.Add(new SqlParam("@install_addr", "%" + httpRequest["address"] + "%"));
-                }
-                if (httpRequest["timeBegin"] != null && !string.IsNullOrEmpty(httpRequest["timeBegin"]))
-                {
-                    sb.Append(" and install_date >  @timeBegin");
-                    paramlst.Add(new SqlParam("@timeBegin", httpRequest["timeBegin"]));
-                }
-                if (httpRequest["timeEnd"] != null && !string.IsNullOrEmpty(httpRequest["timeEnd"]))
-                {
-                    sb.Append(" and install_date < @timeEnd");
-                    paramlst.Add(new SqlParam("@timeEnd", httpRequest["timeEnd"]));
-                }
-                if (httpRequest["liable"] != null && !string.IsNullOrEmpty(httpRequest["liable"]))
-                {
-                    sb.Append(" and person_liable like @person_liable");
-                    paramlst.Add(new SqlParam("@person_liable", "%" + httpRequest["liable"] + "%"));
-                }
+                var pageIndex = CommonHelper.GetInt(condition["page"], 0);
+                var pageSize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
 
                 string err = string.Empty;
                 var obj = Instance<IFireControlService>.Create;
-                var lst = obj.ListEquipment(sb, paramlst, pageIndex, pageSize, ref total);
+                List<t_fire_equipment_register> lst = obj.ListEquipmentNew(condition, sort, order, pageIndex, pageSize, ref total, ref err);
                 ret.total = total;
                 ret.rows.AddRange(lst.Select(e => new FireEquipmentDTO()
                 {
@@ -102,6 +80,7 @@ namespace VMS.ESIApi
         /// <summary>
         /// 附加图片
         /// </summary>
+        ///<param name="id"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AppendEquipmentImg()
@@ -164,10 +143,25 @@ namespace VMS.ESIApi
                 return ret;
             }
         }
-        
+
         /// <summary>
         /// 添加消防事故
         /// </summary>
+        /// <param name="datetime">火灾时间</param>
+        /// <param name="address">火灾地点</param>
+        /// <param name="desc">火灾原因</param>
+        /// <param name="cars">出警车辆</param>
+        /// <param name="names">出警人员</param>
+        /// <param name="result">处理结果</param>
+        /// <param name="name">当事人姓名</param>
+        /// <param name="sex">性别</param>
+        /// <param name="age">年龄</param>
+        /// <param name="folk">名族</param>
+        /// <param name="addr">地址</param>
+        /// <param name="phone">电话</param>
+        /// <param name="loss">火灾损失</param>
+        /// <param name="finance_loss">财物损失</param>
+        /// <param name="casualties">人员伤亡</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddFireAccident()
@@ -248,6 +242,7 @@ namespace VMS.ESIApi
         /// <summary>
         /// 删除消防设备
         /// </summary>
+        /// <param name="ids"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO DelEquipment()
@@ -279,8 +274,9 @@ namespace VMS.ESIApi
             }
         }
         /// <summary>
-        /// 删除消防事故
+        /// 删除消防事故 表单
         /// </summary>
+        /// <param name="ids"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO DelAccident()
@@ -314,7 +310,19 @@ namespace VMS.ESIApi
         /// <summary>
         /// 修改消防设备图片
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="model"></param>
+        /// <param name="count"></param>
+        /// <param name="address"></param>
+        /// <param name="datetime"></param>
+        /// <param name="desc"></param>
+        /// <param name="liable"></param>
+        /// <param name="imgs"></param>
+        /// <param name="operId"></param>
+        /// <param name="operDate"></param>
+        /// <param name="modifyOperId"></param>
+        /// <param name="modifyDate"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyEquipmentImgs([FromBody]JObject data)
@@ -348,7 +356,8 @@ namespace VMS.ESIApi
         /// <summary>
         /// 修改消防事故图片
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="imgs">图片</param>
+        /// <param name="id">id</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyImgs([FromBody]JObject data)
@@ -382,22 +391,29 @@ namespace VMS.ESIApi
         /// <summary>
         /// 修改消防设备
         /// </summary>
+        /// <param name="id"></param>
+        /// <param name="datetime">安装时间</param>
+        /// <param name="address">安装地址</param>
+        /// <param name="desc">用途描述</param>
+        /// <param name="name">设备信息</param>
+        /// <param name="liable">负责人</param>
+        /// <param name="token"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyEquipment()
+        public BaseResponseDTO ModifyEquipment([FromBody]JObject data)
         {
             var ret = new BaseResponseDTO();
             try
             {
-                var httpRequest = HttpContext.Current.Request;
+                var condition = data.ToDictionary();
 
                 var dto = new FireEquipmentDTO();
-                dto.id = Decimal.Parse(httpRequest.Form["id"]);
-                dto.datetime = httpRequest.Form["datetime"];
-                dto.address = httpRequest.Form["address"];
-                dto.desc = httpRequest.Form["desc"];
-                dto.name = httpRequest.Form["name"];
-                dto.liable = httpRequest.Form["liable"];
+                dto.id = CommonHelper.GetInt(condition["id"], -1);
+                dto.datetime = CommonHelper.GetDateTime(condition["datetime"]);
+                dto.address = CommonHelper.GetString(condition["address"]);
+                dto.desc = CommonHelper.GetString(condition["desc"]);
+                dto.name = CommonHelper.GetString(condition["name"]);
+                dto.liable = CommonHelper.GetString(condition["liable"]);
                 dto.modifyOperId = "";
                 var service = Instance<IFireControlService>.Create;
                 dto.modifyOperId = "";
@@ -425,7 +441,26 @@ namespace VMS.ESIApi
         /// <summary>
         /// 修改消防事故
         /// </summary>
-        /// <param name="data"></param>
+        ///  <param name="id"></param>
+        ///  <param name="address">火灾地点</param>
+        ///  <param name="datetime">火灾时间</param>
+        ///  <param name="desc">火灾原因</param>
+        ///  <param name="cars">出警车辆</param>
+        ///  <param name="names">出警人员</param>
+        ///  <param name="result">处理结果</param>
+        ///  <param name="operId"></param>
+        ///  <param name="operDate"></param>
+        ///  <param name="modifyOperId"></param>
+        ///  <param name="modifyDate"></param>
+        ///  <param name="name">当事人姓名</param>
+        ///  <param name="sex">性别</param>
+        ///  <param name="age">年龄</param>
+        ///  <param name="folk">名族</param>
+        ///  <param name="addr">地址</param>
+        ///  <param name="phone">电话</param>
+        ///  <param name="loss">火灾损失</param>
+        ///  <param name="finance_loss">财物损失</param>
+        ///  <param name="casualties">伤亡</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyAccident([FromBody]JObject data)
@@ -495,8 +530,14 @@ namespace VMS.ESIApi
             }
         }
         /// <summary>
-        /// 添加消防设备
+        /// 添加消防设备 表单提交
         /// </summary>
+        /// <param name="datetime">安装时间</param>
+        /// <param name="address">安装地址</param>
+        /// <param name="desc">用途描述</param>
+        /// <param name="name">设备信息</param>
+        /// <param name="liable">负责人</param>
+        /// <param name="token"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddFireEquipment()

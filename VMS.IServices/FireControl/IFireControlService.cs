@@ -55,6 +55,7 @@ namespace VMS.IServices
         bool AppendImgs(FireAccidentDTO dto);
 
         List<t_fire_equipment_register> ListEquipment(StringBuilder sql, IList<SqlParam> sqlParams, int pageIndex, int pageSize, ref int count);
+        List<t_fire_equipment_register> ListEquipmentNew(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
 
         /// <summary>
         /// 修改设备基础内容

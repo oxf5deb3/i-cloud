@@ -433,6 +433,7 @@ create table t_bd_breakrules
   driver_no varchar(50) null,
   driving_no varchar(50),--ÐÐÊ»Ö¤
   carframe_no varchar(50),
+  engine_no varchar(50) null,
   breakrule_type_id decimal(16,0) not null,
   breakrule_addr nvarchar(4000) null,
   breakrule_date datetime null,

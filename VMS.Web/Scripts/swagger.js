@@ -24,7 +24,58 @@ window.SwaggerTranslator = {
             $(this).attr('title', $this._tryTranslate($(this).attr('title')));
         });
     },  
- 
+    setControllerSummary: function () {
+        $.ajax({
+            type: "get",
+            async: true,
+            url: $("#input_baseUrl").val(),
+            dataType: "json",
+            success: function (data) {
+                console.dir(data);
+                var summaryDict = data.ControllerDesc;
+                var id, controllerName, strSummary;
+                $("#resources_container .resource").each(function (i, item) {
+                    var lis = $(item).find('li[class*="post"][class*="operation"]');
+                    var ids = [];
+                    $.each(lis, function (i, el) {
+                        var i = $(el).attr('id');
+                        var arr = i.split('_');
+                        if (arr.length > 2) {
+                            ids.push(arr[1] + "_" + arr[2]);
+                        }
+                    });
+                    $.each(ids, function (i, el) {
+                        strSummary = summaryDict[el];
+                        if (strSummary) {
+                            var arr = strSummary.split('@');
+                            var html = [];
+                            $.each(arr, function (j, ej) {
+                                html.push('<label style="color:red">'+ej+'</label><br/>')
+                            })
+                            if (html.length > 0) {
+                                var ell = $('li[id*=' + el + ']').find('td[class*=code][class*=required]');
+                                if (ell.length > 0) ell.html(html.join(''));
+                                else {
+                                    $('li[id*=' + el + ']').find('div[class="response-content-type"]').append('<div style="margin:10px 0px;">参数</div>');
+                                    $('li[id*=' + el + ']').find('div[class="response-content-type"]').append(html.join(''));
+                                }
+                            }
+                        }
+                    });
+                    //console.dir(ids);
+                    //id = $(item).attr("id");
+                    //if (id) {
+                    //    controllerName = id.substring(9);
+                    //    strSummary = summaryDict[controllerName];
+                    //    if (strSummary) {
+
+                    //        $(item).children(".heading").children(".options").first().prepend('' + strSummary + '');
+                    //    }
+                    //}
+                });
+            }
+        });
+    },
     _tryTranslate: function (word) {
         return this._words[$.trim(word)] !== undefined ? this._words[$.trim(word)] : word;
     },  
@@ -90,4 +141,5 @@ $(function () {
     window.SwaggerTranslator.translate();
     var el = document.querySelector(".info_description");
     el.innerHTML = "更新时间:2020-04-06";
+    window.SwaggerTranslator.setControllerSummary();
 }); 

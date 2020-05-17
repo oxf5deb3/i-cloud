@@ -53,6 +53,8 @@ namespace VMS.Api
                     dto.happenDate = httpRequest.Form["happenDate"];
                     dto.happenAddr = httpRequest.Form["happenAddr"];
                     dto.firstPartyMan = httpRequest.Form["firstPartyMan"];
+                    dto.firstPartyCarNo = httpRequest.Form["firstPartyCarNo"];
+                    dto.secondPartyCarNo = httpRequest.Form["secondPartyCarNo"];
                     dto.firstPartyAddr = httpRequest.Form["firstPartyAddr"];
                     dto.secondPartyMan = httpRequest.Form["secondPartyMan"];
                     dto.secondPartyAddr = httpRequest.Form["secondPartyAddr"];

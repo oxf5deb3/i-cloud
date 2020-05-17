@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,14 @@ namespace VMS.Model
 {
     public class t_fire_equipment_register
     {
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)] //是主键, 还是标识列
         public decimal id { get; set; }
 
         public string eq_name { get; set; }
+
+        public string eq_type { get; set; }
+
+        public int? eq_qty { get; set; }
 
         public string install_addr { get; set; }
 
@@ -29,5 +35,9 @@ namespace VMS.Model
         public DateTime modify_date { get; set; }
 
         public string img_url { get; set; }
+
+        public string img0_url { get; set; }
+
+        public string img1_url { get; set; }
     }
 }

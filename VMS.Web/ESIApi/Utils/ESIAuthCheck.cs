@@ -48,40 +48,47 @@ namespace VMS.ESIApi.Utils
             //        token = jobj["token"].ToString();
             //    }
             //}
-            var requestContent = actionContext.Request.Content.ReadAsStringAsync();
-            requestContent.Wait();
-            var json = "";
-            json = requestContent.Result;
-            var token = "";
-            if (!string.IsNullOrEmpty(json))
+            var attributes = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().OfType<AllowAnonymousAttribute>();
+            bool isAnonymous = attributes.Any(a => a is AllowAnonymousAttribute);
+            if (isAnonymous)
             {
-                var jobj = JObject.Parse(json);
-                if (jobj != null && jobj["token"] != null)
-                {
-                    token = jobj["token"].ToString();
-                }
+                base.OnAuthorization(actionContext);
             }
-            if (!string.IsNullOrEmpty(token))
+            else
             {
-                //解密用户ticket,并校验用户名密码是否匹配 
-                //if (ValidateTicket(access_key, sign))
-                if (ValidateTicket(token, ""))
+                var requestContent = actionContext.Request.Content.ReadAsStringAsync();
+                requestContent.Wait();
+                var json = "";
+                json = requestContent.Result;
+                var token = "";
+                if (!string.IsNullOrEmpty(json))
                 {
-                    base.IsAuthorized(actionContext);
+                    var jobj = JObject.Parse(json);
+                    if (jobj != null && jobj["token"] != null)
+                    {
+                        token = jobj["token"].ToString();
+                    }
                 }
+                if (!string.IsNullOrEmpty(token))
+                {
+                    //解密用户ticket,并校验用户名密码是否匹配 
+                    //if (ValidateTicket(access_key, sign))
+                    if (ValidateTicket(token, ""))
+                    {
+                        base.IsAuthorized(actionContext);
+                    }
+                    else
+                    {
+                        HandleUnauthorizedRequest(actionContext);
+                    }
+                }
+                //如果取不到身份验证信息，并且不允许匿名访问，则返回未验证401
                 else
                 {
                     HandleUnauthorizedRequest(actionContext);
                 }
             }
-            //如果取不到身份验证信息，并且不允许匿名访问，则返回未验证401
-            else
-            {
-                var attributes = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().OfType<AllowAnonymousAttribute>();
-                bool isAnonymous = attributes.Any(a => a is AllowAnonymousAttribute);
-                if (isAnonymous) base.OnAuthorization(actionContext);
-                else HandleUnauthorizedRequest(actionContext);
-            }
+
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)

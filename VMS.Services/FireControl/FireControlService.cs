@@ -8,6 +8,8 @@ using VMS.DTO.FireControl;
 using VMS.Utils;
 using System.Text.RegularExpressions;
 using VMS.Model;
+using System.Linq.Expressions;
+using SqlSugar;
 
 namespace VMS.Services
 {
@@ -120,7 +122,7 @@ namespace VMS.Services
             StringBuilder sb = new StringBuilder("update t_fire_accident_records set img_url = @img_url, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
             SqlParam[] sqlParams = new SqlParam[]{
                 new SqlParam("@img_url", dto.imgs),
-                new SqlParam("modify_oper_id", dto.modifyOperId),
+                new SqlParam("@modify_oper_id", dto.modifyOperId),
                 new SqlParam("@modify_date", DateTime.Now.ToString()),
                 new SqlParam("@id", dto.id)
             };
@@ -157,7 +159,85 @@ namespace VMS.Services
             var dt = DbContext.GetPageList(sb.Append(sqlWhere.ToString()).ToString(), sqlParams.ToArray(), "id", "desc", pageIndex, pageSize, ref count);
             return DataTableHelper.DataTableToIList<t_fire_equipment_register>(dt) as List<t_fire_equipment_register>;
         }
+        public List<t_fire_equipment_register> ListEquipmentNew(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        {
+            List<Expression<Func<t_fire_equipment_register, bool>>> wheres = new List<Expression<Func<t_fire_equipment_register, bool>>>();
+            wheres.AddRange(ListEquipmentNewCreateWhere(conditions));
 
+            Expression<Func<t_fire_equipment_register, object>> orderbys = ListEquipmentNewCreateOrderby(orderby);
+
+            var q = SqlSugarDbContext.Db.Queryable<t_fire_equipment_register>();
+
+            var lst = SqlSugarDbContext.GetPageList<t_fire_equipment_register, t_fire_equipment_register>(q, wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
+
+            var dtos = TempCarLicenseConvert2DTO(lst);
+
+            return dtos;
+        }
+        public virtual List<Expression<Func<t_fire_equipment_register, bool>>> ListEquipmentNewCreateWhere(IDictionary<string, dynamic> conditions)
+        {
+            var where = new List<Expression<Func<t_fire_equipment_register, bool>>>();
+            var id = conditions["id"] != null ? (decimal)conditions["id"] : -1;
+            var name = conditions["name"] != null ? (string)conditions["name"] : "";
+            var address = conditions["address"] != null ? (string)conditions["address"] : "";
+            DateTime? timeBegin = conditions["timeBegin"] != null ? (DateTime?)conditions["timeBegin"] : null;
+            DateTime? timeEnd = conditions["timeEnd"] != null ? (DateTime?)conditions["timeEnd"] : null;
+            var liable = conditions["liable"] != null ? (string)conditions["liable"] : "";
+            //var id_no = conditions["id_no"] != null ? (string)conditions["id_no"] : "";
+            if (id>-1)
+            {
+                where.Add(e => e.id==(id));
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                where.Add(e => e.eq_name.StartsWith(name));
+            }
+            if (!string.IsNullOrEmpty(address))
+            {
+                where.Add(e => e.install_addr.StartsWith(address));
+            }
+            if (timeBegin!=null)
+            {
+                where.Add(e => e.install_date>timeBegin.Value);
+            }
+            if (timeEnd != null)
+            {
+                where.Add(e => e.install_date< timeEnd.Value);
+            }
+            if (!string.IsNullOrEmpty(liable))
+            {
+                where.Add(e => e.person_liable.StartsWith(liable));
+            }
+            return where;
+        }
+        public virtual Expression<Func<t_fire_equipment_register, object>> ListEquipmentNewCreateOrderby(string orderby)
+        {
+            Expression<Func<t_fire_equipment_register, object>> by = null;
+            switch (orderby)
+            {
+                case "eq_name": by = o => o.eq_name; break;
+                case "eq_type": by = o => o.eq_type; break;
+                case "eq_qty": by = o => o.eq_qty; break;
+                case "install_addr": by = o => o.install_addr; break;
+                case "usage_desc": by = o => o.usage_desc; break;
+                case "person_liable": by = o => o.person_liable; break;
+                case "oper_id": by = o => o.oper_id; break;
+                case "modify_oper_id": by = o => o.modify_oper_id; break;
+                case "img_url": by = o => o.img_url; break;
+                case "img0_url": by = o => o.img0_url; break;
+                case "modify_date": by = o => new { o.modify_date }; break;
+                case "install_date": by = o => new { o.install_date }; break;
+                case "oper_date": by = o => new { o.oper_date }; break;
+                case "img1_url": by = o => o.img1_url; break;
+                default: by = o => o.id; break;
+            }
+            return by;
+        }
+        public virtual List<t_fire_equipment_register> TempCarLicenseConvert2DTO(ISugarQueryable<t_fire_equipment_register> q)
+        {
+            var dtos = q.ToList();
+            return dtos;
+        }
         public bool ModifyEquipment(FireEquipmentDTO entity)
         {
             try
@@ -219,5 +299,7 @@ namespace VMS.Services
                 throw;
             }
         }
+
+       
     }
 }

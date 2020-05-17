@@ -19,8 +19,12 @@ namespace VMS.ESIApi
     public class SquadronController: BaseApiController
     {
         /// <summary>
-        /// 查询拖车记录
+        /// 中队工作记录
         /// </summary>
+        ///  <param name="page">第几页</param>
+        ///  <param name="rows">页大小</param>
+        ///  <param name="startTime">工作时间</param>
+        ///  <param name="endTime">工作时间</param>
         /// <returns></returns>
         public GridResponseDTO<TrailerDTO> QueryTrailer([FromBody]TrailerQueryDTO trailerQueryDTO)
         {
@@ -82,8 +86,19 @@ namespace VMS.ESIApi
 
 
         /// <summary>
-        /// 添加拖车记录
+        /// 添加中队工作记录
         /// </summary>
+        /// <param name="trailerDate">时间</param>
+        /// <param name="number">人数</param>
+        /// <param name="totalMotorcycle">摩托总数</param>
+        /// <param name="tricycle">三轮摩托</param>
+        /// <param name="batteryMotorcycle">电动摩托</param>
+        /// <param name="totalVehicle">车辆总数</param>
+        /// <param name="bigCar">大车</param>
+        /// <param name="smallCar">小车</param>
+        /// <param name="tractor">拖拉机</param>
+        /// <param name="totalTrailer">拖车总数</param>
+        /// <param name="remark">备注</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddTrailer([FromBody]TrailerDTO data)
@@ -124,9 +139,20 @@ namespace VMS.ESIApi
         }
 
         /// <summary>
-        /// 修改拖车记录
+        /// 修改中队工作记录
         /// </summary>
         /// <param name="data"></param>
+        /// <param name="trailerNo"></param>
+        /// <param name="number">人数</param>
+        /// <param name="totalMotorcycle">摩托总数</param>
+        /// <param name="tricycle">三轮摩托</param>
+        /// <param name="batteryMotorcycle">电动摩托</param>
+        /// <param name="totalVehicle">车辆总数</param>
+        /// <param name="bigCar">大车</param>
+        /// <param name="smallCar">小车</param>
+        /// <param name="tractor">拖拉机</param>
+        /// <param name="totalTrailer">拖车总数</param>
+        /// <param name="remark">备注</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO upDate([FromBody]TrailerDTO data)
@@ -156,7 +182,7 @@ namespace VMS.ESIApi
             }
         }
         /// <summary>
-        /// 删除拖车记录
+        /// 删除中队工作记录
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -195,7 +221,7 @@ namespace VMS.ESIApi
         }
 
         /// <summary>
-        /// 根据id查询拖车记录
+        /// 根据id查询单个中队工作记录
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

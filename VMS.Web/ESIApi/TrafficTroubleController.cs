@@ -22,8 +22,25 @@ namespace VMS.ESIApi
     public class TrafficTroubleController: BaseApiController
     {
         /// <summary>
-        /// 添加事故信息
+        /// 添加事故信息 表单
         /// </summary>
+        /// <param name="happenDate">事故时间</param>
+        /// <param name="happenAddr">事故地点</param>
+        /// <param name="firstPartyMan">甲方当事人</param>
+        /// <param name="firstPartyAddr">甲方地址</param>
+        /// <param name="firstPartyCarNo">甲方车牌号</param>
+        /// <param name="secondPartyCarNo">乙方车牌号</param>
+        /// <param name="secondPartyMan">乙方当事人</param>
+        /// <param name="accidentDesc">事故经过</param>
+        /// <param name="mediationUnit">调解单位</param>
+        /// <param name="mediationDate">调解日期</param>
+        /// <param name="drawRecorder">绘图记录</param>
+        /// <param name="accidentMediator">调解员</param>
+        /// <param name="bingPartyAddr">丙方地址</param>
+        /// <param name="bingPartyMan">丙方当事人</param>
+        /// <param name="dingPartyAddr">丁方地址</param>
+        /// <param name="dingPartyMan">丁方当事人</param>
+        /// <param name="duty">责任认定</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AddAccident()
@@ -106,6 +123,16 @@ namespace VMS.ESIApi
         /// <summary>
         /// 查询事故信息(分页)
         /// </summary>
+        /// <param name="page">第几页</param>
+        /// <param name="rows">页大小</param>
+        /// <param name="id">string</param>
+        /// <param name="happenAddr">事故地点</param>
+        /// <param name="timeBegin">string</param>
+        /// <param name="timeEnd">string</param>
+        /// <param name="firstPartyMan">甲方当事人</param>
+        /// <param name="secondPartyMan">乙方当事人</param>
+        /// <param name="accidentMediator">调解员</param>
+        /// <param name="mediationUnit">调解单位</param>
         /// <returns></returns>
         public GridResponseDTO<TrafficAccidentDTO> ListAccident()
         {
@@ -209,6 +236,7 @@ namespace VMS.ESIApi
         /// <summary>
         /// 删除事故信息
         /// </summary>
+        /// <param name="ids"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO DelAccident()
@@ -242,7 +270,22 @@ namespace VMS.ESIApi
         /// <summary>
         /// 修改事故信息
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="id"></param>
+        /// <param name="happenDate">事故时间</param>
+        /// <param name="happenAddr">事故地点</param>
+        /// <param name="firstPartyMan">甲方当事人</param>
+        /// <param name="firstPartyAddr">甲方地址</param>
+        /// <param name="secondPartyMan">乙方当事人</param>
+        /// <param name="accidentDesc">事故经过</param>
+        /// <param name="mediationUnit">调解单位</param>
+        /// <param name="mediationDate">调解日期</param>
+        /// <param name="drawRecorder">绘图记录</param>
+        /// <param name="accidentMediator">调解员</param>
+        /// <param name="bingPartyAddr">丙方地址</param>
+        /// <param name="bingPartyMan">丙方当事人</param>
+        /// <param name="dingPartyAddr">丁方地址</param>
+        /// <param name="dingPartyMan">丁方当事人</param>
+        /// <param name="duty">责任认定</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyAccident([FromBody]JObject data)
@@ -303,7 +346,8 @@ namespace VMS.ESIApi
         /// <summary>
         /// 修改图片
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="id"></param>
+        /// <param name="imgUrl"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO ModifyImgs([FromBody]JObject data)
@@ -335,8 +379,9 @@ namespace VMS.ESIApi
             }
         }
         /// <summary>
-        /// 附加图片
+        /// 附加图片 表单
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
         public BaseResponseDTO AppendAccidentImg()

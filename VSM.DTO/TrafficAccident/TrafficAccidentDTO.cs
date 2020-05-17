@@ -13,8 +13,10 @@ namespace VMS.DTO.TrafficAccident
         public string happenAddr { get; set; }
         public string firstPartyMan { get; set; }
         public string firstPartyAddr { get; set; }
+        public string firstPartyCarNo { get; set; }
         public string secondPartyMan { get; set; }
         public string secondPartyAddr { get; set; }
+        public string secondPartyCarNo { get; set; }
         public string accidentDesc { get; set; }
         public string mediationUnit { get; set; }
         public string mediationDate { get; set; }

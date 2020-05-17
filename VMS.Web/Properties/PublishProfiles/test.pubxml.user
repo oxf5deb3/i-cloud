@@ -9,6 +9,9 @@
     <_PublishTargetUrl>D:\VMS\jar</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
+    <File Include="Areas/Account/Views/OutterUser/Index.cshtml">
+      <publishTime>05/06/2020 23:02:07</publishTime>
+    </File>
     <File Include="Areas/Account/Views/Role/Index.cshtml">
       <publishTime>03/26/2020 23:37:27</publishTime>
     </File>
@@ -28,7 +31,7 @@
       <publishTime>03/26/2020 23:43:46</publishTime>
     </File>
     <File Include="Areas/BreakRules/Views/BreakRuleQuery/Index.cshtml">
-      <publishTime>03/28/2020 21:47:02</publishTime>
+      <publishTime>05/17/2020 03:49:30</publishTime>
     </File>
     <File Include="Areas/BreakRules/Views/BreakRuleType/Index.cshtml">
       <publishTime>03/26/2020 23:39:44</publishTime>
@@ -82,13 +85,13 @@
       <publishTime>03/16/2020 00:40:52</publishTime>
     </File>
     <File Include="Areas/Statistical/Views/DrivingLicense/Index.cshtml">
-      <publishTime>02/19/2019 21:02:04</publishTime>
+      <publishTime>05/07/2020 21:22:09</publishTime>
     </File>
     <File Include="Areas/Statistical/Views/trend/Index.cshtml">
-      <publishTime>02/19/2019 21:02:04</publishTime>
+      <publishTime>05/07/2020 21:22:34</publishTime>
     </File>
     <File Include="Areas/Statistical/Views/VehicleLicenseS/Index.cshtml">
-      <publishTime>02/19/2019 21:02:04</publishTime>
+      <publishTime>05/07/2020 21:22:47</publishTime>
     </File>
     <File Include="Areas/StolenManagement/Views/Stolen/Index.cshtml">
       <publishTime>03/26/2020 23:04:23</publishTime>
@@ -99,14 +102,20 @@
     <File Include="Areas/SystemLog/Views/OperateLog/Index.cshtml">
       <publishTime>03/28/2020 00:28:28</publishTime>
     </File>
+    <File Include="Areas/SystemLog/Views/SysNews/EditNews.cshtml">
+      <publishTime>05/07/2020 00:35:06</publishTime>
+    </File>
+    <File Include="Areas/SystemLog/Views/SysNews/Index.cshtml">
+      <publishTime>05/10/2020 17:03:23</publishTime>
+    </File>
     <File Include="Areas/SystemLog/Views/SystemSetting/Index.cshtml">
-      <publishTime>04/12/2020 23:26:49</publishTime>
+      <publishTime>04/14/2020 00:46:51</publishTime>
     </File>
     <File Include="Areas/TrafficAccidentManagement/Views/TrafficAccidentQuery/Index.cshtml">
-      <publishTime>03/26/2020 23:42:16</publishTime>
+      <publishTime>05/17/2020 03:41:49</publishTime>
     </File>
     <File Include="Areas/TrafficAccidentManagement/Views/TrafficAccidentRegister/Index.cshtml">
-      <publishTime>03/16/2020 00:07:03</publishTime>
+      <publishTime>05/17/2020 03:40:52</publishTime>
     </File>
     <File Include="Areas/TrailerManagement/Views/TrailerQuery/Index.cshtml">
       <publishTime>03/26/2020 22:58:03</publishTime>
@@ -118,10 +127,10 @@
       <publishTime>02/19/2019 21:02:14</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>04/13/2020 01:55:43</publishTime>
+      <publishTime>05/17/2020 03:50:27</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>04/13/2020 01:55:43</publishTime>
+      <publishTime>05/17/2020 03:50:27</publishTime>
     </File>
     <File Include="bin/Autofac.Configuration.dll">
       <publishTime>02/19/2019 21:02:13</publishTime>
@@ -196,61 +205,61 @@
       <publishTime>06/29/2015 16:49:52</publishTime>
     </File>
     <File Include="bin/VMS.DAL.dll">
-      <publishTime>04/13/2020 01:55:23</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.DAL.dll.config">
       <publishTime>04/06/2020 17:06:33</publishTime>
     </File>
     <File Include="bin/VMS.DAL.pdb">
-      <publishTime>04/13/2020 01:55:23</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.dll">
-      <publishTime>04/13/2020 01:55:27</publishTime>
+      <publishTime>05/17/2020 03:50:21</publishTime>
     </File>
     <File Include="bin/VMS.DTO.dll">
-      <publishTime>04/13/2020 01:55:21</publishTime>
+      <publishTime>05/17/2020 03:50:19</publishTime>
     </File>
     <File Include="bin/VMS.DTO.pdb">
-      <publishTime>04/13/2020 01:55:21</publishTime>
+      <publishTime>05/17/2020 03:50:19</publishTime>
     </File>
     <File Include="bin/VMS.IServices.dll">
-      <publishTime>04/13/2020 01:55:22</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.IServices.pdb">
-      <publishTime>04/13/2020 01:55:22</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.Model.dll">
-      <publishTime>04/13/2020 01:55:21</publishTime>
+      <publishTime>05/17/2020 03:50:19</publishTime>
     </File>
     <File Include="bin/VMS.Model.pdb">
-      <publishTime>04/13/2020 01:55:21</publishTime>
+      <publishTime>05/17/2020 03:50:19</publishTime>
     </File>
     <File Include="bin/VMS.pdb">
-      <publishTime>04/13/2020 01:55:27</publishTime>
+      <publishTime>05/17/2020 03:50:21</publishTime>
     </File>
     <File Include="bin/VMS.ServiceProvider.dll">
-      <publishTime>04/13/2020 01:55:23</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.ServiceProvider.dll.config">
       <publishTime>04/05/2020 16:44:17</publishTime>
     </File>
     <File Include="bin/VMS.ServiceProvider.pdb">
-      <publishTime>04/13/2020 01:55:23</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.Services.dll">
-      <publishTime>04/13/2020 01:55:24</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.Services.dll.config">
       <publishTime>04/06/2020 17:06:33</publishTime>
     </File>
     <File Include="bin/VMS.Services.pdb">
-      <publishTime>04/13/2020 01:55:24</publishTime>
+      <publishTime>05/17/2020 03:50:20</publishTime>
     </File>
     <File Include="bin/VMS.Utils.dll">
-      <publishTime>04/13/2020 01:55:22</publishTime>
+      <publishTime>05/13/2020 22:17:21</publishTime>
     </File>
     <File Include="bin/VMS.Utils.pdb">
-      <publishTime>04/13/2020 01:55:22</publishTime>
+      <publishTime>05/13/2020 22:17:21</publishTime>
     </File>
     <File Include="bin/WebActivatorEx.dll">
       <publishTime>02/08/2013 16:42:28</publishTime>
@@ -742,10 +751,10 @@
       <publishTime>03/17/2020 23:26:38</publishTime>
     </File>
     <File Include="Content/MainFrame/main.css">
-      <publishTime>04/13/2020 01:53:15</publishTime>
+      <publishTime>05/14/2020 23:40:02</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>03/26/2020 23:20:25</publishTime>
+      <publishTime>05/11/2020 01:21:22</publishTime>
     </File>
     <File Include="fav.ico">
       <publishTime>03/15/2020 23:03:45</publishTime>
@@ -789,8 +798,17 @@
     <File Include="H5/designPage.html">
       <publishTime>03/28/2020 22:54:21</publishTime>
     </File>
+    <File Include="H5/forget.html">
+      <publishTime>05/11/2020 00:06:34</publishTime>
+    </File>
     <File Include="H5/image/1.jpg">
       <publishTime>11/16/2019 00:22:16</publishTime>
+    </File>
+    <File Include="H5/News.html">
+      <publishTime>05/09/2020 00:30:03</publishTime>
+    </File>
+    <File Include="H5/pwdReset.html">
+      <publishTime>05/11/2020 00:47:59</publishTime>
     </File>
     <File Include="images/404.jpg">
       <publishTime>03/09/2020 22:28:12</publishTime>
@@ -859,7 +877,7 @@
       <publishTime>04/06/2020 17:04:38</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>04/13/2020 01:55:33</publishTime>
+      <publishTime>05/17/2020 03:50:23</publishTime>
     </File>
     <File Include="PrintTemplate/CarRegisterTemplate.html">
       <publishTime>02/19/2019 21:02:04</publishTime>
@@ -943,7 +961,7 @@
       <publishTime>02/19/2019 21:02:05</publishTime>
     </File>
     <File Include="Scripts/MainFrame/main.js">
-      <publishTime>04/13/2020 01:51:22</publishTime>
+      <publishTime>05/14/2020 23:43:01</publishTime>
     </File>
     <File Include="Scripts/Print/print.js">
       <publishTime>02/19/2019 21:02:05</publishTime>
@@ -957,14 +975,17 @@
     <File Include="Scripts/script.js">
       <publishTime>03/08/2020 20:36:02</publishTime>
     </File>
+    <File Include="Scripts/wangEditor.min.js">
+      <publishTime>05/06/2020 23:30:34</publishTime>
+    </File>
     <File Include="Scripts/_references.js">
       <publishTime>02/19/2019 21:02:05</publishTime>
     </File>
     <File Include="Sql/InitData.sql">
-      <publishTime>03/28/2020 22:58:03</publishTime>
+      <publishTime>05/17/2020 03:47:11</publishTime>
     </File>
     <File Include="Sql/InitTable.sql">
-      <publishTime>04/12/2020 21:05:28</publishTime>
+      <publishTime>05/17/2020 03:08:09</publishTime>
     </File>
     <File Include="Views/ErrorHandler/Error.cshtml">
       <publishTime>02/19/2019 21:02:05</publishTime>
@@ -988,10 +1009,10 @@
       <publishTime>03/10/2020 00:16:36</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/19/2019 21:02:05</publishTime>
+      <publishTime>05/07/2020 21:26:52</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutMainFrame.cshtml">
-      <publishTime>04/13/2020 01:48:21</publishTime>
+      <publishTime>05/08/2020 00:07:56</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>02/19/2019 21:02:05</publishTime>
@@ -1003,7 +1024,7 @@
       <publishTime>02/19/2019 21:02:05</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/08/2020 23:42:28</publishTime>
+      <publishTime>05/14/2020 23:44:07</publishTime>
     </File>
   </ItemGroup>
 </Project>

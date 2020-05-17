@@ -72,42 +72,47 @@
 
             </tr>
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>身份证号:</td>
-                <td style="width:100%;"><input name="id_card" id="id_card" required></td>
+                <td style="width:120px;text-align:right;">身份证号:</td>
+                <td style="width:100%;"><input name="id_card" id="id_card" ></td>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>车牌号:</td>
                 <td style="width:100%;"><input name="car_no" id="car_no" required></td>
 
             </tr>
             <tr>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>驾驶证号:</td>
-                <td style="width:100%;"><input name="driver_no" id="driver_no" required></td>
-                <td style="width:120px;text-align:right;"><span class="red-star">*</span>行驶证号:</td>
-                <td style="width:200px;"><input name="driving_no" id="driving_no" required></td>
+                <td style="width:120px;text-align:right;">驾驶证号:</td>
+                <td style="width:100%;"><input name="driver_no" id="driver_no" ></td>
+                <td style="width:120px;text-align:right;">行驶证号:</td>
+                <td style="width:200px;"><input name="driving_no" id="driving_no" ></td>
 
             </tr>
             <tr>
                 <td style="width:120px;text-align:right;">车架号:</td>
                 <td style="width:100%;"><input name="carframe_no" id="carframe_no"></td>
+                <td style="width:120px;text-align:right;">发动机号:</td>
+                <td style="width:100%;"><input name="engine_no" id="engine_no"></td>
+              
+
+            </tr>
+            <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>违章类型:</td>
                 <td style="width:200px;"><input name="breakrule_type_id" id="breakrule_type_id" required></td>
-
-            </tr>
-            <tr>
                 <td style="width:120px;text-align:right;"><span class="red-star">*</span>违章地址:</td>
                 <td style="width:100%;"><input name="breakrule_addr" id="breakrule_addr" required></td>
+               
+
+            </tr>
+
+            <tr>
                 <td style="width:120px;text-align:right;">违章日期:</td>
                 <td style="width:200px;"><input name="breakrule_date" id="breakrule_date" required></td>
-
-            </tr>
-
-            <tr>
                 <td style="width:120px;text-align:right;">备注:</td>
                 <td><input name="memo" id="memo"></td>
-                <td style="width:120px;text-align:right;">备注1</td>
-                <td><input name="memo1" id="memo1"></td>
+              
 
             </tr>
             <tr>
+                <td style="width:120px;text-align:right;">备注1</td>
+                <td><input name="memo1" id="memo1"></td>
                 <td style="width:120px;text-align:right;">备注2:</td>
                 <td style="width:200px;"><input name="memo2" id="memo2"></td>
             </tr>
@@ -256,6 +261,7 @@
             data.driver_no = $('#driver_no').textbox('getValue');
             data.driving_no = $('#driving_no').textbox('getValue');
             data.carframe_no = $('#carframe_no').textbox('getValue');
+            data.engine_no = $('#engine_no').textbox('getValue');
             data.breakrule_type_id = $('#breakrule_type_id').textbox('getValue');
             data.breakrule_addr = $('#breakrule_addr').textbox('getValue');
             data.breakrule_date = $('#breakrule_date').datebox('getValue');
@@ -265,22 +271,6 @@
 
             if (data.name == undefined || $.trim(data.name) == '') {
                 $.messager.alert('请输入姓名!');
-                return;
-            }
-            if (data.id_card == undefined || $.trim(data.id_card) == '') {
-                $.messager.alert('请输入身份证号!');
-                return;
-            }
-            if (data.car_no == undefined || $.trim(data.car_no) == '') {
-                $.messager.alert('请输入车牌号!');
-                return;
-            }
-            if (data.driver_no == undefined || $.trim(data.driver_no) == '') {
-                $.messager.alert('请输入驾驶证号!');
-                return;
-            }
-            if (data.driving_no == undefined || $.trim(data.driving_no) == '') {
-                $.messager.alert('请输入行驶证号!');
                 return;
             }
             if (data.breakrule_type_id == undefined || $.trim(data.breakrule_type_id) == '') {
@@ -426,6 +416,7 @@
                     { field: 'driver_no', title: '驾驶证号码', width: 100, halign: 'center', align: 'left', sortable: true },
                     { field: 'driving_no', title: '行驶证号码', width: 100, halign: 'center', align: 'left', sortable: true },
                     { field: 'carframe_no', title: '车架号', width: 100, halign: 'center', align: 'left', sortable: true },
+                    { field: 'engine_no', title: '发动机号', width: 100, halign: 'center', align: 'left', sortable: true },
                     { field: 'breakrule_type_name', title: '违章类型', width: 130, halign: 'center', align: 'left', sortable: true },
                     { field: 'breakrule_addr', title: '违章地址', width: 150, halign: 'center', align: 'left', sortable: true },
                     {
@@ -469,6 +460,7 @@
             $('#driver_no').textbox('setValue', data.driver_no);
             $('#driving_no').textbox('setValue', data.driving_no);
             $('#carframe_no').textbox('setValue', data.carframe_no);
+            $('#engine_no').textbox('setValue', data.engine_no);
             $('#breakrule_type_id').textbox('setValue', data.breakrule_type_id);
             $('#breakrule_addr').textbox('setValue', data.breakrule_addr);
             $('#breakrule_date').datebox('setValue', data.breakrule_date);
@@ -486,6 +478,7 @@
             $('#driver_no').textbox('setValue', '');
             $('#driving_no').textbox('setValue', '');
             $('#carframe_no').textbox('setValue', '');
+            $('#engine_no').textbox('setValue', '');
             $('#breakrule_type_id').textbox('setValue', '');
             $('#breakrule_addr').textbox('setValue', '');
             $('#breakrule_date').datebox('setValue', '');
@@ -539,6 +532,10 @@
                 width: 150,
             });
             $('#carframe_no').textbox({
+                height: 25,
+                width: 150,
+            });
+            $('#engine_no').textbox({
                 height: 25,
                 width: 150,
             });

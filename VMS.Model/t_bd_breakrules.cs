@@ -18,6 +18,7 @@ namespace VMS.Model
       public string driver_no{get;set;}
       public string driving_no{get;set;}
       public string carframe_no{get;set;}
+      public string engine_no { get; set; }
       public decimal breakrule_type_id{get;set;}
       public string breakrule_addr{get;set;}
       public DateTime breakrule_date {get;set;}

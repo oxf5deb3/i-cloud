@@ -4,6 +4,7 @@ using VMS;
 using Swashbuckle.Application;
 using VMS.Models;
 using System.Reflection;
+using VMS.App_Start;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -177,7 +178,7 @@ namespace VMS
                         // Wrap the default SwaggerGenerator with additional behavior (e.g. caching) or provide an
                         // alternative implementation for ISwaggerProvider with the CustomProvider option.
                         //
-                        //c.CustomProvider((defaultProvider) => new CachingSwaggerProvider(defaultProvider));
+                        c.CustomProvider((defaultProvider) => new SwaggerControllerDescProvider(defaultProvider,webApiXmlPath));
                     })
                 .EnableSwaggerUi(c =>
                     {

@@ -211,8 +211,10 @@
             var display = ul.css('display');
             if (display == 'block') {
                 ul.slideUp('fast');
+                $(this).css('transform','');
             } else {
                 ul.slideDown('fast');
+                $(this).css('transform', 'rotate(180deg)');
             }
            
         });

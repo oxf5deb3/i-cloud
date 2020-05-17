@@ -76,41 +76,52 @@
         <input type="hidden" name="id" required />
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故时间：
+                事故时间：
             </label>
             <input class="easyui-datetimebox" name="happenDate" required>
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故地点：
+                事故地点：
             </label>
             <input class="easyui-textbox" name="happenAddr" required>
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>甲方当事人：
+                甲方当事人：
             </label>
-            <input class="easyui-textbox" name="firstPartyMan" required>
+            <input class="easyui-textbox" name="firstPartyMan" >
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>甲方单位/地址：
+                甲方单位/地址：
             </label>
-            <input class="easyui-textbox" name="firstPartyAddr" required>
+            <input class="easyui-textbox" name="firstPartyAddr" >
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>乙方当事人：
+                甲方车牌号：
             </label>
-            <input class="easyui-textbox" name="secondPartyMan" required>
+            <input class="easyui-textbox" name="firstPartyCarNo">
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>乙方单位/地址：
+                乙方当事人：
             </label>
-            <input class="easyui-textbox" name="secondPartyAddr" required>
+            <input class="easyui-textbox" name="secondPartyMan" >
         </div>
-
+        <div class="item">
+            <label>
+                乙方单位/地址：
+            </label>
+            <input class="easyui-textbox" name="secondPartyAddr" >
+        </div>
+        <div class="item">
+            <label>
+                乙方车牌号：
+            </label>
+            <input class="easyui-textbox" name="secondPartyCarNo">
+        </div>
 
         <div class="item">
             <label>
@@ -141,40 +152,40 @@
 
         <div class="item">
             <label>
-                <span class="red-star">*</span>事故描述：
+                事故描述：
             </label>
-            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="accidentDesc" required>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="accidentDesc" >
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>调解单位：
+                调解单位：
             </label>
-            <input class="easyui-textbox" name="mediationUnit" required>
+            <input class="easyui-textbox" name="mediationUnit">
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>调解日期：
+                调解日期：
             </label>
-            <input class="easyui-datetimebox" name="mediationDate" required>
+            <input class="easyui-datetimebox" name="mediationDate" >
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>绘图记录：
+                绘图记录：
             </label>
-            <input class="easyui-textbox" name="drawRecorder" required>
+            <input class="easyui-textbox" name="drawRecorder" >
         </div>
         <div class="item">
             <label>
-                <span class="red-star">*</span>调解员：
+                调解员：
             </label>
-            <input class="easyui-textbox" name="accidentMediator" required>
+            <input class="easyui-textbox" name="accidentMediator" >
         </div>
 
         <div class="item">
             <label>
-                <span class="red-star">*</span>责任认定：
+                责任认定：
             </label>
-            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="duty" id="duty" required>
+            <input class="easyui-textbox" data-options="multiline:true" style="height:60px" name="duty" id="duty" >
 
         </div>
     </form>
@@ -344,8 +355,10 @@
                 { field: 'happenAddr', title: '事故地点', halign: 'center', align: 'left' },
                 { field: 'firstPartyMan', title: '甲方当事人', halign: 'center', align: 'left' },
                 { field: 'firstPartyAddr', title: '甲方单位/地址', halign: 'center', align: 'left' },
+                { field: 'firstPartyCarNo', title: '甲方车牌号', halign: 'center', align: 'left' },
                 { field: 'secondPartyMan', title: '乙方当事人', halign: 'center', align: 'left' },
                 { field: 'secondPartyAddr', title: '乙方单位/地址', halign: 'center', align: 'left' },
+                { field: 'secondPartyCarNo', title: '乙方车牌号', halign: 'center', align: 'left' },
                 { field: 'accidentDesc', title: '事故经过', halign: 'center', align: 'left' },
                 { field: 'mediationUnit', title: '调解单位', halign: 'center', align: 'left' },
                 { field: 'mediationDate', title: '调解时间', halign: 'center', align: 'left' },

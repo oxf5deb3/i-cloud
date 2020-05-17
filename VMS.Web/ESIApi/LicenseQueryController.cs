@@ -21,7 +21,13 @@ namespace VMS.ESIApi
         /// <summary>
         /// 正式驾驶证查询(分页)
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="page">第几页</param>
+        /// <param name="rows">页大小</param>
+        /// <param name="sort">排序字段</param>
+        /// <param name="order">asc/desc</param>
+        /// <param name="name">查询条件</param>
+        /// <param name="id_card">查询条件</param>
+        /// <param name="id_no">查询条件</param>
         /// <returns></returns>
         public GridResponseDTO<DriverLicenseDTO> DriverLicensePageList([FromBody]JObject data)
         {
@@ -75,7 +81,13 @@ namespace VMS.ESIApi
         /// <summary>
         /// 正式行驶证查询(分页)
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="page">第几页</param>
+        /// <param name="rows">页大小</param>
+        /// <param name="sort">排序字段</param>
+        /// <param name="order">asc/desc</param>
+        /// <param name="name">查询条件</param>
+        /// <param name="car_number">查询条件</param>
+        /// <param name="id_no">查询条件</param>
         /// <returns></returns>
         public GridResponseDTO<CarLicenseDTO> CarLicensePageList([FromBody]JObject data)
         {
@@ -122,7 +134,12 @@ namespace VMS.ESIApi
         /// <summary>
         /// 临时驾驶证查询(分页)
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="page">第几页</param>
+        /// <param name="rows">页大小</param>
+        /// <param name="sort">排序字段</param>
+        /// <param name="order">asc/desc</param>
+        /// <param name="name">查询条件</param>
+        /// <param name="id_no">查询条件</param>
         /// <returns></returns>
         public GridResponseDTO<TemporaryDriverLicenseDTO> LSDriverLicensePageList([FromBody]JObject data)
         {
@@ -175,11 +192,16 @@ namespace VMS.ESIApi
         }
 
 
-       
+
         /// <summary>
         /// 临时行驶证查询(分页)
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="page">第几页</param>
+        /// <param name="rows">页大小</param>
+        /// <param name="sort">排序字段</param>
+        /// <param name="order">asc/desc</param>
+        /// <param name="name">查询条件</param>
+        /// <param name="id_no">查询条件</param>
         /// <returns></returns>
         public GridResponseDTO<TemporaryDrivingPermitDTO> LSCarLicensePageList([FromBody]JObject data)
         {

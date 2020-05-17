@@ -23,6 +23,7 @@ namespace VMS.DTO
         {
             get; set;
         }
+        public string engine_no { get; set; }
         public string breakrule_addr { get; set; }
         public DateTime breakrule_date { get; set; }
         public string memo { get; set; }

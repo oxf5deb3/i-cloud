@@ -22,9 +22,10 @@ namespace VMS.ESIApi
     {
         /// <summary>
         /// 外部人员 注册
-        /// json:{user_id:'',user_pwd:'',user_name:'',sex:'0',age:'',tel,'',email:''}
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="user_id">string 账号</param>
+        /// <param name="user_pwd">string 密码</param>
+        /// <param name="email">string 邮箱</param>
         /// <returns></returns>
         [AllowAnonymous]
         public BaseESIReponseDTO Register([FromBody]JObject data)
@@ -63,10 +64,11 @@ namespace VMS.ESIApi
             }
         }
         /// <summary>
-        /// 登录 flag:0 内部人员 1 外部人员
-        /// json:{user_id:'',user_pwd:'',user_type:'0'}
+        /// 登录
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="user_id">账号</param>
+        /// <param name="user_pwd">密码</param>
+        /// <param name="user_type">用户类型</param>
         /// <returns></returns>
         [AllowAnonymous]
         public Response<ESIUserLoginDTO> Login([FromBody]JObject data)
@@ -93,7 +95,8 @@ namespace VMS.ESIApi
                     return ret;
                 }
                 var guid = Guid.NewGuid().ToString().Replace("-", "");
-                ret.data = new ESIUserLoginDTO() {
+                var userdto = new ESIUserLoginDTO()
+                {
                     user_id = user.user_id,
                     user_name = user.user_name,
                     token = guid,
@@ -102,7 +105,8 @@ namespace VMS.ESIApi
                     email = user.email,
                     menu_right = "1111111111111111111111"
                 };
-                Utils.ESIAuthCheck._cache.AddOrGet(guid, user.user_id, TimeSpan.FromHours(1));
+                ret.data = userdto;
+                Utils.ESIAuthCheck._cache.AddOrGet(guid, userdto, TimeSpan.FromHours(1));
                 var ip = HttpContext.Current.Request.UserHostAddress;
                 try
                 {
@@ -125,9 +129,9 @@ namespace VMS.ESIApi
 
         /// <summary>
         /// 忘记密码
-        /// {user_id:'',email:''}
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="user_id">账号</param>
+        /// <param name="email">邮箱</param>
         /// <returns></returns>
         public BaseESIReponseDTO ForgetPwd([FromBody]JObject data)
         {
@@ -154,7 +158,7 @@ namespace VMS.ESIApi
         /// <summary>
         /// 密码重置
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="user_pwd">新密码</param>
         /// <returns></returns>
         public BaseESIReponseDTO ResetPwd([FromBody]JObject data)
         {
