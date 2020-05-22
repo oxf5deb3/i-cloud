@@ -398,3 +398,11 @@ if  exists(select 1 from syscolumns where name='accident_mediator' and OBJECT_NA
 begin
    alter table t_accident_records alter column accident_mediator varchar(50) null
 end
+if not exists(select 1 from syscolumns where name='img_url' and OBJECT_NAME(id)='t_sys_news')
+begin
+   alter table t_sys_news add img_url varchar(200) null
+end
+if not exists(select 1 from syscolumns where name='work_unit' and OBJECT_NAME(id)='t_temp_car_license')
+begin
+   alter table t_temp_car_license add work_unit nvarchar(50) null
+end

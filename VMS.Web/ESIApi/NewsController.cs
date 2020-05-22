@@ -26,7 +26,7 @@ namespace VMS.ESIApi
         [System.Web.Mvc.HttpGet]
         public string GetContentById(decimal id)
         {
-            var ret = new BaseESIReponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var service = Instance<ISystemService>.Create;
@@ -48,18 +48,19 @@ namespace VMS.ESIApi
         /// </summary>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseTResponseDTO<List<NewsDTO>> QueryTop10News()
+        public Response<List<NewsDTO>> QueryTop10News()
         {
-            var ret = new BaseTResponseDTO<List<NewsDTO>>();
+            var ret = new Response<List<NewsDTO>>();
             try
             {
                 var service = Instance<ISystemService>.Create;
                 var news = service.GetTop10News();
                 var lst = new List<NewsDTO>();
-                news.ForEach(e => lst.Add(new NewsDTO() { id = e.id, title = e.title }));
+                var host = (Request.RequestUri.Scheme+"://"+Request.RequestUri.Authority);
+                news.ForEach(e => lst.Add(new NewsDTO() { id = e.id, title = e.title,img_url=string.IsNullOrEmpty(e.img_url)?"":host+e.img_url,create_date = e.create_date }));
                 if (lst.Count > 0)
                 {
-                    ret.data.AddRange(lst);
+                    ret.data=lst;
                 }
                 return ret;
 

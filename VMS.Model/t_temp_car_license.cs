@@ -49,5 +49,6 @@ namespace VMS.Model
         public string addr { get; set; }
         public string car_color { get; set; }
         public string phone { get; set; }
+        public string work_unit { get; set; }
     }
 }

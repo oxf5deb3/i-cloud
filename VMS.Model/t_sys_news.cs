@@ -13,6 +13,7 @@ namespace VMS.Model
         public decimal id { get; set; }
         public string title { get; set; }
         public string content { get; set; }
+        public string img_url { get; set; }
         public DateTime create_date { get; set; }
         public string create_id { get; set; }
     }

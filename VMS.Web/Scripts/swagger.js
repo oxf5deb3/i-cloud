@@ -31,6 +31,7 @@ window.SwaggerTranslator = {
             url: $("#input_baseUrl").val(),
             dataType: "json",
             success: function (data) {
+                $('#Account_Account_Upload,#BreakRules_BreakRules_Upload,#LicenseQuery_LicenseQuery_Upload,#News_News_Upload').parent().parent().remove();
                 console.dir(data);
                 var summaryDict = data.ControllerDesc;
                 var id, controllerName, strSummary;

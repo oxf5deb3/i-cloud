@@ -26,6 +26,9 @@ namespace VMS.App_Start
                 defaults:new { namespaceName= "VMS.ESIApi"}
                 );
             config.Filters.Add(new WebApiExceptionFilterAttribute());
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.Indent = false;
+            json.SerializerSettings.DateTimeZoneHandling= Newtonsoft.Json.DateTimeZoneHandling.Local;
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new IsoDateTimeConverter
             {
                 DateTimeFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss"

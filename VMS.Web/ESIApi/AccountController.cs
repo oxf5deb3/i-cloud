@@ -11,6 +11,7 @@ using VMS.ESIApi.Models;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
+using VMS.Utils;
 
 namespace VMS.ESIApi
 {
@@ -28,9 +29,9 @@ namespace VMS.ESIApi
         /// <param name="email">string 邮箱</param>
         /// <returns></returns>
         [AllowAnonymous]
-        public BaseESIReponseDTO Register([FromBody]JObject data)
+        public Response<string> Register([FromBody]JObject data)
         {
-            var ret = new BaseESIReponseDTO();
+            var ret = new Response<string>();
             try
             {
                 #region 参数检验
@@ -94,6 +95,7 @@ namespace VMS.ESIApi
                     ret.message = string.Format("账号或密码错误,请重试!");
                     return ret;
                 }
+                var rights = service.GetAppMenuRights(dto.user_id);
                 var guid = Guid.NewGuid().ToString().Replace("-", "");
                 var userdto = new ESIUserLoginDTO()
                 {
@@ -103,10 +105,10 @@ namespace VMS.ESIApi
                     create_date = user.create_date,
                     user_type = user.user_type,
                     email = user.email,
-                    menu_right = "1111111111111111111111"
+                    menu_right = rights
                 };
                 ret.data = userdto;
-                Utils.ESIAuthCheck._cache.AddOrGet(guid, userdto, TimeSpan.FromHours(1));
+                Utils.CacheHelper.SlideInsert(guid,userdto,TimeSpan.FromHours(12));
                 var ip = HttpContext.Current.Request.UserHostAddress;
                 try
                 {
@@ -133,9 +135,9 @@ namespace VMS.ESIApi
         /// <param name="user_id">账号</param>
         /// <param name="email">邮箱</param>
         /// <returns></returns>
-        public BaseESIReponseDTO ForgetPwd([FromBody]JObject data)
+        public Response<string> ForgetPwd([FromBody]JObject data)
         {
-            var ret = new BaseESIReponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<UserRoleDTO>(); 
@@ -160,9 +162,9 @@ namespace VMS.ESIApi
         /// </summary>
         /// <param name="user_pwd">新密码</param>
         /// <returns></returns>
-        public BaseESIReponseDTO ResetPwd([FromBody]JObject data)
+        public Response<string> ResetPwd([FromBody]JObject data)
         {
-            var ret = new BaseESIReponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<UserRoleDTO>();
@@ -171,6 +173,43 @@ namespace VMS.ESIApi
                 var guid = data["guid"] != null ? data["guid"].ToObject<string>() : "";
                 var err = "";
                 var success = service.ResetPwd(user_pwd, guid, ref err);
+                ret.success = success;
+                if (!success && !string.IsNullOrEmpty(err))
+                {
+                    ret.code = ESIApi.StatusCode.FAIL;
+                    ret.message = err;
+                }
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.code = ESIApi.StatusCode.FAIL;
+                ret.message = ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
+
+        /// <summary>
+        /// 密码修改
+        /// </summary>
+        /// <param name="user_id">账号</param>
+        /// <param name="old_pwd">旧密码</param>
+        /// <param name="new_pwd">新密码</param>
+        /// <returns></returns>
+        [HttpPost]
+        public Response<string> ModifyPwd([FromBody]JObject data)
+        {
+            var ret = new Response<string>();
+            try
+            {
+                var dto = data.ToObject<UserRoleDTO>();
+                var service = Instance<IUserService>.Create;
+                var user_id = data["user_id"] != null ? data["user_id"].ToObject<string>() : "";
+                var old_pwd = data["old_pwd"] != null ? data["old_pwd"].ToObject<string>() : "";
+                var new_pwd = data["new_pwd"] != null ? data["new_pwd"].ToObject<string>() : "";
+                var err = "";
+                var success = service.ModifyPwd(user_id, old_pwd,new_pwd, ref err);
                 ret.success = success;
                 if (!success && !string.IsNullOrEmpty(err))
                 {

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Http;
 using VMS.DTO;
 using VMS.DTO.FireControl;
+using VMS.ESIApi.Models;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
@@ -36,9 +37,9 @@ namespace VMS.ESIApi
         /// <param name="liable">查询条件-负责人</param>
         /// <returns></returns>
         [HttpPost]
-        public GridResponseDTO<FireEquipmentDTO> ListEquipment([FromBody]JObject data)
+        public Response<List<FireEquipmentDTO>> ListEquipment([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<FireEquipmentDTO>();
+            var ret = new Response<List<FireEquipmentDTO>>();
             try
             {
                 var condition = data.ToDictionary();
@@ -51,8 +52,7 @@ namespace VMS.ESIApi
                 string err = string.Empty;
                 var obj = Instance<IFireControlService>.Create;
                 List<t_fire_equipment_register> lst = obj.ListEquipmentNew(condition, sort, order, pageIndex, pageSize, ref total, ref err);
-                ret.total = total;
-                ret.rows.AddRange(lst.Select(e => new FireEquipmentDTO()
+                ret.data=lst.Select(e => new FireEquipmentDTO()
                 {
                     id = e.id,
                     name = e.eq_name,
@@ -65,7 +65,7 @@ namespace VMS.ESIApi
                     operDate = e.oper_date.ToString(),
                     modifyOperId = e.modify_oper_id,
                     modifyDate = e.modify_date.ToString()
-                }));
+                }).ToList();
 
                 return ret;
 
@@ -83,9 +83,9 @@ namespace VMS.ESIApi
         ///<param name="id"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AppendEquipmentImg()
+        public Response<string> AppendEquipmentImg()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
 
             try
             {
@@ -164,9 +164,9 @@ namespace VMS.ESIApi
         /// <param name="casualties">人员伤亡</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AddFireAccident()
+        public Response<string> AddFireAccident()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
 
             try
             {
@@ -245,9 +245,9 @@ namespace VMS.ESIApi
         /// <param name="ids"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO DelEquipment()
+        public Response<string> DelEquipment()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var httpRequest = HttpContext.Current.Request;
@@ -279,9 +279,9 @@ namespace VMS.ESIApi
         /// <param name="ids"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO DelAccident()
+        public Response<string> DelAccident()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var httpRequest = HttpContext.Current.Request;
@@ -325,9 +325,9 @@ namespace VMS.ESIApi
         /// <param name="modifyDate"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyEquipmentImgs([FromBody]JObject data)
+        public Response<string> ModifyEquipmentImgs([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<FireEquipmentDTO>();
@@ -360,9 +360,9 @@ namespace VMS.ESIApi
         /// <param name="id">id</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyImgs([FromBody]JObject data)
+        public Response<string> ModifyImgs([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<FireAccidentDTO>();
@@ -400,9 +400,9 @@ namespace VMS.ESIApi
         /// <param name="token"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyEquipment([FromBody]JObject data)
+        public Response<string> ModifyEquipment([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var condition = data.ToDictionary();
@@ -463,9 +463,9 @@ namespace VMS.ESIApi
         ///  <param name="casualties">伤亡</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyAccident([FromBody]JObject data)
+        public Response<string> ModifyAccident([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<FireAccidentDTO>();
@@ -540,9 +540,9 @@ namespace VMS.ESIApi
         /// <param name="token"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AddFireEquipment()
+        public Response<string> AddFireEquipment()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
 
             try
             {

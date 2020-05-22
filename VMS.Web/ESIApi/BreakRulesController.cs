@@ -43,9 +43,9 @@ namespace VMS.ESIApi
         /// <param name="memo2">备注2</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO Add([FromBody]JObject data)
+        public Response<string> Add([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 #region 参数检验
@@ -112,9 +112,9 @@ namespace VMS.ESIApi
         /// <param name="id"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO Edit([FromBody]JObject data)
+        public Response<string> Edit([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 #region 参数检验
@@ -127,7 +127,7 @@ namespace VMS.ESIApi
 
                 var dto = data.ToObject<BreakRulesDTO>();
                 var token = data["token"].ToObject<string>();
-                var oper = ESIAuthCheck._cache.AddOrGet(token, null) as ESIUserLoginDTO;
+                var oper = CacheHelper.Get(token) as ESIUserLoginDTO;
                 var info = new t_bd_breakrules()
                 {
                     id = dto.id ?? 0,
@@ -167,9 +167,9 @@ namespace VMS.ESIApi
         /// <param name="deleted">[id]</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO Del([FromBody]JObject data)
+        public Response<string> Del([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 #region 参数检验
@@ -204,9 +204,9 @@ namespace VMS.ESIApi
         /// <param name="id_card">查询条件</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public GridResponseDTO<BreakRulesDTO> Query([FromBody]JObject data)
+        public Response<List<BreakRulesDTO>> Query([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<BreakRulesDTO>();
+            var ret = new Response<List<BreakRulesDTO>>();
             try
             {
                 #region 参数检验
@@ -238,8 +238,7 @@ namespace VMS.ESIApi
                 int total = 0;
                 var obj = Instance<IBreakRulesQueryService>.Create;
                 var lst = obj.GetPageList(sb, paramlst, pageIndex, pageSize, isAsc, sort, ref total);
-                ret.rows = lst;
-                ret.total = total;
+                ret.data = lst;
                 return ret;
 
             }
@@ -257,9 +256,9 @@ namespace VMS.ESIApi
         /// </summary>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseTResponseDTO<List<ComboDTO>> QueryAllBreakRuleType()
+        public Response<List<ComboDTO>> QueryAllBreakRuleType()
         {
-            var ret = new BaseTResponseDTO<List<ComboDTO>>();
+            var ret = new Response<List<ComboDTO>>();
             try
             {
                 #region 参数检验
@@ -272,7 +271,7 @@ namespace VMS.ESIApi
                 int total = 0;
                 var obj = Instance<IBreakRulesTypeService>.Create;
                 var lst = obj.GetAllBreakRulesType(sb, paramlst, ref total);
-                ret.data.AddRange(lst.Select(e => new ComboDTO() { id = e.id.ToString(), text = e.name }));
+                ret.data=lst.Select(e => new ComboDTO() { id = e.id.ToString(), text = e.name }).ToList();
                 return ret;
 
             }

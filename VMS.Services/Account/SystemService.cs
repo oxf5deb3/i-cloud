@@ -14,11 +14,12 @@ namespace VMS.Services
 {
     public class SystemService : ServiceBase, ISystemService
     {
-        public bool AddNews(string title, string content, string operId)
+        public bool AddNews(string title, string content,string imgurl, string operId)
         {
             t_sys_news news = new t_sys_news();
             news.title = title;
             news.content = content;
+            news.img_url = imgurl;
             news.create_id = operId;
             news.create_date = DateTime.Now;
             return SqlSugarDbContext.t_sys_news.Insert(news);
@@ -48,7 +49,7 @@ namespace VMS.Services
             Decimal.TryParse(key, out id);
             return SqlSugarDbContext.t_sys_news.DeleteById(id);
         }
-        public bool UpdateNewsById(string key, string title, string content, string operId)
+        public bool UpdateNewsById(string key, string title, string content,string imgurl, string operId)
         {
             decimal id = -1;
             Decimal.TryParse(key, out id);
@@ -58,6 +59,7 @@ namespace VMS.Services
             news.title = title;
             news.content = content;
             news.create_id = operId;
+            news.img_url = imgurl;
             news.create_date = DateTime.Now;
             return SqlSugarDbContext.t_sys_news.AsUpdateable(news).ExecuteCommand()>0;
         }

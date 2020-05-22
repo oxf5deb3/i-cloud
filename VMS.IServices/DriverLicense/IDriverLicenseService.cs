@@ -24,7 +24,7 @@ namespace VMS.IServices
         /// </summary>
         /// <param name="driverLicenseDTO"></param>
         /// <returns></returns>
-        bool AddTemporaryDrivingLicense(TemporaryDriverLicenseDTO temporaryDriverLicenseDTO);
+        bool AddTemporaryDrivingLicense(TemporaryDriverLicenseDTO temporaryDriverLicenseDTO,string host="");
 
         List<TemporaryDriverLicenseDTO> queryTemporaryDrivingLicense(int index, int pageSize, TemporaryDriverLicenseDTO data);
 
@@ -61,7 +61,7 @@ namespace VMS.IServices
         /// </summary>
         /// <param name="driverLicenseDTO"></param>
         /// <returns></returns>
-        bool AddDrivingLicense(DriverLicenseDTO driverLicenseDTO);
+        bool AddDrivingLicense(DriverLicenseDTO driverLicenseDTO,string host="");
 
         /**
          * 正式行驶证分页查询
@@ -73,7 +73,7 @@ namespace VMS.IServices
         /// </summary>
         /// <param name="temporaryDrivingPermitDTO"></param>
         /// <returns></returns>
-        bool AddTemporaryDrivingPermit(TemporaryDrivingPermitDTO temporaryDrivingPermitDTO);
+        bool AddTemporaryDrivingPermit(TemporaryDrivingPermitDTO temporaryDrivingPermitDTO,string host="");
 
         List<TemporaryDrivingPermitDTO> queryTemporaryDrivingByPage(int index, int pageSize, TemporaryDrivingPermitDTO data);
 
@@ -82,7 +82,7 @@ namespace VMS.IServices
         /// </summary>
         /// <param name="drivingPermitDTO"></param>
         /// <returns></returns>
-        bool AddDrivingPermit(CarLicenseDTO drivingPermitDTO);
+        bool AddDrivingPermit(CarLicenseDTO drivingPermitDTO,string host="");
 
 
         BaseResponseDTO validataTemp(String temp_car_number, String engine_no, String car_frame_no,String id_card);

@@ -201,8 +201,12 @@ namespace VMS.Api
                 var obj = Instance<ISystemService>.Create;
                 var title = data["title"] != null ? data["title"].ToObject<string>() : "";
                 var content = data["content"] != null ? data["content"].ToObject<string>() : "";
-
-                var success = obj.AddNews(title, content, operInfo.user_id);
+                var imgurl = data["imgUrl"] != null ? data["imgUrl"].ToObject<string>() : "";
+                if (!string.IsNullOrEmpty(imgurl))
+                {
+                    imgurl = imgurl.Replace((Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority), "");
+                }
+                var success = obj.AddNews(title, content,imgurl, operInfo.user_id);
                 ret.success = success;
                 return ret;
             }
@@ -225,6 +229,7 @@ namespace VMS.Api
                 var content = data["content"] != null ? data["content"].ToObject<string>() : "";
 
                 var dto = obj.GetNewsById(id);
+                dto.img_url = (Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority) + dto.img_url;
                 ret.data = dto;
                 ret.success = true;
                 return ret;
@@ -246,8 +251,12 @@ namespace VMS.Api
                 var id = data["id"] != null ? data["id"].ToObject<string>() : "";
                 var title = data["title"] != null ? data["title"].ToObject<string>() : "";
                 var content = data["content"] != null ? data["content"].ToObject<string>() : "";
-
-                var success = obj.UpdateNewsById(id,title, content, operInfo.user_id);
+                var imgurl = data["imgUrl"] != null ? data["imgUrl"].ToObject<string>() : "";
+                if (!string.IsNullOrEmpty(imgurl))
+                {
+                    imgurl = imgurl.Replace((Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority), "");
+                }
+                var success = obj.UpdateNewsById(id,title, content,imgurl, operInfo.user_id);
                 ret.success = success;
                 return ret;
             }
@@ -279,6 +288,15 @@ namespace VMS.Api
                 string err = string.Empty;
                 var obj = Instance<ISystemService>.Create;
                 List<SysNewsDTO> lst = obj.QueryPageNews(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                var host = (Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority);
+                lst.ForEach(e =>
+                {
+                    if (!string.IsNullOrEmpty(e.img_url))
+                    {
+                        e.img_url = host + e.img_url;
+                    }
+
+                });
                 ret.total = total;
                 ret.rows.AddRange(lst);
                 return ret;

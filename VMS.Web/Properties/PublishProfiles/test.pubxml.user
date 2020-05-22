@@ -106,7 +106,7 @@
       <publishTime>05/07/2020 00:35:06</publishTime>
     </File>
     <File Include="Areas/SystemLog/Views/SysNews/Index.cshtml">
-      <publishTime>05/10/2020 17:03:23</publishTime>
+      <publishTime>05/20/2020 22:53:07</publishTime>
     </File>
     <File Include="Areas/SystemLog/Views/SystemSetting/Index.cshtml">
       <publishTime>04/14/2020 00:46:51</publishTime>
@@ -127,10 +127,10 @@
       <publishTime>02/19/2019 21:02:14</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>05/17/2020 03:50:27</publishTime>
+      <publishTime>05/21/2020 00:18:00</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>05/17/2020 03:50:27</publishTime>
+      <publishTime>05/21/2020 00:17:59</publishTime>
     </File>
     <File Include="bin/Autofac.Configuration.dll">
       <publishTime>02/19/2019 21:02:13</publishTime>
@@ -205,16 +205,16 @@
       <publishTime>06/29/2015 16:49:52</publishTime>
     </File>
     <File Include="bin/VMS.DAL.dll">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.DAL.dll.config">
       <publishTime>04/06/2020 17:06:33</publishTime>
     </File>
     <File Include="bin/VMS.DAL.pdb">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.dll">
-      <publishTime>05/17/2020 03:50:21</publishTime>
+      <publishTime>05/21/2020 00:17:52</publishTime>
     </File>
     <File Include="bin/VMS.DTO.dll">
       <publishTime>05/17/2020 03:50:19</publishTime>
@@ -223,10 +223,10 @@
       <publishTime>05/17/2020 03:50:19</publishTime>
     </File>
     <File Include="bin/VMS.IServices.dll">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.IServices.pdb">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.Model.dll">
       <publishTime>05/17/2020 03:50:19</publishTime>
@@ -235,31 +235,31 @@
       <publishTime>05/17/2020 03:50:19</publishTime>
     </File>
     <File Include="bin/VMS.pdb">
-      <publishTime>05/17/2020 03:50:21</publishTime>
+      <publishTime>05/21/2020 00:17:52</publishTime>
     </File>
     <File Include="bin/VMS.ServiceProvider.dll">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.ServiceProvider.dll.config">
       <publishTime>04/05/2020 16:44:17</publishTime>
     </File>
     <File Include="bin/VMS.ServiceProvider.pdb">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.Services.dll">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.Services.dll.config">
       <publishTime>04/06/2020 17:06:33</publishTime>
     </File>
     <File Include="bin/VMS.Services.pdb">
-      <publishTime>05/17/2020 03:50:20</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.Utils.dll">
-      <publishTime>05/13/2020 22:17:21</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/VMS.Utils.pdb">
-      <publishTime>05/13/2020 22:17:21</publishTime>
+      <publishTime>05/21/2020 00:17:51</publishTime>
     </File>
     <File Include="bin/WebActivatorEx.dll">
       <publishTime>02/08/2013 16:42:28</publishTime>
@@ -877,7 +877,7 @@
       <publishTime>04/06/2020 17:04:38</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>05/17/2020 03:50:23</publishTime>
+      <publishTime>05/21/2020 00:17:54</publishTime>
     </File>
     <File Include="PrintTemplate/CarRegisterTemplate.html">
       <publishTime>02/19/2019 21:02:04</publishTime>
@@ -1024,7 +1024,7 @@
       <publishTime>02/19/2019 21:02:05</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/14/2020 23:44:07</publishTime>
+      <publishTime>05/21/2020 00:17:53</publishTime>
     </File>
   </ItemGroup>
 </Project>

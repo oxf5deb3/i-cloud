@@ -27,5 +27,7 @@ namespace VMS.IServices
 
         bool AddLostPwdRecord(string user_id, string email, string httpaddr);
         bool ResetPwd(string guid,string newPwd,ref string err);
+        bool ModifyPwd(string user_id,string oldpPwd, string newPwd, ref string err);
+        string GetAppMenuRights(string operId);
     }
 }

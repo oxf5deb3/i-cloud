@@ -64,6 +64,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
@@ -220,7 +221,6 @@
     <Compile Include="ESIApi\BreakRulesController.cs" />
     <Compile Include="ESIApi\FireProtectionController.cs" />
     <Compile Include="ESIApi\LicenseQueryController.cs" />
-    <Compile Include="ESIApi\Models\BaseESIReponseDTO.cs" />
     <Compile Include="ESIApi\Models\ESIUserLoginDTO.cs" />
     <Compile Include="ESIApi\Models\NewsDTO.cs" />
     <Compile Include="ESIApi\Models\Response.cs" />
@@ -230,13 +230,16 @@
     <Compile Include="ESIApi\LicenseRegisterController.cs" />
     <Compile Include="ESIApi\SquadronController.cs" />
     <Compile Include="ESIApi\TrafficTroubleController.cs" />
+    <Compile Include="ESIApi\Utils\CacheBase.cs" />
+    <Compile Include="ESIApi\Utils\CacheHelper.cs" />
     <Compile Include="ESIApi\Utils\DefaultMemoryCache.cs" />
     <Compile Include="ESIApi\Utils\EnumUtil.cs" />
     <Compile Include="ESIApi\Utils\ESIAopFilter.cs" />
     <Compile Include="ESIApi\Utils\ESIAuthCheck.cs" />
     <Compile Include="ESIApi\Utils\ESIExceptionTrace.cs" />
+    <Compile Include="ESIApi\Utils\MultipartFormDataMemoryStreamProvider.cs" />
     <Compile Include="ESIApi\Utils\Tools.cs" />
-    <Compile Include="ESIApi\Utils\IMemoryCache.cs" />
+    <Compile Include="ESIApi\Utils\ICache.cs" />
     <Compile Include="Models\MvcExceptionAttribute.cs" />
     <Compile Include="Models\SwaggerIgnoreAttribute.cs" />
     <Compile Include="Models\SwaggerIgnoreFilter.cs" />
@@ -515,6 +518,7 @@
     <Content Include="Sql\InitData.sql" />
     <Content Include="Sql\InitTable.sql" />
     <Content Include="PrintTemplate\DriverLicenseTemplate.html" />
+    <Content Include="Sql\pr_app_get_menu_rights.sql" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -1,5 +1,6 @@
 ﻿using SqlSugar;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -34,6 +35,14 @@ namespace VMS.Services
             };
             var lst = DbContext.GetDataListBySQL<t_sys_oper_role>(findSql, paramlst);
             return lst as List<t_sys_oper_role>;
+        }
+
+        public string GetAppMenuRights(string operId)
+        {
+            var ht = new Hashtable();
+            ht.Add("oper_id", operId);
+            var dt = DbContext.GetDataTableProc("pr_app_get_menu_rights", ht);
+            return dt.Rows[0][0].ObjToString();
         }
 
         public bool BatchDeleteUser(List<string> pkValues)
@@ -341,8 +350,8 @@ namespace VMS.Services
                 var fromName = "系统管理员";
                 var from = account;
                 if (!httpaddr.ToUpper().StartsWith("HTTP"))
-                httpaddr = "http://"+ httpaddr;
-                var body = "密码找回请点击此链接进行密码重置，地址: <a href=\"" + httpaddr+"/H5/pwdReset.html?id=" + r.guid + "\">密码重置</a>";
+                    httpaddr = "http://" + httpaddr;
+                var body = "密码找回请点击此链接进行密码重置，地址: <a href=\"" + httpaddr + "/H5/pwdReset.html?id=" + r.guid + "\">密码重置</a>";
                 var success = Utils.EmailHelper.Send(from, fromName, r.email, server, account, Utils.DESEncrypt.Decrypt(pwd), subject, body);
                 if (success)
                 {
@@ -353,9 +362,9 @@ namespace VMS.Services
             }
             return false;
         }
-        public bool ResetPwd(string newPwd,string guid ,ref string err)
+        public bool ResetPwd(string newPwd, string guid, ref string err)
         {
-           var findOne = SqlSugarDbContext.t_sys_pwd_lostfind.AsQueryable().First(e => e.guid == guid &&e.status=="0" && e.valid_date >= DateTime.Now);
+            var findOne = SqlSugarDbContext.t_sys_pwd_lostfind.AsQueryable().First(e => e.guid == guid && e.status == "0" && e.valid_date >= DateTime.Now);
             if (findOne != null)
             {
                 var userId = findOne.user_id;
@@ -406,8 +415,38 @@ namespace VMS.Services
             var count = DbContext.BatchExecuteBySql(sqls.ToArray(), lstParams.ToArray());
             return count >= 0;
         }
+        public bool ModifyPwd(string user_id, string oldPwd, string newPwd, ref string err)
+        {
+            var user = SqlSugarDbContext.t_sys_user.AsQueryable().First(e => e.user_id == user_id && e.user_type == "1" && e.status == "0");
+            if (user != null)
+            {
+                if (DESEncrypt.Decrypt(user.user_pwd) != oldPwd)
+                {
+                    err = "旧密码输入不正确，请重新输入";
+                    return false;
+                }
+                else
+                {
+                    user.user_pwd = DESEncrypt.Encrypt(newPwd);
+                    var count = SqlSugarDbContext.t_sys_user.AsUpdateable(user).ExecuteCommand();
+                    if (count > 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        err = "密码重置失败";
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                err = "系统无法查询到此用户或此用户状态异常！";
+                return false;
+            }
+        }
 
-       
         #endregion
     }
 }

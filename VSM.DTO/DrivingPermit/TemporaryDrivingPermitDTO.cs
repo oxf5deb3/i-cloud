@@ -72,5 +72,6 @@ namespace VMS.DTO
         public string car_color { get; set; }
 
         public string phone { get; set; }
+        public string work_unit { get; set; }
     }
 }

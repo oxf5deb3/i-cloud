@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Http;
 using VMS.DTO;
 using VMS.DTO.TrafficAccident;
+using VMS.ESIApi.Models;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
@@ -31,6 +32,7 @@ namespace VMS.ESIApi
         /// <param name="firstPartyCarNo">甲方车牌号</param>
         /// <param name="secondPartyCarNo">乙方车牌号</param>
         /// <param name="secondPartyMan">乙方当事人</param>
+        /// <param name="secondPartyAddr">乙方当事人地址</param>
         /// <param name="accidentDesc">事故经过</param>
         /// <param name="mediationUnit">调解单位</param>
         /// <param name="mediationDate">调解日期</param>
@@ -41,59 +43,22 @@ namespace VMS.ESIApi
         /// <param name="dingPartyAddr">丁方地址</param>
         /// <param name="dingPartyMan">丁方当事人</param>
         /// <param name="duty">责任认定</param>
+        /// <param name="img_url">图片</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AddAccident()
+        public Response<string> AddAccident([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
 
             try
             {
                 var httpRequest = HttpContext.Current.Request;
-                HttpFileCollection filelist = httpRequest.Files;
-                if (filelist != null && filelist.Count > 0)
+                var host = Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority;
+                var dto = data.ToObject<TrafficAccidentDTO>();
+                if (!string.IsNullOrEmpty(dto.imgUrl))
                 {
-                    Random random = new Random();
-                    StringBuilder imgs = new StringBuilder();
-                    HttpPostedFile tempFile = null;
-                    for (int i = 0; i < filelist.Count; i++)
-                    {
-                        tempFile = filelist[i];
-                        if (tempFile.ContentLength > 0)
-                        {
-                            string fileName = System.IO.Path.GetFileName(tempFile.FileName); //获取到名称
-                            string fileExtension = System.IO.Path.GetExtension(fileName);// 扩展名
-                            string imgName = DateTime.Now.ToFileTimeUtc().ToString() + random.Next(1000, 10000) + fileExtension;
-                            tempFile.SaveAs(StringContants.IMG_TRAFFIC_ACCIDENT_PATH + imgName);
-                            imgs.Append(imgName).Append(",");
-                        }
-                    }
-
-                    var dto = new TrafficAccidentDTO();
-                    dto.happenDate = httpRequest.Form["happenDate"];
-                    dto.happenAddr = httpRequest.Form["happenAddr"];
-                    dto.firstPartyMan = httpRequest.Form["firstPartyMan"];
-                    dto.firstPartyAddr = httpRequest.Form["firstPartyAddr"];
-                    dto.secondPartyMan = httpRequest.Form["secondPartyMan"];
-                    dto.secondPartyAddr = httpRequest.Form["secondPartyAddr"];
-                    dto.accidentDesc = httpRequest.Form["accidentDesc"];
-                    dto.mediationUnit = httpRequest.Form["mediationUnit"];
-                    dto.mediationDate = httpRequest.Form["mediationDate"];
-                    dto.drawRecorder = httpRequest.Form["drawRecorder"];
-                    dto.accidentMediator = httpRequest.Form["accidentMediator"];
-                    dto.bingPartyAddr = httpRequest.Form["bingPartyAddr"];
-                    dto.bingPartyMan = httpRequest.Form["bingPartyMan"];
-                    dto.dingPartyAddr = httpRequest.Form["dingPartyAddr"];
-                    dto.dingPartyMan = httpRequest.Form["dingPartyMan"];
-                    dto.duty = httpRequest.Form["duty"];
-
-                    dto.operId = "";
-                    dto.imgUrl = imgs.ToString();
-
                     var service = Instance<ITrafficAccidentService>.Create;
-
                     bool res = service.AddTrafficAccident(dto);
-
                     if (res)
                     {
                         return ret;
@@ -114,7 +79,6 @@ namespace VMS.ESIApi
             }
             catch (Exception ex)
             {
-
                 ret.success = false;
                 ret.message = ex.Message;
                 return ret;
@@ -125,7 +89,8 @@ namespace VMS.ESIApi
         /// </summary>
         /// <param name="page">第几页</param>
         /// <param name="rows">页大小</param>
-        /// <param name="id">string</param>
+        /// <param name="sort">排序字段</param>
+        /// <param name="order">asc/desc</param>
         /// <param name="happenAddr">事故地点</param>
         /// <param name="timeBegin">string</param>
         /// <param name="timeEnd">string</param>
@@ -134,71 +99,23 @@ namespace VMS.ESIApi
         /// <param name="accidentMediator">调解员</param>
         /// <param name="mediationUnit">调解单位</param>
         /// <returns></returns>
-        public GridResponseDTO<TrafficAccidentDTO> ListAccident()
+        public Response<List<TrafficAccidentDTO>> ListAccident([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<TrafficAccidentDTO>();
+            var ret = new Response<List<TrafficAccidentDTO>>();
             try
             {
-                var httpRequest = HttpContext.Current.Request;
-                var sb = new StringBuilder();
+                var condition = data.ToDictionary();
                 var paramlst = new List<SqlParam>();
                 int total = 0;
-                var pageIndex = CommonHelper.GetInt(httpRequest.Form["page"], 1);
-                var pageSize = CommonHelper.GetInt(httpRequest.Form["rows"], 10);
-
-                if (httpRequest["id"] != null && !string.IsNullOrEmpty(httpRequest["id"]))
-                {
-                    sb.Append(" and id = @id");
-                    paramlst.Add(new SqlParam("@id", Decimal.Parse(httpRequest["id"])));
-                }
-
-                if (httpRequest["happenAddr"] != null && !string.IsNullOrEmpty(httpRequest["happenAddr"]))
-                {
-                    sb.Append(" and happen_addr like @address");
-                    paramlst.Add(new SqlParam("@address", "%" + httpRequest["happenAddr"] + "%"));
-                }
-
-                if (httpRequest["timeBegin"] != null && !string.IsNullOrEmpty(httpRequest["timeBegin"]))
-                {
-                    sb.Append(" and happen_date >  @timeBegin");
-                    paramlst.Add(new SqlParam("@timeBegin", httpRequest["timeBegin"]));
-                }
-
-                if (httpRequest["timeEnd"] != null && !string.IsNullOrEmpty(httpRequest["timeEnd"]))
-                {
-                    sb.Append(" and happen_date < @timeEnd");
-                    paramlst.Add(new SqlParam("@timeEnd", httpRequest["timeEnd"]));
-                }
-
-                if (httpRequest["firstPartyMan"] != null && !string.IsNullOrEmpty(httpRequest["firstPartyMan"]))
-                {
-                    sb.Append(" and first_party_man = @firstPartyMan");
-                    paramlst.Add(new SqlParam("@firstPartyMan", httpRequest["firstPartyMan"]));
-                }
-
-                if (httpRequest["secondPartyMan"] != null && !string.IsNullOrEmpty(httpRequest["secondPartyMan"]))
-                {
-                    sb.Append(" and second_party_man = @secondPartyMan");
-                    paramlst.Add(new SqlParam("@secondPartyMan", httpRequest["secondPartyMan"]));
-                }
-
-                if (httpRequest["accidentMediator"] != null && !string.IsNullOrEmpty(httpRequest["accidentMediator"]))
-                {
-                    sb.Append(" and accident_mediator = @accidentMediator");
-                    paramlst.Add(new SqlParam("@accidentMediator", httpRequest["accidentMediator"]));
-                }
-
-                if (httpRequest["mediationUnit"] != null && !string.IsNullOrEmpty(httpRequest["mediationUnit"]))
-                {
-                    sb.Append(" and mediation_unit = @mediationUnit");
-                    paramlst.Add(new SqlParam("@mediationUnit", "%" + httpRequest["mediationUnit"] + "%"));
-                }
-
-                string err = string.Empty;
+                var pageindex = CommonHelper.GetInt(condition["page"], 0);
+                var pagesize = CommonHelper.GetInt(condition["rows"]);
+                var sort = condition.ContainsKey("sort") ? CommonHelper.GetString(condition["sort"]) : "";
+                var order = condition.ContainsKey("order") ? (CommonHelper.GetString(condition["order"]) == "asc" ? true : false) : true;
+                var host = Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority;
                 var obj = Instance<ITrafficAccidentService>.Create;
-                var lst = obj.ListAccident(sb, paramlst, pageIndex, pageSize, ref total);
-                ret.total = total;
-                ret.rows.AddRange(lst.Select(e => new TrafficAccidentDTO()
+                var err = "";
+                List<t_accident_records> lst = obj.QueryPage(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                ret.data=lst.Select(e => new TrafficAccidentDTO()
                 {
                     id = e.id,
                     happenDate = e.happen_date.ToString(),
@@ -212,17 +129,16 @@ namespace VMS.ESIApi
                     mediationDate = e.mediation_date.ToString(),
                     drawRecorder = e.draw_recorder,
                     accidentMediator = e.accident_mediator,
-                    imgUrl = e.img_url,
+                    imgUrl = host + e.img_url,
                     operId = e.oper_id,
                     operDate = e.oper_date.ToString(),
                     modifyOperId = e.modify_oper_id,
                     modifyDate = e.modify_date.ToString(),
                     bingPartyAddr = e.bingPartyAddr,
                     bingPartyMan = e.bingPartyMan,
-                    dingPartyMan = e.dingPartyMan,
                     dingPartyAddr = e.dingPartyAddr,
                     duty = e.duty
-                }));
+                }).ToList();
                 return ret;
 
             }
@@ -239,9 +155,9 @@ namespace VMS.ESIApi
         /// <param name="ids"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO DelAccident()
+        public Response<string> DelAccident()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var httpRequest = HttpContext.Current.Request;
@@ -288,9 +204,9 @@ namespace VMS.ESIApi
         /// <param name="duty">责任认定</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyAccident([FromBody]JObject data)
+        public Response<string> ModifyAccident([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
@@ -350,9 +266,9 @@ namespace VMS.ESIApi
         /// <param name="imgUrl"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO ModifyImgs([FromBody]JObject data)
+        public Response<string> ModifyImgs([FromBody]JObject data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
@@ -384,9 +300,9 @@ namespace VMS.ESIApi
         /// <param name="id"></param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AppendAccidentImg()
+        public Response<string> AppendAccidentImg()
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
 
             try
             {

@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Http;
 using VMS.DTO;
 using VMS.DTO.Trailer;
+using VMS.ESIApi.Models;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
@@ -26,9 +27,9 @@ namespace VMS.ESIApi
         ///  <param name="startTime">工作时间</param>
         ///  <param name="endTime">工作时间</param>
         /// <returns></returns>
-        public GridResponseDTO<TrailerDTO> QueryTrailer([FromBody]TrailerQueryDTO trailerQueryDTO)
+        public Response<List<TrailerDTO>> QueryTrailer([FromBody]TrailerQueryDTO trailerQueryDTO)
         {
-            var ret = new GridResponseDTO<TrailerDTO>();
+            var ret = new Response<List<TrailerDTO>>();
             try
             {
                 var httpRequest = HttpContext.Current.Request;
@@ -57,8 +58,7 @@ namespace VMS.ESIApi
                 string err = string.Empty;
                 var obj = Instance<ITrailerService>.Create;
                 var lst = obj.QueryTrailer(sb, paramlst, pageIndex, pageSize, ref total);
-                ret.total = total;
-                ret.rows.AddRange(lst.Select(e => new TrailerDTO()
+                ret.data=lst.Select(e => new TrailerDTO()
                 {
                     trailerNo = e.trailer_no,
                     trailerDate = e.trailer_date,
@@ -72,7 +72,7 @@ namespace VMS.ESIApi
                     tractor = e.trailer_tractor,
                     totalTrailer = e.trailer_totaltrailer,
                     remark = e.remark
-                }));
+                }).ToList();
                 return ret;
             }
             catch (Exception ex)
@@ -101,9 +101,9 @@ namespace VMS.ESIApi
         /// <param name="remark">备注</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO AddTrailer([FromBody]TrailerDTO data)
+        public Response<string> AddTrailer([FromBody]TrailerDTO data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
 
             try
             {
@@ -155,9 +155,9 @@ namespace VMS.ESIApi
         /// <param name="remark">备注</param>
         /// <returns></returns>
         [System.Web.Mvc.HttpPost]
-        public BaseResponseDTO upDate([FromBody]TrailerDTO data)
+        public Response<string> upDate([FromBody]TrailerDTO data)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 #region 参数检验
@@ -187,9 +187,9 @@ namespace VMS.ESIApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public BaseResponseDTO DeleteTrailer(string id)
+        public Response<string> DeleteTrailer(string id)
         {
-            var ret = new BaseResponseDTO();
+            var ret = new Response<string>();
             try
             {
                 if (id == null || id.Equals("null"))
@@ -225,16 +225,16 @@ namespace VMS.ESIApi
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public BaseReportDTO QueryInfo([FromBody]TrailerQueryDTO trailerQueryDTO)
+        public Response<List<TrailerDTO>> QueryInfo([FromBody]TrailerQueryDTO trailerQueryDTO)
         {
-            var ret = new BaseReportDTO();
+            var ret = new Response<List<TrailerDTO>>();
             try
             {
                 var service = Instance<ITrailerService>.Create;
                 List<TrailerDTO> trailerDTO = new List<TrailerDTO>();
                 trailerDTO = service.QueryInfo(trailerQueryDTO);
                 if (trailerDTO == null || trailerDTO.Count == 0) { return ret; }
-                ret.rows = trailerDTO;
+                ret.data = trailerDTO;
                 return ret;
             }
             catch (Exception ex)

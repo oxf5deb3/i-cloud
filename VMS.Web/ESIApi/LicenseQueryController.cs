@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using VMS.DTO;
+using VMS.ESIApi.Models;
 using VMS.IServices;
 using VMS.Model;
 using VMS.ServiceProvider;
@@ -29,9 +30,9 @@ namespace VMS.ESIApi
         /// <param name="id_card">查询条件</param>
         /// <param name="id_no">查询条件</param>
         /// <returns></returns>
-        public GridResponseDTO<DriverLicenseDTO> DriverLicensePageList([FromBody]JObject data)
+        public Response<List<DriverLicenseDTO>> DriverLicensePageList([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<DriverLicenseDTO>();
+            var ret = new Response<List<DriverLicenseDTO>>();
             try
             {
 
@@ -55,8 +56,7 @@ namespace VMS.ESIApi
                     p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
                 });
 
-                ret.total = total;
-                ret.rows.AddRange(lst);
+                ret.data=lst;
                 try
                 {
                     var logService = Instance<ILogService>.Create;
@@ -89,9 +89,9 @@ namespace VMS.ESIApi
         /// <param name="car_number">查询条件</param>
         /// <param name="id_no">查询条件</param>
         /// <returns></returns>
-        public GridResponseDTO<CarLicenseDTO> CarLicensePageList([FromBody]JObject data)
+        public Response<List<CarLicenseDTO>> CarLicensePageList([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<CarLicenseDTO>();
+            var ret = new Response<List<CarLicenseDTO>>();
             try
             {
 
@@ -117,8 +117,7 @@ namespace VMS.ESIApi
                     p.engine_no_value = p.engine_no_img_path == null ? "" : FileUtils.fileToBase64(p.engine_no_img_path);
                     p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
                 });
-                ret.total = total;
-                ret.rows.AddRange(lst);
+                ret.data=lst;
                 return ret;
 
             }
@@ -141,9 +140,9 @@ namespace VMS.ESIApi
         /// <param name="name">查询条件</param>
         /// <param name="id_no">查询条件</param>
         /// <returns></returns>
-        public GridResponseDTO<TemporaryDriverLicenseDTO> LSDriverLicensePageList([FromBody]JObject data)
+        public Response<List<TemporaryDriverLicenseDTO>> LSDriverLicensePageList([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<TemporaryDriverLicenseDTO>();
+            var ret = new Response<List<TemporaryDriverLicenseDTO>>();
             try
             {
 
@@ -167,8 +166,7 @@ namespace VMS.ESIApi
                     p.user_photo_base64 = FileUtils.fileToBase64(p.user_photo_path);
                 });
 
-                ret.total = total;
-                ret.rows.AddRange(lst);
+                ret.data=lst;
                 try
                 {
                     var logService = Instance<ILogService>.Create;
@@ -203,9 +201,9 @@ namespace VMS.ESIApi
         /// <param name="name">查询条件</param>
         /// <param name="id_no">查询条件</param>
         /// <returns></returns>
-        public GridResponseDTO<TemporaryDrivingPermitDTO> LSCarLicensePageList([FromBody]JObject data)
+        public Response<List<TemporaryDrivingPermitDTO>> LSCarLicensePageList([FromBody]JObject data)
         {
-            var ret = new GridResponseDTO<TemporaryDrivingPermitDTO>();
+            var ret = new Response<List<TemporaryDrivingPermitDTO>>();
             try
             {
 
@@ -233,8 +231,7 @@ namespace VMS.ESIApi
                     p.user_photo_base64 = p.user_photo_path == null ? "" : FileUtils.fileToBase64(p.user_photo_path);
                 });
 
-                ret.total = total;
-                ret.rows.AddRange(lst);
+                ret.data=lst;
                 try
                 {
                     var logService = Instance<ILogService>.Create;

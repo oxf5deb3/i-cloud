@@ -9,6 +9,8 @@ namespace VMS.ESIApi.Models
     {
         public decimal id { get; set; }
         public string title { get; set; }
+        public string img_url { get; set; }
+        public DateTime create_date { get; set; }
 
     }
 }

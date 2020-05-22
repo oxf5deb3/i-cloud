@@ -48,8 +48,9 @@
             float: left;
             padding: 5px;
         }
-        .title{
-            font-size:14px;
+
+        .title {
+            font-size: 14px;
         }
     </style>
 }
@@ -73,7 +74,14 @@
         <div><textarea id="txtTitle" style="resize:none;width:100%;height:40px;"></textarea></div>
     </div>
     <br />
-    <p class="title">2.  资讯内容编辑:</p>
+    <div>
+        <p class="title">2.  导航图:</p>
+        <form id="ffSearch" method="post" enctype="multipart/form-data">
+            <input id="fb" type="text" style="width:300px">&nbsp;&nbsp;&nbsp;&nbsp;<a id="btnfile">上传</a>&nbsp;&nbsp;&nbsp;<a id="btndelete">删除</a><br />
+        </form>
+        <img id="divImg" src="..." alt="..." class="img-thumbnail" style="width:80px;height:80px;">
+    </div>
+    <p class="title">3.  资讯内容编辑:</p>
     <div id="editor">
 
     </div>
@@ -93,7 +101,7 @@
             $('#dataGrid').datagrid({
                 columns: [[
                     { field: 'ck', checkbox: true, width: 60 },
-                    { field: 'title', title: '简介', halign: 'center', align: 'center', width: 200,sortable:true },
+                    { field: 'title', title: '简介', halign: 'center', align: 'center', width: 200, sortable: true },
                     { field: 'create_date', title: '创建日期', halign: 'center', align: 'center', width: 120, sortable: true },
                     { field: 'user_name', title: '创建人', halign: 'center', align: 'center', width: 120 },
                 ]],
@@ -101,7 +109,7 @@
                 //toolbar: '#toolbar',
                 height: $(window).height() * 0.85,
                 idField: 'id',
-                singleSelect:true,
+                singleSelect: true,
                 rownumbers: true,
                 pagination: true,
                 pageList: [10, 20, 50],
@@ -111,7 +119,7 @@
                 queryParams: getListParams()
             });
         }
-       
+
 
         function getListParams() {
             return {
@@ -137,7 +145,7 @@
                 modal: true,
                 cache: false,
                 onBeforeOpen: function () {
-                   
+
                     return true;
                 },
                 onClose: function () {
@@ -197,6 +205,8 @@
 
         function setData(data) {
             $('#txtTitle').val(data.title);
+            if (data.imgUrl!='')
+            $('#divImg').attr("src", data.img_url);
             editor.txt.html(data.content);
 
             $('#dlg').dialog({
@@ -217,10 +227,12 @@
         function getData() {
             var data = {
                 title: '',
-                content:''
+                content: '',
+                imgUrl:'',
             }
             data.title = $('#txtTitle').val();
             data.content = editor.txt.html();
+            data.imgUrl = $('#divImg').attr('src') == '...' ? '' : $('#divImg').attr('src');
             return data;
         }
 
@@ -240,7 +252,7 @@
                     if (ret.message != '') {
                         $.messager.alert("提示", ret.message, 'info');
                     } else {
-                        $.messager.alert('提示','无法获取该资讯，请刷新重试!','info');
+                        $.messager.alert('提示', '无法获取该资讯，请刷新重试!', 'info');
                     }
                     return;
                 }
@@ -281,9 +293,59 @@
             });
 
         }
+        function UploadFile(_obj, file_ctrlname, div_files) {
+            var value = $("#" + file_ctrlname).filebox('getValue');
+            var files = $("#" + file_ctrlname).next().find('input[type=file]')[0].files;
 
+            if (value && files[0]) {
+                //构建一个FormData存储复杂对象
+                var formData = new FormData();
+                formData.append('Filedata', files[0]);//默认的文件数据名为“Filedata”
+                formData.append('type', '7')
+                $.ajax({
+                    url: '/esi-api/News/Upload', //单文件上传
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success: function (json) {
+                        //转义JSON为对象
+                        //var data = $.parseJSON(json);
+                        console.dir(json);
+                        if (json.success) {
+                            $(div_files).attr("src", json.data);
+                        } 
+                        //提示用户Excel格式是否正常，如果正常加载数据
+                        //ShowUpFiles(guid, div_files);
+
+                    },
+                    error: function (xhr, status, error) {
+                        $.messager.alert("提示", "操作失败"); //xhr.responseText
+                    }
+                });
+            }
+        }
         $('#news_title').textbox({
             width: 180,
+        });
+        $('#fb').filebox({
+            buttonText: '选择图片',
+            buttonAlign: 'right',
+            accept: "image/gif,image/bmp,image/jpeg,image/jpg,image/png"
+        });
+        $('#btnfile').linkbutton({
+            width: 80,
+            height: 30,
+            onClick: function () {
+                UploadFile(this, 'fb', divImg);
+            }
+        });
+        $('#btndelete').linkbutton({
+            width: 60,
+            height: 30,
+            onClick: function () {
+                $('#divImg').attr('src', "...");
+            }
         });
         initGrid();
     </script>

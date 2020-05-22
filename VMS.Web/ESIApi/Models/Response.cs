@@ -6,12 +6,12 @@ using VMS.ESIApi.Utils;
 
 namespace VMS.ESIApi.Models
 {
-    public class Response<T>
+    public class Response<T> where T:class
     {
         public Response()
         {
             success = true;
-            data = default(T);
+            data =default(T);
             code = StatusCode.SUCCESS;
             message = "";
         }
@@ -43,7 +43,7 @@ namespace VMS.ESIApi.Models
             return resp;
         }
 
-        public static Response<T> Fail<T>(StatusCode code)
+        public static Response<T> Fail<T>(StatusCode code) where T:class
         {
             var resp = new Response<T>();
             resp.code = code;

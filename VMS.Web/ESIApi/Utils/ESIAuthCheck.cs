@@ -9,12 +9,13 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using VMS.ESIApi.Models;
 
 namespace VMS.ESIApi.Utils
 {
     public class ESIAuthCheck : AuthorizeAttribute
     {
-        public static DefaultMemoryCache _cache = new DefaultMemoryCache();
+       // public static DefaultMemoryCache _cache = new DefaultMemoryCache();
         /// <summary>
         /// 主要作用:
         /// </summary>
@@ -48,6 +49,8 @@ namespace VMS.ESIApi.Utils
             //        token = jobj["token"].ToString();
             //    }
             //}
+           
+
             var attributes = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().OfType<AllowAnonymousAttribute>();
             bool isAnonymous = attributes.Any(a => a is AllowAnonymousAttribute);
             if (isAnonymous)
@@ -56,39 +59,60 @@ namespace VMS.ESIApi.Utils
             }
             else
             {
-                var requestContent = actionContext.Request.Content.ReadAsStringAsync();
-                requestContent.Wait();
-                var json = "";
-                json = requestContent.Result;
-                var token = "";
-                if (!string.IsNullOrEmpty(json))
+                var isjson = false;
+                try
                 {
-                    var jobj = JObject.Parse(json);
-                    if (jobj != null && jobj["token"] != null)
-                    {
-                        token = jobj["token"].ToString();
-                    }
+                    isjson = ("application/json").Equals(actionContext.Request.Content.Headers.ContentType.MediaType.ToLower());
                 }
-                if (!string.IsNullOrEmpty(token))
+                catch
                 {
-                    //解密用户ticket,并校验用户名密码是否匹配 
-                    //if (ValidateTicket(access_key, sign))
-                    if (ValidateTicket(token, ""))
+                }
+                
+                if (isjson)
+                {
+                    var requestContent = actionContext.Request.Content.ReadAsStringAsync();
+                    requestContent.Wait();
+                    var json = "";
+                    json = requestContent.Result;
+                    VMS.Utils.Log4NetHelper.Info("接受到json串:" + json);
+                    var token = "";
+                    if (!string.IsNullOrEmpty(json))
                     {
-                        base.IsAuthorized(actionContext);
+                        try
+                        {
+                            var jobj = JObject.Parse(json);
+                            if (jobj != null && jobj["token"] != null)
+                            {
+                                token = jobj["token"].ToString();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            VMS.Utils.Log4NetHelper.Info("无法将参数解析为json,异常信息:" + ex.StackTrace);
+                        }
+
+                    }
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        //解密用户ticket,并校验用户名密码是否匹配 
+                        //if (ValidateTicket(access_key, sign))
+                        if (ValidateTicket(token, ""))
+                        {
+                            base.IsAuthorized(actionContext);
+                        }
+                        else
+                        {
+                            VMS.Utils.Log4NetHelper.Info("授权失败");
+                            HandleUnauthorizedRequest(actionContext);
+                        }
                     }
                     else
                     {
+                        //如果取不到身份验证信息，并且不允许匿名访问，则返回未验证401
                         HandleUnauthorizedRequest(actionContext);
                     }
                 }
-                //如果取不到身份验证信息，并且不允许匿名访问，则返回未验证401
-                else
-                {
-                    HandleUnauthorizedRequest(actionContext);
-                }
             }
-
         }
 
         protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
@@ -114,10 +138,11 @@ namespace VMS.ESIApi.Utils
             //    }
             //    return false;
             //}
-            var entry = _cache.AddOrGet(key, null, TimeSpan.FromMinutes(30));
-            if (entry == null)
+            var entry = CacheHelper.Get(key);
+            VMS.Utils.Log4NetHelper.Info("查询key:"+key);
+            if (entry != null)
             {
-                return false;
+                VMS.Utils.Log4NetHelper.Info("查询value:" + JObject.FromObject(entry).ToString());
             }
             return true;
         }
