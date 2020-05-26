@@ -15,8 +15,10 @@ namespace VMS.Model
         public string happen_addr { get; set; }
         public string first_party_man { get; set; }
         public string first_party_addr { get; set; }
+        public string first_party_car_no { get; set; }
         public string second_party_man { get; set; }
         public string second_party_addr { get; set; }
+        public string second_party_car_no { get; set; }
         public string accident_desc { get; set; }
         public string mediation_unit { get; set; }
         public DateTime mediation_date { get; set; }

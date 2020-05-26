@@ -54,11 +54,35 @@ namespace VMS.ESIApi
             {
                 var httpRequest = HttpContext.Current.Request;
                 var host = Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority;
-                var dto = data.ToObject<TrafficAccidentDTO>();
+                var dto = data.ToObject<ESITrafficAccidentDTO>();
                 if (!string.IsNullOrEmpty(dto.imgUrl))
                 {
+                    TrafficAccidentDTO data1 = new TrafficAccidentDTO()
+                    {
+                        happen_addr = dto.happenAddr,
+                        happen_date =CommonHelper.GetDateTime(dto.happenDate),
+                        first_party_man = dto.firstPartyMan,
+                        first_party_addr = dto.firstPartyAddr,
+                        first_party_car_no = dto.firstPartyCarNo,
+                        second_party_man = dto.secondPartyMan,
+                        second_party_addr = dto.secondPartyAddr,
+                        second_party_car_no = dto.secondPartyCarNo,
+                        accident_desc = dto.accidentDesc,
+                        mediation_unit = dto.mediationUnit,
+                        mediation_date = CommonHelper.GetDateTime(dto.happenAddr),
+                        draw_recorder = dto.drawRecorder,
+                        accident_mediator = dto.accidentMediator,
+                        oper_id = "1001",
+                        oper_date = DateTime.Now,
+                        img_url = dto.imgUrl.Replace(host,""),
+                        duty = dto.duty,
+                        dingPartyAddr = dto.dingPartyAddr,
+                        dingPartyMan = dto.dingPartyMan,
+                        bingPartyAddr = dto.bingPartyAddr,
+                        bingPartyMan = dto.bingPartyMan
+                    };
                     var service = Instance<ITrafficAccidentService>.Create;
-                    bool res = service.AddTrafficAccident(dto);
+                    bool res = service.AddTrafficAccident(data1);
                     if (res)
                     {
                         return ret;
@@ -99,9 +123,9 @@ namespace VMS.ESIApi
         /// <param name="accidentMediator">调解员</param>
         /// <param name="mediationUnit">调解单位</param>
         /// <returns></returns>
-        public Response<List<TrafficAccidentDTO>> ListAccident([FromBody]JObject data)
+        public Response<List<ESITrafficAccidentDTO>> ListAccident([FromBody]JObject data)
         {
-            var ret = new Response<List<TrafficAccidentDTO>>();
+            var ret = new Response<List<ESITrafficAccidentDTO>>();
             try
             {
                 var condition = data.ToDictionary();
@@ -114,30 +138,35 @@ namespace VMS.ESIApi
                 var host = Request.RequestUri.Scheme + "://" + Request.RequestUri.Authority;
                 var obj = Instance<ITrafficAccidentService>.Create;
                 var err = "";
-                List<t_accident_records> lst = obj.QueryPage(condition, sort, order, pageindex, pagesize, ref total, ref err);
-                ret.data=lst.Select(e => new TrafficAccidentDTO()
+                List<TrafficAccidentDTO> lst = obj.QueryPage(condition, sort, order, pageindex, pagesize, ref total, ref err);
+                ret.data=lst.Select(e => new ESITrafficAccidentDTO()
                 {
                     id = e.id,
-                    happenDate = e.happen_date.ToString(),
+                    happenDate = CommonHelper.GetFormatDateTime(e.happen_date,"yyyy-MM-dd HH:mm:ss"),
                     happenAddr = e.happen_addr,
                     firstPartyMan = e.first_party_man,
                     firstPartyAddr = e.first_party_addr,
+                    firstPartyCarNo = e.first_party_car_no,
+                    secondPartyCarNo = e.second_party_car_no,
                     secondPartyMan = e.second_party_man,
                     secondPartyAddr = e.second_party_addr,
                     accidentDesc = e.accident_desc,
                     mediationUnit = e.mediation_unit,
-                    mediationDate = e.mediation_date.ToString(),
+                    mediationDate = CommonHelper.GetFormatDateTime(e.mediation_date, "yyyy-MM-dd HH:mm:ss"),
                     drawRecorder = e.draw_recorder,
                     accidentMediator = e.accident_mediator,
-                    imgUrl = host + e.img_url,
-                    operId = e.oper_id,
-                    operDate = e.oper_date.ToString(),
-                    modifyOperId = e.modify_oper_id,
-                    modifyDate = e.modify_date.ToString(),
                     bingPartyAddr = e.bingPartyAddr,
                     bingPartyMan = e.bingPartyMan,
                     dingPartyAddr = e.dingPartyAddr,
-                    duty = e.duty
+                    dingPartyMan = e.dingPartyMan,
+                    operId= e.oper_id,
+                    operDate = CommonHelper.GetFormatDateTime(e.oper_date, "yyyy-MM-dd HH:mm:ss"),
+                    oper_name =e.oper_name,
+                    modifyOperId=e.modify_oper_id,
+                    modifyDate= CommonHelper.GetFormatDateTime(e.modify_date,"yyyy-MM-dd HH:mm:ss"),
+                    modify_oper_name =e.modify_oper_name,
+                    duty = e.duty,
+                    imgUrl = host+e.img_url
                 }).ToList();
                 return ret;
 
@@ -211,7 +240,7 @@ namespace VMS.ESIApi
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
                 var service = Instance<ITrafficAccidentService>.Create;
-                dto.modifyOperId = "";
+                dto.modify_oper_id = "";
                 bool res = service.ModifyAccident(dto);
 
                 if (res)
@@ -273,7 +302,7 @@ namespace VMS.ESIApi
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
                 var service = Instance<ITrafficAccidentService>.Create;
-                dto.modifyOperId = "";
+                dto.modify_oper_id = "";
                 bool res = service.ModifyImgs(dto);
 
                 if (res)
@@ -327,8 +356,8 @@ namespace VMS.ESIApi
                     }
                     var dto = new TrafficAccidentDTO();
                     dto.id = Decimal.Parse(httpRequest.Form["id"]);
-                    dto.modifyOperId = "";
-                    dto.imgUrl = imgs.ToString();
+                    dto.modify_oper_id = "";
+                    dto.img_url = imgs.ToString();
 
                     var service = Instance<ITrafficAccidentService>.Create;
 

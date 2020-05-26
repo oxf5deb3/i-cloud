@@ -50,27 +50,27 @@ namespace VMS.Api
                     }
 
                     var dto = new TrafficAccidentDTO();
-                    dto.happenDate = httpRequest.Form["happenDate"];
-                    dto.happenAddr = httpRequest.Form["happenAddr"];
-                    dto.firstPartyMan = httpRequest.Form["firstPartyMan"];
-                    dto.firstPartyCarNo = httpRequest.Form["firstPartyCarNo"];
-                    dto.secondPartyCarNo = httpRequest.Form["secondPartyCarNo"];
-                    dto.firstPartyAddr = httpRequest.Form["firstPartyAddr"];
-                    dto.secondPartyMan = httpRequest.Form["secondPartyMan"];
-                    dto.secondPartyAddr = httpRequest.Form["secondPartyAddr"];
-                    dto.accidentDesc = httpRequest.Form["accidentDesc"];
-                    dto.mediationUnit = httpRequest.Form["mediationUnit"];
-                    dto.mediationDate = httpRequest.Form["mediationDate"];
-                    dto.drawRecorder = httpRequest.Form["drawRecorder"];
-                    dto.accidentMediator = httpRequest.Form["accidentMediator"];
+                    dto.happen_date = CommonHelper.GetDateTime(httpRequest.Form["happenDate"]);
+                    dto.happen_addr = httpRequest.Form["happenAddr"];
+                    dto.first_party_man = httpRequest.Form["firstPartyMan"];
+                    dto.first_party_car_no = httpRequest.Form["firstPartyCarNo"];
+                    dto.second_party_car_no = httpRequest.Form["secondPartyCarNo"];
+                    dto.first_party_addr = httpRequest.Form["firstPartyAddr"];
+                    dto.second_party_man = httpRequest.Form["secondPartyMan"];
+                    dto.second_party_addr = httpRequest.Form["secondPartyAddr"];
+                    dto.accident_desc = httpRequest.Form["accidentDesc"];
+                    dto.mediation_unit = httpRequest.Form["mediationUnit"];
+                    dto.mediation_date = CommonHelper.GetDateTime(httpRequest.Form["mediationDate"]);
+                    dto.draw_recorder = httpRequest.Form["drawRecorder"];
+                    dto.accident_mediator = httpRequest.Form["accidentMediator"];
                     dto.bingPartyAddr = httpRequest.Form["bingPartyAddr"];
                     dto.bingPartyMan = httpRequest.Form["bingPartyMan"];
                     dto.dingPartyAddr = httpRequest.Form["dingPartyAddr"];
                     dto.dingPartyMan = httpRequest.Form["dingPartyMan"];
                     dto.duty = httpRequest.Form["duty"];
 
-                    dto.operId = operInfo.user_id;
-                    dto.imgUrl  = imgs.ToString();
+                    dto.oper_id = operInfo.user_id;
+                    dto.img_url  = imgs.ToString();
 
                     var service = Instance<ITrafficAccidentService>.Create;
 
@@ -170,22 +170,22 @@ namespace VMS.Api
                 ret.rows.AddRange(lst.Select(e => new TrafficAccidentDTO()
                 {
                     id = e.id,
-                    happenDate = e.happen_date.ToString(),
-                    happenAddr = e.happen_addr,
-                    firstPartyMan = e.first_party_man,
-                    firstPartyAddr = e.first_party_addr,
-                    secondPartyMan = e.second_party_man,
-                    secondPartyAddr = e.second_party_addr,
-                    accidentDesc = e.accident_desc,
-                    mediationUnit = e.mediation_unit,
-                    mediationDate = e.mediation_date.ToString(),
-                    drawRecorder = e.draw_recorder,
-                    accidentMediator = e.accident_mediator,
-                    imgUrl = e.img_url,
-                    operId = e.oper_id,
-                    operDate = e.oper_date.ToString(),
-                    modifyOperId = e.modify_oper_id,
-                    modifyDate = e.modify_date.ToString(),
+                    happen_date = e.happen_date,
+                    happen_addr = e.happen_addr,
+                    first_party_man = e.first_party_man,
+                    first_party_addr = e.first_party_addr,
+                    second_party_man = e.second_party_man,
+                    second_party_addr = e.second_party_addr,
+                    accident_desc = e.accident_desc,
+                    mediation_unit = e.mediation_unit,
+                    mediation_date = e.mediation_date,
+                    draw_recorder = e.draw_recorder,
+                    accident_mediator = e.accident_mediator,
+                    img_url = e.img_url,
+                    oper_id = e.oper_id,
+                    oper_date = e.oper_date,
+                    modify_oper_id = e.modify_oper_id,
+                    modify_date = e.modify_date,
                     bingPartyAddr=e.bingPartyAddr,
                     bingPartyMan = e.bingPartyMan,
                     dingPartyMan = e.dingPartyMan,
@@ -241,7 +241,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
                 var service = Instance<ITrafficAccidentService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modify_oper_id = operInfo.user_id;
                 bool res = service.ModifyAccident(dto);
 
                 if (res)
@@ -298,7 +298,7 @@ namespace VMS.Api
             {
                 var dto = data.ToObject<TrafficAccidentDTO>();
                 var service = Instance<ITrafficAccidentService>.Create;
-                dto.modifyOperId = operInfo.user_id;
+                dto.modify_oper_id = operInfo.user_id;
                 bool res = service.ModifyImgs(dto);
 
                 if (res)
@@ -348,8 +348,8 @@ namespace VMS.Api
                     }
                     var dto = new TrafficAccidentDTO();
                     dto.id = Decimal.Parse(httpRequest.Form["id"]);
-                    dto.modifyOperId = operInfo.user_id;
-                    dto.imgUrl = imgs.ToString();
+                    dto.modify_oper_id = operInfo.user_id;
+                    dto.img_url = imgs.ToString();
 
                     var service = Instance<ITrafficAccidentService>.Create;
 

@@ -226,5 +226,59 @@ namespace VMS.ESIApi
                 return ret;
             }
         }
+
+        /// <summary>
+        /// 个人中心
+        /// </summary>
+        /// <param name="user_id">账号</param>
+        /// <param name="user_type">用户类型</param>
+        /// <returns></returns>
+        [HttpPost]
+        public Response<ESIUserProfileDTO> FindUserById([FromBody]JObject data)
+        {
+            var ret = new Response<ESIUserProfileDTO>();
+            try
+            {
+                var service = Instance<IUserService>.Create;
+                var user_id = data["user_id"] != null ? data["user_id"].ToObject<string>() : "";
+                var user_type = data["user_type"] != null ? data["user_type"].ToObject<string>() : "1";
+                var err = "";
+                var user = service.FindByUserId(user_id, user_type);
+                if (user != null)
+                {
+                    var dtto = new ESIUserProfileDTO();
+                    dtto.user_id = user.user_id;
+                    dtto.user_name = user.user_name;
+                    dtto.user_type = user.user_type;
+                    dtto.create_date = user.create_date;
+                    dtto.last_login_time = user.last_login_time;
+                    dtto.tel = user.tel;
+                    dtto.sex = user.sex;
+                    dtto.age = user.age;
+                    dtto.email = user.email;
+
+                    var sys = Instance<ISystemService>.Create;
+                    var tel = sys.QuerySetting("help_tel");
+                    if(tel!=null && tel.Count > 0)
+                    {
+                        dtto.helper_tel = tel[0].sys_var_val;
+                    }
+                    ret.data = dtto;
+                }
+                else
+                {
+                    ret.code = ESIApi.StatusCode.FAIL;
+                    ret.message = "无法找到该用户";
+                }
+                return ret;
+            }
+            catch (Exception ex)
+            {
+                ret.code = ESIApi.StatusCode.FAIL;
+                ret.message = "无法找到该用户,错误信息:"+ex.Message;
+                ret.success = false;
+                return ret;
+            }
+        }
     }
 }

@@ -100,6 +100,27 @@
             </div>
         </div>
     </div>
+    <div class="panel panel-info">
+        <div class="panel-heading" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" role="tab" id="headingOne1">
+            <h4 class="panel-title">
+                <a role="button">
+                    2.联系方式
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne1">
+            <div class="panel-body container-fluid">
+                <table class="table table-condensed" style="table-layout:fixed;border-collapse:collapse;">
+                    <tr>
+                        <td class="text-right" style="width:120px;">APP联系帮助电话:</td>
+                        <td>
+                            <input type="text" id="help_tel" class="form-control"  />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -140,6 +161,16 @@
             } else {
                 if (email_pwd_old != email_account) {
                     data.update.push({ id: email_pwd_id, sys_var_id: 'email_pwd', sys_var_val: email_pwd })
+                }
+            }
+            var help_tel_id = $('#help_tel').data('id');
+            var help_tel = $('#help_tel').val();
+            var help_tel_old = $('#help_tel').data('oldVal');
+            if (help_tel_id == undefined) {
+                data.add.push({ sys_var_id: 'help_tel', sys_var_val: help_tel });
+            } else {
+                if (help_tel != help_tel_old) {
+                    data.update.push({ id: help_tel_id, sys_var_id: 'help_tel', sys_var_val: help_tel })
                 }
             }
 

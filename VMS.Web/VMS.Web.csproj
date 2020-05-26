@@ -221,7 +221,9 @@
     <Compile Include="ESIApi\BreakRulesController.cs" />
     <Compile Include="ESIApi\FireProtectionController.cs" />
     <Compile Include="ESIApi\LicenseQueryController.cs" />
+    <Compile Include="ESIApi\Models\ESITrafficAccidentDTO.cs" />
     <Compile Include="ESIApi\Models\ESIUserLoginDTO.cs" />
+    <Compile Include="ESIApi\Models\ESIUserProfileDTO.cs" />
     <Compile Include="ESIApi\Models\NewsDTO.cs" />
     <Compile Include="ESIApi\Models\Response.cs" />
     <Compile Include="ESIApi\Models\StatusCode.cs" />

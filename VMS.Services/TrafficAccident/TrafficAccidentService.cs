@@ -26,26 +26,26 @@ namespace VMS.Services
             {
                 StringBuilder sql = new StringBuilder();
                 sql.Append("insert into t_accident_records(happen_date, happen_addr, first_party_man, first_party_addr, second_party_man, second_party_addr, accident_desc, mediation_unit,");
-                sql.Append(" mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan,firstPartyCarNo,secondPartyCarNo)");
+                sql.Append(" mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan,first_party_car_no,second_party_car_no)");
                 sql.Append(" values(@happen_date, @happen_addr, @first_party_man, @first_party_addr, @second_party_man, @second_party_addr, @accident_desc, @mediation_unit,");
                 sql.Append(" @mediation_date, @draw_recorder, @accident_mediator, @oper_id, @oper_date, @img_url,@duty,@dingPartyAddr,@dingPartyMan,@bingPartyAddr,@bingPartyMan,@firstPartyCarNo,@secondPartyCarNo)");
                 SqlParam[] sqlParams = new SqlParam[] { 
-                    new SqlParam("@happen_date", dto.happenDate),
-                    new SqlParam("@happen_addr", dto.happenAddr),
-                    new SqlParam("@first_party_man", dto.firstPartyMan),
-                    new SqlParam("@first_party_addr", dto.firstPartyAddr),
-                    new SqlParam("@second_party_man", dto.secondPartyMan),
-                      new SqlParam("@img_url", dto.imgUrl.ToString()),
+                    new SqlParam("@happen_date", dto.happen_date),
+                    new SqlParam("@happen_addr", dto.happen_addr),
+                    new SqlParam("@first_party_man", dto.first_party_man),
+                    new SqlParam("@first_party_addr", dto.first_party_addr),
+                    new SqlParam("@second_party_man", dto.second_party_man),
+                      new SqlParam("@img_url", dto.img_url.ToString()),
 
                     
-                    new SqlParam("@second_party_addr", dto.secondPartyAddr),
-                    new SqlParam("@accident_desc", dto.accidentDesc),
-                    new SqlParam("@mediation_unit", dto.mediationUnit),
-                    new SqlParam("@mediation_date", dto.mediationDate),
-                    new SqlParam("@draw_recorder", dto.drawRecorder),
+                    new SqlParam("@second_party_addr", dto.second_party_addr),
+                    new SqlParam("@accident_desc", dto.accident_desc),
+                    new SqlParam("@mediation_unit", dto.mediation_unit),
+                    new SqlParam("@mediation_date", dto.mediation_date),
+                    new SqlParam("@draw_recorder", dto.draw_recorder),
                     
-                    new SqlParam("@accident_mediator", dto.accidentMediator),
-                    new SqlParam("@oper_id", dto.operId),
+                    new SqlParam("@accident_mediator", dto.accident_mediator),
+                    new SqlParam("@oper_id", dto.oper_id),
                     new SqlParam("@oper_date", DateTime.Now.ToString()),
 
                     new SqlParam("@duty", dto.duty),
@@ -53,8 +53,8 @@ namespace VMS.Services
                     new SqlParam("@dingPartyMan", dto.dingPartyMan),
                     new SqlParam("@bingPartyAddr", dto.bingPartyAddr),
                     new SqlParam("@bingPartyMan", dto.bingPartyMan),
-                    new SqlParam("@firstPartyCarNo", dto.firstPartyCarNo),
-                    new SqlParam("@secondPartyCarNo", dto.secondPartyCarNo),
+                    new SqlParam("@firstPartyCarNo", dto.first_party_car_no),
+                    new SqlParam("@secondPartyCarNo", dto.second_party_car_no),
 
                 };
                 return DbContext.ExecuteBySql(sql, sqlParams.ToArray()) > 0;
@@ -77,7 +77,7 @@ namespace VMS.Services
         public List<t_accident_records> ListAccident(StringBuilder sqlWhere, IList<SqlParam> sqlParams, int pageIndex, int pageSize, ref int count)
         {
             StringBuilder sb = new StringBuilder("select id, happen_date, happen_addr, first_party_man, first_party_addr, second_party_man, second_party_addr, accident_desc, mediation_unit, ");
-            sb.Append("mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, modify_oper_id, modify_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan,firstPartyCarNo,secondPartyCarNo from t_accident_records where 1 = 1");
+            sb.Append("mediation_date, draw_recorder, accident_mediator, oper_id, oper_date, modify_oper_id, modify_date, img_url,duty,dingPartyAddr,dingPartyMan,bingPartyAddr,bingPartyMan,first_party_car_no,second_party_car_no from t_accident_records where 1 = 1");
             var dt = DbContext.GetPageList(sb.Append(sqlWhere.ToString()).ToString(), sqlParams.ToArray(), "id", "desc", pageIndex, pageSize, ref count);
             return DataTableHelper.DataTableToIList<t_accident_records>(dt) as List<t_accident_records>;
         }
@@ -96,28 +96,28 @@ namespace VMS.Services
                 sql.Append(" mediation_date = @mediation_date, draw_recorder = @draw_recorder, accident_mediator = @accident_mediator, modify_oper_id = @modify_oper_id, modify_date = @modify_date,duty=@duty,dingPartyAddr=@dingPartyAddr,dingPartyMan=@dingPartyMan,bingPartyAddr=@bingPartyAddr,bingPartyMan=@bingPartyMan,firstPartyCarNo=@firstPartyCarNo,secondPartyCarNo=@secondPartyCarNo where id = @id");
 
                 SqlParam[] sqlParams = new SqlParam[] { 
-                    new SqlParam("@happen_date", dto.happenDate),
-                    new SqlParam("@happen_addr", dto.happenAddr),
-                    new SqlParam("@first_party_man", dto.firstPartyMan),
-                    new SqlParam("@first_party_addr", dto.firstPartyAddr),
-                    new SqlParam("@second_party_man", dto.secondPartyMan),
+                    new SqlParam("@happen_date", dto.happen_date),
+                    new SqlParam("@happen_addr", dto.happen_addr),
+                    new SqlParam("@first_party_man", dto.first_party_man),
+                    new SqlParam("@first_party_addr", dto.first_party_addr),
+                    new SqlParam("@second_party_man", dto.second_party_man),
 
-                    new SqlParam("@second_party_addr", dto.secondPartyAddr),
-                    new SqlParam("@accident_desc", dto.accidentDesc),
-                    new SqlParam("@mediation_unit", dto.mediationUnit),
-                    new SqlParam("@mediation_date", dto.mediationDate),
-                    new SqlParam("@draw_recorder", dto.drawRecorder),
+                    new SqlParam("@second_party_addr", dto.second_party_addr),
+                    new SqlParam("@accident_desc", dto.accident_desc),
+                    new SqlParam("@mediation_unit", dto.mediation_unit),
+                    new SqlParam("@mediation_date", dto.mediation_date),
+                    new SqlParam("@draw_recorder", dto.draw_recorder),
                     
-                    new SqlParam("@accident_mediator", dto.accidentMediator),
-                    new SqlParam("@modify_oper_id", dto.modifyOperId),
+                    new SqlParam("@accident_mediator", dto.accident_mediator),
+                    new SqlParam("@modify_oper_id", dto.modify_oper_id),
                     new SqlParam("@modify_date", DateTime.Now.ToString()),
-                     new SqlParam("@duty", dto.duty),
+                    new SqlParam("@duty", dto.duty),
                     new SqlParam("@dingPartyAddr", dto.dingPartyAddr),
                     new SqlParam("@dingPartyMan", dto.dingPartyMan),
                     new SqlParam("@bingPartyAddr", dto.bingPartyAddr),
                     new SqlParam("@bingPartyMan", dto.bingPartyMan),
-                     new SqlParam("@firstPartyCarNo", dto.firstPartyCarNo),
-                    new SqlParam("@secondPartyCarNo", dto.secondPartyCarNo),
+                    new SqlParam("@firstPartyCarNo", dto.first_party_car_no),
+                    new SqlParam("@secondPartyCarNo", dto.second_party_car_no),
                     new SqlParam("@id", dto.id)
                 };
                 return DbContext.ExecuteBySql(sql, sqlParams.ToArray()) > 0;
@@ -156,8 +156,8 @@ namespace VMS.Services
             {
                 StringBuilder sb = new StringBuilder("update t_accident_records set img_url = @img_url, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
                 SqlParam[] sqlParams = new SqlParam[]{
-                new SqlParam("@img_url", dto.imgUrl),
-                new SqlParam("modify_oper_id", dto.modifyOperId),
+                new SqlParam("@img_url", dto.img_url),
+                new SqlParam("modify_oper_id", dto.modify_oper_id),
                 new SqlParam("@modify_date", DateTime.Now.ToString()),
                 new SqlParam("@id", dto.id)
             };
@@ -181,8 +181,8 @@ namespace VMS.Services
             {
                 StringBuilder sb = new StringBuilder("update t_accident_records set img_url = img_url + @img_url, modify_oper_id = @modify_oper_id, modify_date = @modify_date where id = @id");
                 SqlParam[] sqlParams = new SqlParam[]{
-                new SqlParam("@img_url", dto.imgUrl),
-                new SqlParam("modify_oper_id", dto.modifyOperId),
+                new SqlParam("@img_url", dto.img_url),
+                new SqlParam("modify_oper_id", dto.modify_oper_id),
                 new SqlParam("@modify_date", DateTime.Now.ToString()),
                 new SqlParam("@id", dto.id)
             };
@@ -198,14 +198,46 @@ namespace VMS.Services
 
 
         #region 事故查询
-        public List<t_accident_records> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
+        public List<TrafficAccidentDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err)
         {
             List<Expression<Func<t_accident_records, bool>>> wheres = new List<Expression<Func<t_accident_records, bool>>>();
             wheres.AddRange(CreateWhere(conditions));
             Expression<Func<t_accident_records, object>> orderbys = CreateOrderby(orderby);
             var q = SqlSugarDbContext.Db.Queryable<t_accident_records>();
             var lst = SqlSugarDbContext.GetPageList<t_accident_records, t_accident_records>(q, wheres, orderbys, isAsc, pageIndex, pageSize, ref count);
-            var dtos = Convert2DTO(lst);
+            var q1 = SqlSugarDbContext.Db.Queryable<t_accident_records, t_sys_user, t_sys_user>((r1, r2, r3) => new object[] {
+                JoinType.Left, r1.oper_id == r2.user_id && r2.user_type == "0",
+                JoinType.Left, r1.modify_oper_id == r3.user_id && r3.user_type == "0",
+            }).Select((r1, r2, r3) => new TrafficAccidentDTO()
+            {
+                id = r1.id,
+                happen_date = r1.happen_date,
+                happen_addr = r1.happen_addr,
+                first_party_man = r1.first_party_man,
+                first_party_addr = r1.first_party_addr,
+                first_party_car_no = r1.first_party_car_no,
+                second_party_man = r1.second_party_man,
+                second_party_addr = r1.second_party_addr,
+                second_party_car_no = r1.second_party_car_no,
+                accident_desc = r1.accident_desc,
+                mediation_unit = r1.mediation_unit,
+                mediation_date = r1.mediation_date,
+                draw_recorder = r1.draw_recorder,
+                accident_mediator = r1.accident_mediator,
+                oper_id = r1.oper_id,
+                oper_date = r1.oper_date,
+                oper_name = r2.user_name,
+                modify_oper_id = r1.modify_oper_id,
+                modify_date = r1.modify_date,
+                modify_oper_name = r3.user_name,
+                img_url = r1.img_url,
+                duty = r1.duty,
+                dingPartyAddr = r1.dingPartyAddr,
+                dingPartyMan = r1.dingPartyMan,
+                bingPartyAddr = r1.bingPartyAddr,
+                bingPartyMan = r1.bingPartyMan
+            });
+            var dtos = Convert2DTO(q1);
             return dtos;
 
         }
@@ -268,7 +300,7 @@ namespace VMS.Services
             }
             return by;
         }
-        public virtual List<t_accident_records> Convert2DTO(ISugarQueryable<t_accident_records> q)
+        public virtual List<TrafficAccidentDTO> Convert2DTO(ISugarQueryable<TrafficAccidentDTO> q)
         {
             var dtos = q.ToList();
             return dtos;

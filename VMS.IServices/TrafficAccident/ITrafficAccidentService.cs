@@ -56,6 +56,6 @@ namespace VMS.IServices
         /// <returns></returns>
         bool AppendImgs(TrafficAccidentDTO dto);
 
-        List<t_accident_records> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
+        List<TrafficAccidentDTO> QueryPage(IDictionary<string, dynamic> conditions, string orderby, bool isAsc, int? pageIndex, int? pageSize, ref int count, ref string err);
     }
 }
